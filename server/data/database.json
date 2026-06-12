@@ -293,7 +293,7 @@
       "image": "/ArticleImages/dakshinamurthy-a1.jpg",
       "date": "May 24, 2026",
       "likes": 48,
-      "views": 319
+      "views": 320
     },
     {
       "id": "a2",
@@ -511,13 +511,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 419,
-      "storytelling": 176,
-      "domains": 236,
-      "flow": 106,
-      "admin": 47
+      "home": 421,
+      "storytelling": 178,
+      "domains": 238,
+      "flow": 107,
+      "admin": 48
     },
-    "totalInteractions": 995,
+    "totalInteractions": 1003,
     "totalComments": 1,
     "activeSessions": 3,
     "usersByRole": {
