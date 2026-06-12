@@ -14,7 +14,7 @@ import PortalPage from "./features/dimension-portal/PortalPage";
 import DomainExpandedModal from "./features/dimension-portal/components/DomainExpandedModal";
 import StorytellingSection from "./features/timeline/StorytellingSection";
 import TimelineSection from "./features/timeline/TimelineSection";
-import AdminPanel from "./features/clearance-dashboard/AdminPanel";
+import RegistrationFeature from "./features/registration/RegistrationFeature";
 import { useDatabase } from "./hooks/useDatabase";
 import { User, DomainContent } from "./types/types";
 
@@ -244,7 +244,7 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="py-4"
             >
-              <AdminPanel
+              <RegistrationFeature
                 domains={domains}
                 articles={articles}
                 timeline={timeline}

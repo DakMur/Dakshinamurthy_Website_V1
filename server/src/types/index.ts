@@ -94,4 +94,7 @@ export interface DatabaseSchema {
   comments: Comment[];
   quotes: Quote[];
   analytics: AnalyticsStats;
+  teams?: any[];
+  members?: any[];
+  registrationConfig?: any;
 }

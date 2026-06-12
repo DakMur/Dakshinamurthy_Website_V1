@@ -84,3 +84,30 @@ export interface AnalyticsStats {
     user: number;
   };
 }
+
+export interface RegistrationConfig {
+  status: 'Registration Not Yet Opened' | 'Registration Open' | 'Registrations Closed';
+  openDate?: string;
+  closeDate?: string;
+  minMembers: number;
+  maxMembers: number;
+  disableTeamLogin?: boolean;
+}
+
+export interface TeamMember {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export interface Team {
+  id: string;
+  teamName: string;
+  leaderEmail: string;
+  leaderPhone: string;
+  members: TeamMember[];
+  documentUrl?: string;
+  demoVideoUrl?: string;
+  passed_round?: number;
+}
+

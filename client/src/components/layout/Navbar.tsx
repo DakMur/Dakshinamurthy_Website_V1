@@ -57,7 +57,7 @@ export default function Navbar({
               { id: "storytelling", label: "Wisdom Lectures" },
               { id: "domains", label: "Dimension Portals" },
               { id: "flow", label: "Chronology timeline" },
-              { id: "admin", label: "Clearances Dashboard" }
+              { id: "admin", label: "Registration" }
             ].map((navItem) => (
               <button
                 key={navItem.id}
@@ -154,7 +154,7 @@ export default function Navbar({
                     { id: "storytelling", label: "Wisdom Lectures" },
                     { id: "domains", label: "Dimension Portals" },
                     { id: "flow", label: "Chronology timeline" },
-                    { id: "admin", label: "Clearances Dashboard" }
+                    { id: "admin", label: "Registration" }
                   ].map((navItem) => (
                     <button
                       key={navItem.id}
