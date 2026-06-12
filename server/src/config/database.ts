@@ -143,7 +143,15 @@ const DEFAULT_DATABASE: DatabaseSchema = {
     totalComments: 0,
     activeSessions: 3,
     usersByRole: { admin: 1, user: 2 }
-  }
+  },
+  registrationConfig: {
+    phase: 1,
+    countdownTarget: "",
+    minMembers: 2,
+    maxMembers: 4
+  },
+  teams: [],
+  members: []
 };
 
 export function readDB(): DatabaseSchema {
@@ -158,7 +166,39 @@ export function readDB(): DatabaseSchema {
       return DEFAULT_DATABASE;
     }
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(raw) as DatabaseSchema;
+    const parsed = JSON.parse(raw) as DatabaseSchema;
+    
+    // Ensure all required fields exist
+    let updated = false;
+    if (!parsed.users) {
+      parsed.users = DEFAULT_DATABASE.users;
+      updated = true;
+    }
+    if (!parsed.teams) {
+      parsed.teams = [];
+      updated = true;
+    }
+    if (!parsed.members) {
+      parsed.members = [];
+      updated = true;
+    }
+    if (!parsed.comments) {
+      parsed.comments = [];
+      updated = true;
+    }
+    if (!parsed.quotes) {
+      parsed.quotes = DEFAULT_DATABASE.quotes;
+      updated = true;
+    }
+    if (!parsed.registrationConfig) {
+      parsed.registrationConfig = DEFAULT_DATABASE.registrationConfig;
+      updated = true;
+    }
+    if (updated) {
+      writeDB(parsed);
+    }
+    
+    return parsed;
   } catch (err) {
     console.error('[Database] Error reading database, returning defaults:', err);
     return DEFAULT_DATABASE;

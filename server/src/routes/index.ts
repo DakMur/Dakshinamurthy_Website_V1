@@ -7,6 +7,7 @@ import { timelineRouter } from './timeline.routes.js';
 import { quotesRouter } from './quotes.routes.js';
 import { analyticsRouter } from './analytics.routes.js';
 import { geminiRouter } from './gemini.routes.js';
+import { registrationRouter } from './registration.routes.js';
 
 export const apiRouter = Router();
 
@@ -18,3 +19,5 @@ apiRouter.use('/timeline', timelineRouter);
 apiRouter.use('/quotes', quotesRouter);
 apiRouter.use('/analytics', analyticsRouter);
 apiRouter.use('/gemini', geminiRouter);
+apiRouter.use('/registration', registrationRouter);
+

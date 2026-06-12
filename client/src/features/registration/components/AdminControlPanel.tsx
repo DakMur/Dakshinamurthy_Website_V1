@@ -4,9 +4,9 @@ import {
   BarChart, Plus, Trash2, Edit2, Key, HelpCircle, RefreshCcw
 } from "lucide-react";
 import { motion } from "motion/react";
-import { User, DomainContent, Article, TimelineStep, Comment, Quote, AnalyticsStats } from "../../types/types";
+import { User, DomainContent, Article, TimelineStep, Comment, Quote, AnalyticsStats, RegistrationConfig } from "../../../types/types";
 
-interface AdminPanelProps {
+interface AdminControlPanelProps {
   domains: DomainContent[];
   articles: Article[];
   timeline: TimelineStep[];
@@ -14,12 +14,14 @@ interface AdminPanelProps {
   comments: Comment[];
   analytics: AnalyticsStats;
   currentUser: User | null;
+  config: RegistrationConfig;
   onLogin: (user: User) => void;
   onLogout: () => void;
   onRefreshData: () => void;
+  onConfigUpdate: (config: RegistrationConfig) => void;
 }
 
-export default function AdminPanel({
+export default function AdminControlPanel({
   domains,
   articles,
   timeline,
@@ -27,18 +29,53 @@ export default function AdminPanel({
   comments,
   analytics,
   currentUser,
+  config,
   onLogin,
   onLogout,
-  onRefreshData
-}: AdminPanelProps) {
+  onRefreshData,
+  onConfigUpdate
+}: AdminControlPanelProps) {
   // Authentication states
   const [email, setEmail] = useState("falconace81@gmail.com");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
 
+  // Super Tab state
+  const [superTab, setSuperTab] = useState<"gateway" | "registration">("registration");
+
+  // Registration Config states
+  const [regStatus, setRegStatus] = useState(config?.status || "Registrations Closed");
+  const [openDate, setOpenDate] = useState(config?.openDate || "");
+  const [closeDate, setCloseDate] = useState(config?.closeDate || "");
+  const [minMembers, setMinMembers] = useState(config?.minMembers || 2);
+  const [maxMembers, setMaxMembers] = useState(config?.maxMembers || 5);
+  const [disableTeamLogin, setDisableTeamLogin] = useState(config?.disableTeamLogin || false);
+  const [configSaving, setConfigSaving] = useState(false);
+  
+  // Teams State
+  const [teamsList, setTeamsList] = useState<any[]>([]);
+
   // Active Admin dashboard menu state
-  const [activeTab, setActiveTab] = useState<"analytics" | "domains" | "articles" | "timeline" | "quotes" | "comments">("analytics");
+  const [activeTab, setActiveTab] = useState<"analytics" | "teams" | "domains" | "articles" | "timeline" | "quotes" | "comments">("analytics");
+
+  useEffect(() => {
+    if (activeTab === "teams") {
+      fetchTeams();
+    }
+  }, [activeTab]);
+
+  const fetchTeams = async () => {
+    try {
+      const res = await fetch("/api/v1/registration/teams");
+      const data = await res.json();
+      if (data.success) {
+        setTeamsList(data.teams);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // Domain form states
   const [domainForms, setDomainForms] = useState({
@@ -80,6 +117,26 @@ export default function AdminPanel({
       setLoginError("Failed to communicate with spiritual clearances server.");
     } finally {
       setLoginLoading(false);
+    }
+  };
+
+  const handleSaveConfig = async () => {
+    setConfigSaving(true);
+    try {
+      const res = await fetch("/api/v1/registration/config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: regStatus, openDate, closeDate, minMembers, maxMembers, disableTeamLogin })
+      });
+      const data = await res.json();
+      if (data.success) {
+        onConfigUpdate(data.config);
+        alert("Registration config updated successfully.");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setConfigSaving(false);
     }
   };
 
@@ -292,11 +349,154 @@ export default function AdminPanel({
         </div>
       </div>
 
-      {/* Admin Tab Menus */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
-        <div className="md:col-span-1 flex flex-col gap-1.5">
+      {/* Super Tab Navigation */}
+      <div className="flex gap-4 border-b border-white/10 pb-4 mb-8">
+        <button
+          onClick={() => setSuperTab("gateway")}
+          className={`px-6 py-2.5 font-mono text-xs tracking-wider rounded-xl transition-all cursor-pointer ${superTab === "gateway" ? "bg-gold-vintage/10 text-gold-vintage border border-gold-vintage/30" : "text-slate-400 hover:text-white border border-transparent"}`}
+        >
+          Gateway Configuration
+        </button>
+        <button
+          onClick={() => setSuperTab("registration")}
+          className={`px-6 py-2.5 font-mono text-xs tracking-wider rounded-xl transition-all cursor-pointer ${superTab === "registration" ? "bg-gold-vintage/10 text-gold-vintage border border-gold-vintage/30" : "text-slate-400 hover:text-white border border-transparent"}`}
+        >
+          Registration Controls
+        </button>
+      </div>
+
+      {superTab === "registration" && (
+        <div className="p-8 rounded-2xl glass-panel border border-white/10 space-y-8 max-w-3xl">
+          <h3 className="font-display text-xl text-white tracking-widest uppercase border-b border-white/5 pb-3">Event Registration Controls</h3>
+          
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Registration Phase</label>
+              <select 
+                value={regStatus} 
+                onChange={(e) => setRegStatus(e.target.value as any)}
+                className="w-full px-4 py-3 rounded-xl border border-white/10 bg-slate-950 text-white focus:border-gold-vintage/50 font-mono text-sm"
+              >
+                <option value="Registration Not Yet Opened">Registration Not Yet Opened</option>
+                <option value="Registration Open">Registration Open</option>
+                <option value="Registrations Closed">Registrations Closed</option>
+              </select>
+            </div>
+
+            {regStatus === "Registration Not Yet Opened" && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
+                <div className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/[0.02]">
+                  <label className="text-xs font-mono text-slate-300">Display Text Banner Only (Hide Timer)</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (openDate) {
+                        setOpenDate("");
+                      } else {
+                        // Set to current local time as a starting point
+                        const now = new Date();
+                        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                        setOpenDate(now.toISOString().slice(0, 16));
+                      }
+                    }}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${!openDate ? 'bg-gold-vintage' : 'bg-white/10'}`}
+                  >
+                    <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${!openDate ? 'translate-x-4.5' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+
+                {openDate !== "" && (
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Opening Date & Time</label>
+                    <input 
+                      type="datetime-local" 
+                      value={openDate}
+                      onChange={(e) => setOpenDate(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white font-mono text-sm"
+                    />
+                  </div>
+                )}
+                {openDate === "" && (
+                  <div className="text-xs font-mono text-slate-500 bg-white/[0.01] p-3 rounded-lg border border-white/5 text-center">
+                    A static "Registrations Opening Soon" banner will be displayed instead of a timer.
+                    To enable the timer, click the toggle above and set a date.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {regStatus === "Registration Open" && (
+              <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
+                <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Closing Date & Time</label>
+                <input 
+                  type="datetime-local" 
+                  value={closeDate}
+                  onChange={(e) => setCloseDate(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white font-mono text-sm"
+                />
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/5">
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Minimum Team Size</label>
+                <input 
+                  type="number" 
+                  min="1"
+                  value={minMembers}
+                  onChange={(e) => setMinMembers(parseInt(e.target.value))}
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white font-mono text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Maximum Team Size</label>
+                <input 
+                  type="number" 
+                  min={minMembers}
+                  value={maxMembers}
+                  onChange={(e) => setMaxMembers(parseInt(e.target.value))}
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white font-mono text-sm"
+                />
+              </div>
+            </div>
+            
+            <div className="pt-4 border-t border-white/5">
+              <div className="flex items-center justify-between p-4 rounded-xl border border-red-500/20 bg-red-500/5">
+                <div>
+                  <label className="text-sm font-mono text-white flex items-center gap-2">
+                    Lock Team Leader Logins
+                  </label>
+                  <p className="text-[10px] text-slate-400 font-mono mt-1">Master kill-switch for team leader accounts.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setDisableTeamLogin(!disableTeamLogin)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${disableTeamLogin ? 'bg-red-500' : 'bg-white/10'}`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${disableTeamLogin ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4">
+            <button 
+              onClick={handleSaveConfig}
+              disabled={configSaving}
+              className="px-6 py-3 rounded-xl bg-gold-vintage hover:bg-gold-bright text-black font-mono text-xs tracking-wider font-semibold cursor-pointer disabled:opacity-50"
+            >
+              {configSaving ? "SAVING..." : "COMMIT CONFIGURATION"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {superTab === "gateway" && (
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
+          <div className="md:col-span-1 flex flex-col gap-1.5">
           {[
             { id: "analytics", label: "Analytics Hub", icon: BarChart },
+            { id: "teams", label: "Teams Directory", icon: Users },
             { id: "domains", label: "Edit Domains", icon: Settings },
             { id: "articles", label: "Edit Articles", icon: BookOpen },
             { id: "quotes", label: "Edit Quotes", icon: QuoteIcon },
@@ -374,6 +574,51 @@ export default function AdminPanel({
                     );
                   })}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "teams" && (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                <h4 className="text-xs uppercase font-mono tracking-wider text-gold-vintage">Registered Teams ({teamsList.length})</h4>
+                <button onClick={fetchTeams} className="px-3 py-1.5 rounded-lg border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] text-xs font-mono text-white cursor-pointer transition-colors">Refresh Teams</button>
+              </div>
+              <div className="space-y-3">
+                {teamsList.length === 0 ? (
+                  <div className="p-6 text-center text-xs font-mono text-slate-600 border border-white/5 bg-[#050505] rounded-xl">No teams registered yet.</div>
+                ) : (
+                  teamsList.map((t) => (
+                    <div key={t.id} className="p-5 rounded-2xl glass-panel border-white/5 space-y-3 flex flex-col justify-between">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h5 className="font-display text-lg text-white">{t.teamName}</h5>
+                          <p className="text-xs font-mono text-slate-400 mt-1">Leader: {t.leaderEmail} | {t.leaderPhone}</p>
+                          <p className="text-[10px] font-mono text-slate-500 mt-1">Members: {t.members?.length || 0}</p>
+                        </div>
+                        <div className="flex flex-col items-end gap-2">
+                          <label className="text-[10px] font-mono text-slate-400 uppercase">Promote to Round 1</label>
+                          <button
+                            onClick={async () => {
+                              const newRound = t.passed_round === 1 ? 0 : 1;
+                              try {
+                                const res = await fetch(`/api/v1/registration/team/${t.id}/promotion`, {
+                                  method: "PATCH",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ passed_round: newRound })
+                                });
+                                if (res.ok) fetchTeams();
+                              } catch(err) { console.error(err); }
+                            }}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${t.passed_round === 1 ? 'bg-emerald-500' : 'bg-white/10'}`}
+                          >
+                            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${t.passed_round === 1 ? 'translate-x-6' : 'translate-x-1'}`} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           )}
@@ -568,6 +813,7 @@ export default function AdminPanel({
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }

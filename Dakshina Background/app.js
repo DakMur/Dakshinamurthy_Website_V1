@@ -16,10 +16,10 @@ const parameters = {
   radius: 11,
   branches: 3,
   spin: 0.9,
-  randomnessPower: 1.8, 
-  insideColor: "#fffbe6", 
-  midColor: "#e07bc5", 
-  outsideColor: "#113cd6", 
+  randomnessPower: 1.8,
+  insideColor: "#fffbe6",
+  midColor: "#e07bc5",
+  outsideColor: "#113cd6",
   rotationSpeed: 0.04
 };
 
@@ -342,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
       slider.addEventListener("input", (e) => {
         let val = parseFloat(e.target.value);
         parameters[key] = val;
-        
+
         // Custom value formatting
         if (key === 'count') {
           display.textContent = val.toLocaleString();
@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           display.textContent = val;
         }
-        
+
         // Smoothly regenerate on live dragging for lightweight parameters
         if (key !== 'count') {
           debouncedRegeneration();

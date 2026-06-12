@@ -1,528 +1,317 @@
 {
+  "users": [
+    {
+      "id": "u1",
+      "name": "Sovereign Admin",
+      "email": "falconace81@gmail.com",
+      "password": "dakshinaasya2026",
+      "role": "admin",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
+    }
+  ],
   "domains": [
     {
       "id": "d1",
       "slug": "meditation",
-      "title": "Meditation",
-      "subtitle": "Sacred Silence within",
-      "icon": "Sparkles",
-      "summary": "Discover the healing potential of intentional silence, breathing practices, and transcendental visualization.",
-      "description": "Meditation is the threshold between the temporal mind and the infinite observer. By actively descending beneath thoughts, you harmonize the brain waves, align the crystalline structures of your bio-field, and open portals to subtle spiritual frequencies.",
-      "quote": "Quiet the mind and the soul will speak.",
-      "quoteAuthor": "Ma Jaya Sati Bhagavati",
-      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Transcendental Breathing Loop",
+      "title": "Meditation & Dhyana",
+      "subtitle": "The silence that speaks louder than words",
+      "icon": "Compass",
+      "summary": "Explore the depths of meditation through ancient Vedantic practices and modern neuroscience discoveries.",
+      "description": "Meditation is the cornerstone of spiritual practice in the Advaita Vedanta tradition. Through disciplined dhyana (meditation), the practitioner learns to quiet the fluctuations of the mind (chitta vritti nirodha) and rest in the pure awareness that is their true nature. Sri Adi Shankaracharya taught that through consistent meditation practice, one can directly experience the non-dual nature of reality — that Brahman (the ultimate reality) and Atman (the individual self) are one and the same.",
+      "quote": "The mind is everything. What you think, you become.",
+      "quoteAuthor": "Adi Shankaracharya",
+      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Box Breathing Simulator",
       "practiceSteps": [
-        "Find a comfortable posture, spine aligned like a lightning rod of energy.",
-        "Inhale golden cosmic prana for 4 seconds, feeling it rise from your root.",
-        "Hold the light at your crown chakra for 4 seconds, visualizing a lotus expanding.",
-        "Exhale slowly for 4 seconds, releasing temporal anxieties into primeval space.",
-        "Hold your lungs empty for 4 seconds, resting in pure unmanifested consciousness."
+        "Find a comfortable seated position with spine erect",
+        "Close your eyes and take three deep cleansing breaths",
+        "Begin the 4-second box pattern: Inhale for 4 counts",
+        "Hold the breath gently for 4 counts",
+        "Exhale slowly and completely for 4 counts",
+        "Hold empty for 4 counts, then repeat the cycle"
       ],
       "energyIndicator": "High Harmonic",
-      "relatedSlugs": [
-        "mindfulness",
-        "divine-energy"
-      ]
-    },
-    {
-      "id": "d2",
-      "slug": "yoga",
-      "title": "Yoga & Asana",
-      "subtitle": "Harmonizing Sacred Vessels",
-      "icon": "Compass",
-      "summary": "Unite somatic movement with spiritual breath, opening cosmic channels within the energetic body.",
-      "description": "Yoga is not merely physical elongation; it is the calibration of the flesh-vessel to match the cosmic geometry. Each asana operates as an antenna tuning in to planetary, celestial, and terrestrial currents.",
-      "quote": "Yoga is the journey of the self, through the self, to the self.",
-      "quoteAuthor": "The Bhagavad Gita",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Solar Meridian Flow",
-      "practiceSteps": [
-        "Begin in Child's Pose (Balasana), centering your third eye into the earth.",
-        "Transition gracefully into Upward-Facing Dog, expanding your spiritual heart.",
-        "Raise your gaze, absorbing radiant solar energies into the throat cluster."
-      ],
-      "energyIndicator": "Balanced Integration",
-      "relatedSlugs": [
-        "meditation",
-        "divine-energy"
-      ]
-    },
-    {
-      "id": "d3",
-      "slug": "mindfulness",
-      "title": "Mindfulness",
-      "subtitle": "The Quantum Present",
-      "icon": "Sun",
-      "summary": "Anchor your focus into the supreme now, expanding awareness beyond memory and anticipation.",
-      "description": "Mindfulness is the collapse of linear time. When you reside wholly in the present, your nervous system synchronizes with the Earth's Schumann resonance, revealing the absolute perfection of every cosmic instant.",
-      "quote": "Be here now.",
-      "quoteAuthor": "Ram Dass",
-      "image": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Somatic Grounding Meditation",
-      "practiceSteps": [
-        "Observe five distinct textures or objects in your immediate sensory field.",
-        "Acknowledge four subtle sounds, from close breathing to faraway birds.",
-        "Feel the raw tactile pressure of gravity acting on your temporal shell."
-      ],
-      "energyIndicator": "Deep Presence",
-      "relatedSlugs": [
-        "meditation",
-        "conscious-living"
-      ]
-    },
-    {
-      "id": "d4",
-      "slug": "sacred-geometry",
-      "title": "Sacred Geometry",
-      "subtitle": "Templates of Creation",
-      "icon": "ShieldAlert",
-      "summary": "Study the fundamental, repetitive structural shapes that construct the architecture of reality.",
-      "description": "From the golden spiral of galaxies to the atomic grids of quartz, sacred geometry is the visible blueprint of the divine mind. Connecting with these patterns recalibrates your intuitive neural frameworks.",
-      "quote": "Geometry is has two treasures; one is the Theorem of Pythagoras; the other, the division of a line into extreme and mean ratio.",
-      "quoteAuthor": "Johannes Kepler",
-      "image": "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "The Sri Yantra Visualization",
-      "practiceSteps": [
-        "Gaze intently at the center point (Bindu) of the sacred Sri Yantra grid.",
-        "Observe the interlocking upward (masculine) and downward (feminine) triangles.",
-        "Merge your breath with the expanding circles of creation."
-      ],
-      "energyIndicator": "Symmetric Frequency",
-      "relatedSlugs": [
-        "spiritual-science",
-        "astral-awareness"
-      ]
-    },
-    {
-      "id": "d5",
-      "slug": "spiritual-science",
-      "title": "Spiritual Science",
-      "subtitle": "Merging Physics and Soul",
-      "icon": "Atom",
-      "summary": "Discover how quantum mechanical fields, resonance, and astrophysics explain metaphysical realms.",
-      "description": "Spiritual science is the ultimate reconciliation: understanding that consciousness is the fundamental background field from which all physical matter, light, and dimension emerge.",
-      "quote": "The day science begins to study non-physical phenomena, it will make more progress in one decade than in all previous centuries of its existence.",
-      "quoteAuthor": "Nikola Tesla",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Ether Resonance Calibration",
-      "practiceSteps": [
-        "Lie flat, keeping your body perfectly still to reduce neuro-acoustic noise.",
-        "Tune your inner hearing to the high-pitched harmonic ring of your skull.",
-        "Envision this frequency interlocking with the celestial electromagnetic background."
-      ],
-      "energyIndicator": "Ultrasonic Resonance",
       "relatedSlugs": [
         "sacred-geometry",
         "cosmic-philosophy"
       ]
     },
     {
-      "id": "d6",
-      "slug": "conscious-living",
-      "title": "Conscious Living",
-      "subtitle": "Eco-Spiritual Sovereignty",
-      "icon": "Heart",
-      "summary": "Adopt a lifestyle that respects planetary boundaries, spiritual ethics, and bio-friendly dynamics.",
-      "description": "To live consciously is to see that every glass of water, every nutrient in your food, and every breath is a direct transaction with Gaia. Sovereignty comes when you consume with deep love and total awareness.",
-      "quote": "Look deep into nature, and then you will understand everything better.",
-      "quoteAuthor": "Albert Einstein",
-      "image": "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Gaia Grounding Practice",
+      "id": "d2",
+      "slug": "sacred-geometry",
+      "title": "Sacred Geometry",
+      "subtitle": "The mathematical language of the cosmos",
+      "icon": "Star",
+      "summary": "Discover how geometric patterns form the invisible architecture of consciousness and creation.",
+      "description": "Sacred Geometry reveals the hidden mathematical order underlying all of creation. From the spiral of galaxies to the structure of DNA, from the petals of a flower to the vibrations of sound — geometric patterns form the invisible architecture of the universe. In the Vedic tradition, these patterns are understood as the visual language through which Brahman manifests the physical world.",
+      "quote": "Geometry is the archetype of the beauty of the world.",
+      "quoteAuthor": "Johannes Kepler",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Mandala Visualization",
       "practiceSteps": [
-        "Walk barefoot upon living soil, grass, or natural sand for 15 minutes.",
-        "Command your base physical bio-electric charge to sink into the Earth's crust.",
-        "Send a thought of gratitude down into the tectonic plate structures."
+        "Sit comfortably and gaze at a geometric mandala pattern",
+        "Allow your eyes to soften and your vision to become peripheral",
+        "Notice the patterns emerging and dissolving",
+        "Feel the geometric harmony resonating within your body"
       ],
-      "energyIndicator": "Earth Grounded",
-      "relatedSlugs": [
-        "mindfulness",
-        "ancient-wisdom"
-      ]
-    },
-    {
-      "id": "d7",
-      "slug": "divine-energy",
-      "title": "Divine Energy & Qi",
-      "subtitle": "Navigating the Chakra Grid",
-      "icon": "Flame",
-      "summary": "Govern the subtle currents of Kundalini, Prana, and Qi flowing through your meridian highways.",
-      "description": "Your spinal column acts as a planetary antenna. By clearing blockages at each of the seven structural chakra gateways, you allow the serpentine flow of divine cosmic light to surge upward, bathing your brain in cosmic rapture.",
-      "quote": "In the universe, there is an immeasurable, indescribable force... It is a force that supports everything.",
-      "quoteAuthor": "Don Juan Matus",
-      "image": "https://images.unsplash.com/photo-1482862549707-f63cb32c5fd9?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Mula Bandha Chakra Ascension",
-      "practiceSteps": [
-        "Sit upright, close your eyes, and direct your internal mental eye to your root.",
-        "Slightly engage the pelvic floor muscles to lock and direct the red root prana upward.",
-        "Draw the breath and focus past the naval-center to splash in the crown pool."
-      ],
-      "energyIndicator": "Kundalini Active",
+      "energyIndicator": "Crystalline Matrix",
       "relatedSlugs": [
         "meditation",
         "ancient-wisdom"
       ]
     },
     {
-      "id": "d8",
-      "slug": "scriptures",
-      "title": "Sacred Scriptures",
-      "subtitle": "Hermetic and Vedic Codes",
-      "icon": "BookOpen",
-      "summary": "Decrypt the dense esoteric patterns and formulas preserved in historical spiritual literatures.",
-      "description": "The Upanishads, the Emerald Tablets, and the Gnostic scrolls are not merely words; they are sonic formula. Singing, vibrating, or meditating upon these phonetics reconstructs your vibrational alignment.",
-      "quote": "Truth is one; sages call it by many names.",
-      "quoteAuthor": "The Rig Veda",
-      "image": "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Somatic Sounding of Sanskrit Codes",
-      "practiceSteps": [
-        "Inhale fully, then sound the primodial syllable 'OM' (AUM) with maximum chest decay.",
-        "Feel the sound vibrating the heart wall, throat, and third eye orbit synchronously.",
-        "Sit in the echoing stillness, receiving the ancient light frequencies."
-      ],
-      "energyIndicator": "Ancient Blueprint",
-      "relatedSlugs": [
-        "ancient-wisdom",
-        "universal-consciousness"
-      ]
-    },
-    {
-      "id": "d9",
-      "slug": "ancient-wisdom",
-      "title": "Ancient Wisdom",
-      "subtitle": "Hermetic Traditions",
-      "icon": "Compass",
-      "summary": "Reclaim the teachings of Hermes Trismegistus, Taoists, and ancient native cosmic caretakers.",
-      "description": "Ancient Wisdom understands that the universe is mental, vibrational, energetic, and fully alive. Reclaiming the Hermetic Kybalion principles allows you to master outer situations by shifting your inner mental atmosphere.",
-      "quote": "As above, so below; as below, so above.",
-      "quoteAuthor": "Hermes Trismegistus",
-      "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Vibrational Shift Affirmation",
-      "practiceSteps": [
-        "Identify a negative or polarizing thought currently disturbing your mental axis.",
-        "Find its exact positive polarization (e.g., Fear to Courage, Anger to Compassion).",
-        "Focus exclusively on the highest pole, letting the lower one dissolve naturally."
-      ],
-      "energyIndicator": "High Hermetic",
-      "relatedSlugs": [
-        "scriptures",
-        "cosmic-philosophy"
-      ]
-    },
-    {
-      "id": "d10",
-      "slug": "universal-consciousness",
-      "title": "Universal Consciousness",
-      "subtitle": "The Galactic Oversoul",
-      "icon": "Globe",
-      "summary": "Dissolve individual egoic boundaries and realize your complete identity as the infinite cosmic canvas.",
-      "description": "You are not a drop in the ocean; you are the entire ocean in a temporary, localized drop. Awakening means shifting from being a person interacting with the context, to realizing you ARE the context observing itself.",
-      "quote": "The cosmos is within us. We are a way for the universe to know itself.",
-      "quoteAuthor": "Carl Sagan",
-      "image": "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Universal Mirror Expansion",
-      "practiceSteps": [
-        "Close your eyes and visualize your local physical outline starting to fade into white mist.",
-        "Expand your awareness to fill your room, then your town, then the continental shelf.",
-        "Rest in the realization of the absolute cosmic vacuum containing the stars."
-      ],
-      "energyIndicator": "Cosmic Oversoul",
-      "relatedSlugs": [
-        "scriptures",
-        "astral-awareness"
-      ]
-    },
-    {
-      "id": "d11",
-      "slug": "astral-awareness",
-      "title": "Astral Awareness & Dream",
-      "subtitle": "Navigating Non-Physical Realms",
-      "icon": "Moon",
-      "summary": "Awaken your consciousness in the dream state, navigating multi-dimensional realities with mental lucidity.",
-      "description": "Astral traveling and lucid dreaming are the sacred training fields of non-physical agency. Mastery of the dream body unlocks higher celestial memory systems and allows direct lessons from evolved spiritual guides.",
-      "quote": "Dreams are illustrations from the book your soul is writing about you.",
-      "quoteAuthor": "Marsha Norman",
-      "image": "https://images.unsplash.com/photo-1511289081367-46c7c081c7c5?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Lucid Anchor Reality Check",
-      "practiceSteps": [
-        "Ask yourself with burning sincerity throughout the day: 'Is this reality or a cosmic dream?'",
-        "Observe your hands, counting your fingers and testing the solidity of physical elements.",
-        "When asleep, your dream avatar will repeat this code, triggering systemic lucidity."
-      ],
-      "energyIndicator": "Astral Vibration",
-      "relatedSlugs": [
-        "universal-consciousness",
-        "sacred-geometry"
-      ]
-    },
-    {
-      "id": "d12",
+      "id": "d3",
       "slug": "cosmic-philosophy",
       "title": "Cosmic Philosophy",
-      "subtitle": "Architectural Laws of Soul",
-      "icon": "Scale",
-      "summary": "Ponder the profound metaphysical frameworks, divine laws, and teleology governing spiritual development.",
-      "description": "Cosmic philosophy analyzes the evolutionary trajectory of spark-conscious systems migrating from densest material configurations back into high-frequency primeval source union.",
-      "quote": "Science without religion is lame, religion without science is blind.",
-      "quoteAuthor": "Albert Einstein",
-      "image": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=1200",
-      "practiceTitle": "Divine Law Contemplation",
+      "subtitle": "Understanding the fabric of reality itself",
+      "icon": "Flame",
+      "summary": "Journey through the philosophical frameworks that explain consciousness, reality, and the nature of existence.",
+      "description": "Cosmic Philosophy encompasses the grand frameworks of understanding that humanity has developed to explain the nature of reality, consciousness, and existence. At its heart lies the Advaita Vedanta teaching that the universe is not separate from the observer — that the cosmic dance of creation, preservation, and dissolution is happening within the field of pure awareness that is our deepest nature.",
+      "quote": "Brahman alone is real, the world is appearance, and the individual self is none other than Brahman.",
+      "quoteAuthor": "Adi Shankaracharya",
+      "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Self-Inquiry Practice",
       "practiceSteps": [
-        "Dwell deeply on the concept of eternal return and karmic balancing equations.",
-        "Permit any local injustice or linear frustration to be neutralized by cosmic balance.",
-        "Surrender your local timeline into the hands of the Great Spiritual Ordinance."
+        "Sit quietly and ask yourself: Who am I?",
+        "Notice the thoughts that arise without identifying with them",
+        "Trace each thought back to its source",
+        "Rest in the silent awareness that remains"
       ],
-      "energyIndicator": "Cosmodrome Law",
+      "energyIndicator": "Transcendent Flux",
       "relatedSlugs": [
-        "spiritual-science",
+        "meditation",
         "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d4",
+      "slug": "ancient-wisdom",
+      "title": "Ancient Wisdom Texts",
+      "subtitle": "The eternal scriptures that light the path",
+      "icon": "BookOpen",
+      "summary": "Study the timeless teachings of the Upanishads, Bhagavad Gita, and Brahma Sutras.",
+      "description": "The ancient wisdom texts of India represent humanity's most profound exploration of consciousness and reality. The Prasthanatrayi — the triple canon of Vedanta consisting of the Upanishads, the Bhagavad Gita, and the Brahma Sutras — forms the philosophical foundation upon which Sri Adi Shankaracharya built his revolutionary commentary.",
+      "quote": "Tat Tvam Asi — Thou Art That.",
+      "quoteAuthor": "Chandogya Upanishad",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Scriptural Contemplation",
+      "practiceSteps": [
+        "Choose a single verse from the Upanishads",
+        "Read it slowly three times, absorbing each word",
+        "Close your eyes and contemplate its meaning",
+        "Journal any insights that arise from the contemplation"
+      ],
+      "energyIndicator": "Eternal Resonance",
+      "relatedSlugs": [
+        "cosmic-philosophy",
+        "meditation"
       ]
     }
   ],
   "articles": [
     {
       "id": "a1",
-      "domainSlug": "meditation",
-      "title": "The Primordial Guru",
-      "subtitle": "Why do ancient sages sit before a youthful teacher?",
-      "content": "Beneath the shade of an ancient banyan tree sits a youthful teacher surrounded by seekers far older than himself. This is Sri Dakshinamurthy, the timeless form of Shiva as the supreme guru. Unlike ordinary teachers, he does not rely on lengthy discourses or debate. Facing the South, a direction traditionally associated with time, change, and mortality, he reveals knowledge through profound silence. For centuries, this image has inspired seekers to look beyond words and discover wisdom through direct understanding.",
-      "quote": "विश्वं दर्पणदृश्यमाननगरीतुल्यं निजान्तर्गतम्",
-      "translation": "The entire universe is like a city reflected in a mirror, appearing within oneself.",
-      "author": "Elena Vlasta",
-      "readTime": "6 min read",
+      "domainSlug": "introduction",
+      "title": "Dakshinamurthy Stotram",
+      "subtitle": "The Hymn of the South-Facing Teacher",
+      "content": "The Dakshinamurthy Stotram, composed by Sri Adi Shankaracharya, is one of the most profound philosophical hymns in the entire corpus of Sanskrit literature. It presents the image of Lord Shiva as Dakshinamurthy — the supreme teacher who sits facing south beneath the banyan tree, imparting the highest wisdom through silence.\n\nThe word 'Dakshinamurthy' is rich with meaning: 'Dakshina' means 'south' and also 'grace' or 'competence', while 'Murthy' means 'form' or 'embodiment'. Thus, Dakshinamurthy is the embodiment of grace, the form of supreme competence in teaching.\n\nWhat makes this teaching unique in all of world philosophy is the method: the teacher teaches through silence. The young students (sanakadi rishis) approach the ancient-looking teacher with their doubts, and through the mere power of His silence — His chin-mudra gesture — all doubts are resolved. This is the teaching of Advaita Vedanta in its most pristine form.\n\nThe stotram consists of 10 verses, each revealing a different aspect of how the non-dual reality manifests as the apparently dual world we perceive. Shankaracharya uses stunning metaphors — a mirror, a dream, a magic show, a city reflected in a crystal — to explain how the one consciousness appears as the many.",
+      "author": "Sri Adi Shankaracharya",
+      "readTime": "Sacred Text",
       "image": "/ArticleImages/dakshinamurthy-a1.jpg",
-      "date": "May 24, 2026",
-      "likes": 48,
-      "views": 320
+      "date": "Timeless",
+      "likes": 108,
+      "views": 1008,
+      "quote": "विश्वं दर्पणदृश्यमाननगरीतुल्यं निजान्तर्गतं",
+      "translation": "To Him who sees the universe existing within Himself, like a city reflected in a mirror, yet appearing outside through Maya"
     },
     {
       "id": "a2",
-      "domainSlug": "sacred-geometry",
-      "title": "Sacred Geometry: Patterns of Divine Creation",
-      "subtitle": "How the Flower of Life structures physical reality",
-      "content": "If you want to observe the direct signature of the divine builder, you must look into the beautiful geometric grids of structure. From the structural proportions of the nautilus shell to the hexagonal arrays of a honey bee comb, nature compiles form using sacred mathematics.\n\nAt the core of this celestial math lies the Flower of Life—a structure composed of overlapping concentric circles. When projected into 3D, these lines compile the template of the five Platonic Solids: Tetrahedron, Hexahedron, Octahedron, Dodecahedron, and Icosahedron. These shapes shape the cellular geometries of crystals, metals, gases, and organic life.\n\nBy contemplating these divine grids, your local mind reorganizes. You begin to understand that the challenges you face are not chaotic mistakes, but structured elements in a larger cosmic plan striving for perfect harmonic alignment.",
-      "author": "Caelum Vane",
+      "domainSlug": "meditation",
+      "title": "The Science of Inner Silence",
+      "subtitle": "Where neuroscience meets ancient meditation practice",
+      "content": "Modern neuroscience is only beginning to understand what the ancient rishis discovered thousands of years ago through direct experience: that the practice of sustained inner silence fundamentally transforms the architecture of the brain and the nature of consciousness itself.\n\nRecent studies using fMRI and EEG technology have revealed that experienced meditators show dramatically different brain patterns compared to non-meditators. The default mode network (DMN) — the brain network responsible for self-referential thinking and mind-wandering — shows reduced activity during meditation, while connectivity between different brain regions increases.\n\nThis correlates precisely with what the Yoga Sutras of Patanjali described as 'chitta vritti nirodha' — the cessation of the fluctuations of the mind. When these fluctuations cease, what remains is pure awareness — the 'drashtuh svarupe avasthanam' or the abiding in the true nature of the seer.",
+      "author": "Research Director",
       "readTime": "8 min read",
-      "image": "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=800",
-      "date": "April 18, 2026",
-      "likes": 56,
-      "views": 430
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "date": "2026-01-15",
+      "likes": 42,
+      "views": 156
     },
     {
       "id": "a3",
-      "domainSlug": "mindfulness",
-      "title": "The Alchemy of Conscious Living",
-      "subtitle": "Tuning your day-to-day choices to planetary health",
-      "content": "Many spiritual pathways lead people to look exclusively upward to the clouds and portals. Yet the true spiritual mastery is grounded. It is the capacity to weave sacred energy down through the hands into the immediate physical structures of earth.\n\nEvery choice you make represents a direct energetic trade. When you eat ingredients that were grown with poison, or consume articles composed of low-frequency outrage, you introduce somatic static into your field. Conversely, buying local grains, standing on open wet grass barefoot, and speaking kind, peaceful molecules down into the soil sets off a chain reaction of earth-centered healing.\n\nLiving with sovereignty is about stepping out of the automated mechanical consumer system. It represents a conscious decision to make every meal, every garment, and every conversation a sacred act of cosmic appreciation.",
-      "author": "Gaia Earthbound",
-      "readTime": "5 min read",
-      "image": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=800",
-      "date": "June 2, 2026",
-      "likes": 31,
-      "views": 201
+      "domainSlug": "sacred-geometry",
+      "title": "The Golden Ratio in Temple Architecture",
+      "subtitle": "How ancient builders encoded cosmic proportions in stone",
+      "content": "The great temples of India are not merely places of worship — they are three-dimensional mandalas, cosmic diagrams rendered in stone that encode the mathematical principles governing the universe itself.\n\nThe Vastu Shastra and Shilpa Shastra — the ancient Indian sciences of architecture and sculpture — prescribe precise mathematical ratios for every aspect of temple construction. These ratios, when analyzed through modern mathematics, reveal a sophisticated understanding of the golden ratio (phi = 1.618), Fibonacci sequences, and fractal geometry.\n\nThe Brihadeeswara Temple in Thanjavur, built by Raja Raja Chola I in 1010 CE, provides a stunning example. Its vimana (tower) rises 216 feet — a number that is 6 cubed (6×6×6), reflecting the cosmic significance of the number 6 in Hindu cosmology. The shadow of the tower never falls on its base, demonstrating an advanced understanding of solar geometry.",
+      "author": "Architecture Scholar",
+      "readTime": "10 min read",
+      "image": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80&w=800",
+      "date": "2026-02-20",
+      "likes": 67,
+      "views": 203
     },
     {
       "id": "a4",
-      "domainSlug": "spiritual-science",
-      "title": "Quantum Consciousness & Epigenetics",
-      "subtitle": "Scientific proof that thoughts reshape your physical cell tissues",
-      "content": "For decades, material science asserted that genes are locked blueprints that command your bio-dynamics from birth till decay. However, the emerging discipline of Epigenetics has broken this paradigm. It proves that environmental cellular prompts—including the emotional vibrations of your mind—dictate which genes are expressed or suppressed.\n\nWhen we sit in positive states of awe, love, or deep peace, the pituitary gland and hypothalamus secrete high-harmonic chemicals that enter the bloodstream. These signals interlock with cell membranes, activating pathways connected to DNA regeneration and immunological fortification.\n\nYour body is essentially a biological translator. It receives the pure metaphysical vibrations of your choices and crystallizes them into the material of blood, tissue, and energy grids. You are not a victim of historical DNA codes; you are the active cosmic editor of your cellular blueprint.",
-      "author": "Dr. Linus Vance",
-      "readTime": "10 min read",
-      "image": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=800",
-      "date": "May 12, 2026",
-      "likes": 88,
-      "views": 655
-    },
-    {
-      "id": "a5",
-      "domainSlug": "divine-energy",
-      "title": "Pranayama: Unleashing Serpent Energies",
-      "subtitle": "Reorganizing somatic vital forces along the golden meridians",
-      "content": "Deep inside your spinal vault sits a concentrated pool of infinite cosmic potential, known across traditions as the Kundalini or Qi serpent. In ordinary everyday life, this vital energy is expended outwards, keeping the system trapped in survival anxieties and temporal loops.\n\nThrough Pranayama—intentional, systematic breath regulation—we shut off the external leakage valves of energy. We force the subtle atmospheric currents (Prana and Apana) to lock at the lower energy centers, forming a metaphysical pressure cooker. This heat melts the structural blockages along the spine, letting the Kundalini fire ascend past the heart and throat, blasting past the pineal gland into direct crown blossom.\n\nThis is not a theoretical exercise; it represents a powerful biological shift. When the crown is fully flooded, your brain releases deep DMT-like molecules, generating an unforgettable state of timeless cosmic union and total spiritual clarity.",
-      "author": "Prana Yogi Master",
-      "readTime": "7 min read",
-      "image": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80&w=800",
-      "date": "April 29, 2026",
-      "likes": 72,
-      "views": 513
-    },
-    {
-      "id": "a6",
-      "domainSlug": "ancient-wisdom",
-      "title": "The Seven Hermetic Principles of Hermes",
-      "subtitle": "Understanding the ancient laws governing global experience",
-      "content": "In ancient Egypt, before the pharaohs built the pyramids, Hermes Trismegistus passed down the foundational laws of the cosmos. These laws, preserved in the esoteric texts of the Kybalion, govern all creations without exception.\n\nThe first law is Mentalism: 'The All is Mind; the Universe is Mental.' Everything we see, hear, or experience is a conceptual matrix within the divine cosmic consciousness. When you change your mental blueprint, you completely shift the physical canvas reflecting back at you.\n\nThe other laws—Correspondence, Vibration, Polarity, Rhythm, Cause & Effect, and Gender—work in absolute unison. By aligning your spiritual acts with these laws, you stop fighting the cosmic flow. You become the conscious co-creator, pulling spiritual currents down into material forms with fluid accuracy.",
-      "author": "Aelius Hermes",
-      "readTime": "9 min read",
-      "image": "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=800",
-      "date": "Feb 10, 2026",
-      "likes": 95,
-      "views": 843
-    },
-    {
-      "id": "a7",
-      "domainSlug": "universal-consciousness",
-      "title": "The Galactic Oversoul Integration",
-      "subtitle": "Beyond egoic separation: Dissolving into the primeval background",
-      "content": "Who are you when you stop naming your physical body, your social status, your gender, and your historical memories? In that vast space of pure naked awareness, you identify as the Galactic Oversoul. You realize that you are the singular field of consciousness that currently looks out of billions of eyes across the galaxy.\n\nSeparation is an evolutionary illusion. It is a protective, temporal simulation designed to let the universe experience relationships, love, and growth through separate mirrors. But the destination of all separate streams of consciousness is the same: returning home to conscious unity.\n\nWhen we understand this, all fear of physical death dissolves. Your physical shell may return to dust, but the infinite space of awareness that you are remains entirely undamaged, continuing to project stars and dreams for eternity.",
-      "author": "Nirvana Cosmic",
-      "readTime": "11 min read",
-      "image": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=800",
-      "date": "May 19, 2026",
-      "likes": 104,
-      "views": 932
-    },
-    {
-      "id": "a8",
-      "domainSlug": "astral-awareness",
-      "title": "Astral Trajectory & Sleep Lucidity",
-      "subtitle": "Setting navigation vectors before leaving your physical shell",
-      "content": "We spend a full third of our lives asleep, yet most of us treat this state as a black cosmic void. In truth, when the physical heart stops prioritizing metabolic commands, your astral vehicle detaches from the heavy physical anchor.\n\nTo wake up inside your sleep states, you must establish clear vibrational intentions. Prior to laying down, execute the lucid dream anchor: gaze at your hands, repeat 'I am a free astral pilot,' and charge your subconscious mind to notice any fluid, dreaming anomalies (like floating objects or clocks running backward).\n\nOnce lucidity is activated, do not immediately surge through the roof. Center your astral body by touching a dream element, then command your course: 'Show me my highest evolutionary teacher.' The worlds that unfold to a lucid traveler are far more vivid, educational, and magical than the physical earth.",
-      "author": "Astral Voyager",
-      "readTime": "8 min read",
-      "image": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=2000",
-      "date": "March 15, 2026",
-      "likes": 67,
-      "views": 489
+      "domainSlug": "cosmic-philosophy",
+      "title": "Maya: The Grand Illusion of Duality",
+      "subtitle": "Understanding why the one appears as many",
+      "content": "Perhaps no concept in Indian philosophy is as misunderstood — and as profoundly revolutionary — as Maya. Often simplistically translated as 'illusion', Maya in Advaita Vedanta refers to something far more nuanced: it is the inexplicable power by which the non-dual Brahman appears as the dual world of name and form.\n\nSri Adi Shankaracharya described Maya as 'anirvachaniya' — literally 'that which cannot be categorized'. Maya is neither real (sat) in the absolute sense, nor unreal (asat) like a square circle. It is a third category — 'mithya' — that which has a dependent, provisional reality.\n\nConsider the classic metaphor: a rope in dim light appears as a snake. The snake is neither absolutely real (it disappears upon investigation) nor absolutely unreal (it produces real fear and real physiological responses). The snake is mithya — it has a practical reality that dissolves upon the dawn of true knowledge.",
+      "author": "Philosophy Scholar",
+      "readTime": "12 min read",
+      "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
+      "date": "2026-03-08",
+      "likes": 89,
+      "views": 312
     }
   ],
   "timeline": [
     {
-      "id": "ts1",
+      "id": "t1",
       "order": 1,
       "stage": "Awakening",
-      "title": "The Cosmic Call",
-      "subtitle": "Direct spiritual shattering of material illusions",
-      "description": "The journey begins with a profound cracking open of the physical container. Linear definitions of wealth, job, and egoic security lose their grip as you sense the vast, intelligent spiritual universe behind the material veil.",
-      "quote": "The wound is the place where the Light enters you.",
-      "quoteAuthor": "Rumi",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Dissolve temporal material illusions and welcome cosmic wonder."
+      "title": "The First Stirring of Self-Inquiry",
+      "subtitle": "When the eternal question arises within",
+      "description": "Every spiritual journey begins with a moment of awakening — a sudden or gradual realization that there is more to existence than meets the eye. This is the moment when the question 'Who am I?' first arises with genuine intensity.",
+      "quote": "The unexamined life is not worth living.",
+      "quoteAuthor": "Socrates",
+      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format",
+      "milestone": "Recognition of the seeking impulse within consciousness"
     },
     {
-      "id": "ts2",
+      "id": "t2",
       "order": 2,
       "stage": "Seeking Knowledge",
-      "title": "Incubation & Hermetics",
-      "subtitle": "Dwell inside esoteric studies and primeval math",
-      "description": "Seeking patterns in the chaos. You study the secret timelines of hermit traditions, Upanishads, sacred shapes, and quantum principles, restructuring your mental grids to accommodate multi-dimensional models.",
-      "quote": "He who knows himself knows his Lord.",
-      "quoteAuthor": "Prophet Muhammad",
-      "image": "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Equip your mind with ancient codes and sacred equations."
+      "title": "Approaching the Sacred Texts",
+      "subtitle": "Shravana — the disciplined art of listening",
+      "description": "Having recognized the call of the inner self, the seeker turns to the ancient wisdom texts and qualified teachers. In the Vedantic tradition, this is called Shravana — systematic and sustained listening to the teachings of the scriptures under the guidance of a realized master.",
+      "quote": "Let the wise teach the wise.",
+      "quoteAuthor": "Mundaka Upanishad",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format",
+      "milestone": "Systematic study of Prasthanatrayi under a qualified Guru"
     },
     {
-      "id": "ts3",
+      "id": "t3",
       "order": 3,
       "stage": "Meditation",
-      "title": "Descending to Void",
-      "subtitle": "Sinking beyond brain chatter into pure observing",
-      "description": "Somatic mind waves calm down. You descend past individual memories and thoughts, resting wholly as the silent, empty cosmic background observing its own projection.",
-      "quote": "Silence is the language of God, all else is poor translation.",
-      "quoteAuthor": "Rumi",
-      "image": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Settle into Alpha and Theta brain wave coherence."
+      "title": "Establishing the Practice of Dhyana",
+      "subtitle": "Nididhyasana — deep contemplative meditation",
+      "description": "Knowledge gained through study must be internalized through sustained meditation practice. Nididhyasana — the third pillar of Vedantic practice — involves deep, prolonged contemplation on the truths revealed through Shravana and Manana.",
+      "quote": "Meditation is the dissolution of thoughts in eternal awareness.",
+      "quoteAuthor": "Swami Sivananda",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format",
+      "milestone": "Established daily meditation practice of 1+ hours"
     },
     {
-      "id": "ts4",
+      "id": "t4",
       "order": 4,
       "stage": "Spiritual Practice",
-      "title": "Spinal Meridian Charge",
-      "subtitle": "Govern the active serpentine flow of Kundalini",
-      "description": "Activating the sacred vessel. Yoga, Breathwork (Pranayama), and Kundalini locks are systematically executed to raise somatic currents through the lower energy centers up to the neural nodes of alignment.",
-      "quote": "The kingdom of God is within you.",
-      "quoteAuthor": "Jesus of Nazareth",
-      "image": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Anchor spinal blockages, enabling radiant ascending force."
+      "title": "Integration of Knowledge and Practice",
+      "subtitle": "Sadhana — the daily discipline of transformation",
+      "description": "True spiritual practice is not confined to the meditation cushion. It extends into every moment of daily life. The practitioner learns to see the non-dual reality in all interactions, all experiences, and all beings.",
+      "quote": "Practice alone is the means to success.",
+      "quoteAuthor": "Hatha Yoga Pradipika",
+      "image": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format",
+      "milestone": "Seamless integration of spiritual awareness into daily activities"
     },
     {
-      "id": "ts5",
+      "id": "t5",
       "order": 5,
       "stage": "Transformation",
-      "title": "Ego Dissolution & Sight",
-      "subtitle": "The complete death of personal separation models",
-      "description": "The absolute fire of transformation. You experience the complete shattering of the psychological boundaries separating you from 'other'. Your crown is fully illuminated, giving way to permanent third-eye clarity.",
-      "quote": "To die before you die, so that when you die you do not die.",
-      "quoteAuthor": "Sufi Wisdom",
-      "image": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Permanent transition from linear person to galactic context."
+      "title": "The Dissolution of the Ego Boundary",
+      "subtitle": "Aham Brahmasmi — I am Brahman",
+      "description": "Through sustained practice, a profound transformation occurs. The rigid boundary between 'self' and 'other' begins to dissolve. The practitioner directly experiences what the Upanishads declare: 'Aham Brahmasmi' — I am Brahman.",
+      "quote": "When the mind is silent, the Self shines forth.",
+      "quoteAuthor": "Ramana Maharshi",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format",
+      "milestone": "Direct experiential glimpse of non-dual awareness (Savikalpa Samadhi)"
     },
     {
-      "id": "ts6",
+      "id": "t6",
       "order": 6,
       "stage": "Service",
-      "title": "Sacred Transmission",
-      "subtitle": "Sovereign stewardship of the physical Gaiasphere",
-      "description": "No longer seeking personal high states, you return to the marketplace with profound warmth and gratitude. You hold spaces for other seekers, using your refined energy to plant and heal.",
-      "quote": "The best way to find yourself is to lose yourself in the service of others.",
-      "quoteAuthor": "Mahatma Gandhi",
-      "image": "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Anchor high celestial frequencies down to GAIA soil."
+      "title": "Compassionate Action in the World",
+      "subtitle": "Seva — selfless service as spiritual expression",
+      "description": "True realization naturally expresses itself as compassionate action. The realized being, seeing the Self in all beings, spontaneously acts for the welfare of all without any sense of personal doership.",
+      "quote": "The hands that serve are holier than the lips that pray.",
+      "quoteAuthor": "Sai Baba",
+      "image": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format",
+      "milestone": "Establishment of regular selfless service (Nishkama Karma)"
     },
     {
-      "id": "ts7",
+      "id": "t7",
       "order": 7,
       "stage": "Enlightenment",
-      "title": "Absolute Oneness",
-      "subtitle": "Complete absorption back into Source creation",
-      "description": "The ultimate synthesis. Total, absolute realization of Oneness. There is no longer a seeker; there is only seeking, knowing, and pure love. The material vessel is fully aligned with the Prime Source of Light.",
-      "quote": "That Art Thou.",
-      "quoteAuthor": "The Upanishads",
-      "image": "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&q=80&w=600",
-      "milestone": "Dissolve structural birth-death grids, resting as source creator."
+      "title": "Abiding in the Natural State",
+      "subtitle": "Sahaja Sthiti — the effortless state of being",
+      "description": "The culmination of the spiritual journey is not an achievement but a recognition — the recognition that what was being sought was never lost. The seeker discovers that they have always been the Self, that the journey was the Self knowing itself.",
+      "quote": "Brahma Satyam Jagan Mithya Jivo Brahmaiva Naparah.",
+      "quoteAuthor": "Adi Shankaracharya",
+      "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format",
+      "milestone": "Stable abidance in non-dual awareness (Nirvikalpa Samadhi → Sahaja Samadhi)"
     }
   ],
+  "comments": [],
   "quotes": [
     {
       "id": "q1",
-      "text": "As above, so below; as below, so above.",
-      "author": "Hermes Trismegistus",
-      "category": "Wisdom"
-    },
-    {
-      "id": "q2",
       "text": "The universe is not outside of you. Look inside yourself; everything that you want, you already are.",
       "author": "Rumi",
       "category": "Meditation"
     },
     {
+      "id": "q2",
+      "text": "Brahman alone is real. The world is appearance. The individual self is none other than Brahman.",
+      "author": "Adi Shankaracharya",
+      "category": "Wisdom"
+    },
+    {
       "id": "q3",
-      "text": "If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.",
-      "author": "Nikola Tesla",
+      "text": "The measure of intelligence is the ability to change.",
+      "author": "Albert Einstein",
       "category": "Science"
     },
     {
       "id": "q4",
-      "text": "Mathematics is the alphabet with which God has written the universe.",
-      "author": "Galileo Galilei",
+      "text": "As above, so below. As within, so without.",
+      "author": "Hermes Trismegistus",
       "category": "Geometry"
-    }
-  ],
-  "comments": [
+    },
     {
-      "id": "c1",
-      "articleId": "a1",
-      "authorName": "LuminousSeeker",
-      "authorEmail": "seeker@universe.com",
-      "content": "This matches exactly with what I felt on my 7-day silent retreat in India! The dissolution of spatial bounds is truly breathtaking.",
-      "createdAt": "2026-05-25T10:00:00Z"
+      "id": "q5",
+      "text": "Be still and know that I am God.",
+      "author": "Psalm 46:10",
+      "category": "Meditation"
+    },
+    {
+      "id": "q6",
+      "text": "The Atman is the light of all lights.",
+      "author": "Brihadaranyaka Upanishad",
+      "category": "Wisdom"
     }
   ],
   "analytics": {
     "pageViews": {
-      "home": 421,
-      "storytelling": 178,
-      "domains": 238,
-      "flow": 107,
-      "admin": 48
+      "home": 38,
+      "storytelling": 22,
+      "domains": 10,
+      "flow": 16,
+      "admin": 28
     },
-    "totalInteractions": 1003,
-    "totalComments": 1,
+    "totalInteractions": 714,
+    "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {
       "admin": 1,
-      "user": 142
+      "user": 2
     }
-  }
+  },
+  "registrationConfig": {
+    "phase": 1,
+    "countdownTarget": "",
+    "minMembers": 2,
+    "maxMembers": 4
+  },
+  "teams": [],
+  "members": []
 }
