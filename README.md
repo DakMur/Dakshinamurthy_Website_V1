@@ -11,28 +11,34 @@
 - **Node.js** (Latest LTS version recommended)
 - **npm** (Comes bundled with Node.js)
 - **Git**
+- **Centralized Database**: No separate individual database installation is required. The development team uses a shared, single central Supabase workspace instances cluster to maintain mock rows together.
 
 ### First-Time Environment Setup
 If you are setting up the project on your machine for the first time, run these commands in order:
 
 ```bash
-# 1. Clone the repository
+# 1. Clone the repository and switch to the prep branch
 git clone https://github.com/DakMur/Dakshinamurthy_Website_V1.git
-
-# 2. Move into the project directory
 cd Dakshinamurthy_Website_V1
-
-# 3. CRITICAL: Switch to the prep branch before starting work
 git checkout prep
 
-# 4. Install all project dependencies
+# 2. Set up the Backend Workspace
+cd server
 npm install
+# Create your local configuration file
+cp .env.example .env
 
-# 5. Start your local development server
-npm run dev
+# 3. Set up the Frontend Workspace
+cd ../client
+npm install
+# Create your local client configuration file
+cp .env.example .env
 ```
 
-Once started, open the local URL displayed in your terminal.
+### 🔐 Environment & Credentials Coordination
+- **Central Database Keys**: Ask the project lead directly to obtain the active development string tokens block. Paste these credentials directly into your local `server/.env` file so your local server routes API calls to our shared Supabase project sandbox.
+- **Cloudflare R2 Testing Bypasses**: For local development, if you do not have a Cloudflare card verification setup configured, retain the default placeholder text string `"PLACEHOLDER_UNTIL_CARD_VERIFIED"` inside your local `R2_ENDPOINT_URL`, `R2_ACCESS_KEY_ID`, and `R2_SECRET_ACCESS_KEY` variables inside `server/.env`. The application middleware detects this string pattern automatically and safely routes dummy file URLs to keep the registration submission flow 100% functional without throwing storage crashes.
+- **Client Configuration Link**: Ensure `VITE_API_URL` inside your local `client/.env` file is set to `http://localhost:5000` to bind with the local backend process server.
 
 ---
 
@@ -100,12 +106,17 @@ Make all UI, layout, and content changes strictly inside your specifically assig
 
 ## 🛠️ Complete Command Reference
 
-| Command | Action |
-| :--- | :--- |
-| `git status` | Verify which files are modified or staged |
-| `git branch` | Confirm you are currently standing on the prep branch |
-| `npm install` | Download and update local dependencies |
-| `npm run dev` | Launch the local development ecosystem server |
-| `npm run lint` | Run TypeScript type checks and static code analysis |
-| `npm run build` | Compile and bundle the application for production deployment |
-| `npm run preview` | Locally preview the compiled production build |
+To launch the absolute development environment ecosystem, you must open two separate terminal split instances and trigger the runtime processes locally:
+* **Inside `/server`**: Run `npm run dev` to boot up the Express API router.
+* **Inside `/client`**: Run `npm run dev` to execute the local Vite user interface server framework.
+
+| Scope / Directory | Command | Action |
+| :--- | :--- | :--- |
+| Root | `git status` | Verify which files are modified or staged |
+| Root | `git branch` | Confirm you are currently standing on the prep branch |
+| `/server` or `/client` | `npm install` | Download and update local dependencies in the respective directory |
+| `/server` | `npm run dev` | Boot up the Express API router |
+| `/client` | `npm run dev` | Execute the local Vite user interface server framework |
+| `/server` or `/client` | `npx tsc --noEmit` | Execute inside the respective subfolder to audit type mappings cleanly |
+| `/client` | `npm run build` | Compile and bundle the application for production deployment |
+| `/client` | `npm run preview` | Locally preview the compiled production build |
