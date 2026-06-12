@@ -107,6 +107,198 @@
         "cosmic-philosophy",
         "meditation"
       ]
+    },
+    {
+      "id": "d5",
+      "slug": "yoga",
+      "title": "Yoga & Union",
+      "subtitle": "Path of connection",
+      "icon": "Activity",
+      "summary": "Explore the profound depths of Yoga & Union and its role in the cosmic journey.",
+      "description": "Yoga & Union is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d6",
+      "slug": "mindfulness",
+      "title": "Mindfulness",
+      "subtitle": "Present moment awareness",
+      "icon": "Eye",
+      "summary": "Explore the profound depths of Mindfulness and its role in the cosmic journey.",
+      "description": "Mindfulness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d7",
+      "slug": "spiritual-science",
+      "title": "Spiritual Science",
+      "subtitle": "Where science meets spirit",
+      "icon": "Microscope",
+      "summary": "Explore the profound depths of Spiritual Science and its role in the cosmic journey.",
+      "description": "Spiritual Science is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d8",
+      "slug": "conscious-living",
+      "title": "Conscious Living",
+      "subtitle": "Living with intention",
+      "icon": "Heart",
+      "summary": "Explore the profound depths of Conscious Living and its role in the cosmic journey.",
+      "description": "Conscious Living is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d9",
+      "slug": "divine-energy",
+      "title": "Divine Energy",
+      "subtitle": "The flow of prana",
+      "icon": "Zap",
+      "summary": "Explore the profound depths of Divine Energy and its role in the cosmic journey.",
+      "description": "Divine Energy is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d10",
+      "slug": "sacred-scriptures",
+      "title": "Sacred Scriptures",
+      "subtitle": "Words of the masters",
+      "icon": "Book",
+      "summary": "Explore the profound depths of Sacred Scriptures and its role in the cosmic journey.",
+      "description": "Sacred Scriptures is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d11",
+      "slug": "universal-consciousness",
+      "title": "Universal Consciousness",
+      "subtitle": "The one mind",
+      "icon": "Globe",
+      "summary": "Explore the profound depths of Universal Consciousness and its role in the cosmic journey.",
+      "description": "Universal Consciousness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d12",
+      "slug": "astral-awareness",
+      "title": "Astral Awareness",
+      "subtitle": "Beyond the physical",
+      "icon": "Moon",
+      "summary": "Explore the profound depths of Astral Awareness and its role in the cosmic journey.",
+      "description": "Astral Awareness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
     }
   ],
   "articles": [
@@ -292,13 +484,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 38,
-      "storytelling": 22,
-      "domains": 10,
-      "flow": 16,
-      "admin": 28
+      "home": 62,
+      "storytelling": 25,
+      "domains": 12,
+      "flow": 17,
+      "admin": 31
     },
-    "totalInteractions": 714,
+    "totalInteractions": 747,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {

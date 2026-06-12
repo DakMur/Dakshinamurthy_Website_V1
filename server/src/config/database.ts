@@ -21,42 +21,297 @@ const DEFAULT_DATABASE: DatabaseSchema = {
   ],
   domains: [
     {
-      id: "d1", slug: "meditation", title: "Meditation & Dhyana", subtitle: "The silence that speaks louder than words",
-      icon: "Compass", summary: "Explore the depths of meditation through ancient Vedantic practices and modern neuroscience discoveries.",
-      description: "Meditation is the cornerstone of spiritual practice in the Advaita Vedanta tradition. Through disciplined dhyana (meditation), the practitioner learns to quiet the fluctuations of the mind (chitta vritti nirodha) and rest in the pure awareness that is their true nature. Sri Adi Shankaracharya taught that through consistent meditation practice, one can directly experience the non-dual nature of reality — that Brahman (the ultimate reality) and Atman (the individual self) are one and the same.",
-      quote: "The mind is everything. What you think, you become.", quoteAuthor: "Adi Shankaracharya",
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800",
-      practiceTitle: "Box Breathing Simulator", practiceSteps: ["Find a comfortable seated position with spine erect", "Close your eyes and take three deep cleansing breaths", "Begin the 4-second box pattern: Inhale for 4 counts", "Hold the breath gently for 4 counts", "Exhale slowly and completely for 4 counts", "Hold empty for 4 counts, then repeat the cycle"],
-      energyIndicator: "High Harmonic", relatedSlugs: ["sacred-geometry", "cosmic-philosophy"]
+      "id": "d1",
+      "slug": "meditation",
+      "title": "Meditation & Dhyana",
+      "subtitle": "The silence that speaks louder than words",
+      "icon": "Compass",
+      "summary": "Explore the depths of meditation through ancient Vedantic practices and modern neuroscience discoveries.",
+      "description": "Meditation is the cornerstone of spiritual practice in the Advaita Vedanta tradition. Through disciplined dhyana (meditation), the practitioner learns to quiet the fluctuations of the mind (chitta vritti nirodha) and rest in the pure awareness that is their true nature. Sri Adi Shankaracharya taught that through consistent meditation practice, one can directly experience the non-dual nature of reality — that Brahman (the ultimate reality) and Atman (the individual self) are one and the same.",
+      "quote": "The mind is everything. What you think, you become.",
+      "quoteAuthor": "Adi Shankaracharya",
+      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Box Breathing Simulator",
+      "practiceSteps": [
+        "Find a comfortable seated position with spine erect",
+        "Close your eyes and take three deep cleansing breaths",
+        "Begin the 4-second box pattern: Inhale for 4 counts",
+        "Hold the breath gently for 4 counts",
+        "Exhale slowly and completely for 4 counts",
+        "Hold empty for 4 counts, then repeat the cycle"
+      ],
+      "energyIndicator": "High Harmonic",
+      "relatedSlugs": [
+        "sacred-geometry",
+        "cosmic-philosophy"
+      ]
     },
     {
-      id: "d2", slug: "sacred-geometry", title: "Sacred Geometry", subtitle: "The mathematical language of the cosmos",
-      icon: "Star", summary: "Discover how geometric patterns form the invisible architecture of consciousness and creation.",
-      description: "Sacred Geometry reveals the hidden mathematical order underlying all of creation. From the spiral of galaxies to the structure of DNA, from the petals of a flower to the vibrations of sound — geometric patterns form the invisible architecture of the universe. In the Vedic tradition, these patterns are understood as the visual language through which Brahman manifests the physical world.",
-      quote: "Geometry is the archetype of the beauty of the world.", quoteAuthor: "Johannes Kepler",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
-      practiceTitle: "Mandala Visualization", practiceSteps: ["Sit comfortably and gaze at a geometric mandala pattern", "Allow your eyes to soften and your vision to become peripheral", "Notice the patterns emerging and dissolving", "Feel the geometric harmony resonating within your body"],
-      energyIndicator: "Crystalline Matrix", relatedSlugs: ["meditation", "ancient-wisdom"]
+      "id": "d2",
+      "slug": "sacred-geometry",
+      "title": "Sacred Geometry",
+      "subtitle": "The mathematical language of the cosmos",
+      "icon": "Star",
+      "summary": "Discover how geometric patterns form the invisible architecture of consciousness and creation.",
+      "description": "Sacred Geometry reveals the hidden mathematical order underlying all of creation. From the spiral of galaxies to the structure of DNA, from the petals of a flower to the vibrations of sound — geometric patterns form the invisible architecture of the universe. In the Vedic tradition, these patterns are understood as the visual language through which Brahman manifests the physical world.",
+      "quote": "Geometry is the archetype of the beauty of the world.",
+      "quoteAuthor": "Johannes Kepler",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Mandala Visualization",
+      "practiceSteps": [
+        "Sit comfortably and gaze at a geometric mandala pattern",
+        "Allow your eyes to soften and your vision to become peripheral",
+        "Notice the patterns emerging and dissolving",
+        "Feel the geometric harmony resonating within your body"
+      ],
+      "energyIndicator": "Crystalline Matrix",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
     },
     {
-      id: "d3", slug: "cosmic-philosophy", title: "Cosmic Philosophy", subtitle: "Understanding the fabric of reality itself",
-      icon: "Flame", summary: "Journey through the philosophical frameworks that explain consciousness, reality, and the nature of existence.",
-      description: "Cosmic Philosophy encompasses the grand frameworks of understanding that humanity has developed to explain the nature of reality, consciousness, and existence. At its heart lies the Advaita Vedanta teaching that the universe is not separate from the observer — that the cosmic dance of creation, preservation, and dissolution is happening within the field of pure awareness that is our deepest nature.",
-      quote: "Brahman alone is real, the world is appearance, and the individual self is none other than Brahman.", quoteAuthor: "Adi Shankaracharya",
-      image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
-      practiceTitle: "Self-Inquiry Practice", practiceSteps: ["Sit quietly and ask yourself: Who am I?", "Notice the thoughts that arise without identifying with them", "Trace each thought back to its source", "Rest in the silent awareness that remains"],
-      energyIndicator: "Transcendent Flux", relatedSlugs: ["meditation", "ancient-wisdom"]
+      "id": "d3",
+      "slug": "cosmic-philosophy",
+      "title": "Cosmic Philosophy",
+      "subtitle": "Understanding the fabric of reality itself",
+      "icon": "Flame",
+      "summary": "Journey through the philosophical frameworks that explain consciousness, reality, and the nature of existence.",
+      "description": "Cosmic Philosophy encompasses the grand frameworks of understanding that humanity has developed to explain the nature of reality, consciousness, and existence. At its heart lies the Advaita Vedanta teaching that the universe is not separate from the observer — that the cosmic dance of creation, preservation, and dissolution is happening within the field of pure awareness that is our deepest nature.",
+      "quote": "Brahman alone is real, the world is appearance, and the individual self is none other than Brahman.",
+      "quoteAuthor": "Adi Shankaracharya",
+      "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Self-Inquiry Practice",
+      "practiceSteps": [
+        "Sit quietly and ask yourself: Who am I?",
+        "Notice the thoughts that arise without identifying with them",
+        "Trace each thought back to its source",
+        "Rest in the silent awareness that remains"
+      ],
+      "energyIndicator": "Transcendent Flux",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
     },
     {
-      id: "d4", slug: "ancient-wisdom", title: "Ancient Wisdom Texts", subtitle: "The eternal scriptures that light the path",
-      icon: "BookOpen", summary: "Study the timeless teachings of the Upanishads, Bhagavad Gita, and Brahma Sutras.",
-      description: "The ancient wisdom texts of India represent humanity's most profound exploration of consciousness and reality. The Prasthanatrayi — the triple canon of Vedanta consisting of the Upanishads, the Bhagavad Gita, and the Brahma Sutras — forms the philosophical foundation upon which Sri Adi Shankaracharya built his revolutionary commentary.",
-      quote: "Tat Tvam Asi — Thou Art That.", quoteAuthor: "Chandogya Upanishad",
-      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=800",
-      practiceTitle: "Scriptural Contemplation", practiceSteps: ["Choose a single verse from the Upanishads", "Read it slowly three times, absorbing each word", "Close your eyes and contemplate its meaning", "Journal any insights that arise from the contemplation"],
-      energyIndicator: "Eternal Resonance", relatedSlugs: ["cosmic-philosophy", "meditation"]
+      "id": "d4",
+      "slug": "ancient-wisdom",
+      "title": "Ancient Wisdom Texts",
+      "subtitle": "The eternal scriptures that light the path",
+      "icon": "BookOpen",
+      "summary": "Study the timeless teachings of the Upanishads, Bhagavad Gita, and Brahma Sutras.",
+      "description": "The ancient wisdom texts of India represent humanity's most profound exploration of consciousness and reality. The Prasthanatrayi — the triple canon of Vedanta consisting of the Upanishads, the Bhagavad Gita, and the Brahma Sutras — forms the philosophical foundation upon which Sri Adi Shankaracharya built his revolutionary commentary.",
+      "quote": "Tat Tvam Asi — Thou Art That.",
+      "quoteAuthor": "Chandogya Upanishad",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Scriptural Contemplation",
+      "practiceSteps": [
+        "Choose a single verse from the Upanishads",
+        "Read it slowly three times, absorbing each word",
+        "Close your eyes and contemplate its meaning",
+        "Journal any insights that arise from the contemplation"
+      ],
+      "energyIndicator": "Eternal Resonance",
+      "relatedSlugs": [
+        "cosmic-philosophy",
+        "meditation"
+      ]
+    },
+    {
+      "id": "d5",
+      "slug": "yoga",
+      "title": "Yoga & Union",
+      "subtitle": "Path of connection",
+      "icon": "Activity",
+      "summary": "Explore the profound depths of Yoga & Union and its role in the cosmic journey.",
+      "description": "Yoga & Union is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d6",
+      "slug": "mindfulness",
+      "title": "Mindfulness",
+      "subtitle": "Present moment awareness",
+      "icon": "Eye",
+      "summary": "Explore the profound depths of Mindfulness and its role in the cosmic journey.",
+      "description": "Mindfulness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d7",
+      "slug": "spiritual-science",
+      "title": "Spiritual Science",
+      "subtitle": "Where science meets spirit",
+      "icon": "Microscope",
+      "summary": "Explore the profound depths of Spiritual Science and its role in the cosmic journey.",
+      "description": "Spiritual Science is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d8",
+      "slug": "conscious-living",
+      "title": "Conscious Living",
+      "subtitle": "Living with intention",
+      "icon": "Heart",
+      "summary": "Explore the profound depths of Conscious Living and its role in the cosmic journey.",
+      "description": "Conscious Living is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d9",
+      "slug": "divine-energy",
+      "title": "Divine Energy",
+      "subtitle": "The flow of prana",
+      "icon": "Zap",
+      "summary": "Explore the profound depths of Divine Energy and its role in the cosmic journey.",
+      "description": "Divine Energy is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d10",
+      "slug": "sacred-scriptures",
+      "title": "Sacred Scriptures",
+      "subtitle": "Words of the masters",
+      "icon": "Book",
+      "summary": "Explore the profound depths of Sacred Scriptures and its role in the cosmic journey.",
+      "description": "Sacred Scriptures is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d11",
+      "slug": "universal-consciousness",
+      "title": "Universal Consciousness",
+      "subtitle": "The one mind",
+      "icon": "Globe",
+      "summary": "Explore the profound depths of Universal Consciousness and its role in the cosmic journey.",
+      "description": "Universal Consciousness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
+    },
+    {
+      "id": "d12",
+      "slug": "astral-awareness",
+      "title": "Astral Awareness",
+      "subtitle": "Beyond the physical",
+      "icon": "Moon",
+      "summary": "Explore the profound depths of Astral Awareness and its role in the cosmic journey.",
+      "description": "Astral Awareness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
+      "quote": "The journey of a thousand miles begins with a single step.",
+      "quoteAuthor": "Lao Tzu",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "practiceTitle": "Centering Practice",
+      "practiceSteps": [
+        "Find a quiet place",
+        "Focus on your breath",
+        "Allow your thoughts to pass like clouds",
+        "Return to the present moment"
+      ],
+      "energyIndicator": "Resonant Field",
+      "relatedSlugs": [
+        "meditation",
+        "ancient-wisdom"
+      ]
     }
   ],
+
   articles: [
     {
       id: "a1", domainSlug: "introduction", title: "Dakshinamurthy Stotram", subtitle: "The Hymn of the South-Facing Teacher",
@@ -167,7 +422,7 @@ export function readDB(): DatabaseSchema {
     }
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
     const parsed = JSON.parse(raw) as DatabaseSchema;
-    
+
     // Ensure all required fields exist
     let updated = false;
     if (!parsed.users) {
@@ -197,7 +452,7 @@ export function readDB(): DatabaseSchema {
     if (updated) {
       writeDB(parsed);
     }
-    
+
     return parsed;
   } catch (err) {
     console.error('[Database] Error reading database, returning defaults:', err);
