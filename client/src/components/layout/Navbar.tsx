@@ -54,8 +54,8 @@ export default function Navbar({
           {/* Nav stack links (Desktop Only) */}
           <nav className="hidden md:flex items-center space-x-8 text-xs font-mono tracking-widest uppercase">
             {[
-              { id: "storytelling", label: "Wisdom Lectures" },
-              { id: "domains", label: "Dimension Portals" },
+              { id: "storytelling", label: "Prathama Prakasa" },
+              { id: "domains", label: "Tattva Darśana" },
               { id: "flow", label: "Chronology timeline" },
               { id: "admin", label: "Registration" }
             ].map((navItem) => (
@@ -151,8 +151,8 @@ export default function Navbar({
                 <div className="flex flex-col space-y-2.5">
                   <span className="text-[9px] font-mono tracking-[0.4em] text-slate-500 uppercase ml-2 mb-1">Navigation Sectors</span>
                   {[
-                    { id: "storytelling", label: "Wisdom Lectures" },
-                    { id: "domains", label: "Dimension Portals" },
+                    { id: "storytelling", label: "Prathama Prakasa" },
+                    { id: "domains", label: "Tattva Darśana" },
                     { id: "flow", label: "Chronology timeline" },
                     { id: "admin", label: "Registration" }
                   ].map((navItem) => (

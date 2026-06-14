@@ -19,9 +19,7 @@ export default function PageTen({ domain, allDomains = [], onNavigateToDomain }:
   const [breathTimer, setBreathTimer] = useState(4);
 
   // Filter down related domains safely
-  const relatedDomains = allDomains.filter((d) =>
-    domain.relatedSlugs?.includes(d.slug)
-  );
+  
 
   // Handle breathing sequence intervals
   useEffect(() => {
@@ -80,9 +78,7 @@ export default function PageTen({ domain, allDomains = [], onNavigateToDomain }:
         </div>
 
         <div className="relative z-10">
-          <div className="text-[10px] uppercase tracking-widest font-mono text-gold-vintage bg-gold-vintage/10 px-3 py-1 rounded-full w-max border border-gold-vintage/20 mb-3 ml-0.5">
-            Esoteric Level IV Clearance
-          </div>
+          <div className="text-[10px] uppercase tracking-widest font-mono text-gold-vintage bg-gold-vintage/10 px-3 py-1 rounded-full w-max border border-gold-vintage/20 mb-3 ml-0.5">{domain.energyIndicator || "Tattva Level"}</div>
           <h1 className="font-display font-bold text-3xl md:text-5xl text-white tracking-widest uppercase mb-2">
             {domain.title}
           </h1>
@@ -98,8 +94,8 @@ export default function PageTen({ domain, allDomains = [], onNavigateToDomain }:
           {/* Tab navigation bar */}
           <div className="flex border-b border-white/10 space-x-6">
             {[
-              { id: "teachings", label: "Ancient Teachings", icon: BookOpen },
-              { id: "practice", label: "Guided Alignment Practice", icon: Compass }
+              { id: "teachings", label: "Tattva Darśanam", icon: BookOpen },
+              { id: "practice", label: "Tattva Śravaṇam", icon: Compass }
             ].map((tab) => {
               const Icon = tab.icon;
               return (
@@ -167,9 +163,7 @@ export default function PageTen({ domain, allDomains = [], onNavigateToDomain }:
                     <h3 className="font-display font-medium text-lg text-gold-vintage tracking-wider mb-2">
                       {domain.practiceTitle || "Box Breathing Simulator"}
                     </h3>
-                    <p className="text-xs text-slate-400 font-mono max-w-md mb-8">
-                      Rescale your brainwaves to match the Earth's Schumann resonance using this 4-second pattern guide.
-                    </p>
+                    
 
                     <div className="relative w-48 h-48 flex items-center justify-center mb-8">
                       <motion.div
@@ -279,32 +273,48 @@ export default function PageTen({ domain, allDomains = [], onNavigateToDomain }:
             </div>
           </div>
 
-          {relatedDomains.length > 0 && (
-            <div className="p-5 rounded-2xl glass-panel border-white/10 space-y-4">
-              <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">
-                Intertwined dimensions
-              </h4>
-              <div className="space-y-3">
-                {relatedDomains.map((r) => (
+                    {/* Portal Navigation */}
+          {allDomains && allDomains.length > 0 && (() => {
+            const currentIndex = allDomains.findIndex(d => d.id === domain.id);
+            if (currentIndex === -1) return null;
+            const prevDomain = allDomains[(currentIndex - 1 + allDomains.length) % allDomains.length];
+            const nextDomain = allDomains[(currentIndex + 1) % allDomains.length];
+            return (
+              <div className="p-5 rounded-2xl glass-panel border-white/10 space-y-4">
+                <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">
+                  Portal Navigation
+                </h4>
+                <div className="space-y-3">
                   <button
-                    key={r.slug}
-                    onClick={() => onNavigateToDomain?.(r)}
+                    onClick={() => onNavigateToDomain?.(prevDomain)}
+                    className="w-full p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-gold-vintage/[0.04] hover:border-gold-vintage/30 flex items-center justify-between text-left transition-all group cursor-pointer"
+                  >
+                    <div className="transform group-hover:-translate-x-1.5 transition-all text-slate-500 group-hover:text-gold-vintage">
+                      ←
+                    </div>
+                    <div className="text-right">
+                      <h5 className="font-display font-medium text-sm text-slate-200 group-hover:text-gold-vintage transition-colors">
+                        Previous: {prevDomain.title}
+                      </h5>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => onNavigateToDomain?.(nextDomain)}
                     className="w-full p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-gold-vintage/[0.04] hover:border-gold-vintage/30 flex items-center justify-between text-left transition-all group cursor-pointer"
                   >
                     <div>
                       <h5 className="font-display font-medium text-sm text-slate-200 group-hover:text-gold-vintage transition-colors">
-                        {r.title}
+                        Next: {nextDomain.title}
                       </h5>
-                      <p className="text-[10px] text-slate-400 font-serif italic mt-0.5">
-                        {r.subtitle}
-                      </p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-gold-vintage group-hover:translate-x-1.5 transition-all" />
+                    <div className="transform group-hover:translate-x-1.5 transition-all text-slate-500 group-hover:text-gold-vintage">
+                      →
+                    </div>
                   </button>
-                ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
       </div>
     </>

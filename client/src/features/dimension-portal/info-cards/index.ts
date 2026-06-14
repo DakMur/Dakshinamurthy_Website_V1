@@ -9,8 +9,6 @@ import PageSeven from "./PageSeven";
 import PageEight from "./PageEight";
 import PageNine from "./PageNine";
 import PageTen from "./PageTen";
-import PageEleven from "./PageEleven";
-import PageTwelve from "./PageTwelve";
 import { DomainContent } from "../../../types/types";
 
 /**
@@ -33,6 +31,4 @@ export const INFO_CARD_REGISTRY: Record<string, React.ComponentType<{
   "sacred-scriptures": PageEight,
   "ancient-wisdom": PageNine,
   "universal-consciousness": PageTen,
-  "astral-awareness": PageEleven,
-  "cosmic-philosophy": PageTwelve,
 };

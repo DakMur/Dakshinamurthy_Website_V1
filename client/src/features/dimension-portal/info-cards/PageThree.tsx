@@ -16,7 +16,7 @@ export default function PageThree({ domain, allDomains = [], onNavigateToDomain 
   const [breathPhase, setBreathPhase] = useState<"Inhale" | "Hold (Full)" | "Exhale" | "Hold (Empty)">("Inhale");
   const [breathTimer, setBreathTimer] = useState(4);
 
-  const relatedDomains = allDomains.filter((d) => domain.relatedSlugs?.includes(d.slug));
+  
 
   useEffect(() => {
     let timerId: NodeJS.Timeout;
@@ -58,7 +58,7 @@ export default function PageThree({ domain, allDomains = [], onNavigateToDomain 
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent" />
         </div>
         <div className="relative z-10">
-          <div className="text-[10px] uppercase tracking-widest font-mono text-gold-vintage bg-gold-vintage/10 px-3 py-1 rounded-full w-max border border-gold-vintage/20 mb-3 ml-0.5">Esoteric Level IV Clearance</div>
+          <div className="text-[10px] uppercase tracking-widest font-mono text-gold-vintage bg-gold-vintage/10 px-3 py-1 rounded-full w-max border border-gold-vintage/20 mb-3 ml-0.5">{domain.energyIndicator || "Tattva Level"}</div>
           <h1 className="font-display font-bold text-3xl md:text-5xl text-white tracking-widest uppercase mb-2">{domain.title}</h1>
           <p className="font-serif italic text-slate-300 text-lg md:text-xl max-w-2xl pl-1">&ldquo;{domain.subtitle}&rdquo;</p>
         </div>
@@ -67,7 +67,7 @@ export default function PageThree({ domain, allDomains = [], onNavigateToDomain 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <div className="flex border-b border-white/10 space-x-6">
-            {[{ id: "teachings", label: "Ancient Teachings", icon: BookOpen }, { id: "practice", label: "Guided Alignment Practice", icon: Compass }].map((tab) => { const Icon = tab.icon; return (<button key={tab.id} onClick={() => setActiveTab(tab.id as any)} className={`pb-3 text-sm font-mono tracking-wider flex items-center gap-2 border-b-2 transition-all cursor-pointer ${activeTab === tab.id ? "border-gold-vintage text-gold-vintage" : "border-transparent text-slate-400 hover:text-white"}`}><Icon className="w-4 h-4" /><span>{tab.label}</span></button>); })}
+            {[{ id: "teachings", label: "Tattva Darśanam", icon: BookOpen }, { id: "practice", label: "Tattva Śravaṇam", icon: Compass }].map((tab) => { const Icon = tab.icon; return (<button key={tab.id} onClick={() => setActiveTab(tab.id as any)} className={`pb-3 text-sm font-mono tracking-wider flex items-center gap-2 border-b-2 transition-all cursor-pointer ${activeTab === tab.id ? "border-gold-vintage text-gold-vintage" : "border-transparent text-slate-400 hover:text-white"}`}><Icon className="w-4 h-4" /><span>{tab.label}</span></button>); })}
           </div>
           <div className="py-4">
             <AnimatePresence mode="wait">
@@ -86,7 +86,7 @@ export default function PageThree({ domain, allDomains = [], onNavigateToDomain 
                   <div className="p-6 rounded-2xl glass-panel-gold flex flex-col items-center justify-center p-8 text-center border-gold-vintage/30 relative overflow-hidden">
                     <div className="absolute inset-0 bg-radial-gradient from-gold-vintage/5 to-transparent pointer-events-none" />
                     <h3 className="font-display font-medium text-lg text-gold-vintage tracking-wider mb-2">{domain.practiceTitle || "Box Breathing Simulator"}</h3>
-                    <p className="text-xs text-slate-400 font-mono max-w-md mb-8">Rescale your brainwaves to match the Earth's Schumann resonance using this 4-second pattern guide.</p>
+                    
                     <div className="relative w-48 h-48 flex items-center justify-center mb-8">
                       <motion.div animate={{ scale: !breathingActive ? 1 : breathPhase === "Inhale" ? 2.1 : breathPhase === "Hold (Full)" ? 2.1 : breathPhase === "Exhale" ? 1 : 1, opacity: !breathingActive ? 0.45 : breathPhase.startsWith("Hold") ? 0.95 : 0.7 }} transition={{ duration: 4, ease: "easeInOut" }} className="absolute w-20 h-20 rounded-full bg-radial-gradient from-gold-vintage/40 to-cosmic-purple/10 filter blur-xs border border-gold-bright shadow-2xl shadow-gold-vintage/20" />
                       <div className="relative z-10 flex flex-col items-center">
@@ -115,12 +115,48 @@ export default function PageThree({ domain, allDomains = [], onNavigateToDomain 
             <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">Visual geometry matrix</h4>
             <div className="grid grid-cols-2 gap-2">{images.map((img, idx) => (<div key={idx} className="rounded-lg overflow-hidden h-24 relative group cursor-pointer border border-white/5"><img src={img} alt="Cosmic illustration" className="w-full h-full object-cover filter brightness-75 group-hover:scale-110 transition-transform duration-500" /><div className="absolute inset-0 bg-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" /></div>))}</div>
           </div>
-          {relatedDomains.length > 0 && (
-            <div className="p-5 rounded-2xl glass-panel border-white/10 space-y-4">
-              <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">Intertwined dimensions</h4>
-              <div className="space-y-3">{relatedDomains.map((r) => (<button key={r.slug} onClick={() => onNavigateToDomain?.(r)} className="w-full p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-gold-vintage/[0.04] hover:border-gold-vintage/30 flex items-center justify-between text-left transition-all group cursor-pointer"><div><h5 className="font-display font-medium text-sm text-slate-200 group-hover:text-gold-vintage transition-colors">{r.title}</h5><p className="text-[10px] text-slate-400 font-serif italic mt-0.5">{r.subtitle}</p></div><ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-gold-vintage group-hover:translate-x-1.5 transition-all" /></button>))}</div>
-            </div>
-          )}
+                    {/* Portal Navigation */}
+          {allDomains && allDomains.length > 0 && (() => {
+            const currentIndex = allDomains.findIndex(d => d.id === domain.id);
+            if (currentIndex === -1) return null;
+            const prevDomain = allDomains[(currentIndex - 1 + allDomains.length) % allDomains.length];
+            const nextDomain = allDomains[(currentIndex + 1) % allDomains.length];
+            return (
+              <div className="p-5 rounded-2xl glass-panel border-white/10 space-y-4">
+                <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">
+                  Portal Navigation
+                </h4>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => onNavigateToDomain?.(prevDomain)}
+                    className="w-full p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-gold-vintage/[0.04] hover:border-gold-vintage/30 flex items-center justify-between text-left transition-all group cursor-pointer"
+                  >
+                    <div className="transform group-hover:-translate-x-1.5 transition-all text-slate-500 group-hover:text-gold-vintage">
+                      ←
+                    </div>
+                    <div className="text-right">
+                      <h5 className="font-display font-medium text-sm text-slate-200 group-hover:text-gold-vintage transition-colors">
+                        Previous: {prevDomain.title}
+                      </h5>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => onNavigateToDomain?.(nextDomain)}
+                    className="w-full p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-gold-vintage/[0.04] hover:border-gold-vintage/30 flex items-center justify-between text-left transition-all group cursor-pointer"
+                  >
+                    <div>
+                      <h5 className="font-display font-medium text-sm text-slate-200 group-hover:text-gold-vintage transition-colors">
+                        Next: {nextDomain.title}
+                      </h5>
+                    </div>
+                    <div className="transform group-hover:translate-x-1.5 transition-all text-slate-500 group-hover:text-gold-vintage">
+                      →
+                    </div>
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
     </>

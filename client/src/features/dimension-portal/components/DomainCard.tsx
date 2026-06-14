@@ -6,9 +6,10 @@ import { DomainContent } from "../../../types/types";
 interface DomainCardProps {
   domain: DomainContent;
   onExplore: (domain: DomainContent) => void;
+  className?: string;
 }
 
-export default function DomainCard({ domain, onExplore }: DomainCardProps) {
+export default function DomainCard({ domain, onExplore, className = "" }: DomainCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
@@ -57,7 +58,7 @@ export default function DomainCard({ domain, onExplore }: DomainCardProps) {
           : `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
         transition: isHovered ? "none" : "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)"
       }}
-      className="spotlight-card group relative overflow-hidden rounded-2xl border border-white/[0.08] hover:border-gold-vintage/40 bg-[#0a0a0a]/75 backdrop-blur-md p-6 flex flex-col justify-between min-h-[360px] cursor-pointer shadow-xl transition-colors duration-500 hover:shadow-gold-vintage/5"
+      className={`spotlight-card group relative overflow-hidden rounded-2xl border border-white/[0.08] hover:border-gold-vintage/40 bg-[#0a0a0a]/75 backdrop-blur-md p-6 flex flex-col justify-between min-h-[360px] cursor-pointer shadow-xl transition-colors duration-500 hover:shadow-gold-vintage/5 ${className}`}
     >
       {/* Decorative aurora reflection inside */}
       <div className="absolute inset-0 bg-gradient-to-br from-cosmic-violet/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -90,7 +91,7 @@ export default function DomainCard({ domain, onExplore }: DomainCardProps) {
         </p>
         <div className="flex items-center justify-between mt-2">
           <span className="text-xs font-mono text-slate-500 group-hover:text-slate-300 transition-colors duration-500">
-            Dimension Portal
+            Tattva Darśana
           </span>
           <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-gold-vintage opacity-70 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300">
             <span>Explore</span>

@@ -554,7 +554,7 @@ export default function AdminControlPanel({
                   {[
                     { page: "Home Landing Node", count: analytics.pageViews?.home || 10 },
                     { page: "Wisdom Storyteller", count: analytics.pageViews?.storytelling || 10 },
-                    { page: "Dimension Portals", count: analytics.pageViews?.domains || 10 },
+                    { page: "Tattva Darśana", count: analytics.pageViews?.domains || 10 },
                     { page: "Event Chronology Flow", count: analytics.pageViews?.flow || 10 }
                   ].map((p, i) => {
                     const pct = Math.max(10, Math.min(100, (p.count / 300) * 100));

@@ -13,24 +13,23 @@
     {
       "id": "d1",
       "slug": "meditation",
-      "title": "Meditation & Dhyana",
+      "title": "ĀTMA PRATIBIMBA",
       "subtitle": "The silence that speaks louder than words",
       "icon": "Compass",
       "summary": "Explore the depths of meditation through ancient Vedantic practices and modern neuroscience discoveries.",
-      "description": "Meditation is the cornerstone of spiritual practice in the Advaita Vedanta tradition. Through disciplined dhyana (meditation), the practitioner learns to quiet the fluctuations of the mind (chitta vritti nirodha) and rest in the pure awareness that is their true nature. Sri Adi Shankaracharya taught that through consistent meditation practice, one can directly experience the non-dual nature of reality — that Brahman (the ultimate reality) and Atman (the individual self) are one and the same.",
-      "quote": "The mind is everything. What you think, you become.",
-      "quoteAuthor": "Adi Shankaracharya",
+      "description": "Imagine putting on a virtual reality headset so immersive that you completely forget you are wearing it. The digital world feels external, independent, and real. Verse 1 suggests that ordinary experience operates in a similar way. The universe appears outside us, separate from who we are, yet every sight, sound, thought, and emotion is known only through consciousness. Just as a city reflected in a mirror seems distinct from the mirror itself, or a dream appears real until awakening, the world appears separate through the power of Māyā. The First Tattva invites us to investigate a profound question: Is consciousness inside the world, or is the world appearing within consciousness? True awakening begins when one recognizes the Self as the unchanging reality behind all experience.",
+      "quote": "Viśvaṁ darpaṇa-dṛśyamāna-nagarī-tulyaṁ nijāntargataṁ paśyannātmani māyayā bahirivodbhūtaṁ yathā nidrayā; yaḥ sākṣāt kurute prabodha-samaye svātmānam evādvayaṁ tasmai śrī-gurumūrtaye nama idaṁ śrī-dakṣiṇāmūrtaye.",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
       "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Box Breathing Simulator",
+      "practiceTitle": "Transcendental Breathing Loop",
       "practiceSteps": [
-        "Find a comfortable seated position with spine erect",
-        "Close your eyes and take three deep cleansing breaths",
-        "Begin the 4-second box pattern: Inhale for 4 counts",
-        "Hold the breath gently for 4 counts",
-        "Exhale slowly and completely for 4 counts",
-        "Hold empty for 4 counts, then repeat the cycle"
+        "Find a comfortable posture, spine aligned like a lightning rod of energy.",
+        "Inhale golden cosmic prana for 4 seconds, feeling it rise from your root.",
+        "Hold the light at your crown chakra for 4 seconds, visualizing a lotus expanding.",
+        "Exhale slowly for 4 seconds, releasing temporal anxieties into primeval space.",
+        "Hold your lungs empty for 4 seconds, resting in pure unmanifested consciousness."
       ],
-      "energyIndicator": "High Harmonic",
+      "energyIndicator": "1st Tattva",
       "relatedSlugs": [
         "sacred-geometry",
         "cosmic-philosophy"
@@ -39,7 +38,7 @@
     {
       "id": "d2",
       "slug": "sacred-geometry",
-      "title": "Sacred Geometry",
+      "title": "JAGAD BĪJĀṄKURA",
       "subtitle": "The mathematical language of the cosmos",
       "icon": "Star",
       "summary": "Discover how geometric patterns form the invisible architecture of consciousness and creation.",
@@ -63,22 +62,21 @@
     {
       "id": "d3",
       "slug": "cosmic-philosophy",
-      "title": "Cosmic Philosophy",
+      "title": "SPHURAṆA JYOTI",
       "subtitle": "Understanding the fabric of reality itself",
       "icon": "Flame",
       "summary": "Journey through the philosophical frameworks that explain consciousness, reality, and the nature of existence.",
-      "description": "Cosmic Philosophy encompasses the grand frameworks of understanding that humanity has developed to explain the nature of reality, consciousness, and existence. At its heart lies the Advaita Vedanta teaching that the universe is not separate from the observer — that the cosmic dance of creation, preservation, and dissolution is happening within the field of pure awareness that is our deepest nature.",
-      "quote": "Brahman alone is real, the world is appearance, and the individual self is none other than Brahman.",
-      "quoteAuthor": "Adi Shankaracharya",
+      "description": "Cosmic philosophy analyzes the evolutionary trajectory of spark-conscious systems migrating from densest material configurations back into high-frequency primeval source union.",
+      "quote": "Science without religion is lame, religion without science is blind.",
+      "quoteAuthor": "Albert Einstein",
       "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Self-Inquiry Practice",
+      "practiceTitle": "Divine Law Contemplation",
       "practiceSteps": [
-        "Sit quietly and ask yourself: Who am I?",
-        "Notice the thoughts that arise without identifying with them",
-        "Trace each thought back to its source",
-        "Rest in the silent awareness that remains"
+        "Dwell deeply on the concept of eternal return and karmic balancing equations.",
+        "Permit any local injustice or linear frustration to be neutralized by cosmic balance.",
+        "Surrender your local timeline into the hands of the Great Spiritual Ordinance."
       ],
-      "energyIndicator": "Transcendent Flux",
+      "energyIndicator": "Cosmodrome Law",
       "relatedSlugs": [
         "meditation",
         "ancient-wisdom"
@@ -87,7 +85,7 @@
     {
       "id": "d4",
       "slug": "ancient-wisdom",
-      "title": "Ancient Wisdom Texts",
+      "title": "ANTAR JYOTI",
       "subtitle": "The eternal scriptures that light the path",
       "icon": "BookOpen",
       "summary": "Study the timeless teachings of the Upanishads, Bhagavad Gita, and Brahma Sutras.",
@@ -111,55 +109,58 @@
     {
       "id": "d5",
       "slug": "yoga",
-      "title": "Yoga & Union",
+      "title": "MĀYĀ ŚAKTI VILĀSA",
       "subtitle": "Path of connection",
       "icon": "Activity",
       "summary": "Explore the profound depths of Yoga & Union and its role in the cosmic journey.",
-      "description": "Yoga & Union is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
+      "description": "The whole universe emerged from Dakshinamurty i.e. consciousness, just as a large fig tree emerges from a small seed. Though the tree emerged from the seed, it can not be found in the seed in the variegated form of the tree. One therefore has to admit that the tree was in an unmanifest form in the seed, devoid of any characteristics such as branches, leaves etc.\n\nSimilarly, the world was initially in a state called 'nirvikalpa' or devoid of all characteristics, and was in a form of pure bliss that is not definable by words or thinkable by thought. Then, by the power of maaya, the illusory world of names and forms, and space-time diversity was concocted. This world was created by Dakshinamurty by his own will, similar to how a magician creates illusory objects, or how a great Yogi manifests objects using only the power of his own mind.",
+      "quote": "Bījasya-antar-ivāṅkuro jagad-idaṁ prāṅ-nirvikalpaṁ punaḥ māyā-kalpita-deśa-kāla-kalanā-vaicitrya-citrī-kṛtam | māyāvīva vijṛmbhayaty-api mahā-yogīva yaḥ svecchayā tasmai śrī-gurumūrtaye nama idaṁ śrī-dakṣiṇāmūrtaye ||",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
       "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
+      "practiceTitle": "Bīja-Aṅkura Contemplation",
       "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
+        "Visualize a tiny, silent seed resting in the dark soil of pure consciousness, containing the potential of a massive, ancient tree.",
+        "Observe how the sprout of the universe emerges, expanding into space, time, and varied forms through the power of illusion (Māyā).",
+        "Recognize that the diverse world is but a projection of your own inner reality, like a magic show created by a master magician.",
+        "Rest in the blissful, undifferentiated state of 'Nirvikalpa' prior to names and forms, identifying with the source rather than the projection."
       ],
-      "energyIndicator": "Resonant Field",
+      "energyIndicator": "2nd Tattva",
       "relatedSlugs": [
         "meditation",
         "ancient-wisdom"
-      ]
+      ],
+      "translation": "Just as a sprout is latent within a seed, this universe was unmanifest prior to creation, and was later made variegated with space, time, and form by the power of Māyā. To Him who, like a magician or a great Yogi, projects this world by His own will—to that Sri Dakshinamurti, in the form of the divine Guru, I offer my salutations."
     },
     {
       "id": "d6",
       "slug": "mindfulness",
-      "title": "Mindfulness",
+      "title": "MĀYĀ ĀVARAṆA VILĀSA",
       "subtitle": "Present moment awareness",
       "icon": "Eye",
       "summary": "Explore the profound depths of Mindfulness and its role in the cosmic journey.",
-      "description": "Mindfulness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
+      "description": "Imagine entering a dark room filled with objects. The moment a lamp is switched on, everything becomes visible—not because the lamp creates the objects, but because it illuminates them. Verse 3 suggests that consciousness functions in the same way. Every thought, emotion, memory, sensation, and perception appears only because it is illuminated by awareness. We spend our lives studying the contents of experience while overlooking the light that makes experience possible. Science can explain how the eyes receive light and how the brain processes information, yet a deeper mystery remains: what is it that knows these perceptions? The Third Tattva invites us to recognize consciousness as the silent illuminator behind every experience. Just as a holographic image depends on an unseen light source, the entire universe of experience depends on awareness, which reveals everything while remaining unchanged itself.",
+      "quote": "yasyaiva sphuraṇaṁ sadātmakam asat-kalpārthakaṁ bhāsate sākṣāt tat tvam asīti veda-vacasā yo bodhayaty āśritān | yat-sākṣāt-karaṇād bhaven na punar āvṛttir bhavāmbhonidhau tasmai śrī-gurumūrtaye nama idaṁ śrī-dakṣiṇāmūrtaye ||",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
       "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
+      "practiceTitle": "Sphuraṇa Jyoti Contemplation",
       "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
+        "Reflect on the core insight: Consciousness is the light through which all experiences become known. Without awareness, no thought, sensation, or perception could ever arise.",
+        "Contemplate the Mahāvākya 'Tat Tvam Asi' (Thou Art That). The light you seek outside is the very awareness by which you seek. The observer and the ultimate reality are not separate.",
+        "Investigate the scientific question: Science explains how light enters the eyes and the brain processes information, yet what is it that knows these perceptions? Explore consciousness as the illuminating principle behind all experience.",
+        "Consider the project connection: Just as projected realities in holography and visual illusions depend on a hidden light source, all experiences depend on consciousness, which silently illuminates them.",
+        "Rest with the reflection question: Can any experience be known without awareness? Before every thought, perception, or emotion, what is the light that makes it known?"
       ],
-      "energyIndicator": "Resonant Field",
+      "energyIndicator": "3rd Tattva",
       "relatedSlugs": [
         "meditation",
         "ancient-wisdom"
-      ]
+      ],
+      "translation": "That whose mere shining, being of the nature of existence, makes the unreal appear as real; who instructs seekers through the Vedic declaration 'Thou Art That' (Tat Tvam Asi); and by whose direct realization there is no return to the ocean of worldly existence — to that Sri Dakshinamurti, in the form of the divine Guru, I offer my salutations."
     },
     {
       "id": "d7",
       "slug": "spiritual-science",
-      "title": "Spiritual Science",
+      "title": "SVĀTMĀ PRAKAṬĪKARAṆA",
       "subtitle": "Where science meets spirit",
       "icon": "Microscope",
       "summary": "Explore the profound depths of Spiritual Science and its role in the cosmic journey.",
@@ -183,7 +184,7 @@
     {
       "id": "d8",
       "slug": "conscious-living",
-      "title": "Conscious Living",
+      "title": "KĀRYAKĀRAṆA SAMBANDHA",
       "subtitle": "Living with intention",
       "icon": "Heart",
       "summary": "Explore the profound depths of Conscious Living and its role in the cosmic journey.",
@@ -207,7 +208,7 @@
     {
       "id": "d9",
       "slug": "divine-energy",
-      "title": "Divine Energy",
+      "title": "BHŪTA BRAHMĀṆḌA AIKYA",
       "subtitle": "The flow of prana",
       "icon": "Zap",
       "summary": "Explore the profound depths of Divine Energy and its role in the cosmic journey.",
@@ -231,59 +232,11 @@
     {
       "id": "d10",
       "slug": "sacred-scriptures",
-      "title": "Sacred Scriptures",
+      "title": "SARVĀTMATVA SPHUṬĪKARAṆA",
       "subtitle": "Words of the masters",
       "icon": "Book",
       "summary": "Explore the profound depths of Sacred Scriptures and its role in the cosmic journey.",
       "description": "Sacred Scriptures is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
-      "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
-      ],
-      "energyIndicator": "Resonant Field",
-      "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
-      ]
-    },
-    {
-      "id": "d11",
-      "slug": "universal-consciousness",
-      "title": "Universal Consciousness",
-      "subtitle": "The one mind",
-      "icon": "Globe",
-      "summary": "Explore the profound depths of Universal Consciousness and its role in the cosmic journey.",
-      "description": "Universal Consciousness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
-      "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
-      ],
-      "energyIndicator": "Resonant Field",
-      "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
-      ]
-    },
-    {
-      "id": "d12",
-      "slug": "astral-awareness",
-      "title": "Astral Awareness",
-      "subtitle": "Beyond the physical",
-      "icon": "Moon",
-      "summary": "Explore the profound depths of Astral Awareness and its role in the cosmic journey.",
-      "description": "Astral Awareness is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
       "quote": "The journey of a thousand miles begins with a single step.",
       "quoteAuthor": "Lao Tzu",
       "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
@@ -304,57 +257,87 @@
   "articles": [
     {
       "id": "a1",
-      "domainSlug": "introduction",
-      "title": "Dakshinamurthy Stotram",
-      "subtitle": "The Hymn of the South-Facing Teacher",
-      "content": "The Dakshinamurthy Stotram, composed by Sri Adi Shankaracharya, is one of the most profound philosophical hymns in the entire corpus of Sanskrit literature. It presents the image of Lord Shiva as Dakshinamurthy — the supreme teacher who sits facing south beneath the banyan tree, imparting the highest wisdom through silence.\n\nThe word 'Dakshinamurthy' is rich with meaning: 'Dakshina' means 'south' and also 'grace' or 'competence', while 'Murthy' means 'form' or 'embodiment'. Thus, Dakshinamurthy is the embodiment of grace, the form of supreme competence in teaching.\n\nWhat makes this teaching unique in all of world philosophy is the method: the teacher teaches through silence. The young students (sanakadi rishis) approach the ancient-looking teacher with their doubts, and through the mere power of His silence — His chin-mudra gesture — all doubts are resolved. This is the teaching of Advaita Vedanta in its most pristine form.\n\nThe stotram consists of 10 verses, each revealing a different aspect of how the non-dual reality manifests as the apparently dual world we perceive. Shankaracharya uses stunning metaphors — a mirror, a dream, a magic show, a city reflected in a crystal — to explain how the one consciousness appears as the many.",
-      "author": "Sri Adi Shankaracharya",
-      "readTime": "Sacred Text",
+      "domainSlug": "meditation",
+      "title": "The Primordial Guru",
+      "subtitle": "Why do ancient sages sit before a youthful teacher?",
+      "content": "Beneath the shade of an ancient banyan tree sits a youthful teacher surrounded by seekers far older than himself. This is Sri Dakshinamurthy, the timeless form of Shiva as the supreme guru. Unlike ordinary teachers, he does not rely on lengthy discourses or debate. Facing the South, a direction traditionally associated with time, change, and mortality, he reveals knowledge through profound silence. For centuries, this image has inspired seekers to look beyond words and discover wisdom through direct understanding.",
+      "quote": "विश्वं दर्पणदृश्यमाननगरीतुल्यं निजान्तर्गतम्",
+      "translation": "The entire universe is like a city reflected in a mirror, appearing within oneself.",
       "image": "/ArticleImages/dakshinamurthy-a1.jpg",
-      "date": "Timeless",
-      "likes": 108,
-      "views": 1008,
-      "quote": "विश्वं दर्पणदृश्यमाननगरीतुल्यं निजान्तर्गतं",
-      "translation": "To Him who sees the universe existing within Himself, like a city reflected in a mirror, yet appearing outside through Maya"
+      "headerLabel": "BEGIN HERE",
+      "actionText": "READ CHAPTER",
+      "hideMeta": true
     },
     {
       "id": "a2",
-      "domainSlug": "meditation",
-      "title": "The Science of Inner Silence",
-      "subtitle": "Where neuroscience meets ancient meditation practice",
-      "content": "Modern neuroscience is only beginning to understand what the ancient rishis discovered thousands of years ago through direct experience: that the practice of sustained inner silence fundamentally transforms the architecture of the brain and the nature of consciousness itself.\n\nRecent studies using fMRI and EEG technology have revealed that experienced meditators show dramatically different brain patterns compared to non-meditators. The default mode network (DMN) — the brain network responsible for self-referential thinking and mind-wandering — shows reduced activity during meditation, while connectivity between different brain regions increases.\n\nThis correlates precisely with what the Yoga Sutras of Patanjali described as 'chitta vritti nirodha' — the cessation of the fluctuations of the mind. When these fluctuations cease, what remains is pure awareness — the 'drashtuh svarupe avasthanam' or the abiding in the true nature of the seer.",
-      "author": "Research Director",
-      "readTime": "8 min read",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "date": "2026-01-15",
-      "likes": 42,
-      "views": 156
+      "domainSlug": "science-and-spirituality",
+      "title": "What is Daakshinaasya Darshini?",
+      "subtitle": "Enlightenment via Scientific Thought",
+      "content": "Daakshinaasya Darshini is a science and technology exhibition inspired by Sri Dakshinamurthy, the timeless embodiment of knowledge, wisdom, and learning. Celebrating humanity's enduring quest to understand the universe, the exhibition brings together science, innovation, mathematics, and engineering under a common theme of discovery.\n\nThrough interactive exhibits, working models, and immersive visual experiences, visitors are encouraged to explore the principles that shape our world. More than a showcase of scientific ideas, Daakshinaasya Darshini invites participants to look beyond facts, ask meaningful questions, and cultivate a deeper appreciation for inquiry and understanding.\n\nRooted in the spirit of exploration that Dakshinamurthy symbolizes, the exhibition serves as a bridge between ancient wisdom and modern knowledge, inspiring minds to seek, discover, and learn.\n\nIt is a journey from curiosity to discovery, from discovery to understanding, and from understanding to wisdom.",
+      "image": "/ArticleImages/dakshinamurthy-a2.jpg",
+      "headerLabel": "SEEK WISDOM",
+      "actionText": "EXPLORE NOW",
+      "hideMeta": true,
+      "likes": 0
     },
     {
       "id": "a3",
-      "domainSlug": "sacred-geometry",
-      "title": "The Golden Ratio in Temple Architecture",
-      "subtitle": "How ancient builders encoded cosmic proportions in stone",
-      "content": "The great temples of India are not merely places of worship — they are three-dimensional mandalas, cosmic diagrams rendered in stone that encode the mathematical principles governing the universe itself.\n\nThe Vastu Shastra and Shilpa Shastra — the ancient Indian sciences of architecture and sculpture — prescribe precise mathematical ratios for every aspect of temple construction. These ratios, when analyzed through modern mathematics, reveal a sophisticated understanding of the golden ratio (phi = 1.618), Fibonacci sequences, and fractal geometry.\n\nThe Brihadeeswara Temple in Thanjavur, built by Raja Raja Chola I in 1010 CE, provides a stunning example. Its vimana (tower) rises 216 feet — a number that is 6 cubed (6×6×6), reflecting the cosmic significance of the number 6 in Hindu cosmology. The shadow of the tower never falls on its base, demonstrating an advanced understanding of solar geometry.",
-      "author": "Architecture Scholar",
-      "readTime": "10 min read",
-      "image": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80&w=800",
-      "date": "2026-02-20",
-      "likes": 67,
-      "views": 203
+      "domainSlug": "science-and-spirituality",
+      "title": "The 3-Day Exhibition",
+      "subtitle": "Curiosity to Discovery",
+      "content": "The 3-Day Exhibition was a unique celebration of science, technology, innovation, and the timeless wisdom embodied by Sri Dakshinamurthy. Bringing together 80+ schools, 43+ outstanding projects, and 30,000+ visitors, the event created a vibrant platform for exploration, learning, and discovery.\n\nThrough interactive exhibits, working models, multimedia experiences, and engaging demonstrations, visitors explored the fascinating intersection of scientific inquiry, creativity, and human understanding.\n\nInspired by the vision of connecting ancient wisdom with modern knowledge, the exhibition encouraged participants to think critically, ask meaningful questions, and experience learning beyond textbooks.\n\nMore than an exhibition, it was a journey that transformed curiosity into discovery, discovery into understanding, and understanding into wisdom.",
+      "image": "/3dayexhibition/image1.png",
+      "images": [
+        "/3dayexhibition/image1.png",
+        "/3dayexhibition/image2.png",
+        "/3dayexhibition/image3.png",
+        "/3dayexhibition/image4.png",
+        "/3dayexhibition/image5.png",
+        "/3dayexhibition/image6.png",
+        "/3dayexhibition/image7.png",
+        "/3dayexhibition/image8.png",
+        "/3dayexhibition/image9.png"
+      ],
+      "headerLabel": "3-DAY MAKEATHON",
+      "actionText": "EXPLORE NOW",
+      "hideMeta": true
     },
     {
       "id": "a4",
-      "domainSlug": "cosmic-philosophy",
-      "title": "Maya: The Grand Illusion of Duality",
-      "subtitle": "Understanding why the one appears as many",
-      "content": "Perhaps no concept in Indian philosophy is as misunderstood — and as profoundly revolutionary — as Maya. Often simplistically translated as 'illusion', Maya in Advaita Vedanta refers to something far more nuanced: it is the inexplicable power by which the non-dual Brahman appears as the dual world of name and form.\n\nSri Adi Shankaracharya described Maya as 'anirvachaniya' — literally 'that which cannot be categorized'. Maya is neither real (sat) in the absolute sense, nor unreal (asat) like a square circle. It is a third category — 'mithya' — that which has a dependent, provisional reality.\n\nConsider the classic metaphor: a rope in dim light appears as a snake. The snake is neither absolutely real (it disappears upon investigation) nor absolutely unreal (it produces real fear and real physiological responses). The snake is mithya — it has a practical reality that dissolves upon the dawn of true knowledge.",
-      "author": "Philosophy Scholar",
-      "readTime": "12 min read",
-      "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
-      "date": "2026-03-08",
-      "likes": 89,
-      "views": 312
+      "domainSlug": "science-and-spirituality",
+      "title": "Why are we doing this?",
+      "subtitle": "Discover how awareness transforms information into wisdom",
+      "content": "In a world overflowing with information, knowledge alone is no longer enough. How we perceive, interpret, and respond to our experiences often shapes our understanding more than the experiences themselves. The same situation can inspire, challenge, or divide people depending on the perspective they bring to it.\n\nDakshinaasya Darshini was created to explore this fascinating relationship between knowledge, perception, and awareness. Through immersive exhibits, interactive experiences, and thought-provoking demonstrations, visitors are invited to examine not only the world around them but also the way they engage with it.\n\nInspired by the timeless teachings of Sri Dakshinamurthy, the exhibition encourages curiosity, critical thinking, and self-reflection—transforming learning into a journey from discovery to understanding, and from understanding to wisdom.",
+      "image": "/ArticleImages/dakshinamurthy-a4.jpg",
+      "actionText": "Step Inside",
+      "headerLabel": "WHY DO THIS?",
+      "hideMeta": true,
+      "views": 1
+    },
+    {
+      "id": "a5",
+      "domainSlug": "upcoming-events",
+      "title": "What's Next?",
+      "subtitle": "The journey continues—explore the upcoming Makeathon edition",
+      "content": "The journey continues. Building on the success of our exhibitions and immersive learning experiences, we are preparing the next edition of our Makeathon—an exciting platform where curiosity, creativity, and innovation come together. Staying true to the spirit of Dakshinaasya Darshini, the upcoming event will continue to explore the intersection of science, technology, and deeper understanding through engaging challenges, collaborative problem-solving, and hands-on experiences.\n\nAs plans evolve, new milestones, announcements, and event updates will be shared through the Timeline section of this website. We invite students, educators, innovators, and curious minds to follow the journey and be part of what comes next.",
+      "image": "/ArticleImages/dakshinamurthy-a5.jpg",
+      "actionText": "Explore Now",
+      "headerLabel": "UPCOMING EVENT",
+      "hideMeta": true
+    },
+    {
+      "id": "a6",
+      "hidden": true,
+      "domainSlug": "ancient-wisdom",
+      "title": "The Seven Hermetic Principles of Hermes",
+      "subtitle": "Understanding the ancient laws governing global experience",
+      "content": "In ancient Egypt, before the pharaohs built the pyramids, Hermes Trismegistus passed down the foundational laws of the cosmos. These laws, preserved in the esoteric texts of the Kybalion, govern all creations without exception.\n\nThe first law is Mentalism: 'The All is Mind; the Universe is Mental.' Everything we see, hear, or experience is a conceptual matrix within the divine cosmic consciousness. When you change your mental blueprint, you completely shift the physical canvas reflecting back at you.\n\nThe other laws—Correspondence, Vibration, Polarity, Rhythm, Cause & Effect, and Gender—work in absolute unison. By aligning your spiritual acts with these laws, you stop fighting the cosmic flow. You become the conscious co-creator, pulling spiritual currents down into material forms with fluid accuracy.",
+      "author": "Aelius Hermes",
+      "readTime": "9 min read",
+      "image": "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=800",
+      "date": "Feb 10, 2026",
+      "likes": 0,
+      "views": 0
     }
   ],
   "timeline": [
@@ -484,13 +467,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 62,
-      "storytelling": 25,
-      "domains": 12,
+      "home": 88,
+      "storytelling": 41,
+      "domains": 16,
       "flow": 17,
       "admin": 31
     },
-    "totalInteractions": 747,
+    "totalInteractions": 793,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {

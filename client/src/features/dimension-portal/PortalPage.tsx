@@ -26,7 +26,7 @@ export default function PortalPage({ domains, onSelectDomain }: PortalPageProps)
           The 12 gateways of consciousness
         </span>
         <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-slate-100 uppercase">
-          Dimension Portals
+          Tattva Darśana
         </h2>
         <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed font-sans mt-2">
           Hover and step inside the portals to coordinate custom meditation practices, Hermetic scriptures, and atomic science calibrations.
@@ -35,14 +35,18 @@ export default function PortalPage({ domains, onSelectDomain }: PortalPageProps)
       </div>
 
       {/* Spotlight Cards Grids */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 select-none">
-        {domains.map((dom) => (
-          <DomainCard
-            key={dom.id}
-            domain={dom}
-            onExplore={(d) => onSelectDomain(d)}
-          />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 select-none">
+        {domains.map((dom, index) => {
+          const gridClass = index === 8 ? "md:col-start-2" : "";
+          return (
+            <DomainCard
+              key={dom.id}
+              domain={dom}
+              onExplore={(d) => onSelectDomain(d)}
+              className={gridClass}
+            />
+          );
+        })}
       </div>
     </motion.div>
   );
