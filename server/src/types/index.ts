@@ -17,7 +17,7 @@ export interface DomainContent {
   description: string;
   quote: string;
   quoteAuthor?: string;
-  image: string;
+  image?: string;
   practiceTitle?: string;
   practiceSteps?: string[];
   energyIndicator?: string;
@@ -30,14 +30,19 @@ export interface Article {
   title: string;
   subtitle: string;
   content: string;
-  author: string;
-  readTime: string;
+  author?: string;
+  readTime?: string;
   image: string;
-  date: string;
-  likes: number;
-  views: number;
+  images?: string[];
+  date?: string;
+  likes?: number;
+  views?: number;
   quote?: string;
   translation?: string;
+  headerLabel?: string;
+  actionText?: string;
+  hideMeta?: boolean;
+  hidden?: boolean;
 }
 
 export interface TimelineStep {
