@@ -9,7 +9,7 @@ interface PortalPageProps {
 
 /**
  * PAGE 3: DOMAINS HUB (PORTALS)
- * Displays the 12 domain gateway cards in a responsive grid layout.
+ * Displays the 10 domain gateway cards in a responsive grid layout.
  * Extracted from App.tsx for modularity.
  */
 export default function PortalPage({ domains, onSelectDomain }: PortalPageProps) {
@@ -23,7 +23,7 @@ export default function PortalPage({ domains, onSelectDomain }: PortalPageProps)
     >
       <div className="space-y-2 max-w-2xl mx-auto">
         <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-          The 12 gateways of consciousness
+          The 10 gateways of consciousness
         </span>
         <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-slate-100 uppercase">
           Tattva Darśana

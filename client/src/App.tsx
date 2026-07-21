@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import {
-  Sparkles, Compass, Clock, Star, Heart, MessageSquare,
-  ChevronRight, LogOut, ArrowRight, BookOpen, Layers, MapPin,
-  Menu, X
+  Sparkles, Compass,
+  Layers
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import CosmicGalaxy from "./features/landing-main/CosmicGalaxy";
 import LandingPage from "./features/landing-main/LandingPage";
+import WarpTransition from "./features/loading-main/WarpTransition";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import CosmicOracle from "./features/cosmic-oracle/CosmicOracle";
@@ -88,11 +88,11 @@ export default function App() {
     if (isWarping) return;
     setIsWarping(true);
 
-    // Zoom and stretch lines (2.5 seconds hyperspace tunnel duration)
+    // Om transition: 1-second duration, then navigate
     setTimeout(() => {
       setRoute("storytelling");
       setIsWarping(false);
-    }, 2400);
+    }, 1000);
   };
 
   // Like feedback triggers incrementing article likes real-time
@@ -137,7 +137,7 @@ export default function App() {
       {/* Absolute Base Layer: Interactive 3D Cosmic Model */}
       <CosmicGalaxy isWarping={isWarping} />
 
-      {/* Dynamic Flash White-out Layer for hyperspace zoom terminal */}
+      {/* ॐ Om Transition Overlay — mounts at z-[999] above everything */}
       <WarpTransition isWarping={isWarping} />
 
       {/* 2. Top Navigation Bar (Hidden during full Landing Page 1 layout) */}
@@ -154,7 +154,7 @@ export default function App() {
       />
 
       {/* 3. Primary visual containers and layouts */}
-      <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-12 flex flex-col justify-center min-h-[calc(100vh-80px)]">
+      <main className={`relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col justify-center min-h-[calc(100vh-80px)] transition-all duration-300 ${route !== "landing" ? "pt-28" : "pt-12"}`}>
         <AnimatePresence mode="wait">
 
           {/* PAGE 1: COSMIC LANDING EXPERIENCE */}
