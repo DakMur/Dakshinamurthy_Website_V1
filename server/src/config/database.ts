@@ -91,9 +91,9 @@ const DEFAULT_DATABASE: DatabaseSchema = {
       "subtitle": "Discovering the Silent Power Within",
       "icon": "Lightbulb",
       "summary": "Consciousness, like light inside a pot, is the hidden force within the body that enables all perception and action.",
-      "description": "Just as a hidden lamp reveals its presence through rays shining from a pot's openings, pure consciousness reveals itself through the activities of the body and senses. The eyes do not see, nor do the ears hear by themselves; they function only because they are illumined by the inner light of awareness. This ever-present consciousness, distinct from body and mind, is Dakshinamurty—the silent witness by whose presence all knowledge, perception, and action arise.",
-      "quote": "The senses shine because consciousness shines.",
-      "quoteAuthor": "Dakshinamurty Contemplation",
+      "description": "This śloka beautifully compares the human body to a pot with many holes and the Self (Ātman) to a bright lamp burning inside it. Just as the lamp's light emerges through every opening of the pot, the light of pure Consciousness shines through our eyes, ears, nose, tongue, skin, and mind, enabling us to perceive the world. The senses themselves are not conscious; they function only because they are illuminated by the inner Self. When we say, \"I know,\" \"I see,\" or \"I hear,\" it is not the senses but the ever-present Consciousness that makes these experiences possible. Just as the world around the pot becomes visible because of the lamp within, the entire universe is experienced only because of the Self's light. Therefore, Ādi Śaṅkarācārya bows to Lord Śrī Dakṣiṇāmūrti, the Supreme Guru, who reveals this eternal truth that the Self alone is the source of all knowledge and awareness.",
+      "quote": "Nānācchidra-ghaṭodara-sthita-mahā-dīpa-prabhā-bhāsvaraṃ jñānaṃ yasya tu cakṣur-ādi-karaṇa-dvārā bahiḥ spandate; jānāmīti tam eva bhāntam anubhāty etat samastaṃ jagat tasmai śrī-gurumūrtaye nama idaṃ śrī-dakṣiṇāmūrtaye.",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
       "image": "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&q=80&w=1200",
       "practiceTitle": "Contemplation of the Inner Light",
       "practiceSteps": [

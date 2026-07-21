@@ -6,7 +6,6 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import CosmicGalaxy from "./features/landing-main/CosmicGalaxy";
 import LandingPage from "./features/landing-main/LandingPage";
-import WarpTransition from "./features/loading-main/WarpTransition";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import CosmicOracle from "./features/cosmic-oracle/CosmicOracle";
