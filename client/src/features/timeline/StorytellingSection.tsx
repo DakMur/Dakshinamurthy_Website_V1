@@ -83,12 +83,15 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain 
                   <img
                     src={article.image}
                     alt={article.title}
-                    loading="lazy"
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    fetchPriority={idx === 0 ? "high" : "auto"}
                     decoding="async"
+                    width={800}
+                    height={400}
                     className={`w-full h-full filter brightness-85 transition-transform duration-[1.2s] ease-out ${article.id === "a1" ? "object-contain bg-black/40" : "object-cover group-hover:scale-105"
                       }`}
                   />
-                  <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-gold-vintage/30 transition-all duration-700 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-2xl border border-gold-vintage/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 </div>
               )}
             </div>
@@ -280,7 +283,7 @@ const ArticleImageSlideshow = memo(function ArticleImageSlideshow({ images }: Ar
           <button key={i} onClick={() => setCurrentIndex(i)} className={`h-2 rounded-full transition-all cursor-pointer ${currentIndex === i ? "bg-gold-vintage w-4" : "w-2 bg-white/30 hover:bg-white/60"}`} aria-label={`Go to slide ${i + 1}`} />
         ))}
       </div>
-      <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-gold-vintage/30 transition-all duration-700 pointer-events-none z-10" />
+      <div className="absolute inset-0 rounded-2xl border border-gold-vintage/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
     </div>
   );
 });

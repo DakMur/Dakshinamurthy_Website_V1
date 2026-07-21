@@ -5,8 +5,20 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import * as LucideIcons from "lucide-react";
+import { Eye, Sprout, Sun, Lightbulb, Atom, Heart, BookOpen, Globe, Compass, LucideIcon } from "lucide-react";
 import { DomainContent } from "../../../types/types";
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Eye,
+  Sprout,
+  Sun,
+  Lightbulb,
+  Atom,
+  Heart,
+  BookOpen,
+  Globe,
+  Compass,
+};
 
 interface DomainCardProps {
   domain: DomainContent;
@@ -29,7 +41,7 @@ const DomainCard = memo(function DomainCard({ domain, onExplore, className = "" 
   const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [12, -12]), SPRING_CONFIG);
 
   // Dynamic Lucide icon lookup safely
-  const IconComponent = (LucideIcons as any)[domain.icon] || LucideIcons.Compass;
+  const IconComponent = ICON_MAP[domain.icon] || Compass;
 
   const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -80,8 +92,9 @@ const DomainCard = memo(function DomainCard({ domain, onExplore, className = "" 
 
       {/* Top Banner: Spiritual Icon & Animated Glyph */}
       <div className="flex items-start justify-between z-10">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white/[0.02] border border-white/5 group-hover:border-gold-vintage/30 group-hover:bg-gold-vintage/5 transition-all duration-500">
-          <IconComponent className="w-6 h-6 text-slate-300 group-hover:text-gold-vintage transition-colors duration-500" />
+        <div className="relative w-12 h-12 rounded-xl flex items-center justify-center bg-white/[0.02] border border-white/5">
+          <div className="absolute inset-0 rounded-xl bg-gold-vintage/5 border border-gold-vintage/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <IconComponent className="relative z-10 w-6 h-6 text-slate-300 group-hover:text-gold-vintage transition-colors duration-500" />
         </div>
         <div className="text-[10px] font-mono text-slate-500 group-hover:text-gold-vintage/60 transition-colors duration-500 uppercase tracking-widest">
           {domain.energyIndicator || "Aligned"}
@@ -116,7 +129,7 @@ const DomainCard = memo(function DomainCard({ domain, onExplore, className = "" 
       </div>
 
       {/* Outer Glow Overlay */}
-      <div className="absolute inset-0 rounded-2xl border border-transparent pointer-events-none group-hover:border-gold-vintage/20 transition-all duration-500" />
+      <div className="absolute inset-0 rounded-2xl border border-gold-vintage/20 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-500" />
     </motion.div>
   );
 });

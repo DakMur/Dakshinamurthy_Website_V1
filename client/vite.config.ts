@@ -12,9 +12,7 @@ export default defineConfig(() => {
       },
     },
     build: {
-      // Raise warning threshold — vendor-icons (lucide-react) intentionally imports
-      // all icons via wildcard for dynamic domain.icon string lookups.
-      // Gzip size is 157 KB which is well within modern performance budgets.
+      // Gzip size is well within modern performance budgets.
       chunkSizeWarningLimit: 900,
       rollupOptions: {
         output: {
@@ -36,7 +34,7 @@ export default defineConfig(() => {
               id.includes('node_modules/motion') ||
               id.includes('node_modules/framer-motion')
             ) {
-              return 'vendor-motion';
+              return 'motion-vendor';
             }
             // Three.js ecosystem — heaviest chunk, only loaded on landing
             if (
@@ -45,11 +43,11 @@ export default defineConfig(() => {
               id.includes('node_modules/troika') ||
               id.includes('node_modules/zustand')
             ) {
-              return 'vendor-three';
+              return 'three-vendor';
             }
             // Lucide icons — tree-shaken but still sizeable
             if (id.includes('node_modules/lucide-react')) {
-              return 'vendor-icons';
+              return 'icons-vendor';
             }
             // GSAP animation library
             if (id.includes('node_modules/gsap')) {
