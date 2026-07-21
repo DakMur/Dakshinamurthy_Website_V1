@@ -72,6 +72,8 @@ export default function PageTen({ domain, allDomains = [], onNavigateToDomain }:
           <img
             src={domain.image}
             alt={domain.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover filter brightness-45 scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent" />

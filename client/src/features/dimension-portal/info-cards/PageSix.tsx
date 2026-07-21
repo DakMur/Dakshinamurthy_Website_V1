@@ -20,7 +20,7 @@ export default function PageSix({ domain, allDomains = [], onNavigateToDomain }:
   return (
     <>
       <div className="relative rounded-2xl overflow-hidden min-h-[300px] flex flex-col justify-end p-6 md:p-10 border border-white/10 mb-8 shadow-2xl">
-        <div className="absolute inset-0"><img src={domain.image} alt={domain.title} className="w-full h-full object-cover filter brightness-45 scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent" /><div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent" /></div>
+        <div className="absolute inset-0"><img src={domain.image} alt={domain.title} loading="lazy" decoding="async" className="w-full h-full object-cover filter brightness-45 scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent" /><div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent" /></div>
         <div className="relative z-10"><div className="text-[10px] uppercase tracking-widest font-mono text-gold-vintage bg-gold-vintage/10 px-3 py-1 rounded-full w-max border border-gold-vintage/20 mb-3 ml-0.5">{domain.energyIndicator || "Tattva Level"}</div><h1 className="font-display font-bold text-3xl md:text-5xl text-white tracking-widest uppercase mb-2">{domain.title}</h1><p className="font-serif italic text-slate-300 text-lg md:text-xl max-w-2xl pl-1">&ldquo;{domain.subtitle}&rdquo;</p></div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

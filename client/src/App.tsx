@@ -1,29 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import {
   Sparkles, Compass,
   Layers
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import CosmicGalaxy from "./features/landing-main/CosmicGalaxy";
-import LandingPage from "./features/landing-main/LandingPage";
+
+// ── Lazy-loaded route-level chunks ─────────────────────────────────────────
+// Each lazy() call generates a separate async chunk that is only fetched when
+// the corresponding route becomes active for the first time.
+const CosmicGalaxy      = lazy(() => import("./features/landing-main/CosmicGalaxy"));
+const LandingPage        = lazy(() => import("./features/landing-main/LandingPage"));
+const WarpTransition     = lazy(() => import("./features/loading-main/WarpTransition"));
+const StorytellingSection = lazy(() => import("./features/timeline/StorytellingSection"));
+const PortalPage         = lazy(() => import("./features/dimension-portal/PortalPage"));
+const TimelineSection    = lazy(() => import("./features/timeline/TimelineSection"));
+const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
+const CosmicOracle       = lazy(() => import("./features/cosmic-oracle/CosmicOracle"));
+const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
+// ──────────────────────────────────────────────────────────────────────────
+
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import CosmicOracle from "./features/cosmic-oracle/CosmicOracle";
-import PortalPage from "./features/dimension-portal/PortalPage";
-import DomainExpandedModal from "./features/dimension-portal/components/DomainExpandedModal";
-import StorytellingSection from "./features/timeline/StorytellingSection";
-import TimelineSection from "./features/timeline/TimelineSection";
-import RegistrationFeature from "./features/registration/RegistrationFeature";
 import { useDatabase } from "./hooks/useDatabase";
+import { useWarpEffect } from "./hooks/useWarpEffect";
 import { User, DomainContent } from "./types/types";
-import WarpTransition from "./features/loading-main/WarpTransition";
+
 
 export default function App() {
   // Navigation Route state
   const [route, setRoute] = useState<"landing" | "storytelling" | "domains" | "flow" | "admin">("landing");
 
   // Warp transition triggers
-  const [isWarping, setIsWarping] = useState(false);
+  const { isWarping, triggerWarp } = useWarpEffect(false);
 
   // Expanded detailed modal states
   const [selectedDomain, setSelectedDomain] = useState<DomainContent | null>(null);
@@ -48,17 +56,6 @@ export default function App() {
     setIsMobileMenuOpen(false);
   }, [route]);
 
-  // Custom interactive cursor position coordinates
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    // Record screen positions for interactive cursor spotlighting
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   // Record page views in Express server analytics tables
   useEffect(() => {
@@ -83,19 +80,12 @@ export default function App() {
   }, [route]);
 
   // Warp Speed Sequence triggers on Landing explore click
-  const triggerWarpSpeed = () => {
-    if (isWarping) return;
-    setIsWarping(true);
-
-    // Om transition: 1-second duration, then navigate
-    setTimeout(() => {
-      setRoute("storytelling");
-      setIsWarping(false);
-    }, 1000);
-  };
+  const triggerWarpSpeed = useCallback(() => {
+    triggerWarp(() => setRoute("storytelling"), 2400);
+  }, [triggerWarp]);
 
   // Like feedback triggers incrementing article likes real-time
-  const handleLikeArticle = async (articleId: string) => {
+  const handleLikeArticle = useCallback(async (articleId: string) => {
     try {
       const res = await fetch(`/api/v1/articles/${articleId}/like`, { method: "POST" });
       if (res.ok) {
@@ -107,10 +97,22 @@ export default function App() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [setArticles]);
+
+  // Stable navigation callback: navigate to domains route and open a domain modal
+  const handleExploreDomain = useCallback((slug: string) => {
+    const fitDom = domains.find((d) => d.slug === slug);
+    if (fitDom) {
+      setRoute("domains");
+      setSelectedDomain(fitDom);
+    }
+  }, [domains]);
+
+  // Stable domain selection callback for PortalPage cards
+  const handleSelectDomain = useCallback((d: DomainContent) => setSelectedDomain(d), []);
 
   // Simulate Google Account Auth login
-  const handleSimulateGoogleLogin = async () => {
+  const handleSimulateGoogleLogin = useCallback(async () => {
     try {
       const res = await fetch("/api/v1/auth/google", {
         method: "POST",
@@ -128,16 +130,28 @@ export default function App() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
+
+  // Stable Oracle toggle callbacks
+  const handleOpenOracle = useCallback(() => setIsOracleOpen(true), []);
+  const handleCloseOracle = useCallback(() => setIsOracleOpen(false), []);
+  const handleCloseDomainModal = useCallback(() => setSelectedDomain(null), []);
 
   return (
-    <div className="relative min-h-screen text-white selection:bg-gold-vintage selection:text-black overflow-hidden font-sans bg-[#000000] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black">
+    <div className="relative min-h-screen text-white selection:bg-gold-vintage selection:text-black font-sans">
 
-      {/* Absolute Base Layer: Interactive 3D Cosmic Model */}
-      <CosmicGalaxy isWarping={isWarping} />
+      {/* Fixed Background Gradient Layer */}
+      <div className="fixed inset-0 z-[-1] bg-[#000000] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black pointer-events-none transform-gpu" />
+
+      {/* Absolute Base Layer: Interactive 3D Cosmic Model — lazy, heaviest chunk */}
+      <Suspense fallback={null}>
+        <CosmicGalaxy isWarping={isWarping} />
+      </Suspense>
 
       {/* ॐ Om Transition Overlay — mounts at z-[999] above everything */}
-      <WarpTransition isWarping={isWarping} />
+      <Suspense fallback={null}>
+        <WarpTransition isWarping={isWarping} />
+      </Suspense>
 
       {/* 2. Top Navigation Bar (Hidden during full Landing Page 1 layout) */}
       <Navbar
@@ -154,6 +168,8 @@ export default function App() {
 
       {/* 3. Primary visual containers and layouts */}
       <main className={`relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col justify-center min-h-[calc(100vh-80px)] transition-all duration-300 ${route !== "landing" ? "pt-28" : "pt-12"}`}>
+        {/* Minimal route-level Suspense fallback — invisible while chunks load */}
+        <Suspense fallback={<div className="min-h-screen" />}>
         <AnimatePresence mode="wait">
 
           {/* PAGE 1: COSMIC LANDING EXPERIENCE */}
@@ -184,13 +200,7 @@ export default function App() {
               <StorytellingSection
                 articles={articles}
                 onLike={handleLikeArticle}
-                onExploreDomain={(slug) => {
-                  const fitDom = domains.find((d) => d.slug === slug);
-                  if (fitDom) {
-                    setRoute("domains");
-                    setSelectedDomain(fitDom);
-                  }
-                }}
+                onExploreDomain={handleExploreDomain}
               />
             </motion.div>
           )}
@@ -199,7 +209,7 @@ export default function App() {
           {route === "domains" && (
             <PortalPage
               domains={domains}
-              onSelectDomain={(d) => setSelectedDomain(d)}
+              onSelectDomain={handleSelectDomain}
             />
           )}
 
@@ -252,6 +262,7 @@ export default function App() {
           )}
 
         </AnimatePresence>
+        </Suspense>
       </main>
 
       {/* 4. Daily floating spiritual quote at the bottom page footer bar */}
@@ -275,7 +286,7 @@ export default function App() {
             <Layers className="w-4 h-4" />
           </button>
           <button
-            onClick={() => setIsOracleOpen(true)}
+            onClick={handleOpenOracle}
             className="p-3 bg-gold-vintage hover:bg-gold-bright border border-gold-vintage text-black rounded-full transition-all cursor-pointer shadow-xl animate-bounce"
             title="Consult Oracle"
           >
@@ -285,25 +296,29 @@ export default function App() {
       )}
 
       {/* 5. Detailed Dimensional Modal expansion overlay */}
-      <AnimatePresence>
-        {selectedDomain && (
-          <DomainExpandedModal
-            domain={selectedDomain}
-            allDomains={domains}
-            onClose={() => setSelectedDomain(null)}
-            onNavigateToDomain={(d) => setSelectedDomain(d)}
-            onOpenOracle={() => setIsOracleOpen(true)}
-          />
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {selectedDomain && (
+            <DomainExpandedModal
+              domain={selectedDomain}
+              allDomains={domains}
+              onClose={handleCloseDomainModal}
+              onNavigateToDomain={handleSelectDomain}
+              onOpenOracle={handleOpenOracle}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
 
       {/* 6. Dynamic Cosmic AI Oracle panel portal drawer */}
-      <CosmicOracle
-        isOpen={isOracleOpen}
-        onClose={() => setIsOracleOpen(false)}
-        activeDomainSlug={selectedDomain?.slug}
-        activeDomainName={selectedDomain?.title}
-      />
+      <Suspense fallback={null}>
+        <CosmicOracle
+          isOpen={isOracleOpen}
+          onClose={handleCloseOracle}
+          activeDomainSlug={selectedDomain?.slug}
+          activeDomainName={selectedDomain?.title}
+        />
+      </Suspense>
     </div>
   );
 }

@@ -1,8 +1,13 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { getAllTimeline, createTimelineStep, deleteTimelineStep } from '../controllers/timeline.controller.js';
 
 export const timelineRouter = Router();
 
-timelineRouter.get('/', getAllTimeline);
+const cacheRead = (_req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=60');
+  next();
+};
+
+timelineRouter.get('/', cacheRead, getAllTimeline);
 timelineRouter.post('/', createTimelineStep);
 timelineRouter.delete('/:id', deleteTimelineStep);

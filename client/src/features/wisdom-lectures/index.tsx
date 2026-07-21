@@ -180,7 +180,7 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
       {/* Structured Reading Modal Layer */}
       <AnimatePresence>
         {selectedArticle && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050505]/85 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050505]/95">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -337,7 +337,7 @@ function ArticleImageSlideshow() {
         <AnimatePresence mode="wait">
           <motion.img
             key={currentIndex}
-            src={`/3dayexhibition/image${currentIndex}.png`}
+            src={`/3dayexhibition/image${currentIndex}.webp`}
             alt={`3-Day Exhibition Image ${currentIndex}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

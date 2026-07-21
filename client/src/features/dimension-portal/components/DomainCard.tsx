@@ -1,5 +1,10 @@
-import { useRef, useState, MouseEvent } from "react";
-import { motion } from "motion/react";
+import { useRef, useCallback, MouseEvent, memo } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import * as LucideIcons from "lucide-react";
 import { DomainContent } from "../../../types/types";
 
@@ -9,56 +14,66 @@ interface DomainCardProps {
   className?: string;
 }
 
-export default function DomainCard({ domain, onExplore, className = "" }: DomainCardProps) {
+// Spring config: snappy, zero-lag tracking with graceful settle
+const SPRING_CONFIG = { stiffness: 400, damping: 25 };
+
+const DomainCard = memo(function DomainCard({ domain, onExplore, className = "" }: DomainCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+
+  // ── useMotionValue avoids setState → no React re-render on every mouse pixel ──
+  const rawX = useMotionValue(0); // normalized [-0.5, 0.5]
+  const rawY = useMotionValue(0);
+
+  // Springs produce smooth, physics-based animation without fighting CSS transitions
+  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-12, 12]), SPRING_CONFIG);
+  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [12, -12]), SPRING_CONFIG);
 
   // Dynamic Lucide icon lookup safely
   const IconComponent = (LucideIcons as any)[domain.icon] || LucideIcons.Compass;
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
-    const card = cardRef.current;
-    const rect = card.getBoundingClientRect();
+    const rect = cardRef.current.getBoundingClientRect();
 
-    // Mouse positions relative to element bound
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setCoords({ x, y });
+    // Normalize mouse position to [-0.5, 0.5] range relative to card center
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
 
-    // Calculate 3D tilt percentages (-15 to 15 degrees max)
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotX = -((y - centerY) / centerY) * 12; // tilt on X based on Y
-    const rotY = ((x - centerX) / centerX) * 12; // tilt on Y based on X
-    setRotate({ x: rotX, y: rotY });
+    // Write directly to MotionValues — zero React re-renders
+    rawX.set(nx);
+    rawY.set(ny);
 
-    // Set custom CSS variables for Tailwind spotlight gradient
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
-  };
+    // CSS custom properties for spotlight gradient — also zero re-renders
+    cardRef.current.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+  }, [rawX, rawY]);
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setRotate({ x: 0, y: 0 });
-  };
+  const handleMouseLeave = useCallback(() => {
+    // Springs animate back to resting position automatically
+    rawX.set(0);
+    rawY.set(0);
+  }, [rawX, rawY]);
+
+  const handleClick = useCallback(() => onExplore(domain), [onExplore, domain]);
 
   return (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      onClick={() => onExplore(domain)}
+      onClick={handleClick}
       style={{
-        transform: isHovered
-          ? `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1.02, 1.02, 1.02)`
-          : `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
-        transition: isHovered ? "none" : "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)"
+        // GPU-composited 3D tilt — driven by MotionValues, never triggers React renders
+        rotateX,
+        rotateY,
+        transformPerspective: 1000,
+        scale: 1,
+        // Layer-promotion hint: active at all times so GPU doesn't repaint on hover entry
+        willChange: "transform",
       }}
-      className={`spotlight-card group relative overflow-hidden rounded-2xl border border-white/[0.08] hover:border-gold-vintage/40 bg-[#0a0a0a]/75 backdrop-blur-md p-6 flex flex-col justify-between min-h-[360px] cursor-pointer shadow-xl transition-colors duration-500 hover:shadow-gold-vintage/5 ${className}`}
+      whileHover={{ scale: 1.02 }}
+      transition={{ scale: { type: "spring", stiffness: 400, damping: 25 } }}
+      className={`spotlight-card group relative overflow-hidden rounded-2xl border border-white/[0.08] hover:border-gold-vintage/40 bg-[#08080a]/90 p-6 flex flex-col justify-between min-h-[360px] cursor-pointer shadow-xl transition-colors duration-500 hover:shadow-gold-vintage/5 ${className}`}
     >
       {/* Decorative aurora reflection inside */}
       <div className="absolute inset-0 bg-gradient-to-br from-cosmic-violet/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -104,4 +119,6 @@ export default function DomainCard({ domain, onExplore, className = "" }: Domain
       <div className="absolute inset-0 rounded-2xl border border-transparent pointer-events-none group-hover:border-gold-vintage/20 transition-all duration-500" />
     </motion.div>
   );
-}
+});
+
+export default DomainCard;

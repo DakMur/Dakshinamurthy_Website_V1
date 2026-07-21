@@ -54,7 +54,7 @@ export default function PageThree({ domain, allDomains = [], onNavigateToDomain 
     <>
       <div className="relative rounded-2xl overflow-hidden min-h-[300px] flex flex-col justify-end p-6 md:p-10 border border-white/10 mb-8 shadow-2xl">
         <div className="absolute inset-0">
-          <img src={domain.image} alt={domain.title} className="w-full h-full object-cover filter brightness-45 scale-105" />
+          <img src={domain.image} alt={domain.title} loading="lazy" decoding="async" className="w-full h-full object-cover filter brightness-45 scale-105" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent" />
         </div>

@@ -1,8 +1,8 @@
+import { Suspense } from "react";
 import { Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { DomainContent } from "../../../types/types";
 import { INFO_CARD_REGISTRY } from "../info-cards";
-import PageOne from "../info-cards/PageOne";
 
 interface DomainExpandedModalProps {
   domain: DomainContent;
@@ -16,6 +16,7 @@ interface DomainExpandedModalProps {
  * Master frame wrapper that manages the expanded domain view.
  * Delegates content rendering to the appropriate page component
  * via the INFO_CARD_REGISTRY slug-based lookup.
+ * PageComponent is lazy-loaded; Suspense keeps the modal frame visible during load.
  */
 export default function DomainExpandedModal({
   domain,
@@ -24,15 +25,16 @@ export default function DomainExpandedModal({
   onNavigateToDomain,
   onOpenOracle
 }: DomainExpandedModalProps) {
-  // Resolve the page component for the current domain slug
-  const PageComponent = INFO_CARD_REGISTRY[domain.slug] || PageOne;
+  // Resolve the lazy page component for the current domain slug
+  // Falls back to first entry (meditation / PageOne) for unknown slugs
+  const PageComponent = INFO_CARD_REGISTRY[domain.slug] ?? INFO_CARD_REGISTRY["meditation"];
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-xl overflow-y-auto"
+      className="fixed inset-0 z-40 bg-[#050505]/98 overflow-y-auto"
     >
       {/* Immersive space nebula background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.1),transparent_50%)] pointer-events-none" />
@@ -56,14 +58,21 @@ export default function DomainExpandedModal({
           </button>
         </div>
 
-        {/* Delegated Page Content — rendered from registry */}
-        <PageComponent
-          domain={domain}
-          allDomains={allDomains}
-          onNavigateToDomain={onNavigateToDomain}
-          onReturn={onClose}
-        />
+        {/* Delegated Page Content — lazy-loaded from registry, Suspense keeps frame stable */}
+        <Suspense fallback={
+          <div className="flex-1 flex items-center justify-center min-h-[50vh]">
+            <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+          </div>
+        }>
+          <PageComponent
+            domain={domain}
+            allDomains={allDomains}
+            onNavigateToDomain={onNavigateToDomain}
+            onReturn={onClose}
+          />
+        </Suspense>
       </div>
     </motion.div>
   );
 }
+

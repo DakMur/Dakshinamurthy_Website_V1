@@ -1,9 +1,15 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { getAllArticles, createArticle, deleteArticle, likeArticle, viewArticle, addCommentToArticle } from '../controllers/articles.controller.js';
 
 export const articlesRouter = Router();
 
-articlesRouter.get('/', getAllArticles);
+// Inline read cache middleware — only applied to GET (read-only)
+const cacheRead = (_req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=60');
+  next();
+};
+
+articlesRouter.get('/', cacheRead, getAllArticles);
 articlesRouter.post('/', createArticle);
 articlesRouter.delete('/:id', deleteArticle);
 articlesRouter.post('/:id/like', likeArticle);

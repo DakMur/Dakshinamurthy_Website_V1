@@ -254,7 +254,7 @@ export default function CosmicGalaxy({ isWarping }: GalaxyProps) {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-screen h-screen z-0 block pointer-events-none"
+      className="fixed top-0 left-0 w-screen h-screen z-0 block pointer-events-none transform-gpu"
       style={{ mixBlendMode: "screen" }} // Enforces transparent blending on top of background styles
     />
   );

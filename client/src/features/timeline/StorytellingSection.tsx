@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { Heart, MessageSquare, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Article, Comment } from "../../types/types";
@@ -29,7 +29,7 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain 
     }
   }, [selectedArticle]);
 
-  const handleSubmitComment = async (e: React.FormEvent) => {
+  const handleSubmitComment = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedArticle || !newComment.trim()) return;
     setCommentLoading(true);
@@ -53,9 +53,13 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain 
     } finally {
       setCommentLoading(false);
     }
-  };
+  }, [selectedArticle, newComment, authorName, authorEmail]);
 
-  const visibleArticles = articles.filter((a) => !a.hidden);
+  // Memoized visible articles list — only recomputes when articles prop changes
+  const visibleArticles = useMemo(
+    () => articles.filter((a) => !a.hidden),
+    [articles]
+  );
 
   return (
     <div className="space-y-24 py-12">
@@ -154,7 +158,7 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain 
 
       <AnimatePresence>
         {selectedArticle && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050505]/85 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#050505]/95">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -237,7 +241,7 @@ interface ArticleImageSlideshowProps {
   images: string[];
 }
 
-function ArticleImageSlideshow({ images }: ArticleImageSlideshowProps) {
+const ArticleImageSlideshow = memo(function ArticleImageSlideshow({ images }: ArticleImageSlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalImages = images.length;
   const nextSlide = () => setCurrentIndex((prev) => (prev === totalImages - 1 ? 0 : prev + 1));
@@ -279,4 +283,4 @@ function ArticleImageSlideshow({ images }: ArticleImageSlideshowProps) {
       <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-gold-vintage/30 transition-all duration-700 pointer-events-none z-10" />
     </div>
   );
-}
+});

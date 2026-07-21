@@ -44,6 +44,8 @@ export default function YoutubePlayer({ videoId, title }: YoutubePlayerProps) {
         <img
           src={thumbnailSrc}
           alt={title}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover"
         />
         {/* Subtle loading spinner overlay */}
@@ -63,6 +65,8 @@ export default function YoutubePlayer({ videoId, title }: YoutubePlayerProps) {
         alt=""
         onLoad={handleThumbnailLoad}
         onError={handleThumbnailError}
+        loading="lazy"
+        decoding="async"
         className="hidden"
       />
 

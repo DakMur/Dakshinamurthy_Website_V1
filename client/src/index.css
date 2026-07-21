@@ -49,19 +49,31 @@
 }
 
 /* Base resets & scroll behavior */
-html,
+html {
+  overscroll-behavior-y: none;
+}
+
 body {
   background-color: transparent;
   color: #ffffff;
-  overflow-x: hidden;
   font-family: var(--font-sans);
-  scroll-behavior: smooth;
+  touch-action: pan-y;
+}
+
+#root, main {
+  overflow-x: hidden;
 }
 
 /* Interactive spotlight hover background cursor styling */
 .spotlight-card {
   position: relative;
   overflow: hidden;
+  /* GPU layer promotion — isolates 3D tilt repaints from the scroll container */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Contain layout/paint changes within the card boundary */
+  contain: layout style;
 }
 
 .spotlight-card::before {

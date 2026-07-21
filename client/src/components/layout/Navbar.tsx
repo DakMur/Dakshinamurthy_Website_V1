@@ -33,7 +33,7 @@ export default function Navbar({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -50, opacity: 0 }}
           transition={{ duration: 0.6 }}
-          className="sticky top-0 z-30 w-full bg-black/40 backdrop-blur-md border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between relative"
+          className="sticky top-0 z-30 w-full bg-black/40 backdrop-blur-sm border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between relative"
         >
           <div
             className="flex items-center gap-3.5 cursor-pointer selection:bg-none"
@@ -93,6 +93,8 @@ export default function Navbar({
                 <img
                   src={currentUser.avatar}
                   alt={currentUser.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-8 h-8 rounded-full border border-gold-vintage/30 shadow-lg"
                   title="User Session Active"
                 />
@@ -121,6 +123,8 @@ export default function Navbar({
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
+                loading="lazy"
+                decoding="async"
                 className="w-7 h-7 rounded-full border border-gold-vintage/30 shadow-md"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               />
@@ -146,7 +150,7 @@ export default function Navbar({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="md:hidden absolute top-[100%] left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-2xl z-40 overflow-hidden flex flex-col px-6 py-6 space-y-5"
+                className="md:hidden absolute top-[100%] left-0 right-0 bg-[#08080a]/95 border-b border-white/10 shadow-2xl z-40 overflow-hidden flex flex-col px-6 py-6 space-y-5"
               >
                 <div className="flex flex-col space-y-2.5">
                   <span className="text-[9px] font-mono tracking-[0.4em] text-slate-500 uppercase ml-2 mb-1">Navigation Sectors</span>
@@ -182,6 +186,8 @@ export default function Navbar({
                         <img
                           src={currentUser.avatar}
                           alt={currentUser.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-8 h-8 rounded-full border border-gold-vintage/30"
                         />
                         <div>

@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import shankaracharyaImg from "../../assets/shankaracharya.png";
+import shankaracharyaImg from "../../assets/shankaracharya.webp";
 
 interface LandingPageProps {
   isWarping: boolean;
@@ -83,6 +83,8 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <img
               src={shankaracharyaImg}
               alt="Sree Adi Shankaracharya"
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-full object-cover object-[center_38%] scale-[1.12] filter grayscale-[5%] sepia-[10%] brightness-[92%] contrast-[105%] transition-all duration-700"
             />
           </div>

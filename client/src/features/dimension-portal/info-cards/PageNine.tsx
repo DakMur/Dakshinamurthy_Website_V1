@@ -73,6 +73,8 @@ export default function PageNine({ domain, allDomains = [], onNavigateToDomain }
           <img
             src={domain.image}
             alt={domain.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover filter brightness-45 scale-105"
           />
           {/* Dark glass overlays and energy rings */}

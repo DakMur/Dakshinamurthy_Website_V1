@@ -126,6 +126,8 @@ export default function ProjectSpotlight({ domain }: ProjectSpotlightProps) {
             alt={currentProject.projectTitle}
             onLoad={handleThumbnailLoad}
             onError={handleThumbnailError}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover filter brightness-75 group-hover/thumb:scale-105 transition-transform duration-500"
           />
 
@@ -145,6 +147,8 @@ export default function ProjectSpotlight({ domain }: ProjectSpotlightProps) {
             alt=""
             onLoad={handleThumbnailLoad}
             onError={handleThumbnailError}
+            loading="lazy"
+            decoding="async"
             className="hidden"
           />
         </button>

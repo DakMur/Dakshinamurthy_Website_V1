@@ -14,7 +14,7 @@ const parameters = {
   count: 180000,
   size: 0.025,
   radius: 11,
-  branches: 3,
+  branches: 4,
   spin: 0.9,
   randomnessPower: 1.8,
   insideColor: "#fffbe6",

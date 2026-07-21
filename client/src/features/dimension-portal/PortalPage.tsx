@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "motion/react";
 import DomainCard from "./components/DomainCard";
 import { DomainContent } from "../../types/types";
@@ -10,9 +11,10 @@ interface PortalPageProps {
 /**
  * PAGE 3: DOMAINS HUB (PORTALS)
  * Displays the 10 domain gateway cards in a responsive grid layout.
- * Extracted from App.tsx for modularity.
+ * Extracted from App.tsx for modularity. Memoized to avoid re-renders
+ * when parent analytics/state unrelated to domains updates.
  */
-export default function PortalPage({ domains, onSelectDomain }: PortalPageProps) {
+const PortalPage = memo(function PortalPage({ domains, onSelectDomain }: PortalPageProps) {
   return (
     <motion.div
       key="domains"
@@ -50,4 +52,6 @@ export default function PortalPage({ domains, onSelectDomain }: PortalPageProps)
       </div>
     </motion.div>
   );
-}
+});
+
+export default PortalPage;

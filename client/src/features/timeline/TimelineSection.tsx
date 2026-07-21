@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Compass, Flame, Leaf, Moon, Sparkles, Star, Sun } from "lucide-react";
 import { motion } from "motion/react";
 import { TimelineStep } from "../../types/types";
@@ -6,7 +7,7 @@ interface TimelineSectionProps {
   timeline: TimelineStep[];
 }
 
-export default function TimelineSection({ timeline }: TimelineSectionProps) {
+const TimelineSection = memo(function TimelineSection({ timeline }: TimelineSectionProps) {
   // Mapping beautiful icon states to different spiritual stages
   const getStageIcon = (stage: string) => {
     switch (stage) {
@@ -54,6 +55,7 @@ export default function TimelineSection({ timeline }: TimelineSectionProps) {
                 <motion.div
                   className="w-10 h-10 rounded-full bg-[#050505] border-2 border-gold-vintage flex items-center justify-center text-gold-vintage shadow-xl shadow-gold-vintage/15 relative"
                   whileHover={{ scale: 1.15, borderColor: "#fbbf24" }}
+                  style={{ willChange: "transform" }}
                 >
                   <Icon className="w-5 h-5 animate-pulse" />
                   <span className="absolute -inset-2 rounded-full border border-gold-vintage/20 animate-ping opacity-60" />
@@ -115,4 +117,6 @@ export default function TimelineSection({ timeline }: TimelineSectionProps) {
       </div>
     </div>
   );
-}
+});
+
+export default TimelineSection;

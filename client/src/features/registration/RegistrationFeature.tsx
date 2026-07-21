@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import RegistrationGate from "./components/RegistrationGate";
 import RegistrationForm from "./components/RegistrationForm";
 import TeamDashboard from "./components/TeamDashboard";
-import AdminControlPanel from "./components/AdminControlPanel";
+// Admin panel is lazy — only fetched when admin bypass is triggered
+const AdminControlPanel = lazy(() => import("./components/AdminControlPanel"));
 import { Team, RegistrationConfig } from "../../types/types";
 
 interface RegistrationFeatureProps {
@@ -101,12 +102,18 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
 
         {view === 'admin' && (
           <motion.div key="admin" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-            <AdminControlPanel 
-              {...props}
-              config={config}
-              onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}
-              onLogout={handleLogout}
-            />
+            <Suspense fallback={
+              <div className="flex items-center justify-center min-h-[40vh]">
+                <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+              </div>
+            }>
+              <AdminControlPanel 
+                {...props}
+                config={config}
+                onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}
+                onLogout={handleLogout}
+              />
+            </Suspense>
           </motion.div>
         )}
       </AnimatePresence>
