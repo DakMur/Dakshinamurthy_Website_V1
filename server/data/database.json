@@ -442,13 +442,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 49,
-      "storytelling": 19,
-      "domains": 15,
-      "flow": 11,
+      "home": 70,
+      "storytelling": 32,
+      "domains": 27,
+      "flow": 12,
       "admin": 12
     },
-    "totalInteractions": 706,
+    "totalInteractions": 753,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {

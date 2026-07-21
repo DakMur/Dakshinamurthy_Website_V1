@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BookOpen, Compass, ArrowRight, Play, Square } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { DomainContent } from "../../../types/types";
+import ProjectSpotlight from "../components/ProjectSpotlight";
 
 interface InfoCardProps {
   domain: DomainContent;
@@ -98,10 +99,7 @@ export default function PageFive({ domain, allDomains = [], onNavigateToDomain }
           </div>
         </div>
         <div className="space-y-6">
-          <div className="p-5 rounded-2xl glass-panel border-white/10 space-y-4">
-            <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">Visual geometry matrix</h4>
-            <div className="grid grid-cols-2 gap-2">{images.map((img, idx) => (<div key={idx} className="rounded-lg overflow-hidden h-24 relative group cursor-pointer border border-white/5"><img src={img} alt="Cosmic illustration" className="w-full h-full object-cover filter brightness-75 group-hover:scale-110 transition-transform duration-500" /><div className="absolute inset-0 bg-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" /></div>))}</div>
-          </div>
+          <ProjectSpotlight domain={domain} />
                     {/* Portal Navigation */}
           {allDomains && allDomains.length > 0 && (() => {
             const currentIndex = allDomains.findIndex(d => d.id === domain.id);
