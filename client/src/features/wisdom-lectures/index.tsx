@@ -142,10 +142,10 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     }}
                     className="px-6 py-2.5 rounded-full border border-gold-vintage/35 hover:border-gold-bright bg-gold-vintage/5 hover:bg-gold-vintage/10 text-xs font-mono font-semibold tracking-widest text-gold-vintage transition-all cursor-pointer"
                   >
-                    {article.id === "a1" ? "READ CHAPTER" : (article.id === "a2" || article.id === "a3") ? "EXPLORE NOW" : "READ TIMELINE TEXT"}
+                    {article.actionText || "READ LECTURE"}
                   </button>
 
-                  {article.id !== "a1" && article.id !== "a2" && article.id !== "a3" && (
+                  {!article.hideMeta && (
                     <button
                       onClick={() => onExploreDomain(article.domainSlug)}
                       className="flex items-center gap-1.5 text-xs font-mono hover:text-gold-vintage text-slate-400 transition-colors uppercase cursor-pointer"
@@ -155,7 +155,7 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     </button>
                   )}
 
-                  {article.id !== "a1" && article.id !== "a2" && article.id !== "a3" && (
+                  {!article.hideMeta && (
                     <div className="ml-auto flex items-center gap-4 text-xs text-slate-500 mr-2">
                       <button
                         onClick={() => onLike(article.id)}

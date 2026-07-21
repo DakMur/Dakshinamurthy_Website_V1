@@ -13,14 +13,14 @@
     {
       "id": "d1",
       "slug": "meditation",
-      "title": "ĀTMA PRATIBIMBA",
-      "subtitle": "The silence that speaks louder than words",
-      "icon": "Compass",
-      "summary": "Explore the depths of meditation through ancient Vedantic practices and modern neuroscience discoveries.",
+      "title": "Ātma Pratibimba",
+      "subtitle": "Who Am I? And What Is This World?",
+      "icon": "Eye",
+      "summary": "The world reflects consciousness, and liberation comes through realizing the Self alone is real.",
       "description": "Imagine putting on a virtual reality headset so immersive that you completely forget you are wearing it. The digital world feels external, independent, and real. Verse 1 suggests that ordinary experience operates in a similar way. The universe appears outside us, separate from who we are, yet every sight, sound, thought, and emotion is known only through consciousness. Just as a city reflected in a mirror seems distinct from the mirror itself, or a dream appears real until awakening, the world appears separate through the power of Māyā. The First Tattva invites us to investigate a profound question: Is consciousness inside the world, or is the world appearing within consciousness? True awakening begins when one recognizes the Self as the unchanging reality behind all experience.",
       "quote": "Viśvaṁ darpaṇa-dṛśyamāna-nagarī-tulyaṁ nijāntargataṁ paśyannātmani māyayā bahirivodbhūtaṁ yathā nidrayā; yaḥ sākṣāt kurute prabodha-samaye svātmānam evādvayaṁ tasmai śrī-gurumūrtaye nama idaṁ śrī-dakṣiṇāmūrtaye.",
       "quoteAuthor": "Dakṣiṇāmūrti Stotram",
-      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=800",
+      "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=1200",
       "practiceTitle": "Transcendental Breathing Loop",
       "practiceSteps": [
         "Find a comfortable posture, spine aligned like a lightning rod of energy.",
@@ -31,92 +31,21 @@
       ],
       "energyIndicator": "1st Tattva",
       "relatedSlugs": [
-        "sacred-geometry",
-        "cosmic-philosophy"
+        "mindfulness",
+        "divine-energy"
       ]
     },
     {
       "id": "d2",
-      "slug": "sacred-geometry",
-      "title": "JAGAD BĪJĀṄKURA",
-      "subtitle": "The mathematical language of the cosmos",
-      "icon": "Star",
-      "summary": "Discover how geometric patterns form the invisible architecture of consciousness and creation.",
-      "description": "Sacred Geometry reveals the hidden mathematical order underlying all of creation. From the spiral of galaxies to the structure of DNA, from the petals of a flower to the vibrations of sound — geometric patterns form the invisible architecture of the universe. In the Vedic tradition, these patterns are understood as the visual language through which Brahman manifests the physical world.",
-      "quote": "Geometry is the archetype of the beauty of the world.",
-      "quoteAuthor": "Johannes Kepler",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Mandala Visualization",
-      "practiceSteps": [
-        "Sit comfortably and gaze at a geometric mandala pattern",
-        "Allow your eyes to soften and your vision to become peripheral",
-        "Notice the patterns emerging and dissolving",
-        "Feel the geometric harmony resonating within your body"
-      ],
-      "energyIndicator": "Crystalline Matrix",
-      "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
-      ]
-    },
-    {
-      "id": "d3",
-      "slug": "cosmic-philosophy",
-      "title": "SPHURAṆA JYOTI",
-      "subtitle": "Understanding the fabric of reality itself",
-      "icon": "Flame",
-      "summary": "Journey through the philosophical frameworks that explain consciousness, reality, and the nature of existence.",
-      "description": "Cosmic philosophy analyzes the evolutionary trajectory of spark-conscious systems migrating from densest material configurations back into high-frequency primeval source union.",
-      "quote": "Science without religion is lame, religion without science is blind.",
-      "quoteAuthor": "Albert Einstein",
-      "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Divine Law Contemplation",
-      "practiceSteps": [
-        "Dwell deeply on the concept of eternal return and karmic balancing equations.",
-        "Permit any local injustice or linear frustration to be neutralized by cosmic balance.",
-        "Surrender your local timeline into the hands of the Great Spiritual Ordinance."
-      ],
-      "energyIndicator": "Cosmodrome Law",
-      "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
-      ]
-    },
-    {
-      "id": "d4",
-      "slug": "ancient-wisdom",
-      "title": "ANTAR JYOTI",
-      "subtitle": "The eternal scriptures that light the path",
-      "icon": "BookOpen",
-      "summary": "Study the timeless teachings of the Upanishads, Bhagavad Gita, and Brahma Sutras.",
-      "description": "The ancient wisdom texts of India represent humanity's most profound exploration of consciousness and reality. The Prasthanatrayi — the triple canon of Vedanta consisting of the Upanishads, the Bhagavad Gita, and the Brahma Sutras — forms the philosophical foundation upon which Sri Adi Shankaracharya built his revolutionary commentary.",
-      "quote": "Tat Tvam Asi — Thou Art That.",
-      "quoteAuthor": "Chandogya Upanishad",
-      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Scriptural Contemplation",
-      "practiceSteps": [
-        "Choose a single verse from the Upanishads",
-        "Read it slowly three times, absorbing each word",
-        "Close your eyes and contemplate its meaning",
-        "Journal any insights that arise from the contemplation"
-      ],
-      "energyIndicator": "Eternal Resonance",
-      "relatedSlugs": [
-        "cosmic-philosophy",
-        "meditation"
-      ]
-    },
-    {
-      "id": "d5",
       "slug": "yoga",
-      "title": "MĀYĀ ŚAKTI VILĀSA",
-      "subtitle": "Path of connection",
-      "icon": "Activity",
-      "summary": "Explore the profound depths of Yoga & Union and its role in the cosmic journey.",
+      "title": "JAGAD BĪJĀṄKURA",
+      "subtitle": "Like a Sprout Within a Seed, the Universe Unfolds",
+      "icon": "Sprout",
+      "summary": "The universe unfolds from blissful consciousness and appears diverse through māyā.",
       "description": "The whole universe emerged from Dakshinamurty i.e. consciousness, just as a large fig tree emerges from a small seed. Though the tree emerged from the seed, it can not be found in the seed in the variegated form of the tree. One therefore has to admit that the tree was in an unmanifest form in the seed, devoid of any characteristics such as branches, leaves etc.\n\nSimilarly, the world was initially in a state called 'nirvikalpa' or devoid of all characteristics, and was in a form of pure bliss that is not definable by words or thinkable by thought. Then, by the power of maaya, the illusory world of names and forms, and space-time diversity was concocted. This world was created by Dakshinamurty by his own will, similar to how a magician creates illusory objects, or how a great Yogi manifests objects using only the power of his own mind.",
       "quote": "Bījasya-antar-ivāṅkuro jagad-idaṁ prāṅ-nirvikalpaṁ punaḥ māyā-kalpita-deśa-kāla-kalanā-vaicitrya-citrī-kṛtam | māyāvīva vijṛmbhayaty-api mahā-yogīva yaḥ svecchayā tasmai śrī-gurumūrtaye nama idaṁ śrī-dakṣiṇāmūrtaye ||",
       "quoteAuthor": "Dakṣiṇāmūrti Stotram",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1200",
       "practiceTitle": "Bīja-Aṅkura Contemplation",
       "practiceSteps": [
         "Visualize a tiny, silent seed resting in the dark soil of pure consciousness, containing the potential of a massive, ancient tree.",
@@ -127,21 +56,20 @@
       "energyIndicator": "2nd Tattva",
       "relatedSlugs": [
         "meditation",
-        "ancient-wisdom"
-      ],
-      "translation": "Just as a sprout is latent within a seed, this universe was unmanifest prior to creation, and was later made variegated with space, time, and form by the power of Māyā. To Him who, like a magician or a great Yogi, projects this world by His own will—to that Sri Dakshinamurti, in the form of the divine Guru, I offer my salutations."
+        "divine-energy"
+      ]
     },
     {
-      "id": "d6",
+      "id": "d3",
       "slug": "mindfulness",
-      "title": "MĀYĀ ĀVARAṆA VILĀSA",
-      "subtitle": "Present moment awareness",
-      "icon": "Eye",
-      "summary": "Explore the profound depths of Mindfulness and its role in the cosmic journey.",
+      "title": "SPHURAṆA JYOTI",
+      "subtitle": "The Light Behind Every Experience",
+      "icon": "Sun",
+      "summary": "Liberation arises by realizing the Self and bliss are one.",
       "description": "Imagine entering a dark room filled with objects. The moment a lamp is switched on, everything becomes visible—not because the lamp creates the objects, but because it illuminates them. Verse 3 suggests that consciousness functions in the same way. Every thought, emotion, memory, sensation, and perception appears only because it is illuminated by awareness. We spend our lives studying the contents of experience while overlooking the light that makes experience possible. Science can explain how the eyes receive light and how the brain processes information, yet a deeper mystery remains: what is it that knows these perceptions? The Third Tattva invites us to recognize consciousness as the silent illuminator behind every experience. Just as a holographic image depends on an unseen light source, the entire universe of experience depends on awareness, which reveals everything while remaining unchanged itself.",
       "quote": "yasyaiva sphuraṇaṁ sadātmakam asat-kalpārthakaṁ bhāsate sākṣāt tat tvam asīti veda-vacasā yo bodhayaty āśritān | yat-sākṣāt-karaṇād bhaven na punar āvṛttir bhavāmbhonidhau tasmai śrī-gurumūrtaye nama idaṁ śrī-dakṣiṇāmūrtaye ||",
       "quoteAuthor": "Dakṣiṇāmūrti Stotram",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+      "image": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80&w=1200",
       "practiceTitle": "Sphuraṇa Jyoti Contemplation",
       "practiceSteps": [
         "Reflect on the core insight: Consciousness is the light through which all experiences become known. Without awareness, no thought, sensation, or perception could ever arise.",
@@ -153,29 +81,94 @@
       "energyIndicator": "3rd Tattva",
       "relatedSlugs": [
         "meditation",
-        "ancient-wisdom"
+        "yoga"
+      ]
+    },
+    {
+      "id": "d4",
+      "slug": "consciousness-within",
+      "title": "ANTAR JYOTI",
+      "subtitle": "Discovering the Silent Power Within",
+      "icon": "Lightbulb",
+      "summary": "Consciousness, like light inside a pot, is the hidden force within the body that enables all perception and action.",
+      "description": "Just as a hidden lamp reveals its presence through rays shining from a pot's openings, pure consciousness reveals itself through the activities of the body and senses. The eyes do not see, nor do the ears hear by themselves; they function only because they are illumined by the inner light of awareness. This ever-present consciousness, distinct from body and mind, is Dakshinamurty—the silent witness by whose presence all knowledge, perception, and action arise.",
+      "quote": "The senses shine because consciousness shines.",
+      "quoteAuthor": "Dakshinamurty Contemplation",
+      "image": "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&q=80&w=1200",
+      "practiceTitle": "Contemplation of the Inner Light",
+      "practiceSteps": [
+        "Observe the activity of the senses as they engage with the external world.",
+        "Reflect upon the silent awareness that illumines every perception and thought.",
+        "Rest in the recognition that this inner consciousness is Dakshinamurty within."
       ],
-      "translation": "That whose mere shining, being of the nature of existence, makes the unreal appear as real; who instructs seekers through the Vedic declaration 'Thou Art That' (Tat Tvam Asi); and by whose direct realization there is no return to the ocean of worldly existence — to that Sri Dakshinamurti, in the form of the divine Guru, I offer my salutations."
+      "energyIndicator": "4th Tattva",
+      "relatedSlugs": [
+        "self-inquiry",
+        "silent-witness"
+      ]
+    },
+    {
+      "id": "d5",
+      "slug": "v-tattva",
+      "title": "MĀYĀ ŚAKTI VILĀSA",
+      "subtitle": "Why the Mind, the Breath, and the Void are Not You",
+      "icon": "Atom",
+      "summary": "Suffering arises from falsely identifying the Self with the body and mind, and true knowledge destroys this ignorance.",
+      "description": "Put on a robotic exoskeleton long enough, and your brain starts believing the machine is part of you. Strike the robot's hand, and you instinctively flinch. Verse 5 says this is exactly what has happened with your body and mind. Pure consciousness has become so deeply identified with its biological suit that it mistakes the body's pain, the mind's fears, and the senses' limitations for its own. The body gets tired. The mind gets anxious. Thoughts come and go. Yet the awareness observing all of them remains unchanged. Suffering begins when the observer forgets itself and becomes the experience. The Fifth Tattva is the discovery that you are not the suit,you are the one wearing it.",
+      "quote": "Dehaṁ prāṇamapīndriyāṇyapi calāṁ buddhiṁ ca śūnyaṁ viduḥ, strībālandhajaḍopamāstvahami-ti bhrāntā bhṛśaṁ vādinaḥ; Māyāśaktivilāsakalpitamahāvyāmohasaṁhāriṇe, tasmai śrīgurumūrtaye nama idaṁ śrīdakṣiṇāmūrtaye.",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
+      "practiceSteps": [
+        "Observe a physical sensation or emotional wave as it rises, treating it completely like an external notification on a device.",
+        "Silently isolate the witness: strip away the labels 'I am in pain' or 'I am sad' and reframe it as 'The biological vehicle is experiencing this trajectory'.",
+        "Retract your identity fully from the sensor feedback loop of the mind-body complex, anchoring back into the unchanging observer."
+      ],
+      "energyIndicator": "5th Tattva",
+      "relatedSlugs": [
+        "sacred-geometry",
+        "cosmic-philosophy"
+      ]
+    },
+    {
+      "id": "d6",
+      "slug": "susupti-rahasya",
+      "title": "MĀYĀ ĀVARAṆA VILĀSA",
+      "subtitle": "The Mystery of Deep Sleep and Awareness",
+      "icon": "Heart",
+      "summary": "Deep sleep reveals the blissful Self hidden behind ignorance.",
+      "description": "Every night, reality performs a strange experiment. The world disappears. Your ambitions disappear. Your fears disappear. Even the voice in your head falls silent. Yet when morning arrives, you do not say, 'I ceased to exist.' Instead, you say, 'I slept well.' Verse 6 invites us to investigate this overlooked miracle. If the mind was absent and the senses withdrawn, who knew the peace of sleep? The sages compare this mystery to a solar eclipse. The sun appears hidden, but it has not vanished. In the same way, consciousness seems absent in deep sleep only because it is veiled by māyā. The Sixth Tattva reveals that awareness is not dependent on thought, memory, or perception. It remains silently present through waking, dream, and deep sleep—the unchanging witness behind every experience.",
+      "quote": "Rāhugrasta divākarendu sadṛśo māyā samācchādanāt sanmātraḥ karaṇopasaṃharaṇato yo'bhūtsuṣuptaḥ pumān | prāgasvāpsamiti prabodhasamaye yaḥ pratyabhijñāyate tasmai śrī gurumūrtaye nama idaṃ śrī dakṣiṇāmūrtaye",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
+      "image": "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=1200",
+      "practiceTitle": "Witnessing Deep Sleep",
+      "practiceSteps": [
+        "Before sleep, contemplate: What remains when the mind falls silent?",
+        "Upon waking, reflect on the thought 'I slept well' and investigate who recognized that experience.",
+        "Observe awareness as the constant presence that remains through waking, dream, and deep sleep."
+      ],
+      "energyIndicator": "6th Tattva",
+      "relatedSlugs": [
+        "mindfulness",
+        "ancient-wisdom"
+      ]
     },
     {
       "id": "d7",
-      "slug": "spiritual-science",
+      "slug": "svatma-prakasha",
       "title": "SVĀTMĀ PRAKAṬĪKARAṆA",
-      "subtitle": "Where science meets spirit",
-      "icon": "Microscope",
-      "summary": "Explore the profound depths of Spiritual Science and its role in the cosmic journey.",
-      "description": "Spiritual Science is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
+      "subtitle": "The Self-Revealing Nature of Consciousness",
+      "icon": "Sun",
+      "summary": "The unchanging Self remains present through all states of experience.",
+      "description": "You are Consciousness. There are various states of experience – Waking, dream, deep sleep etc. There are other experiences throughout life from childhood, youth to adulthood. The One who knows your mind now and when you were one month old is the same. Body is not the same, mind is not the same. But the Consciousness by which your one month old experience was known and the Consciousness by which todays experience is known, is exactly the same. In all these states there is something shining within that is always present. This Consciousness which is the real YOU persists through all stages – Pre natal, childhood, youth, adult and in all states of mind – waking, dreaming, deep sleep – how do we come to understand this?",
+      "quote": "bālyādiṣvapi jāgradādiṣu tathā sarvāsvavasthāsvapi\nvyāvṛttā svanu vartamāna mahamityantaḥ sphurantaṃ sadā ।\nsvātmānaṃ prakaṭīkarōti bhajatāṃ yō mudrayā bhadrayā\ntasmai śrī gurumūrtayē nama idaṃ śrī dakṣiṇāmūrtayē ॥ 7 ॥",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
+      "image": "/tattva_7_chinmudra.png",
+      "practiceTitle": "The Chinmudra Revelation",
       "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
+        "Observe that your consciousness is self-established and self-revealing; your existence is self-evident and not a product of logical thinking.",
+        "Investigate the changeless witness that knows your mind now and when you were a child, recognizing that the observing Consciousness remains exactly the same.",
+        "Contemplate the Chinmudra (the auspicious hand gesture) as the silent reveal of your non-separateness from the absolute Reality."
       ],
-      "energyIndicator": "Resonant Field",
+      "energyIndicator": "7th Tattva",
       "relatedSlugs": [
         "meditation",
         "ancient-wisdom"
@@ -183,74 +176,71 @@
     },
     {
       "id": "d8",
-      "slug": "conscious-living",
+      "slug": "karya-karana-sambandha",
       "title": "KĀRYAKĀRAṆA SAMBANDHA",
-      "subtitle": "Living with intention",
-      "icon": "Heart",
-      "summary": "Explore the profound depths of Conscious Living and its role in the cosmic journey.",
-      "description": "Conscious Living is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
+      "subtitle": "The Illusion of Cause, Effect, and Relational Diversity",
+      "icon": "BookOpen",
+      "summary": "Through māyā, the one Self appears as many forms and relations.",
+      "description": "Just as the same person is a father to his son, son to his father, teacher to his student, student to his teacher, servant to his master and master to his servant, and just as the same entity is deemed to be the cause and the effect, the same Self is seen as many and relationships are superimposed due to the illusory power of maaya. This Self who is Dakshinamurty Himself, appears to be the deluded one going through various changes in the states of waking and dreaming. To that Dakshinamurty I offer my namaskara by means of this contemplation.",
+      "quote": "Viśvaṁ paśyati kāryakāraṇatayā svasvāmisambandhataḥ śiṣyācāryatayā tathaiva pitṛputrādyātmanā bhedataḥ | svapne jāgṛti vā ya eṣa puruṣo māyāparibhrāmitaḥ tasmai śrīgurumūrtaye nama idaṁ śrīdakṣiṇāmūrtaye ||",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
+      "image": "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?auto=format&fit=crop&q=80&w=1200",
+      "practiceTitle": "Contemplation of Relational Projection",
       "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
+        "Observe the relationships in your life—parent, child, teacher, student—and see how one entity takes on multiple reciprocal roles depending on context.",
+        "Contemplate the nature of cause and effect: trace any physical object back to its cause, and notice that the cause and effect are ultimately the same substance (like clay and pot).",
+        "Reflect on the waking and dreaming states, recognizing that the one who experiences both states remains the same, untouched by the shifting states of consciousness."
       ],
-      "energyIndicator": "Resonant Field",
+      "energyIndicator": "8th Tattva",
       "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
+        "ancient-wisdom",
+        "universal-consciousness"
       ]
     },
     {
       "id": "d9",
-      "slug": "divine-energy",
+      "slug": "bhuta-brahmanda-aikya",
       "title": "BHŪTA BRAHMĀṆḌA AIKYA",
-      "subtitle": "The flow of prana",
-      "icon": "Zap",
-      "summary": "Explore the profound depths of Divine Energy and its role in the cosmic journey.",
-      "description": "Divine Energy is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
+      "subtitle": "The Body as a Reflection of the Cosmos",
+      "icon": "Globe",
+      "summary": "Meditation reveals the body, cosmos, and consciousness as one.",
+      "description": "Astronauts looking at Earth from space often describe a profound shift in perception. National borders disappear, and what seemed separate from the ground is revealed as one interconnected system of oceans, mountains, atmosphere, and life. Verse 9 invites a similar transformation of vision. The earth beneath our feet, the water in rivers, the fire of the sun, the air we breathe, and the vastness of space are not merely outside us—they exist within us as the very elements of our body and experience. By contemplating these shared elements in both the cosmos and ourselves, we begin to see that the individual is not isolated from the universe but a living expression of it. The Ninth Tattva reveals that the same consciousness pervades both the body and the cosmos, appearing as many forms while remaining one reality.",
+      "quote": "Bhūrambhāṁsyanalo'nilo'mbaramaharnātho himāṁśuḥ pumān, ityābhāti carācarātmakam idaṁ yasyaiva mūrtyaṣṭakam; nānyat kiñcana vidyate vimṛśatāṁ yasmāt parasmād vibhoḥ, tasmai śrīgurumūrtaye nama idaṁ śrīdakṣiṇāmūrtaye.",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
+      "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&q=80&w=1200",
+      "practiceTitle": "Vibrational Shift Affirmation",
       "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
+        "Identify a negative or polarizing thought currently disturbing your mental axis.",
+        "Find its exact positive polarization (e.g., Fear to Courage, Anger to Compassion).",
+        "Focus exclusively on the highest pole, letting the lower one dissolve naturally."
       ],
-      "energyIndicator": "Resonant Field",
+      "energyIndicator": "9th Tattva",
       "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
+        "scriptures",
+        "cosmic-philosophy"
       ]
     },
     {
       "id": "d10",
-      "slug": "sacred-scriptures",
+      "slug": "universal-consciousness",
       "title": "SARVĀTMATVA SPHUṬĪKARAṆA",
-      "subtitle": "Words of the masters",
-      "icon": "Book",
-      "summary": "Explore the profound depths of Sacred Scriptures and its role in the cosmic journey.",
-      "description": "Sacred Scriptures is an integral part of the spiritual path. It teaches us to align our physical and energetic bodies with the universal frequencies.",
-      "quote": "The journey of a thousand miles begins with a single step.",
-      "quoteAuthor": "Lao Tzu",
-      "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
-      "practiceTitle": "Centering Practice",
+      "subtitle": "The State of Being the Self of All",
+      "icon": "Globe",
+      "summary": "Realizing all as the Self brings liberation and inherent powers.",
+      "description": "This final verse functions as the Phala Śruti (description of the fruits of study). While likely appended to the stotram later—given its structural departure from the preceding nine verses—it holds profound pedagogical value. For seekers struggling with worldly affairs, the promise of the eight-fold occult powers (Ashta Siddhis) acts as a powerful catalyst—a divine 'bait-and-switch.' It meets seekers at the level of worldly aspiration. Yet, as the practice of listening (Shravaṇa), contemplation (Manana), and meditation (Dhyāna) deepens, we recognize that no amount of worldly power can ever bring complete completion. The true fruit of this stotram is not control over the external world, but the realization of Sarvātmatvam—the state of being the Self of all—which reveals the entire universe as your own luminous expansion.",
+      "quote": "sarvātmatvamiti sphuṭīkṛtamidaṃ yasmādamuṣmin stavē\ntēnāsva śravaṇāttadartha mananāddhyānāchcha saṅkīrtanāt ।\nsarvātmatva mahāvibhūtisahitaṃ syādīśvaratvaṃ svataḥ\nsiddhyēttatpunaraṣṭdhā pariṇataṃ chaiśvarya-mavyāhatam ॥ 10 ॥",
+      "quoteAuthor": "Dakṣiṇāmūrti Stotram",
+      "image": "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?auto=format&fit=crop&q=80&w=1200",
+      "practiceTitle": "Sarvātmatva Contemplation",
       "practiceSteps": [
-        "Find a quiet place",
-        "Focus on your breath",
-        "Allow your thoughts to pass like clouds",
-        "Return to the present moment"
+        "Reflect on the 'divine bait-and-switch': recognize that while worldly powers (Aishwarya) attract the mind, absolute happiness lies only in realizing your non-separateness from the whole.",
+        "Practice the four-fold path of absorption: listen to the sacred teachings (Shravaṇa), logically contemplate their truth (Manana), meditate on the silent witness (Dhyāna), and express/recite the non-dual reality (Saṅkīrtana).",
+        "Rest in the realization of Sarvātmatvam—the state of being the Self of all—where the boundary between the observer and the observed is completely dissolved."
       ],
-      "energyIndicator": "Resonant Field",
+      "energyIndicator": "10th Tattva",
       "relatedSlugs": [
-        "meditation",
-        "ancient-wisdom"
+        "scriptures",
+        "meditation"
       ]
     }
   ],
@@ -277,8 +267,7 @@
       "image": "/ArticleImages/dakshinamurthy-a2.jpg",
       "headerLabel": "SEEK WISDOM",
       "actionText": "EXPLORE NOW",
-      "hideMeta": true,
-      "likes": 0
+      "hideMeta": true
     },
     {
       "id": "a3",
@@ -324,20 +313,6 @@
       "actionText": "Explore Now",
       "headerLabel": "UPCOMING EVENT",
       "hideMeta": true
-    },
-    {
-      "id": "a6",
-      "hidden": true,
-      "domainSlug": "ancient-wisdom",
-      "title": "The Seven Hermetic Principles of Hermes",
-      "subtitle": "Understanding the ancient laws governing global experience",
-      "content": "In ancient Egypt, before the pharaohs built the pyramids, Hermes Trismegistus passed down the foundational laws of the cosmos. These laws, preserved in the esoteric texts of the Kybalion, govern all creations without exception.\n\nThe first law is Mentalism: 'The All is Mind; the Universe is Mental.' Everything we see, hear, or experience is a conceptual matrix within the divine cosmic consciousness. When you change your mental blueprint, you completely shift the physical canvas reflecting back at you.\n\nThe other laws—Correspondence, Vibration, Polarity, Rhythm, Cause & Effect, and Gender—work in absolute unison. By aligning your spiritual acts with these laws, you stop fighting the cosmic flow. You become the conscious co-creator, pulling spiritual currents down into material forms with fluid accuracy.",
-      "author": "Aelius Hermes",
-      "readTime": "9 min read",
-      "image": "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=800",
-      "date": "Feb 10, 2026",
-      "likes": 0,
-      "views": 0
     }
   ],
   "timeline": [
@@ -467,13 +442,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 88,
-      "storytelling": 41,
-      "domains": 16,
-      "flow": 17,
-      "admin": 31
+      "home": 49,
+      "storytelling": 19,
+      "domains": 15,
+      "flow": 11,
+      "admin": 12
     },
-    "totalInteractions": 793,
+    "totalInteractions": 706,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {
