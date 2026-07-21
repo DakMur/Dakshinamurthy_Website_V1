@@ -17,6 +17,7 @@ import TimelineSection from "./features/timeline/TimelineSection";
 import RegistrationFeature from "./features/registration/RegistrationFeature";
 import { useDatabase } from "./hooks/useDatabase";
 import { User, DomainContent } from "./types/types";
+import WarpTransition from "./features/loading-main/WarpTransition";
 
 export default function App() {
   // Navigation Route state
@@ -132,20 +133,12 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen text-white selection:bg-gold-vintage selection:text-black overflow-hidden font-sans bg-[#000000] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black">
-      
+
       {/* Absolute Base Layer: Interactive 3D Cosmic Model */}
       <CosmicGalaxy isWarping={isWarping} />
 
       {/* Dynamic Flash White-out Layer for hyperspace zoom terminal */}
-      <AnimatePresence>
-        {isWarping && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.3, 0.95, 1, 0], transition: { duration: 2.4, times: [0, 0.5, 0.85, 0.95, 1] } }}
-            className="fixed inset-0 z-50 bg-white pointer-events-none"
-          />
-        )}
-      </AnimatePresence>
+      <WarpTransition isWarping={isWarping} />
 
       {/* 2. Top Navigation Bar (Hidden during full Landing Page 1 layout) */}
       <Navbar
@@ -163,7 +156,7 @@ export default function App() {
       {/* 3. Primary visual containers and layouts */}
       <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-12 flex flex-col justify-center min-h-[calc(100vh-80px)]">
         <AnimatePresence mode="wait">
-          
+
           {/* PAGE 1: COSMIC LANDING EXPERIENCE */}
           {route === "landing" && (
             <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
