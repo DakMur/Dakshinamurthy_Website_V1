@@ -6,6 +6,10 @@ import { DomainContent } from "../../types/types";
 interface PortalPageProps {
   domains: DomainContent[];
   onSelectDomain: (domain: DomainContent) => void;
+  loadDomains?: () => void;
+}
+
+/**
 }
 
 /**
@@ -14,7 +18,16 @@ interface PortalPageProps {
  * Extracted from App.tsx for modularity. Memoized to avoid re-renders
  * when parent analytics/state unrelated to domains updates.
  */
-const PortalPage = memo(function PortalPage({ domains, onSelectDomain }: PortalPageProps) {
+import { useEffect } from "react";
+import { FALLBACK_DOMAINS } from "../../hooks/useDatabase";
+
+const PortalPage = memo(function PortalPage({ domains, onSelectDomain, loadDomains }: PortalPageProps) {
+  useEffect(() => {
+    if (loadDomains) loadDomains();
+  }, [loadDomains]);
+
+  const activeDomains = domains && domains.length > 0 ? domains : FALLBACK_DOMAINS;
+
   return (
     <motion.div
       key="domains"
@@ -37,8 +50,9 @@ const PortalPage = memo(function PortalPage({ domains, onSelectDomain }: PortalP
       </div>
 
       {/* Spotlight Cards Grids */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 select-none">
-        {domains.map((dom, index) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 select-none"
+        style={{ contain: "content" }}>
+        {activeDomains.map((dom, index) => {
           const gridClass = index === 8 ? "md:col-start-2" : "";
           return (
             <DomainCard

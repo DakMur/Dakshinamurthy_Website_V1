@@ -1,13 +1,27 @@
-import { memo } from "react";
-import { Compass, Flame, Leaf, Moon, Sparkles, Star, Sun } from "lucide-react";
+import { memo, useEffect } from "react";
+import Compass from 'lucide-react/dist/esm/icons/compass';
+import Flame from 'lucide-react/dist/esm/icons/flame';
+import Leaf from 'lucide-react/dist/esm/icons/leaf';
+import Moon from 'lucide-react/dist/esm/icons/moon';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
+import Star from 'lucide-react/dist/esm/icons/star';
+import Sun from 'lucide-react/dist/esm/icons/sun';
 import { motion } from "motion/react";
 import { TimelineStep } from "../../types/types";
+import { FALLBACK_TIMELINE } from "../../hooks/useDatabase";
 
 interface TimelineSectionProps {
   timeline: TimelineStep[];
+  loadTimeline?: () => void;
 }
 
-const TimelineSection = memo(function TimelineSection({ timeline }: TimelineSectionProps) {
+const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }: TimelineSectionProps) {
+  useEffect(() => {
+    if (loadTimeline) loadTimeline();
+  }, [loadTimeline]);
+
+  const activeTimeline = timeline && timeline.length > 0 ? timeline : FALLBACK_TIMELINE;
+
   // Mapping beautiful icon states to different spiritual stages
   const getStageIcon = (stage: string) => {
     switch (stage) {
@@ -37,7 +51,7 @@ const TimelineSection = memo(function TimelineSection({ timeline }: TimelineSect
 
       {/* Timeline Steps Loop */}
       <div className="space-y-20 md:space-y-28 relative">
-        {timeline.map((step, idx) => {
+        {activeTimeline.map((step, idx) => {
           const Icon = getStageIcon(step.stage);
           const isRight = idx % 2 === 0;
 

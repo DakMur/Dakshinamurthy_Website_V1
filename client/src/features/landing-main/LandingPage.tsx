@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
 import jyothyLogo from "../../assets/jyothy_logo.jpg";
 import sringeriLogo from "../../assets/sringeri_logo.jpg";

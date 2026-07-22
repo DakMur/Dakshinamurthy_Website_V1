@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Play, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import Play from 'lucide-react/dist/esm/icons/play';
+import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left';
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import { DomainContent } from "../../../types/types";
 import { getProjectsForDomain, TattvaProject } from "../../../data/tattvaProjects";
 import ProjectOverlay from "./ProjectOverlay";

@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
-import {
-  Settings, Users, BookOpen, Quote as QuoteIcon, MessageSquare,
-  BarChart, Plus, Trash2, Edit2, Key, HelpCircle, RefreshCcw
-} from "lucide-react";
+import Settings from 'lucide-react/dist/esm/icons/settings';
+import Users from 'lucide-react/dist/esm/icons/users';
+import BookOpen from 'lucide-react/dist/esm/icons/book-open';
+import QuoteIcon from 'lucide-react/dist/esm/icons/quote';
+import MessageSquare from 'lucide-react/dist/esm/icons/message-square';
+import BarChart from 'lucide-react/dist/esm/icons/bar-chart';
+import Plus from 'lucide-react/dist/esm/icons/plus';
+import Trash2 from 'lucide-react/dist/esm/icons/trash-2';
+import Edit2 from 'lucide-react/dist/esm/icons/edit-2';
+import Key from 'lucide-react/dist/esm/icons/key';
+import HelpCircle from 'lucide-react/dist/esm/icons/help-circle';
+import RefreshCcw from 'lucide-react/dist/esm/icons/refresh-ccw';
 import { motion } from "motion/react";
 import { User, DomainContent, Article, TimelineStep, Comment, Quote, AnalyticsStats, RegistrationConfig } from "../../../types/types";
 

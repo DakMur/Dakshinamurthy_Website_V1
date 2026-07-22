@@ -66,7 +66,7 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   }
 
   return (
-    <div className="registration-feature min-h-[60vh] flex flex-col justify-center">
+    <div className="w-full min-h-screen pt-20 pb-12 px-4 flex flex-col items-center justify-start gap-4">
       <AnimatePresence mode="wait">
         {view === 'gate' && (
           <motion.div key="gate" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>

@@ -40,8 +40,13 @@ export interface Article {
   translation?: string;
   headerLabel?: string;
   actionText?: string;
+  buttonText?: string;
   hideMeta?: boolean;
   hidden?: boolean;
+  category?: string;
+  tag?: string;
+  excerpt?: string;
+  paragraphs?: string[];
 }
 
 export interface TimelineStep {

@@ -1,5 +1,10 @@
 import { useState, useRef } from "react";
-import { AlertCircle, UploadCloud, File, X, ArrowLeft, ShieldCheck } from "lucide-react";
+import AlertCircle from 'lucide-react/dist/esm/icons/alert-circle';
+import UploadCloud from 'lucide-react/dist/esm/icons/upload-cloud';
+import File from 'lucide-react/dist/esm/icons/file';
+import X from 'lucide-react/dist/esm/icons/x';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import { RegistrationConfig, Team, TeamMember } from "../../../types/types";
 
 interface RegistrationFormProps {

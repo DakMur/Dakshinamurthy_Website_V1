@@ -1,43 +1,59 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
-import {
-  Sparkles, Compass,
-  Layers
-} from "lucide-react";
+import Lenis from "lenis";
+
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
+import Compass from 'lucide-react/dist/esm/icons/compass';
+import Layers from 'lucide-react/dist/esm/icons/layers';
 import { motion, AnimatePresence } from "motion/react";
 
 // ── Lazy-loaded route-level chunks ─────────────────────────────────────────
-// Each lazy() call generates a separate async chunk that is only fetched when
-// the corresponding route becomes active for the first time.
 const CosmicGalaxy      = lazy(() => import("./features/landing-main/CosmicGalaxy"));
 const LandingPage        = lazy(() => import("./features/landing-main/LandingPage"));
 const WarpTransition     = lazy(() => import("./features/loading-main/WarpTransition"));
+const WisdomLectures     = lazy(() => import("./features/wisdom-lectures"));
 const StorytellingSection = lazy(() => import("./features/timeline/StorytellingSection"));
 const PortalPage         = lazy(() => import("./features/dimension-portal/PortalPage"));
 const TimelineSection    = lazy(() => import("./features/timeline/TimelineSection"));
 const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
-const CosmicOracle       = lazy(() => import("./features/cosmic-oracle/CosmicOracle"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
-// ──────────────────────────────────────────────────────────────────────────
 
 import Navbar from "./components/layout/Navbar";
+import { WebGLErrorBoundary } from "./components/error/WebGLErrorBoundary";
 import Footer from "./components/layout/Footer";
 import { useDatabase } from "./hooks/useDatabase";
 import { useWarpEffect } from "./hooks/useWarpEffect";
 import { User, DomainContent } from "./types/types";
 
-
 export default function App() {
-  // Navigation Route state
-  const [route, setRoute] = useState<"landing" | "storytelling" | "domains" | "flow" | "admin">("landing");
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    
+    // Expose lenis globally for modals to pause it
+    (window as any).lenis = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => {
+      lenis.destroy();
+      delete (window as any).lenis;
+    };
+  }, []);
+
+  // Navigation Route state (supporting all route aliases: prathama, tattva, timeline, registration)
+  const [route, setRoute] = useState<string>("landing");
 
   // Warp transition triggers
   const { isWarping, triggerWarp } = useWarpEffect(false);
 
   // Expanded detailed modal states
   const [selectedDomain, setSelectedDomain] = useState<DomainContent | null>(null);
-
-  // Oracle AI guide overlay
-  const [isOracleOpen, setIsOracleOpen] = useState(false);
 
   // Authenticated user state
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -48,14 +64,13 @@ export default function App() {
   // Database state from custom hook
   const {
     domains, articles, timeline, quotes, comments, analytics, dailyQuote,
-    setArticles, setAnalytics, loadDatabase
+    setArticles, setAnalytics, loadDatabase, loadDomains, loadArticles, loadTimeline
   } = useDatabase();
 
   // Close mobile navigation drawer whenever route transitions
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [route]);
-
 
   // Record page views in Express server analytics tables
   useEffect(() => {
@@ -81,7 +96,7 @@ export default function App() {
 
   // Warp Speed Sequence triggers on Landing explore click
   const triggerWarpSpeed = useCallback(() => {
-    triggerWarp(() => setRoute("storytelling"), 2400);
+    triggerWarp(() => setRoute("prathama"), 2400);
   }, [triggerWarp]);
 
   // Like feedback triggers incrementing article likes real-time
@@ -103,7 +118,7 @@ export default function App() {
   const handleExploreDomain = useCallback((slug: string) => {
     const fitDom = domains.find((d) => d.slug === slug);
     if (fitDom) {
-      setRoute("domains");
+      setRoute("tattva");
       setSelectedDomain(fitDom);
     }
   }, [domains]);
@@ -111,49 +126,34 @@ export default function App() {
   // Stable domain selection callback for PortalPage cards
   const handleSelectDomain = useCallback((d: DomainContent) => setSelectedDomain(d), []);
 
-  // Simulate Google Account Auth login
-  const handleSimulateGoogleLogin = useCallback(async () => {
-    try {
-      const res = await fetch("/api/v1/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: "falconace81@gmail.com",
-          name: "Sovereign Seeker",
-          picture: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
-        })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setCurrentUser(data.user);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
-  // Stable Oracle toggle callbacks
-  const handleOpenOracle = useCallback(() => setIsOracleOpen(true), []);
-  const handleCloseOracle = useCallback(() => setIsOracleOpen(false), []);
   const handleCloseDomainModal = useCallback(() => setSelectedDomain(null), []);
 
   return (
     <div className="relative min-h-screen text-white selection:bg-gold-vintage selection:text-black font-sans">
 
       {/* Fixed Background Gradient Layer */}
-      <div className="fixed inset-0 z-[-1] bg-[#000000] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black pointer-events-none transform-gpu" />
+      <div className="fixed inset-0 z-[-20] bg-black bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black pointer-events-none transform-gpu" />
 
-      {/* Absolute Base Layer: Interactive 3D Cosmic Model — lazy, heaviest chunk */}
-      <Suspense fallback={null}>
-        <CosmicGalaxy isWarping={isWarping} isExplore={route !== "landing"} />
-      </Suspense>
+      {/* Task 2: Persistent WebGL Background Container — permanently mounted */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <Suspense fallback={null}>
+          <WebGLErrorBoundary>
+            <CosmicGalaxy
+              activeTab={route}
+              route={route}
+              isWarping={isWarping}
+              isExplore={route !== "landing" && route !== "home"}
+            />
+          </WebGLErrorBoundary>
+        </Suspense>
+      </div>
 
-      {/* ॐ Om Transition Overlay — mounts at z-[999] above everything */}
+      {/* ॐ Om Transition Overlay */}
       <Suspense fallback={null}>
         <WarpTransition isWarping={isWarping} />
       </Suspense>
 
-      {/* 2. Top Navigation Bar (Hidden during full Landing Page 1 layout) */}
+      {/* Top Navigation Bar */}
       <Navbar
         route={route}
         setRoute={setRoute}
@@ -162,140 +162,129 @@ export default function App() {
         setSelectedDomain={setSelectedDomain}
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
-        handleSimulateGoogleLogin={handleSimulateGoogleLogin}
-        setIsOracleOpen={setIsOracleOpen}
       />
 
-      {/* 3. Primary visual containers and layouts */}
-      <main className={`relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col justify-center min-h-[calc(100vh-80px)] transition-all duration-300 ${route !== "landing" ? "pt-28" : "pt-12"}`}>
-        {/* Minimal route-level Suspense fallback — invisible while chunks load */}
+      {/* Task 1: Primary visual containers supporting all tab route aliases */}
+      <main className={`relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col justify-center min-h-[calc(100vh-80px)] transition-all duration-300 ${route !== "landing" && route !== "home" ? "pt-28" : "pt-12"}`}>
         <Suspense fallback={<div className="min-h-screen" />}>
-        <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
 
-          {/* PAGE 1: COSMIC LANDING EXPERIENCE */}
-          {route === "landing" && (
-            <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
-          )}
+            {/* PAGE 1: COSMIC LANDING EXPERIENCE */}
+            {(route === "landing" || route === "home") && (
+              <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
+            )}
 
-          {/* PAGE 2: STORYTELLING INDEX */}
-          {route === "storytelling" && (
-            <motion.div
-              key="storytelling"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-16 text-center py-6"
-            >
-              <div className="space-y-2 max-w-2xl mx-auto">
-                <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-                  Śāstra Ratnākara
-                </span>
-                <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
-                  Ocean of Sacred Knowledge
-                </h2>
-                <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
-              </div>
+            {/* PAGE 2: PRATHAMA PRAKASA / WISDOM LECTURES */}
+            {(route === "prathama" || route === "prathama-prakasa" || route === "storytelling") && (
+              <motion.div
+                key="prathama"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-16 text-center py-6"
+              >
+                <div className="space-y-2 max-w-2xl mx-auto">
+                  <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
+                    Śāstra Ratnākara
+                  </span>
+                  <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
+                    Ocean of Sacred Knowledge
+                  </h2>
+                  <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
+                </div>
 
-              {/* Alternating storytelling content items */}
-              <StorytellingSection
-                articles={articles}
-                onLike={handleLikeArticle}
-                onExploreDomain={handleExploreDomain}
-              />
-            </motion.div>
-          )}
+                <WisdomLectures
+                  articles={articles}
+                  onLike={handleLikeArticle}
+                  onExploreDomain={handleExploreDomain}
+                />
+              </motion.div>
+            )}
 
-          {/* PAGE 3: DOMAINS HUB (PORTALS) */}
-          {route === "domains" && (
-            <PortalPage
-              domains={domains}
-              onSelectDomain={handleSelectDomain}
-            />
-          )}
-
-          {/* PAGE 4: FLOW OF EVENTS (TIMELINE) */}
-          {route === "flow" && (
-            <motion.div
-              key="flow"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-12 text-center py-6"
-            >
-              <div className="space-y-2 max-w-2xl mx-auto">
-                <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-                  The Evolutionary Chronology of Spirit
-                </span>
-                <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
-                  FLOW OF THE JOURNEY
-                </h2>
-                <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
-              </div>
-
-              {/* Vertical timeline path */}
-              <TimelineSection timeline={timeline} />
-            </motion.div>
-          )}
-
-          {/* PAGE 5: ADMIN CLEARANCES WORKSPACE */}
-          {route === "admin" && (
-            <motion.div
-              key="admin"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="py-4"
-            >
-              <RegistrationFeature
+            {/* PAGE 3: TATTVA DARSANA / DOMAINS HUB */}
+            {(route === "tattva" || route === "tattva-darsana" || route === "domains") && (
+              <PortalPage
                 domains={domains}
-                articles={articles}
-                timeline={timeline}
-                quotes={quotes}
-                comments={comments}
-                analytics={analytics}
-                currentUser={currentUser}
-                onLogin={(usr) => setCurrentUser(usr)}
-                onLogout={() => setCurrentUser(null)}
-                onRefreshData={loadDatabase}
+                onSelectDomain={handleSelectDomain}
+                loadDomains={loadDomains}
               />
-            </motion.div>
-          )}
+            )}
 
-        </AnimatePresence>
+            {/* PAGE 4: CHRONOLOGY TIMELINE & STORYTELLING */}
+            {(route === "timeline" || route === "chronology-timeline" || route === "flow") && (
+              <motion.div
+                key="timeline"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-12 text-center py-6"
+              >
+                <div className="space-y-2 max-w-2xl mx-auto">
+                  <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
+                    The Evolutionary Chronology of Spirit
+                  </span>
+                  <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
+                    FLOW OF THE JOURNEY
+                  </h2>
+                  <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
+                </div>
+
+                <TimelineSection timeline={timeline} loadTimeline={loadTimeline} />
+              </motion.div>
+            )}
+
+            {/* PAGE 5: REGISTRATION / ADMIN WORKSPACE */}
+            {(route === "registration" || route === "admin") && (
+              <motion.div
+                key="registration"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="py-4"
+              >
+                <RegistrationFeature
+                  domains={domains}
+                  articles={articles}
+                  timeline={timeline}
+                  quotes={quotes}
+                  comments={comments}
+                  analytics={analytics}
+                  currentUser={currentUser}
+                  onLogin={(usr) => setCurrentUser(usr)}
+                  onLogout={() => setCurrentUser(null)}
+                  onRefreshData={loadDatabase}
+                />
+              </motion.div>
+            )}
+
+          </AnimatePresence>
         </Suspense>
       </main>
 
-      {/* 4. Daily floating spiritual quote at the bottom page footer bar */}
+      {/* Footer */}
       <Footer dailyQuote={dailyQuote} route={route} />
 
-      {/* Floating Action Buttons on right rail (Navigating shortcuts) */}
-      {route !== "landing" && (
+      {/* Floating Action Buttons */}
+      {route !== "landing" && route !== "home" && (
         <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-2">
           <button
-            onClick={() => setRoute("domains")}
+            onClick={() => setRoute("tattva")}
             className="hidden sm:flex p-3 bg-[#0a0a0a]/80 hover:bg-gold-vintage border border-white/10 hover:border-gold-vintage text-slate-400 hover:text-black rounded-full transition-all cursor-pointer shadow-lg tracking-wider"
             title="Jump to Portals"
           >
             <Compass className="w-4 h-4" />
           </button>
           <button
-            onClick={() => setRoute("flow")}
+            onClick={() => setRoute("timeline")}
             className="hidden sm:flex p-3 bg-[#0a0a0a]/80 hover:bg-gold-vintage border border-white/10 hover:border-gold-vintage text-slate-400 hover:text-black rounded-full transition-all cursor-pointer shadow-lg"
             title="Jump to Flow of events"
           >
             <Layers className="w-4 h-4" />
           </button>
-          <button
-            onClick={handleOpenOracle}
-            className="p-3 bg-gold-vintage hover:bg-gold-bright border border-gold-vintage text-black rounded-full transition-all cursor-pointer shadow-xl animate-bounce"
-            title="Consult Oracle"
-          >
-            <Sparkles className="w-4 h-4 fill-black" />
-          </button>
         </div>
       )}
 
-      {/* 5. Detailed Dimensional Modal expansion overlay */}
+      {/* Modal overlays */}
       <Suspense fallback={null}>
         <AnimatePresence>
           {selectedDomain && (
@@ -304,20 +293,10 @@ export default function App() {
               allDomains={domains}
               onClose={handleCloseDomainModal}
               onNavigateToDomain={handleSelectDomain}
-              onOpenOracle={handleOpenOracle}
+              onOpenOracle={() => setRoute("oracle")}
             />
           )}
         </AnimatePresence>
-      </Suspense>
-
-      {/* 6. Dynamic Cosmic AI Oracle panel portal drawer */}
-      <Suspense fallback={null}>
-        <CosmicOracle
-          isOpen={isOracleOpen}
-          onClose={handleCloseOracle}
-          activeDomainSlug={selectedDomain?.slug}
-          activeDomainName={selectedDomain?.title}
-        />
       </Suspense>
     </div>
   );

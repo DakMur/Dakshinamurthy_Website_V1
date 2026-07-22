@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { BookOpen, Compass, ArrowRight, Play, Square } from "lucide-react";
+import BookOpen from 'lucide-react/dist/esm/icons/book-open';
+import Compass from 'lucide-react/dist/esm/icons/compass';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
+import Play from 'lucide-react/dist/esm/icons/play';
+import Square from 'lucide-react/dist/esm/icons/square';
 import { motion, AnimatePresence } from "motion/react";
 import { DomainContent } from "../../../types/types";
 import ProjectSpotlight from "../components/ProjectSpotlight";

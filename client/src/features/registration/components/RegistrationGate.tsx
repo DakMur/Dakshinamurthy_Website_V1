@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { Key, UserPlus, LogIn } from "lucide-react";
+import Key from 'lucide-react/dist/esm/icons/key';
+import UserPlus from 'lucide-react/dist/esm/icons/user-plus';
+import LogIn from 'lucide-react/dist/esm/icons/log-in';
 import { Team, RegistrationConfig } from "../../../types/types";
 
 interface RegistrationGateProps {

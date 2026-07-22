@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
-import { Heart, MessageSquare, Clock, User, Compass, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import Heart from 'lucide-react/dist/esm/icons/heart';
+import MessageSquare from 'lucide-react/dist/esm/icons/message-square';
+import Clock from 'lucide-react/dist/esm/icons/clock';
+import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left';
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
 import { motion, AnimatePresence } from "motion/react";
 import { Article, Comment } from "../../types/types";
+import { FALLBACK_ARTICLES } from "../../hooks/useDatabase";
 
 interface StorytellingSectionProps {
   articles: Article[];
@@ -11,56 +16,15 @@ interface StorytellingSectionProps {
 
 export default function WisdomLectures({ articles, onLike, onExploreDomain }: StorytellingSectionProps) {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState("");
-  const [authorName, setAuthorName] = useState("");
-  const [authorEmail, setAuthorEmail] = useState("");
-  const [commentLoading, setCommentLoading] = useState(false);
 
-  // Load comments for selected article
-  useEffect(() => {
-    if (selectedArticle) {
-      fetch(`/api/comments`)
-        .then((res) => res.json())
-        .then((data) => {
-          const filtered = data.filter((c: Comment) => c.articleId === selectedArticle.id);
-          setComments(filtered);
-        })
-        .catch((err) => console.error("Error loading comments:", err));
-    }
-  }, [selectedArticle]);
 
-  const handleSubmitComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedArticle || !newComment.trim()) return;
-    setCommentLoading(true);
+  const safeArticles = articles && articles.length > 0 ? articles : FALLBACK_ARTICLES;
 
-    try {
-      const res = await fetch(`/api/articles/${selectedArticle.id}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          authorName: authorName.trim() || "Universal Seeker",
-          authorEmail: authorEmail.trim() || "seeker@cosmos.org",
-          content: newComment.trim()
-        })
-      });
-      if (res.ok) {
-        const freshComment = await res.json();
-        setComments((prev) => [...prev, freshComment]);
-        setNewComment("");
-        // Optionally flash some visual feedback here
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setCommentLoading(false);
-    }
-  };
+
 
   return (
     <div className="space-y-24 py-12">
-      {articles.map((article, idx) => {
+      {safeArticles.map((article, idx) => {
         const isLeftImage = idx % 2 === 0;
 
         return (
@@ -70,7 +34,7 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center`}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center"
           >
             {/* Image Columns (Alternating layout) */}
             <div className={`col-span-1 lg:col-span-6 ${isLeftImage ? "" : "lg:order-2"}`}>
@@ -108,10 +72,12 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     <span>3-DAY MAKEATHON</span>
                   ) : (
                     <>
-                      <span className="flex items-center gap-1">
+                      <div className="flex items-center gap-2 text-xs font-mono text-gold-vintage/80 uppercase tracking-wider">
                         <Clock className="w-3.5 h-3.5" />
-                        <span>{article.readTime}</span>
-                      </span>
+                        <span>{article.category || article.tag || "SĀSTRA RATNĀKARA"}</span>
+                      </div>
+                      <span>•</span>
+                      <span>{article.readTime}</span>
                       <span>•</span>
                       <span>{article.date}</span>
                     </>
@@ -129,7 +95,7 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                 </h4>
 
                 <p className="text-sm text-slate-400 leading-relaxed font-sans line-clamp-3">
-                  {article.content}
+                  {article.excerpt || article.content}
                 </p>
 
                 {/* Inline Action block */}
@@ -138,11 +104,11 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     onClick={() => {
                       setSelectedArticle(article);
                       // Record page-view statistics
-                      fetch(`/api/articles/${article.id}/view`, { method: "POST" });
+                      fetch(`/api/v1/articles/${article.id}/view`, { method: "POST" });
                     }}
                     className="px-6 py-2.5 rounded-full border border-gold-vintage/35 hover:border-gold-bright bg-gold-vintage/5 hover:bg-gold-vintage/10 text-xs font-mono font-semibold tracking-widest text-gold-vintage transition-all cursor-pointer"
                   >
-                    {article.actionText || "READ LECTURE"}
+                    {article.buttonText || article.actionText || "READ LECTURE"}
                   </button>
 
                   {!article.hideMeta && (
@@ -195,7 +161,7 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                   </h3>
                   {selectedArticle.id !== "a1" && selectedArticle.id !== "a2" && selectedArticle.id !== "a3" && (
                     <p className="text-xs text-gold-vintage font-mono tracking-widest mt-1">
-                      BY {selectedArticle.author.toUpperCase()} • {selectedArticle.readTime}
+                      BY {selectedArticle.author?.toUpperCase()} • {selectedArticle.readTime}
                     </p>
                   )}
                 </div>
@@ -223,90 +189,16 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
 
               {/* Story text */}
               <div className="prose prose-invert max-w-none text-slate-300 space-y-4 font-serif italic md:not-italic leading-relaxed text-sm md:text-base">
-                {selectedArticle.content.split("\n\n").map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
+                {selectedArticle.paragraphs 
+                  ? selectedArticle.paragraphs.map((para, i) => (
+                      <p key={i}>{para}</p>
+                    ))
+                  : selectedArticle.content.split("\n\n").map((para, i) => (
+                      <p key={i}>{para}</p>
+                    ))}
               </div>
 
-              {/* Community interactive chalk board (Comments) */}
-              {selectedArticle.id !== "a1" && selectedArticle.id !== "a2" && selectedArticle.id !== "a3" && (
-                <div className="border-t border-white/5 pt-6 space-y-6">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-display text-sm tracking-widest uppercase text-gold-vintage">
-                      Darshini Echoes
-                    </h4>
-                    <span className="text-xs font-mono text-slate-500">
-                      ({comments.length} current echoes)
-                    </span>
-                  </div>
-
-                  {/* Submissions form */}
-                  <form onSubmit={handleSubmitComment} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <input
-                        type="text"
-                        placeholder="My spiritual alias..."
-                        value={authorName}
-                        onChange={(e) => setAuthorName(e.target.value)}
-                        required
-                        className="px-4 py-2 text-xs rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 font-sans"
-                      />
-                      <input
-                        type="email"
-                        placeholder="My celestial mailbox (optional)..."
-                        value={authorEmail}
-                        onChange={(e) => setAuthorEmail(e.target.value)}
-                        className="px-4 py-2 text-xs rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 font-sans"
-                      />
-                    </div>
-                    <textarea
-                      rows={3}
-                      placeholder="Contribute your vibration to this sacred teaching..."
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      required
-                      className="w-full px-4 py-3 text-xs rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 font-sans resize-none"
-                    />
-                    <div className="flex justify-end">
-                      <button
-                        type="submit"
-                        disabled={commentLoading || !newComment.trim()}
-                        className="px-6 py-2 rounded-full bg-gold-vintage hover:bg-gold-bright text-black font-mono text-xs tracking-wider transition-all cursor-pointer font-semibold"
-                      >
-                        {commentLoading ? "Transmitting..." : "Animate Comment"}
-                      </button>
-                    </div>
-                  </form>
-
-                  {/* Feedback stack list */}
-                  <div className="space-y-4 max-h-[250px] overflow-y-auto scrollbar select-none pr-1">
-                    {comments.length === 0 ? (
-                      <p className="text-xs text-slate-500 font-mono text-center py-4">
-                        Silence reigns here. Be the first to vibrate.
-                      </p>
-                    ) : (
-                      comments.map((c) => (
-                        <div
-                          key={c.id}
-                          className="p-4 rounded-xl border border-white/5 bg-white/[0.01]"
-                        >
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-mono text-xs text-gold-vintage font-semibold">
-                              {c.authorName}
-                            </span>
-                            <span className="text-[10px] text-slate-500 font-mono">
-                              {new Date(c.createdAt).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <p className="text-xs text-slate-300 leading-relaxed font-sans italic">
-                            {c.content}
-                          </p>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
+              {/* Community interactive chalk board (Comments) Removed */}
             </motion.div>
           </div>
         )}
@@ -395,4 +287,3 @@ function ArticleImageSlideshow() {
     </div>
   );
 }
-

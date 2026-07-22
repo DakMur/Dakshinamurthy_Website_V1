@@ -12,47 +12,15 @@ export default defineConfig(() => {
       },
     },
     build: {
-      // Gzip size is well within modern performance budgets.
-      chunkSizeWarningLimit: 900,
+      target: 'esnext',
+      minify: 'esbuild',
+      cssMinify: true,
       rollupOptions: {
         output: {
-          // Deterministic chunk names for CDN/browser cache stability
-          chunkFileNames: 'assets/[name]-[hash].js',
-          entryFileNames: 'assets/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash][extname]',
-          manualChunks: (id: string) => {
-            // React core — smallest chunk, loads first
-            if (
-              id.includes('node_modules/react/') ||
-              id.includes('node_modules/react-dom/') ||
-              id.includes('node_modules/scheduler/')
-            ) {
-              return 'vendor-react';
-            }
-            // Motion/Framer — large animation library
-            if (
-              id.includes('node_modules/motion') ||
-              id.includes('node_modules/framer-motion')
-            ) {
-              return 'motion-vendor';
-            }
-            // Three.js ecosystem — heaviest chunk, only loaded on landing
-            if (
-              id.includes('node_modules/three') ||
-              id.includes('node_modules/@react-three') ||
-              id.includes('node_modules/troika') ||
-              id.includes('node_modules/zustand')
-            ) {
-              return 'three-vendor';
-            }
-            // Lucide icons — tree-shaken but still sizeable
-            if (id.includes('node_modules/lucide-react')) {
-              return 'icons-vendor';
-            }
-            // GSAP animation library
-            if (id.includes('node_modules/gsap')) {
-              return 'vendor-gsap';
-            }
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+            'vendor-animation': ['framer-motion', 'gsap'],
           },
         },
       },

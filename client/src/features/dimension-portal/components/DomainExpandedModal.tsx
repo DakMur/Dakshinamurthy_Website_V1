@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { Sparkles } from "lucide-react";
+import { Suspense, useEffect } from "react";
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import { motion } from "motion/react";
 import { DomainContent } from "../../../types/types";
 import { INFO_CARD_REGISTRY } from "../info-cards";
@@ -29,17 +29,26 @@ export default function DomainExpandedModal({
   // Falls back to first entry (meditation / PageOne) for unknown slugs
   const PageComponent = INFO_CARD_REGISTRY[domain.slug] ?? INFO_CARD_REGISTRY["meditation"];
 
+  // Pause Lenis global scrolling while modal is open
+  useEffect(() => {
+    const lenis = (window as any).lenis;
+    lenis?.stop();
+    return () => lenis?.start();
+  }, []);
+
   return (
     <motion.div
+      data-lenis-prevent
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-40 bg-[#050505]/98 overflow-y-auto"
+      className="fixed inset-0 z-50 w-screen h-screen min-h-screen bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain flex flex-col p-4 md:p-12 pointer-events-auto"
+      style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
     >
       {/* Immersive space nebula background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.1),transparent_50%)] pointer-events-none" />
 
-      <div className="min-h-screen w-full relative max-w-5xl mx-auto px-4 md:px-8 py-12 flex flex-col">
+      <div className="max-w-6xl w-full mx-auto my-auto flex flex-col gap-6 relative">
         {/* Closed Buttons and Top Action Header */}
         <div className="flex items-center justify-between mb-8 z-10 border-b border-white/5 pb-4">
           <button
@@ -47,14 +56,6 @@ export default function DomainExpandedModal({
             className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 hover:text-gold-vintage uppercase transition-colors shrink-0 cursor-pointer"
           >
             <span>← Return to Portals</span>
-          </button>
-          
-          <button
-            onClick={onOpenOracle}
-            className="px-4 py-1.5 rounded-full border border-gold-vintage/30 hover:border-gold-bright bg-gold-vintage/5 hover:bg-gold-vintage/10 text-xs font-mono tracking-wider text-gold-vintage flex items-center gap-2 transition-all cursor-pointer"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Consult Domain Oracle</span>
           </button>
         </div>
 

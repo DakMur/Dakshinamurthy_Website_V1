@@ -26,11 +26,11 @@ export default function ProjectOverlay({
 
   // Manage focus, body scroll lock, parent scroll lock, and ESC key listener
   useEffect(() => {
+    const lenis = (window as any).lenis;
+    
     if (isOpen) {
+      lenis?.stop();
       previousFocusRef.current = document.activeElement as HTMLElement;
-
-      // Disable scrolling behind the modal (on document.body)
-      document.body.style.overflow = "hidden";
 
       // Disable scrolling on parent expanded modal container (fixed inset with overflow-y-auto)
       const parentModal = document.querySelector(".fixed.overflow-y-auto") as HTMLElement;
@@ -52,14 +52,15 @@ export default function ProjectOverlay({
       }, 50);
 
       return () => {
-        // Restore scrolling on close
-        document.body.style.overflow = "";
+        lenis?.start();
         if (parentModal) {
           parentModal.style.overflowY = "auto";
         }
         window.removeEventListener("keydown", handleKeyDown);
         previousFocusRef.current?.focus();
       };
+    } else {
+      lenis?.start();
     }
   }, [isOpen, onClose]);
 
@@ -124,7 +125,7 @@ export default function ProjectOverlay({
             </div>
 
             {/* Scrollable Modal Body: only the modal body scrolls when content exceeds overlay height */}
-            <div className="flex-1 overflow-y-auto p-8 md:p-10 space-y-10 custom-scrollbar">
+            <div data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain p-8 md:p-10 space-y-10 custom-scrollbar" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', pointerEvents: 'auto' }}>
               {/* Project Title and Subtitle */}
               <div className="space-y-2">
                 <h2 className="font-display font-bold text-3xl md:text-5xl text-white tracking-wide leading-tight">

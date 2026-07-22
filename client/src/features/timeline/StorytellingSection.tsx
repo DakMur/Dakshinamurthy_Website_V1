@@ -2,20 +2,29 @@ import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { Heart, MessageSquare, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Article, Comment } from "../../types/types";
+import { FALLBACK_ARTICLES } from "../../hooks/useDatabase";
 
 interface StorytellingSectionProps {
   articles: Article[];
   onLike: (articleId: string) => void;
   onExploreDomain: (slug: string) => void;
+  loadArticles?: () => void;
 }
 
-export default function StorytellingSection({ articles, onLike, onExploreDomain }: StorytellingSectionProps) {
+export default function StorytellingSection({ articles, onLike, onExploreDomain, loadArticles }: StorytellingSectionProps) {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [authorEmail, setAuthorEmail] = useState("");
   const [commentLoading, setCommentLoading] = useState(false);
+
+  useEffect(() => {
+    if (loadArticles) loadArticles();
+  }, [loadArticles]);
+
+  // Removed body overflow lock to allow Lenis/native scrolling to work correctly
+
 
   useEffect(() => {
     if (selectedArticle) {
@@ -55,14 +64,16 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain 
     }
   }, [selectedArticle, newComment, authorName, authorEmail]);
 
+  const activeArticles = articles && articles.length > 0 ? articles : FALLBACK_ARTICLES;
+
   // Memoized visible articles list — only recomputes when articles prop changes
   const visibleArticles = useMemo(
-    () => articles.filter((a) => !a.hidden),
-    [articles]
+    () => activeArticles.filter((a) => !a.hidden),
+    [activeArticles]
   );
 
   return (
-    <div className="space-y-24 py-12">
+    <div className="space-y-24 py-12" style={{ contain: "content" }}>
       {visibleArticles.map((article, idx) => {
         const isLeftImage = idx % 2 === 0;
         return (
@@ -166,7 +177,8 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain 
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              className="w-full max-w-3xl rounded-2xl glass-panel border border-white/10 p-6 md:p-8 flex flex-col max-h-[85vh] overflow-y-auto space-y-6 scrollbar"
+              className="w-full max-w-3xl rounded-2xl glass-panel border border-white/10 p-6 md:p-8 flex flex-col max-h-[85vh] overflow-y-auto overscroll-contain space-y-6 scrollbar"
+              style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', pointerEvents: 'auto' }}
             >
               <div className="flex items-start justify-between border-b border-white/5 pb-4">
                 <div>

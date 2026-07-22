@@ -6,9 +6,26 @@ import { motion } from "motion/react";
 interface GalaxyProps {
   isWarping: boolean;
   isExplore?: boolean;
+  route?: string;
+  activeTab?: string;
 }
 
-export default function CosmicGalaxy({ isWarping, isExplore = false }: GalaxyProps) {
+export default function CosmicGalaxy({ isWarping, isExplore = false, route, activeTab }: GalaxyProps) {
+  const currentTab = activeTab || route || 'landing';
+  const isSimulationActive = 
+    currentTab === 'landing' || 
+    currentTab === 'loading' || 
+    currentTab === 'prathama' || 
+    currentTab === 'prathama-prakasa' || 
+    currentTab === 'timeline' || 
+    currentTab === 'chronology-timeline';
+
+  const isSimulationActiveRef = useRef(isSimulationActive);
+  useEffect(() => {
+    isSimulationActiveRef.current = isSimulationActive;
+  }, [isSimulationActive]);
+
+  const animTimeRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -403,9 +420,15 @@ export default function CosmicGalaxy({ isWarping, isExplore = false }: GalaxyPro
     // 7. Animation Loop
     const clock = new THREE.Clock();
 
+    let animationId: number;
     const tick = () => {
+      animationId = window.requestAnimationFrame(tick);
       const delta = clock.getDelta();
-      const elapsedTime = clock.getElapsedTime();
+      if (!isSimulationActiveRef.current) return;
+
+      const safeDelta = Math.min(delta, 0.033);
+      animTimeRef.current += safeDelta;
+      const elapsedTime = animTimeRef.current;
 
       if (starsMaterial) starsMaterial.uniforms.uTime.value = elapsedTime;
       if (dustMaterial) dustMaterial.uniforms.uTime.value = elapsedTime;
@@ -417,18 +440,17 @@ export default function CosmicGalaxy({ isWarping, isExplore = false }: GalaxyPro
       }
 
       const currentSpeed = isWarping ? parameters.rotationSpeed * 12 : parameters.rotationSpeed;
-      galaxyGroup.rotation.y += delta * currentSpeed;
+      galaxyGroup.rotation.y += safeDelta * currentSpeed;
       
       if (ambientStars) {
-        ambientStars.rotation.y += delta * currentSpeed * 0.35;
+        ambientStars.rotation.y += safeDelta * currentSpeed * 0.35;
       }
       if (cosmicDust) {
-        cosmicDust.rotation.y -= delta * currentSpeed * 0.2;
+        cosmicDust.rotation.y -= safeDelta * currentSpeed * 0.2;
       }
 
       controls.update();
       renderer.render(scene, camera);
-      window.requestAnimationFrame(tick);
     };
 
     tick();
@@ -436,6 +458,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false }: GalaxyPro
     // Cleanup System
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.cancelAnimationFrame(animationId);
       controls.dispose();
       galaxyGeometry?.dispose();
       galaxyMaterial?.dispose();
@@ -451,7 +474,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false }: GalaxyPro
   }, [isWarping]);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden select-none">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden select-none -z-10" style={{ width: '100vw', height: '100vh' }}>
       {/* CSS Keyframes for travelling light and sequential ambient animations */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes tech-pcb-flow {

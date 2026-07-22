@@ -5,7 +5,16 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import { Eye, Sprout, Sun, Lightbulb, Atom, Heart, BookOpen, Globe, Compass, LucideIcon } from "lucide-react";
+import Eye from 'lucide-react/dist/esm/icons/eye';
+import Sprout from 'lucide-react/dist/esm/icons/sprout';
+import Sun from 'lucide-react/dist/esm/icons/sun';
+import Lightbulb from 'lucide-react/dist/esm/icons/lightbulb';
+import Atom from 'lucide-react/dist/esm/icons/atom';
+import Heart from 'lucide-react/dist/esm/icons/heart';
+import BookOpen from 'lucide-react/dist/esm/icons/book-open';
+import Globe from 'lucide-react/dist/esm/icons/globe';
+import Compass from 'lucide-react/dist/esm/icons/compass';
+import { LucideIcon } from 'lucide-react';
 import { DomainContent } from "../../../types/types";
 
 const ICON_MAP: Record<string, LucideIcon> = {

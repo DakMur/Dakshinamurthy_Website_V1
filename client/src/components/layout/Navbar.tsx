@@ -1,17 +1,19 @@
 import { motion, AnimatePresence } from "motion/react";
-import { LogOut, MapPin, Menu, X, Sparkles } from "lucide-react";
+import LogOut from 'lucide-react/dist/esm/icons/log-out';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
+import Menu from 'lucide-react/dist/esm/icons/menu';
+import X from 'lucide-react/dist/esm/icons/x';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import { User, DomainContent } from "../../types/types";
 
 interface NavbarProps {
   route: string;
-  setRoute: (route: "landing" | "storytelling" | "domains" | "flow" | "admin") => void;
+  setRoute: (route: string) => void;
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   setSelectedDomain: (domain: DomainContent | null) => void;
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (open: boolean) => void;
-  handleSimulateGoogleLogin: () => void;
-  setIsOracleOpen: (open: boolean) => void;
 }
 
 export default function Navbar({
@@ -22,18 +24,29 @@ export default function Navbar({
   setSelectedDomain,
   isMobileMenuOpen,
   setIsMobileMenuOpen,
-  handleSimulateGoogleLogin,
-  setIsOracleOpen,
 }: NavbarProps) {
+  const isPrathamaActive = route === "prathama" || route === "prathama-prakasa" || route === "storytelling";
+  const isTattvaActive = route === "tattva" || route === "tattva-darsana" || route === "domains";
+  const isTimelineActive = route === "timeline" || route === "chronology-timeline" || route === "flow";
+  const isRegistrationActive = route === "registration" || route === "admin";
+
+  const navItems = [
+    { id: "prathama", label: "Prathama Prakasa", active: isPrathamaActive },
+    { id: "tattva", label: "Tattva Darśana", active: isTattvaActive },
+    { id: "timeline", label: "Chronology timeline", active: isTimelineActive },
+    { id: "registration", label: "Registration", active: isRegistrationActive }
+  ];
+
   return (
     <AnimatePresence>
-      {route !== "landing" && (
+      {route !== "landing" && route !== "home" && (
         <motion.header
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -50, opacity: 0 }}
           transition={{ duration: 0.6 }}
-          className="sticky top-0 z-30 w-full bg-black/40 backdrop-blur-sm border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between relative"
+          className="sticky top-0 z-30 w-full bg-black/40 backdrop-blur-sm border-b border-white/5 py-4 px-6 md:px-12 flex items-center justify-between relative transform-gpu will-change-transform"
+          style={{ transform: "translateZ(0)" }}
         >
           <div
             className="flex items-center gap-3.5 cursor-pointer selection:bg-none"
@@ -53,24 +66,19 @@ export default function Navbar({
 
           {/* Nav stack links (Desktop Only) */}
           <nav className="hidden md:flex items-center space-x-8 text-xs font-mono tracking-widest uppercase">
-            {[
-              { id: "storytelling", label: "Prathama Prakasa" },
-              { id: "domains", label: "Tattva Darśana" },
-              { id: "flow", label: "Chronology timeline" },
-              { id: "admin", label: "Registration" }
-            ].map((navItem) => (
+            {navItems.map((navItem) => (
               <button
                 key={navItem.id}
                 onClick={() => {
-                  setRoute(navItem.id as any);
+                  setRoute(navItem.id);
                   setSelectedDomain(null);
                 }}
                 className={`hover:text-gold-vintage transition-all text-slate-300 relative py-1 cursor-pointer ${
-                  route === navItem.id ? "text-gold-vintage font-semibold" : ""
+                  navItem.active ? "text-gold-vintage font-semibold" : ""
                 }`}
               >
                 <span>{navItem.label}</span>
-                {route === navItem.id && (
+                {navItem.active && (
                   <motion.div
                     layoutId="nav-line"
                     className="absolute bottom-0 inset-x-0 h-[1.5px] bg-gold-vintage"
@@ -106,15 +114,7 @@ export default function Navbar({
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
               </div>
-            ) : (
-              <button
-                onClick={handleSimulateGoogleLogin}
-                className="px-4 py-1.5 rounded-full border border-white/15 hover:border-gold-vintage/50 bg-white/[0.02]/5 hover:bg-gold-vintage/5 text-[10.5px] font-mono tracking-wider text-slate-300 hover:text-gold-vintage flex items-center gap-2 transition-all cursor-pointer"
-              >
-                <MapPin className="w-3.5 h-3.5 text-gold-vintage animate-bounce" />
-                <span>Sync Google Field</span>
-              </button>
-            )}
+            ) : null}
           </div>
 
           {/* Mobile Header action block: Hamburger icon toggle + current user avatar (Mobile Only) */}
@@ -154,21 +154,16 @@ export default function Navbar({
               >
                 <div className="flex flex-col space-y-2.5">
                   <span className="text-[9px] font-mono tracking-[0.4em] text-slate-500 uppercase ml-2 mb-1">Navigation Sectors</span>
-                  {[
-                    { id: "storytelling", label: "Prathama Prakasa" },
-                    { id: "domains", label: "Tattva Darśana" },
-                    { id: "flow", label: "Chronology timeline" },
-                    { id: "admin", label: "Registration" }
-                  ].map((navItem) => (
+                  {navItems.map((navItem) => (
                     <button
                       key={navItem.id}
                       onClick={() => {
-                        setRoute(navItem.id as any);
+                        setRoute(navItem.id);
                         setSelectedDomain(null);
                         setIsMobileMenuOpen(false);
                       }}
                       className={`text-left text-xs font-mono tracking-widest uppercase transition-colors py-2.5 px-3 rounded-lg block ${
-                        route === navItem.id 
+                        navItem.active 
                           ? "text-gold-vintage bg-white/5 border-l-2 border-gold-vintage font-semibold" 
                           : "text-slate-300 hover:text-gold-vintage hover:bg-white/[0.02]"
                       }`}
@@ -208,30 +203,7 @@ export default function Navbar({
                         <span>Exit</span>
                       </button>
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        handleSimulateGoogleLogin();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="w-full justify-center px-4 py-2.5 rounded-full border border-white/10 active:border-gold-vintage bg-white/5 hover:bg-gold-vintage/5 text-xs font-mono tracking-wider text-slate-300 flex items-center gap-2 transition-all cursor-pointer"
-                    >
-                      <MapPin className="w-3.5 h-3.5 text-gold-vintage" />
-                      <span>Sync Google Field</span>
-                    </button>
-                  )}
-
-                  {/* Quick Consult Oracle Trigger for mobile */}
-                  <button
-                    onClick={() => {
-                      setIsOracleOpen(true);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full justify-center px-4 py-2.5 rounded-full border border-gold-vintage/30 bg-gold-vintage/5 hover:bg-gold-vintage/10 text-gold-vintage text-xs font-mono tracking-widest flex items-center gap-2 transition-all cursor-pointer font-medium"
-                  >
-                    <Sparkles className="w-3.5 h-3.5 fill-gold-vintage/20" />
-                    <span>CONSULT ORACLE</span>
-                  </button>
+                  ) : null}
                 </div>
               </motion.div>
             )}

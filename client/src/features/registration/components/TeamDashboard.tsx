@@ -1,5 +1,10 @@
 import { useState, useRef } from "react";
-import { LogOut, UploadCloud, File, X, Save, ShieldCheck } from "lucide-react";
+import LogOut from 'lucide-react/dist/esm/icons/log-out';
+import UploadCloud from 'lucide-react/dist/esm/icons/upload-cloud';
+import File from 'lucide-react/dist/esm/icons/file';
+import X from 'lucide-react/dist/esm/icons/x';
+import Save from 'lucide-react/dist/esm/icons/save';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import { Team, RegistrationConfig, TeamMember } from "../../../types/types";
 
 interface TeamDashboardProps {
