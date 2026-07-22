@@ -289,7 +289,8 @@
       ],
       "headerLabel": "3-DAY MAKEATHON",
       "actionText": "EXPLORE NOW",
-      "hideMeta": true
+      "hideMeta": true,
+      "views": 1
     },
     {
       "id": "a4",
@@ -442,13 +443,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 109,
-      "storytelling": 57,
-      "domains": 41,
-      "flow": 16,
+      "home": 117,
+      "storytelling": 66,
+      "domains": 47,
+      "flow": 17,
       "admin": 13
     },
-    "totalInteractions": 836,
+    "totalInteractions": 860,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {
