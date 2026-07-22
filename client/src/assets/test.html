@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      background-color: #050505;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .box {
+      border: 1px solid #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .img-1 {
+      /* Jyothy with rounded-full */
+      border-radius: 50%;
+    }
+
+    .img-2 {
+      /* Jyothy with ellipse clip-path */
+      clip-path: ellipse(50% 38% at 50% 50%);
+    }
+
+    .img-3 {
+      /* Jyothy with ellipse clip-path 40% */
+      clip-path: ellipse(50% 40% at 50% 50%);
+    }
+
+    .img-4 {
+      /* Sringeri with circle clip-path */
+      clip-path: circle(50% at 50% 50%);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Jyothy Logo Crops</h1>
+  <div class="container">
+    <div class="box">
+      <h3>Original</h3>
+      <img src="jyothy_logo.jpg" width="200" />
+    </div>
+    <div class="box">
+      <h3>rounded-full (Circle)</h3>
+      <img class="img-1" src="jyothy_logo.jpg" width="200" />
+    </div>
+    <div class="box">
+      <h3>ellipse(50% 38%)</h3>
+      <img class="img-2" src="jyothy_logo.jpg" width="200" />
+    </div>
+    <div class="box">
+      <h3>ellipse(50% 40%)</h3>
+      <img class="img-3" src="jyothy_logo.jpg" width="200" />
+    </div>
+  </div>
+
+  <h1>Sringeri Logo Crop</h1>
+  <div class="container">
+    <div class="box">
+      <h3>Original</h3>
+      <img src="sringeri_logo.jpg" width="200" />
+    </div>
+    <div class="box">
+      <h3>circle(50%)</h3>
+      <img class="img-4" src="sringeri_logo.jpg" width="200" />
+    </div>
+  </div>
+</body>
+
+</html>

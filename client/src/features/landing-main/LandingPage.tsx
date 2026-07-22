@@ -1,6 +1,9 @@
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
+import jyothyLogo from "../../assets/jyothy_logo.jpg";
+import sringeriLogo from "../../assets/sringeri_logo.jpg";
+import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo.jpg";
 
 interface LandingPageProps {
   isWarping: boolean;
@@ -20,6 +23,32 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       exit={{ opacity: 0 }}
       className="text-center space-y-8 max-w-4xl mx-auto py-12 relative flex flex-col justify-center items-center min-h-[75vh]"
     >
+      {/* Institutional Logos (Independent viewport positioning) */}
+      <div className="fixed top-6 left-4 md:left-[70px] z-30 pointer-events-none select-none">
+        <img 
+          src={jyothyLogo} 
+          className="h-14 sm:h-18 md:h-24 object-contain pointer-events-auto" 
+          style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
+          alt="Jyothy Institute of Technology" 
+        />
+      </div>
+
+      <div className="fixed top-2 left-1/2 -translate-x-1/2 z-30 pointer-events-none select-none">
+        <img 
+          src={sringeriLogo} 
+          className="h-12 sm:h-15 md:h-19 object-contain pointer-events-auto" 
+          style={{ clipPath: "circle(50% at 50% 50%)" }}
+          alt="Sringeri" 
+        />
+      </div>
+
+      <div className="fixed top-6 right-4 md:right-[70px] z-30 pointer-events-none select-none">
+        <img 
+          src={vedantaBharatiLogo} 
+          className="h-10 sm:h-13 md:h-17 object-contain pointer-events-auto" 
+          alt="Vedanta Bharati" 
+        />
+      </div>
       {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
       <div className="hidden sm:flex fixed right-10 bottom-10 pointer-events-none select-none z-20">
         <div className="text-right">
@@ -125,13 +154,13 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           className="group relative px-12 py-5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-xl border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-3.5 cursor-pointer"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-gold-vintage/10 via-transparent to-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          
+
           <span className="relative text-[10.5px] tracking-[0.45em] font-mono font-medium text-white group-hover:text-gold-vintage uppercase transition-colors">
             {isWarping ? "Exploring..." : "Explore"}
           </span>
-          
+
           <ArrowRight className="w-4 h-4 text-gold-vintage transform group-hover:translate-x-2 transition-transform relative" />
-          
+
           {/* Neon bottom accent line */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/5 h-[1.5px] bg-gold-vintage shadow-[0_0_12px_#D4AF37] group-hover:w-4/5 transition-all duration-500"></div>
         </button>
