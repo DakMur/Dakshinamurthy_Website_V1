@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
 import jyothyLogo from "../../assets/jyothy_logo.jpg";
 import sringeriLogo from "../../assets/sringeri_logo.jpg";
-import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo.jpg";
+import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo.png";
 
 interface LandingPageProps {
   isWarping: boolean;

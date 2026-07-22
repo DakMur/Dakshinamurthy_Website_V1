@@ -1,12 +1,14 @@
 import { useEffect, useRef, memo } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { motion } from "motion/react";
 
 interface GalaxyProps {
   isWarping: boolean;
+  isExplore?: boolean;
 }
 
-export default function CosmicGalaxy({ isWarping }: GalaxyProps) {
+export default function CosmicGalaxy({ isWarping, isExplore = false }: GalaxyProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -504,6 +506,16 @@ export default function CosmicGalaxy({ isWarping }: GalaxyProps) {
           0%, 100% { opacity: 0.80; filter: drop-shadow(0 0 1.8px rgba(212,175,55,0.8)) drop-shadow(0 0 4px rgba(212,175,55,0.4)); }
           50% { opacity: 1.10; filter: drop-shadow(0 0 3.6px rgba(212,175,55,1.0)) drop-shadow(0 0 9px rgba(212,175,55,0.6)); }
         }
+        /* Terminal cursor blink keyframes */
+        @keyframes terminal-cursor {
+          0%, 100% { opacity: 0; }
+          50% { opacity: 1; }
+        }
+        /* Waveform traveling pulse keyframes */
+        @keyframes tech-wave-flow {
+          0% { stroke-dashoffset: 60; }
+          100% { stroke-dashoffset: 0; }
+        }
       `}} />
 
       {/* Global SVG Filters and Animated Shimmer Gradients */}
@@ -576,61 +588,199 @@ export default function CosmicGalaxy({ isWarping }: GalaxyProps) {
             </stop>
             <stop offset="100%" stop-color="#d4af37" />
           </linearGradient>
+
+          {/* Propeller motion blur filter */}
+          <filter id="propeller-blur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" />
+          </filter>
         </defs>
       </svg>
-
       {/* 1. Technology Background Layer (breathing ambient opacity, thin gold outline strokes) - sits behind canvas */}
       <div 
         className="absolute inset-0 z-0 text-gold-vintage mix-blend-screen hidden md:block select-none pointer-events-none"
         style={{ animation: "tech-ambient-light 16s ease-in-out infinite" }}
       >
         
-        {/* Top Left Cluster */}
-        <div className="absolute left-[4vw] top-[18vh] opacity-95">
+        {/* Top Left Cluster - Adjusted to clear Jyothy logo safe zone */}
+        <div 
+          className="absolute left-[3vw] top-[18vh]"
+          style={{
+            opacity: isExplore ? 0.78 * 0.95 : 0.95,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechController />
         </div>
-        <TechBinary className="absolute left-[16vw] top-[18vh] opacity-85 text-gold-vintage" />
+        <div 
+          className="absolute left-[15vw] top-[19vh]"
+          style={{
+            opacity: isExplore ? 0.55 * 0.85 : 0.85,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechBinary className="text-gold-vintage" />
+        </div>
 
         {/* Middle Left Cluster */}
-        <div className="absolute left-[2vw] top-[40vh] opacity-90">
-          <TechPcb />
+        <div 
+          className="absolute left-[2vw] top-[38vh]"
+          style={{
+            opacity: isExplore ? 0.78 * 0.90 : 0.90,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechMicrochip />
+        </div>
+
+        {/* Left background additions */}
+        <div 
+          className="absolute left-[13vw] top-[46vh]"
+          style={{
+            opacity: isExplore ? 0.55 * 0.35 : 0.35,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechTerminal />
         </div>
 
         {/* Bottom Left Cluster */}
-        <div className="absolute left-[3vw] bottom-[15vh] opacity-95">
+        <div 
+          className="absolute left-[14vw] bottom-[14vh]"
+          style={{
+            opacity: isExplore ? 0.78 * 0.90 : 0.90,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechPcb />
+        </div>
+        <div 
+          className="absolute left-[2vw] bottom-[15vh]"
+          style={{
+            opacity: isExplore ? 0.68 * 0.95 : 0.95,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechRoboticArm />
         </div>
-        <TechCode className="absolute left-[2vw] bottom-[4vh] opacity-70 text-gold-vintage" />
+        <div 
+          className="absolute left-[14vw] bottom-[4vh] text-gold-vintage"
+          style={{
+            opacity: isExplore ? 0.55 * 0.35 : 0.35,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechWaveform />
+        </div>
+        <div 
+          className="absolute left-[2vw] bottom-[3vh]"
+          style={{
+            opacity: isExplore ? 0.55 * 0.70 : 0.70,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechCode className="text-gold-vintage" />
+        </div>
 
-        {/* Top Right Cluster */}
-        <div className="absolute right-[12vw] top-[18vh] opacity-100">
+        {/* Top Right Cluster - Framing the Vedanta Bharati logo */}
+        <div 
+          className="absolute right-[12vw] top-[18vh]"
+          style={{
+            opacity: isExplore ? 0.68 * 1.00 : 1.00,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechDrone />
         </div>
 
         {/* Middle Right Cluster */}
-        <div className="absolute right-[2vw] top-[22vh] opacity-95">
+        <div 
+          className="absolute right-[2vw] top-[22vh]"
+          style={{
+            opacity: isExplore ? 0.78 * 0.95 : 0.95,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechNeural />
         </div>
-        <div className="absolute right-[21vw] top-[32vh] opacity-90">
+        <div 
+          className="absolute right-[20vw] top-[32vh]"
+          style={{
+            opacity: isExplore ? 0.78 * 0.90 : 0.90,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechCamera />
         </div>
-        <div className="absolute right-[17vw] top-[37vh] font-mono text-[11px] leading-relaxed opacity-80 text-gold-vintage">
+        
+        {/* Right background additions */}
+        <div 
+          className="absolute right-[12vw] top-[42vh]"
+          style={{
+            opacity: isExplore ? 0.55 * 0.35 : 0.35,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechCloudApi />
+        </div>
+        <div 
+          className="absolute right-[2vw] top-[48vh]"
+          style={{
+            opacity: isExplore ? 0.55 * 0.35 : 0.35,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechDatabase />
+        </div>
+
+        <div 
+          className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage"
+          style={{
+            opacity: isExplore ? 0.55 * 0.80 : 0.80,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <div style={{ animation: "tech-binary-1 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
           <div style={{ animation: "tech-binary-3 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0001</div>
           <div style={{ animation: "tech-binary-5 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
         </div>
 
-        {/* Bottom Right Cluster */}
-        <div className="absolute right-[19vw] bottom-[12vh] opacity-95">
+        {/* Bottom Right Cluster - Moved AI Head slightly up to clear Tat Tvam Asi text */}
+        <div 
+          className="absolute right-[20vw] bottom-[16vh]"
+          style={{
+            opacity: isExplore ? 0.68 * 0.95 : 0.95,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechGpu />
         </div>
-        <div className="absolute right-[2vw] bottom-[4vh] opacity-100">
+        <div 
+          className="absolute right-[2vw] bottom-[12vh]"
+          style={{
+            opacity: isExplore ? 0.68 * 1.00 : 1.00,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechAiHead />
         </div>
-        <TechEquation className="absolute right-[19vw] bottom-[4vh] opacity-80 text-gold-vintage" />
+        <div 
+          className="absolute right-[19vw] bottom-[3vh]"
+          style={{
+            opacity: isExplore ? 0.55 * 0.80 : 0.80,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
+          <TechEquation className="text-gold-vintage" />
+        </div>
 
         {/* Bottom Center Cluster */}
-        <div className="absolute bottom-[0vh] left-1/2 -translate-x-1/2 opacity-100">
+        <div 
+          className="absolute bottom-[5vh] left-1/2 -translate-x-1/2"
+          style={{
+            opacity: isExplore ? 0.78 * 1.00 : 1.00,
+            transition: "opacity 700ms ease-in-out"
+          }}
+        >
           <TechLotus />
         </div>
 
@@ -649,335 +799,747 @@ export default function CosmicGalaxy({ isWarping }: GalaxyProps) {
 // Static memoized technology background sub-components
 const TechController = memo(() => (
   <svg 
-    className="tech-controller w-36 h-24 transition-opacity duration-1000" 
-    viewBox="0 0 160 100" 
+    className="tech-controller w-32 h-22 transition-opacity duration-1000" 
+    viewBox="0 0 200 140" 
     stroke="#d4af37" 
-    strokeWidth="0.85" 
+    strokeWidth="0.8" 
     fill="none"
   >
-    {/* Layered outline: Bloom Layer + Base Stroke + Specular Highlight */}
-    <path d="M30 20 h100 c20 0, 30 10, 20 40 l-10 30 c-5 15, -20 15, -30 0 l-10 -15 h-20 l-10 15 c-10 15, -25 15, -30 0 l-10 -30 c-10 -30, 0 -40, 20 -40 Z" stroke="#d4af37" strokeWidth="4.2" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7s ease-in-out infinite" }} />
-    <path d="M30 20 h100 c20 0, 30 10, 20 40 l-10 30 c-5 15, -20 15, -30 0 l-10 -15 h-20 l-10 15 c-10 15, -25 15, -30 0 l-10 -30 c-10 -30, 0 -40, 20 -40 Z" stroke="#fbbf24" strokeWidth="1.1" />
-    <path d="M30 20 h100 c20 0, 30 10, 20 40 l-10 30 c-5 15, -20 15, -30 0 l-10 -15 h-20 l-10 15 c-10 15, -25 15, -30 0 l-10 -30 c-10 -30, 0 -40, 20 -40 Z" stroke="url(#controller-shimmer)" strokeWidth="0.3" opacity="0.9" />
+    {/* Glow Bloom (behind) - breathing glow */}
+    <path d="M40 30 h120 c20 0, 32 12, 22 45 l-12 35 c-6 18, -22 18, -32 0 l-12 -18 h-32 l-12 18 c-10 18, -26 18, -32 0 l-12 -35 c-10 -33, 2 -45, 22 -45 Z" stroke="#d4af37" strokeWidth="4" opacity="0.4" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.3s ease-in-out infinite" }} />
+    
+    {/* Main Engraved Outline */}
+    <path d="M40 30 h120 c20 0, 32 12, 22 45 l-12 35 c-6 18, -22 18, -32 0 l-12 -18 h-32 l-12 18 c-10 18, -26 18, -32 0 l-12 -35 c-10 -33, 2 -45, 22 -45 Z" stroke="#d4af37" strokeWidth="1.2" />
+    
+    {/* Inner Contour Offset */}
+    <path d="M43 33 h114 c17 0, 27 10, 19 38 l-11 32 c-5 15, -18 15, -27 0 l-12 -18 h-32 l-12 18 c-9 15, -22 15, -27 0 l-11 -32 c-8 -28, 2 -38, 19 -38 Z" stroke="#fbbf24" strokeWidth="0.6" opacity="0.7" />
 
-    {/* Grips inner detail */}
-    <path d="M22 45 c2 -10, 8 -15, 18 -15 M138 45 c-2 -10, -8 -15, -18 -15" strokeWidth="0.55" opacity="0.75" />
+    {/* Technical Crosshairs and Grid Marks */}
+    <circle cx="100" cy="70" r="62" stroke="#d4af37" strokeWidth="0.3" strokeDasharray="2 6" opacity="0.3" />
+    <path d="M100 5 V135 M5 70 H195" stroke="#d4af37" strokeWidth="0.25" strokeDasharray="3 9" opacity="0.25" />
 
-    {/* Analog sticks */}
-    <circle cx="58" cy="58" r="10" stroke="#d4af37" strokeWidth="0.7" />
-    <circle cx="58" cy="58" r="4" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="102" cy="58" r="10" stroke="#d4af37" strokeWidth="0.7" />
-    <circle cx="102" cy="58" r="4" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
+    {/* Grip Texturing / Parallel Engraving Lines */}
+    <path d="M22 68 l-6 6 M24 72 l-6 6 M26 76 l-6 6 M28 80 l-6 6 M30 84 l-6 6" strokeWidth="0.4" opacity="0.5" />
+    <path d="M178 68 l6 6 M176 72 l6 6 M174 76 l6 6 M172 80 l6 6 M170 84 l6 6" strokeWidth="0.4" opacity="0.5" />
 
-    {/* D-Pad */}
-    <path d="M36 44 h14 M43 37 v14" stroke="#fbbf24" strokeWidth="1.5" filter="url(#engraved-bloom)" />
-    <circle cx="43" cy="44" r="9" strokeWidth="0.6" opacity="0.85" />
+    {/* D-Pad (Left side) */}
+    <g transform="translate(55, 65)">
+      <circle cx="0" cy="0" r="18" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" />
+      {/* Detailed Cross */}
+      <path d="M-5 -15 h10 v10 h10 v10 h-10 v10 h-10 v-10 h-10 v-10 h10 z" stroke="#fbbf24" strokeWidth="0.9" />
+      <path d="M-2 -12 h4 v6 h-4 z M12 -2 v4 h-6 v-4 z M-2 6 h4 v6 h-4 z M-12 -2 v4 h6 v-4 z" stroke="#d4af37" strokeWidth="0.5" opacity="0.8" />
+    </g>
 
-    {/* Action buttons */}
-    <circle cx="120" cy="36" r="3" fill="#d4af37" fillOpacity="0.4" stroke="#fbbf24" strokeWidth="0.6" filter="url(#engraved-bloom)" />
-    <circle cx="110" cy="44" r="3" fill="#d4af37" fillOpacity="0.4" stroke="#fbbf24" strokeWidth="0.6" filter="url(#engraved-bloom)" />
-    <circle cx="130" cy="44" r="3" fill="#d4af37" fillOpacity="0.4" stroke="#fbbf24" strokeWidth="0.6" filter="url(#engraved-bloom)" />
-    <circle cx="120" cy="52" r="3" fill="#d4af37" fillOpacity="0.4" stroke="#fbbf24" strokeWidth="0.6" filter="url(#engraved-bloom)" />
+    {/* Action Buttons (Right side) */}
+    <g transform="translate(145, 65)">
+      <circle cx="0" cy="0" r="18" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" />
+      {/* Triangle Button */}
+      <circle cx="0" cy="-10" r="3.5" stroke="#fbbf24" strokeWidth="0.8" />
+      <path d="M-2 -8.5 l2 -3.5 l2 3.5 z" stroke="#d4af37" strokeWidth="0.5" />
+      {/* Circle Button */}
+      <circle cx="10" cy="0" r="3.5" stroke="#fbbf24" strokeWidth="0.8" />
+      <circle cx="10" cy="0" r="1.5" stroke="#d4af37" strokeWidth="0.5" />
+      {/* Cross Button */}
+      <circle cx="0" cy="10" r="3.5" stroke="#fbbf24" strokeWidth="0.8" />
+      <path d="M-1.5 8.5 l3 3 M1.5 8.5 l-3 3" stroke="#d4af37" strokeWidth="0.5" />
+      {/* Square Button */}
+      <circle cx="-10" cy="0" r="3.5" stroke="#fbbf24" strokeWidth="0.8" />
+      <rect x="-11.5" y="-1.5" width="3" height="3" stroke="#d4af37" strokeWidth="0.5" />
+    </g>
 
-    {/* Select / Start */}
-    <path d="M70 44 l8 -4 M82 44 l8 -4" strokeWidth="1.15" />
-    {/* Triggers */}
-    <path d="M42 19 V13 C42 10, 52 10, 52 13 V19 M108 19 V13 C108 10, 118 10, 118 13 V19" strokeWidth="0.9" opacity="0.9" />
+    {/* Touchpad (Center) */}
+    <rect x="72" y="34" width="56" height="30" rx="3" stroke="#d4af37" strokeWidth="0.85" opacity="0.8" />
+    <rect x="75" y="37" width="50" height="24" rx="1.5" stroke="#fbbf24" strokeWidth="0.4" opacity="0.5" strokeDasharray="4 2" />
+
+    {/* Analog Sticks (Dual) */}
+    <g transform="translate(82, 88)">
+      <circle cx="0" cy="0" r="16" stroke="#d4af37" strokeWidth="0.7" />
+      <circle cx="0" cy="0" r="13" stroke="#fbbf24" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="0" cy="0" r="6" stroke="#fbbf24" strokeWidth="0.8" />
+      {/* Crosshairs inside stick */}
+      <path d="M-4 0 h8 M0 -4 v8" stroke="#d4af37" strokeWidth="0.4" />
+    </g>
+    <g transform="translate(118, 88)">
+      <circle cx="0" cy="0" r="16" stroke="#d4af37" strokeWidth="0.7" />
+      <circle cx="0" cy="0" r="13" stroke="#fbbf24" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="0" cy="0" r="6" stroke="#fbbf24" strokeWidth="0.8" />
+      {/* Crosshairs inside stick */}
+      <path d="M-4 0 h8 M0 -4 v8" stroke="#d4af37" strokeWidth="0.4" />
+    </g>
+
+    {/* Metallic Shimmer Highlight (animated gradient) */}
+    <path d="M40 30 h120 c20 0, 32 12, 22 45 l-12 35 c-6 18, -22 18, -32 0 l-12 -18 h-32 l-12 18" stroke="url(#controller-shimmer)" strokeWidth="1.2" opacity="0.9" />
   </svg>
 ));
 TechController.displayName = "TechController";
 
+const TechMicrochip = memo(() => (
+  <svg 
+    className="tech-microchip w-28 h-28 transition-opacity duration-1000" 
+    viewBox="0 0 100 100" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Outer Silicon Base Glow - breathing glow */}
+    <rect x="20" y="20" width="60" height="60" rx="3" stroke="#d4af37" strokeWidth="4" opacity="0.35" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 5.7s ease-in-out infinite" }} />
+    
+    {/* Base Outline */}
+    <rect x="20" y="20" width="60" height="60" rx="3" stroke="#d4af37" strokeWidth="1.2" />
+    
+    {/* Inner Concentric Heat Spreader */}
+    <rect x="26" y="26" width="48" height="48" rx="1.5" stroke="#fbbf24" strokeWidth="0.75" />
+    <rect x="32" y="32" width="36" height="36" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" strokeDasharray="3 1" />
+    
+    {/* Silicon Die in Center */}
+    <rect x="40" y="40" width="20" height="20" stroke="#fbbf24" strokeWidth="0.9" />
+    {/* Tiny circuit details inside die */}
+    <path d="M43 43 h14 v14 h-14 z M47 43 v14 M53 43 v14 M43 47 h14 M43 53 h14" stroke="#d4af37" strokeWidth="0.3" opacity="0.8" />
+
+    {/* Leadframe Wire Bonds (Die to Package pins) */}
+    <path d="M40 42 L26 35 M40 50 L26 50 M40 58 L26 65 M60 42 L74 35 M60 50 L74 50 M60 58 L74 65 M42 40 L35 26 M50 40 L50 26 M58 40 L65 26 M42 60 L35 74 M50 60 L50 74 M58 60 L65 74" stroke="#d4af37" strokeWidth="0.4" opacity="0.7" />
+
+    {/* Output Pins */}
+    <path d="M15 28 h5 M15 34 h5 M15 40 h5 M15 46 h5 M15 54 h5 M15 60 h5 M15 66 h5 M15 72 h5 M80 28 h5 M80 34 h5 M80 40 h5 M80 46 h5 M80 54 h5 M80 60 h5 M80 66 h5 M80 72 h5 M28 15 v5 M34 15 v5 M40 15 v5 M46 15 v5 M54 15 v5 M60 15 v5 M66 15 v5 M72 15 v5 M28 80 v5 M34 80 v5 M40 80 v5 M46 80 v5 M54 80 v5 M60 80 v5 M66 80 v5 M72 80 v5" stroke="#fbbf24" strokeWidth="0.85" />
+
+    {/* Radiating PCB Tracks */}
+    <path d="M15 28 H8 L3 23 M15 40 H5 V12 H2 M15 60 H5 V88 H2 M15 72 H8 L3 77 M85 28 H92 L97 23 M85 40 H95 V12 H98 M85 60 H95 V88 H98 M85 72 H92 L97 77 M40 15 V5 H12 M60 15 V5 H88 M40 85 V95 H12 M60 85 V95 H88" stroke="#d4af37" strokeWidth="0.65" opacity="0.55" />
+    
+    {/* Animated Pulses on traces - drifted flow */}
+    <path d="M15 28 H8 L3 23 M15 40 H5 V12 H2 M85 72 H92 L97 77 M60 85 V95 H88" stroke="#fbbf24" strokeWidth="1.5" strokeDasharray="8 60" style={{ animation: "tech-pcb-flow 5.7s linear infinite" }} opacity="0.8" filter="url(#engraved-bloom)" />
+  </svg>
+));
+TechMicrochip.displayName = "TechMicrochip";
+
 const TechPcb = memo(() => (
-  <svg className="tech-pcb w-40 h-40 transition-opacity duration-1000" viewBox="0 0 120 120" stroke="#d4af37" strokeWidth="0.8" fill="none">
-    {/* Central Chip Board (outer border) - layered bloom */}
-    <rect x="35" y="35" width="50" height="50" rx="4" ry="4" stroke="#d4af37" strokeWidth="4.5" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.5s ease-in-out infinite" }} />
-    <rect x="35" y="35" width="50" height="50" rx="4" ry="4" stroke="#fbbf24" strokeWidth="1.2" />
-    <rect x="39" y="39" width="42" height="42" rx="2" strokeWidth="0.55" opacity="0.75" />
-    <circle cx="60" cy="60" r="14" strokeWidth="1.0" />
-    <circle cx="60" cy="60" r="7" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
+  <svg 
+    className="tech-pcb w-44 h-32 transition-opacity duration-1000" 
+    viewBox="0 0 160 120" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Motherboard Base Plate Glow - breathing glow */}
+    <polygon points="15,65 85,25 150,62 80,102" stroke="#d4af37" strokeWidth="4" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 4.9s ease-in-out infinite" }} />
     
-    {/* Detailed chip pins */}
-    <path d="M45 35 V30 M55 35 V30 M65 35 V30 M75 35 V30 M45 85 V90 M55 85 V90 M65 85 V90 M75 85 V90 M35 45 H30 M35 55 H30 M35 65 H30 M35 75 H30 M85 45 H90 M85 55 H90 M85 65 H90 M85 75 H90" strokeWidth="0.9" />
+    {/* Base Plate Outlines */}
+    <polygon points="15,65 85,25 150,62 80,102" stroke="#d4af37" strokeWidth="1.2" />
+    <polygon points="17,64 85,27 146,62 80,100" stroke="#fbbf24" strokeWidth="0.5" opacity="0.75" />
     
-    {/* Complex routing traces (Base static track) */}
-    <path d="M25 20 H5 V70 M30 30 L10 30 V50 M35 45 H15 M35 55 L18 55 L8 65 V85 M35 65 L18 65 L8 75 V100 M35 75 H3 M85 45 H108 L116 53 V80 M85 75 H115 M60 35 V12 H10 M60 85 V110 H105 L115 100" strokeWidth="0.7" opacity="0.45" />
-    
-    {/* Energy flow trace (2.0x brighter, thicker traveling highlight) */}
-    <path 
-      d="M25 20 H5 V70 M30 30 L10 30 V50 M35 45 H15 M35 55 L18 55 L8 65 V85 M35 65 L18 65 L8 75 V100 M35 75 H3 M85 45 H108 L116 53 V80 M85 75 H115 M60 35 V12 H10 M60 85 V110 H105 L115 100" 
-      strokeWidth="2.8" 
-      stroke="#fbbf24"
-      strokeDasharray="22 170" 
-      filter="url(#engraved-bloom)"
-      opacity="0.75"
-      style={{ animation: "tech-pcb-flow 8s linear infinite" }}
-    />
-    <path 
-      d="M25 20 H5 V70 M30 30 L10 30 V50 M35 45 H15 M35 55 L18 55 L8 65 V85 M35 65 L18 65 L8 75 V100 M35 75 H3 M85 45 H108 L116 53 V80 M85 75 H115 M60 35 V12 H10 M60 85 V110 H105 L115 100" 
-      strokeWidth="1.35" 
-      stroke="#fffbe6"
-      strokeDasharray="22 170" 
-      opacity="1.0"
-      style={{ animation: "tech-pcb-flow 8s linear infinite" }}
-    />
-    
-    {/* Connection nodes */}
-    <circle cx="15" cy="45" r="1.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="3" cy="75" r="1.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="116" cy="80" r="1.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="10" cy="12" r="1.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="105" cy="110" r="1.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    {/* Thickness side board edge */}
+    <path d="M15 65 v4 L80 106 v-4 M150 62 v4 L80 106" stroke="#d4af37" strokeWidth="0.85" opacity="0.7" />
+
+    {/* CPU Socket */}
+    <polygon points="60,50 85,36 105,48 80,62" stroke="#fbbf24" strokeWidth="1.0" />
+    <polygon points="63,50 85,38 101,48 80,60" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" />
+    {/* Pin grid array markings inside socket */}
+    <path d="M68 49 L88 60 M73 46 L93 57 M78 43 L98 54" stroke="#d4af37" strokeWidth="0.3" strokeDasharray="1 2" opacity="0.7" />
+
+    {/* Heatsink with Cooling Fins */}
+    <polygon points="35,53 50,44 62,51 47,60" stroke="#d4af37" strokeWidth="0.7" />
+    {/* Fins lines */}
+    <path d="M38 52 L50 61 M41 50 L53 59 M44 48 L56 57 M47 46 L59 55" stroke="#fbbf24" strokeWidth="0.55" />
+
+    {/* RAM DIMM Slots */}
+    <path d="M95 34 L130 54 M97 33 L132 53 M93 37 L128 57 M95 36 L130 56" stroke="#fbbf24" strokeWidth="0.7" />
+    {/* Latch detail at ends */}
+    <path d="M95 34 v-2 h-1 v2 M130 54 v-2 h1 v2 M93 37 v-2 h-1 v2 M128 57 v-2 h1 v2" stroke="#d4af37" strokeWidth="0.5" />
+
+    {/* 3D Capacitors (Cylindrical) */}
+    {/* Cap 1 */}
+    <path d="M52 75 c-1.5 -0.8 1.5 -2.5 3 -2.5 s4.5 1.7 3 2.5 M52 75 v6 c0 1.5 6 1.5 6 0 v-6" stroke="#fbbf24" strokeWidth="0.85" />
+    <ellipse cx="55" cy="75" rx="3" ry="1.2" stroke="#d4af37" strokeWidth="0.45" />
+    {/* Cap 2 */}
+    <path d="M62 81 c-1.5 -0.8 1.5 -2.5 3 -2.5 s4.5 1.7 3 2.5 M62 81 v6 c0 1.5 6 1.5 6 0 v-6" stroke="#fbbf24" strokeWidth="0.85" />
+    <ellipse cx="65" cy="81" rx="3" ry="1.2" stroke="#d4af37" strokeWidth="0.45" />
+    {/* Cap 3 */}
+    <path d="M42 69 c-1.5 -0.8 1.5 -2.5 3 -2.5 s4.5 1.7 3 2.5 M42 69 v6 c0 1.5 6 1.5 6 0 v-6" stroke="#fbbf24" strokeWidth="0.85" />
+    <ellipse cx="45" cy="69" rx="3" ry="1.2" stroke="#d4af37" strokeWidth="0.45" />
+
+    {/* PCIe Slots */}
+    <polygon points="50,90 110,55 114,57 54,92" stroke="#d4af37" strokeWidth="0.7" />
+    <path d="M52 90 L112 55" stroke="#fbbf24" strokeWidth="0.55" strokeDasharray="3 1" />
+
+    {/* Circuit board traces */}
+    <path d="M30 63 L45 72 M47 38 L30 48 H22 M80 65 L95 74 M75 33 L68 29 H55 M112 65 L125 72 L135 67 M140 60 L145 63" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" />
+    {/* Trace flow - drifted speed */}
+    <path d="M30 63 L45 72 M112 65 L125 72 L135 67" stroke="#fbbf24" strokeWidth="1.2" strokeDasharray="6 35" style={{ animation: "tech-pcb-flow 5.1s linear infinite" }} opacity="0.85" />
+
+    {/* Small testpoints/vias */}
+    <circle cx="28" cy="48" r="1" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <circle cx="135" cy="67" r="1" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <circle cx="120" cy="80" r="1.2" stroke="#d4af37" strokeWidth="0.4" />
   </svg>
 ));
 TechPcb.displayName = "TechPcb";
 
 const TechRoboticArm = memo(() => (
-  <svg className="tech-robotic-arm w-36 h-48 transition-opacity duration-1000" viewBox="0 0 150 200" stroke="#d4af37" strokeWidth="0.8" fill="none">
-    {/* Base platform */}
-    <rect x="40" y="180" width="70" height="12" rx="2" strokeWidth="1.15" />
-    <path d="M55 180 L65 160 H85 L95 180" strokeWidth="0.7" />
+  <motion.div
+    animate={{ y: [0, -10, -10, 0, 10, 10, 0] }}
+    transition={{
+      duration: 10,
+      repeat: Infinity,
+      ease: ["easeInOut", "linear", "easeInOut", "easeInOut", "linear", "easeInOut"]
+    }}
+  >
+    <svg 
+      className="tech-robotic-arm w-44 h-48 transition-opacity duration-1000" 
+      viewBox="0 0 150 200" 
+      stroke="#d4af37" 
+      strokeWidth="0.8" 
+      fill="none"
+    >
+      {/* Base Stand Glow - breathing glow */}
+      <rect x="35" y="175" width="80" height="15" rx="3" stroke="#d4af37" strokeWidth="3.5" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.3s ease-in-out infinite" }} />
+      
+      {/* Base Stand */}
+      <rect x="35" y="175" width="80" height="15" rx="3" stroke="#d4af37" strokeWidth="1.2" />
+      <path d="M45 175 V165 H105 V175" stroke="#fbbf24" strokeWidth="0.75" />
+      {/* Bolt details on base */}
+      <circle cx="43" cy="182.5" r="1.5" stroke="#fbbf24" strokeWidth="0.5" />
+      <circle cx="107" cy="182.5" r="1.5" stroke="#fbbf24" strokeWidth="0.5" />
+      <circle cx="75" cy="182.5" r="1.5" stroke="#fbbf24" strokeWidth="0.5" />
 
-    {/* Joint 1 (Base pivot, sequential breathing) */}
-    <circle cx="75" cy="160" r="9" stroke="#d4af37" strokeWidth="1.3" />
-    <circle cx="75" cy="160" r="4.0" fill="#fbbf24" filter="url(#engraved-bloom)" style={{ animation: "tech-joint-base 7s ease-in-out infinite" }} stroke="none" />
-    
-    {/* Lower Arm */}
-    <path d="M70 160 L45 105 M80 160 L55 105" stroke="#d4af37" strokeWidth="0.9" opacity="0.95" />
-    <path d="M68 150 L53 115" strokeWidth="0.65" opacity="0.7" strokeDasharray="3 2" />
-    
-    {/* Joint 2 (Elbow, sequential breathing) */}
-    <circle cx="50" cy="105" r="8" stroke="#d4af37" strokeWidth="1.3" />
-    <circle cx="50" cy="105" r="3.5" fill="#fbbf24" filter="url(#engraved-bloom)" style={{ animation: "tech-joint-elbow 7s ease-in-out infinite" }} stroke="none" />
-    
-    {/* Upper Arm - layered bloom */}
-    <path d="M50 105 L95 65" stroke="#d4af37" strokeWidth="4.2" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 8s ease-in-out infinite" }} />
-    <path d="M50 105 L95 65" stroke="#fbbf24" strokeWidth="1.1" />
-    <path d="M56 109 L86 82" strokeWidth="0.7" opacity="0.85" />
-    
-    {/* Joint 3 (Wrist, sequential breathing) */}
-    <circle cx="95" cy="65" r="6" stroke="#d4af37" strokeWidth="1.15" />
-    <circle cx="95" cy="65" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-joint-wrist 7s ease-in-out infinite" }} />
-    
-    {/* Gripper/Effector mechanism */}
-    <path d="M95 65 L112 50 M92 68 L108 53" strokeWidth="0.9" />
-    <path d="M112 50 h12 M112 50 L118 40 M118 40 h10" strokeWidth="0.9" />
-    <path d="M108 53 v12 M108 53 L114 63 M114 63 h10" strokeWidth="0.9" />
-  </svg>
+      {/* Joint 1 - Shoulder */}
+      <circle cx="75" cy="155" r="14" stroke="#d4af37" strokeWidth="1.1" />
+      <circle cx="75" cy="155" r="9" stroke="#fbbf24" strokeWidth="0.7" strokeDasharray="3 2" />
+      <circle cx="75" cy="155" r="4" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-joint-base 8.7s ease-in-out infinite" }} />
+      <path d="M61 155 H89" stroke="#d4af37" strokeWidth="0.5" opacity="0.5" />
+
+      {/* Lower Arm Structural Frame */}
+      <path d="M70 142 L48 85 H58 L80 142" stroke="#d4af37" strokeWidth="1.0" />
+      <path d="M74 142 L52 85" stroke="#fbbf24" strokeWidth="0.5" opacity="0.6" />
+      {/* Truss cross-bracing inside arm */}
+      <path d="M72 130 L55 120 M54 110 L76 100 M78 95 L56 90" stroke="#d4af37" strokeWidth="0.45" opacity="0.6" />
+
+      {/* Hydraulic Piston Cylinders (Shoulder-Elbow) */}
+      <path d="M85 155 L65 92" stroke="#d4af37" strokeWidth="2.0" opacity="0.8" />
+      <path d="M85 155 L65 92" stroke="#fffbe6" strokeWidth="0.7" />
+      <circle cx="85" cy="155" r="2.5" stroke="#d4af37" strokeWidth="0.6" />
+      <circle cx="65" cy="92" r="2.5" stroke="#d4af37" strokeWidth="0.6" />
+
+      {/* Joint 2 - Elbow */}
+      <circle cx="50" cy="80" r="12" stroke="#d4af37" strokeWidth="1.1" />
+      <circle cx="50" cy="80" r="7" stroke="#fbbf24" strokeWidth="0.7" />
+      <circle cx="50" cy="80" r="3" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-joint-elbow 8.7s ease-in-out infinite" }} />
+
+      {/* Upper Arm Structural Frame (tapered) */}
+      <path d="M50 80 L102 42 L107 48 L56 86 Z" stroke="#d4af37" strokeWidth="1.0" />
+      {/* Internal design details (cutouts) */}
+      <circle cx="68" cy="67" r="4" stroke="#fbbf24" strokeWidth="0.6" opacity="0.7" />
+      <circle cx="88" cy="53" r="3" stroke="#fbbf24" strokeWidth="0.6" opacity="0.7" />
+      {/* Cable/hose routing along upper arm */}
+      <path d="M53 74 C65 65, 80 55, 98 48" stroke="#fbbf24" strokeWidth="0.6" strokeDasharray="3 3" opacity="0.8" />
+
+      {/* Joint 3 - Wrist */}
+      <circle cx="106" cy="43" r="8" stroke="#d4af37" strokeWidth="1.0" />
+      <circle cx="106" cy="43" r="2.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-joint-wrist 8.7s ease-in-out infinite" }} />
+
+      {/* Gripper/Effector mechanism */}
+      <path d="M106 43 L118 32 H124 M106 43 L122 47 H128" stroke="#fbbf24" strokeWidth="1.0" />
+      {/* Articulated Claw 1 */}
+      <path d="M124 32 L132 20 M132 20 H140 M132 20 L136 28" stroke="#d4af37" strokeWidth="0.9" />
+      {/* Articulated Claw 2 */}
+      <path d="M128 47 L138 56 M138 56 H146 M138 56 L134 48" stroke="#d4af37" strokeWidth="0.9" />
+
+      {/* Tiny travelling highlight across joints - drifted speed */}
+      <path d="M75 155 L50 80 L106 43" stroke="#fffbe6" strokeWidth="1.5" strokeDasharray="15 150" style={{ animation: "tech-pcb-flow 7.3s linear infinite", animationDelay: "1s" }} opacity="0.8" />
+    </svg>
+  </motion.div>
 ));
 TechRoboticArm.displayName = "TechRoboticArm";
 
 const TechDrone = memo(() => (
-  <svg className="tech-drone w-44 h-28 transition-opacity duration-1000" viewBox="0 0 180 120" stroke="#d4af37" strokeWidth="0.8" fill="none">
-    {/* Detailed quadcopter body - layered bloom */}
-    <rect x="72" y="48" width="36" height="24" rx="6" stroke="#d4af37" strokeWidth="4.5" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.8s ease-in-out infinite" }} />
-    <rect x="72" y="48" width="36" height="24" rx="6" stroke="url(#drone-shimmer)" strokeWidth="1.2" />
-    <circle cx="90" cy="60" r="5" />
-    <path d="M85 48 H95 M85 72 H95" strokeWidth="0.7" />
+  <svg 
+    className="tech-drone w-48 h-36 transition-opacity duration-1000" 
+    viewBox="0 0 180 120" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Main Body Glow - breathing glow */}
+    <rect x="75" y="45" width="30" height="24" rx="5" stroke="#d4af37" strokeWidth="4.5" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.9s ease-in-out infinite" }} />
     
-    {/* Carbon fiber arm structures */}
-    <path d="M75 52 L35 25 M105 52 L145 25 M75 68 L35 95 M105 68 L145 95" strokeWidth="1.6" />
-    
+    {/* Fuselage (Central Body) */}
+    <rect x="75" y="45" width="30" height="24" rx="5" stroke="#d4af37" strokeWidth="1.2" />
+    <rect x="79" y="49" width="22" height="16" rx="2.5" stroke="#fbbf24" strokeWidth="0.65" />
+    <path d="M90 45 V38 H96 V45" stroke="#d4af37" strokeWidth="0.5" opacity="0.75" />
+    {/* Grid detail on fuselage */}
+    <path d="M84 57 h12 M84 61 h12" stroke="#d4af37" strokeWidth="0.4" opacity="0.6" />
+
+    {/* Gimbal Camera underneath */}
+    <path d="M85 69 L88 77 H92 L95 69" stroke="#d4af37" strokeWidth="0.8" />
+    <circle cx="90" cy="81" r="5" stroke="#fbbf24" strokeWidth="0.85" />
+    <circle cx="90" cy="81" r="2" fill="#fbbf24" stroke="none" />
+    {/* Lens flare line */}
+    <path d="M87 79 a3.5 3.5 0 0 1 6 0" stroke="#fffbe6" strokeWidth="0.65" opacity="0.9" />
+
+    {/* Rotor Arms (Lattice truss structures) */}
+    {/* Top Left Arm */}
+    <path d="M75 49 L38 23 M75 53 L41 26" stroke="#fbbf24" strokeWidth="0.95" />
+    <path d="M38 23 L41 26" stroke="#fbbf24" strokeWidth="0.7" />
+    <path d="M68 44 L48 29 M60 38 L43 26" stroke="#d4af37" strokeWidth="0.45" opacity="0.6" />
+    {/* Top Right Arm */}
+    <path d="M105 49 L142 23 M105 53 L139 26" stroke="#fbbf24" strokeWidth="0.95" />
+    <path d="M142 23 L139 26" stroke="#fbbf24" strokeWidth="0.7" />
+    <path d="M112 44 L132 29 M120 38 L137 26" stroke="#d4af37" strokeWidth="0.45" opacity="0.6" />
+    {/* Bottom Left Arm */}
+    <path d="M75 61 L38 87 M75 65 L41 84" stroke="#fbbf24" strokeWidth="0.95" />
+    <path d="M38 87 L41 84" stroke="#fbbf24" strokeWidth="0.7" />
+    <path d="M68 66 L48 81 M60 72 L43 84" stroke="#d4af37" strokeWidth="0.45" opacity="0.6" />
+    {/* Bottom Right Arm */}
+    <path d="M105 61 L142 87 M105 65 L139 84" stroke="#fbbf24" strokeWidth="0.95" />
+    <path d="M142 87 L139 84" stroke="#fbbf24" strokeWidth="0.7" />
+    <path d="M112 66 L132 81 M120 72 L137 84" stroke="#d4af37" strokeWidth="0.45" opacity="0.6" />
+
     {/* Motor Pods */}
-    <circle cx="35" cy="25" r="4.5" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="145" cy="25" r="4.5" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="35" cy="95" r="4.5" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="145" cy="95" r="4.5" fill="#fbbf24" fillOpacity="0.85" filter="url(#engraved-bloom)" stroke="none" />
-    
-    {/* Propellers */}
-    <ellipse cx="35" cy="25" rx="20" ry="3.5" opacity="0.8" />
-    <ellipse cx="145" cy="25" rx="20" ry="3.5" opacity="0.8" />
-    <ellipse cx="35" cy="95" rx="20" ry="3.5" opacity="0.8" />
-    <ellipse cx="145" cy="95" rx="20" ry="3.5" opacity="0.8" />
-    
-    {/* Navigation LED lights (glowing highlights) */}
-    <circle cx="35" cy="25" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="145" cy="25" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <g transform="translate(38, 23)">
+      <ellipse cx="0" cy="0" rx="4" ry="2" stroke="#d4af37" strokeWidth="0.8" />
+      <path d="M-4 0 v4 c0 1.5 8 1.5 8 0 v-4" stroke="#d4af37" strokeWidth="0.6" />
+    </g>
+    <g transform="translate(142, 23)">
+      <ellipse cx="0" cy="0" rx="4" ry="2" stroke="#d4af37" strokeWidth="0.8" />
+      <path d="M-4 0 v4 c0 1.5 8 1.5 8 0 v-4" stroke="#d4af37" strokeWidth="0.6" />
+    </g>
+    <g transform="translate(38, 87)">
+      <ellipse cx="0" cy="0" rx="4" ry="2" stroke="#d4af37" strokeWidth="0.8" />
+      <path d="M-4 0 v4 c0 1.5 8 1.5 8 0 v-4" stroke="#d4af37" strokeWidth="0.6" />
+    </g>
+    <g transform="translate(142, 87)">
+      <ellipse cx="0" cy="0" rx="4" ry="2" stroke="#d4af37" strokeWidth="0.8" />
+      <path d="M-4 0 v4 c0 1.5 8 1.5 8 0 v-4" stroke="#d4af37" strokeWidth="0.6" />
+    </g>
+
+    {/* Propellers (swept ellipses and blade paths) */}
+    {/* TL Prop */}
+    <motion.g
+      style={{ transformOrigin: "38px 20px" }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1.37, repeat: Infinity, ease: "linear" }}
+    >
+      <ellipse cx="38" cy="20" rx="24" ry="4" stroke="#fbbf24" strokeWidth="0.5" strokeDasharray="3 1" opacity="0.7" />
+      {/* Main Blade */}
+      <path d="M20 20 C28 17, 48 23, 56 20" stroke="#d4af37" strokeWidth="0.75" filter="url(#propeller-blur)" />
+      {/* Motion trail blade offset by 15 degrees */}
+      <path d="M20 20 C28 17, 48 23, 56 20" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(15, 38, 20)" opacity="0.4" filter="url(#propeller-blur)" />
+      <path d="M20 20 C28 17, 48 23, 56 20" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(-15, 38, 20)" opacity="0.4" filter="url(#propeller-blur)" />
+    </motion.g>
+    {/* TR Prop */}
+    <motion.g
+      style={{ transformOrigin: "142px 20px" }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1.37, repeat: Infinity, ease: "linear" }}
+    >
+      <ellipse cx="142" cy="20" rx="24" ry="4" stroke="#fbbf24" strokeWidth="0.5" strokeDasharray="3 1" opacity="0.7" />
+      {/* Main Blade */}
+      <path d="M124 20 C132 17, 152 23, 160 20" stroke="#d4af37" strokeWidth="0.75" filter="url(#propeller-blur)" />
+      {/* Motion trail blade offset by 15 degrees */}
+      <path d="M124 20 C132 17, 152 23, 160 20" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(15, 142, 20)" opacity="0.4" filter="url(#propeller-blur)" />
+      <path d="M124 20 C132 17, 152 23, 160 20" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(-15, 142, 20)" opacity="0.4" filter="url(#propeller-blur)" />
+    </motion.g>
+    {/* BL Prop */}
+    <motion.g
+      style={{ transformOrigin: "38px 84px" }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1.37, repeat: Infinity, ease: "linear" }}
+    >
+      <ellipse cx="38" cy="84" rx="24" ry="4" stroke="#fbbf24" strokeWidth="0.5" strokeDasharray="3 1" opacity="0.7" />
+      {/* Main Blade */}
+      <path d="M20 84 C28 81, 48 87, 56 84" stroke="#d4af37" strokeWidth="0.75" filter="url(#propeller-blur)" />
+      {/* Motion trail blade offset by 15 degrees */}
+      <path d="M20 84 C28 81, 48 87, 56 84" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(15, 38, 84)" opacity="0.4" filter="url(#propeller-blur)" />
+      <path d="M20 84 C28 81, 48 87, 56 84" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(-15, 38, 84)" opacity="0.4" filter="url(#propeller-blur)" />
+    </motion.g>
+    {/* BR Prop */}
+    <motion.g
+      style={{ transformOrigin: "142px 84px" }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1.37, repeat: Infinity, ease: "linear" }}
+    >
+      <ellipse cx="142" cy="84" rx="24" ry="4" stroke="#fbbf24" strokeWidth="0.5" strokeDasharray="3 1" opacity="0.7" />
+      {/* Main Blade */}
+      <path d="M124 84 C132 81, 152 87, 160 84" stroke="#d4af37" strokeWidth="0.75" filter="url(#propeller-blur)" />
+      {/* Motion trail blade offset by 15 degrees */}
+      <path d="M124 84 C132 81, 152 87, 160 84" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(15, 142, 84)" opacity="0.4" filter="url(#propeller-blur)" />
+      <path d="M124 84 C132 81, 152 87, 160 84" stroke="#fbbf24" strokeWidth="0.55" transform="rotate(-15, 142, 84)" opacity="0.4" filter="url(#propeller-blur)" />
+    </motion.g>
+
+    {/* Landing Skids */}
+    <path d="M78 69 L65 92 H52 M102 69 L115 92 H128" stroke="#fbbf24" strokeWidth="0.9" />
+    <path d="M50 92 h84" stroke="#d4af37" strokeWidth="0.6" strokeDasharray="5 2" opacity="0.6" />
+
+    {/* Navigation LEDs (pulsing) - drifted timing */}
+    <circle cx="38" cy="23" r="2.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 3.7s ease-in-out infinite" }} />
+    <circle cx="142" cy="23" r="2.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-3 4.1s ease-in-out infinite" }} />
+    <circle cx="38" cy="87" r="2.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-5 4.3s ease-in-out infinite" }} />
+    <circle cx="142" cy="87" r="2.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-7 4.7s ease-in-out infinite" }} />
+
+    {/* Metallic Shimmer Sweep */}
+    <rect x="75" y="45" width="30" height="24" rx="5" stroke="url(#drone-shimmer)" strokeWidth="1.2" />
   </svg>
 ));
 TechDrone.displayName = "TechDrone";
 
 const TechNeural = memo(() => (
-  <svg className="tech-neural w-44 h-36 transition-opacity duration-1000" viewBox="0 0 180 150" stroke="#d4af37" strokeWidth="0.5" fill="none">
-    {/* Constellation lines */}
-    <path d="M30 40 L80 20 M30 40 L60 80 M80 20 L140 30 M80 20 L110 70 M80 20 L60 80 M140 30 L150 90 M140 30 L110 70 M60 80 L110 70 M60 80 L40 120 M60 80 L90 130 M110 70 L150 90 M110 70 L90 130 M150 90 L90 130 M90 130 L40 120" strokeOpacity="0.8" />
-    
-    {/* Staggered traveling highlight (2.0x brighter, thicker, delay 2.6s) */}
+  <svg 
+    className="tech-neural w-48 h-40 transition-opacity duration-1000" 
+    viewBox="0 0 180 150" 
+    stroke="#d4af37" 
+    strokeWidth="0.6" 
+    fill="none"
+  >
+    {/* Symmetrical central glow for visual weight */}
+    <circle cx="95" cy="75" r="40" stroke="#d4af37" strokeWidth="3" opacity="0.15" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 8.1s ease-in-out infinite" }} />
+
+    {/* Neural Network Nodes & Links */}
+    {/* Base Network Connections */}
+    <g opacity="0.45" stroke="#d4af37">
+      <path d="M25 45 L65 25 M25 45 L50 85 M65 25 L115 30 M65 25 L95 75 M65 25 L50 85 M115 30 L155 45 M115 30 L95 75 M50 85 L95 75 M50 85 L35 125 M50 85 L85 130 M95 75 L155 45 M95 75 L135 95 M95 75 L85 130 M155 45 L135 95 M135 95 L145 130 M135 95 L85 130 M85 130 L145 130 M85 130 L35 125" />
+      <path d="M25 45 L10 75 L35 125 M65 25 L90 10 M115 30 L140 10 L155 45" strokeDasharray="2 3" />
+    </g>
+
+    {/* Secondary Layer Connections (Foreground) */}
+    <g opacity="0.8" stroke="#fbbf24">
+      <path d="M25 45 L65 25 M65 25 L95 75 M95 75 L135 95 M135 95 L85 130 M50 85 L95 75" strokeWidth="0.8" />
+    </g>
+
+    {/* Signal Pulses Travelling along Paths - drifted speed */}
     <path 
-      d="M30 40 L80 20 M80 20 L110 70 M110 70 L150 90 M150 90 L90 130" 
-      strokeWidth="2.8" 
-      stroke="#fbbf24" 
-      strokeDasharray="22 170"
-      filter="url(#engraved-bloom)"
-      opacity="0.75"
-      style={{ animation: "tech-pcb-flow 8s linear infinite", animationDelay: "2.6s" }}
-    />
-    <path 
-      d="M30 40 L80 20 M80 20 L110 70 M110 70 L150 90 M150 90 L90 130" 
-      strokeWidth="1.35" 
+      d="M25 45 L65 25 L95 75 L135 95 L85 130 M50 85 L95 75 L155 45" 
+      strokeWidth="2.0" 
       stroke="#fffbe6" 
-      strokeDasharray="22 170"
-      opacity="1.0"
-      style={{ animation: "tech-pcb-flow 8s linear infinite", animationDelay: "2.6s" }}
+      strokeDasharray="15 130"
+      filter="url(#engraved-bloom)"
+      opacity="0.8"
+      style={{ animation: "tech-pcb-flow 9.1s linear infinite" }}
     />
-    
-    {/* Sequential node signals */}
-    <circle cx="30" cy="40" r="4.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 6.5s ease-in-out infinite" }} />
-    <circle cx="80" cy="20" r="3.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-3 6.5s ease-in-out infinite" }} />
-    <circle cx="140" cy="30" r="4.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-5 6.5s ease-in-out infinite" }} />
-    <circle cx="60" cy="80" r="3.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-2 6.5s ease-in-out infinite" }} />
-    <circle cx="110" cy="70" r="4.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-4 6.5s ease-in-out infinite" }} />
-    <circle cx="150" cy="90" r="3.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-6 6.5s ease-in-out infinite" }} />
-    <circle cx="90" cy="130" r="4.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-7 6.5s ease-in-out infinite" }} />
+
+    {/* Nodes (with varying sizes and halos) - drifted sequence */}
+    {/* Node 1 - Input 1 */}
+    <g transform="translate(25, 45)">
+      <circle cx="0" cy="0" r="4.5" stroke="#fbbf24" strokeWidth="1.0" />
+      <circle cx="0" cy="0" r="1.5" fill="#fbbf24" stroke="none" />
+    </g>
+    {/* Node 2 - Input 2 */}
+    <g transform="translate(50, 85)">
+      <circle cx="0" cy="0" r="5.5" stroke="#fbbf24" strokeWidth="1.2" />
+      <circle cx="0" cy="0" r="2.0" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-2 6.7s ease-in-out infinite" }} />
+    </g>
+    {/* Node 3 - Input 3 */}
+    <g transform="translate(35, 125)">
+      <circle cx="0" cy="0" r="3.5" stroke="#d4af37" strokeWidth="0.85" />
+    </g>
+
+    {/* Node 4 - Hidden 1 */}
+    <g transform="translate(65, 25)">
+      <circle cx="0" cy="0" r="4.0" stroke="#fbbf24" strokeWidth="1.0" />
+      <circle cx="0" cy="0" r="1.5" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-4 6.7s ease-in-out infinite" }} />
+    </g>
+    {/* Node 5 - Hidden 2 */}
+    <g transform="translate(95, 75)">
+      <circle cx="0" cy="0" r="6.0" stroke="#fbbf24" strokeWidth="1.5" />
+      <circle cx="0" cy="0" r="2.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 6.7s ease-in-out infinite" }} />
+    </g>
+    {/* Node 6 - Hidden 3 */}
+    <g transform="translate(85, 130)">
+      <circle cx="0" cy="0" r="5.0" stroke="#fbbf24" strokeWidth="1.1" />
+      <circle cx="0" cy="0" r="2.0" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-6 6.7s ease-in-out infinite" }} />
+    </g>
+
+    {/* Node 7 - Hidden 4 */}
+    <g transform="translate(115, 30)">
+      <circle cx="0" cy="0" r="4.0" stroke="#fbbf24" strokeWidth="1.0" />
+    </g>
+    {/* Node 8 - Hidden 5 */}
+    <g transform="translate(135, 95)">
+      <circle cx="0" cy="0" r="5.5" stroke="#fbbf24" strokeWidth="1.2" />
+      <circle cx="0" cy="0" r="2.0" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-3 6.7s ease-in-out infinite" }} />
+    </g>
+
+    {/* Node 9 - Output 1 */}
+    <g transform="translate(155, 45)">
+      <circle cx="0" cy="0" r="5.0" stroke="#fbbf24" strokeWidth="1.1" />
+      <circle cx="0" cy="0" r="2.0" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-5 6.7s ease-in-out infinite" }} />
+    </g>
+    {/* Node 10 - Output 2 */}
+    <g transform="translate(145, 130)">
+      <circle cx="0" cy="0" r="3.5" stroke="#d4af37" strokeWidth="0.85" />
+    </g>
+
+    {/* Peripheral decorative nodes */}
+    <circle cx="10" cy="75" r="2.0" stroke="#d4af37" strokeWidth="0.5" />
+    <circle cx="90" cy="10" r="2.0" stroke="#d4af37" strokeWidth="0.5" />
+    <circle cx="140" cy="10" r="2.5" stroke="#d4af37" strokeWidth="0.5" />
   </svg>
 ));
 TechNeural.displayName = "TechNeural";
 
 const TechCamera = memo(() => (
-  <svg className="tech-camera w-20 h-16 transition-opacity duration-1000" viewBox="0 0 80 60" stroke="#d4af37" strokeWidth="0.8" fill="none">
-    {/* Camera body details - layered bloom */}
-    <rect x="8" y="14" width="64" height="40" rx="5" stroke="#d4af37" strokeWidth="4.2" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.2s ease-in-out infinite" }} />
-    <rect x="8" y="14" width="64" height="40" rx="5" stroke="#fbbf24" strokeWidth="1.1" />
-    <path d="M26 14 L31 7 H49 L52 15" strokeWidth="1" />
-    {/* Lens assembly */}
-    <circle cx="40" cy="34" r="14" strokeWidth="1.3" filter="url(#engraved-bloom)" />
-    <circle cx="40" cy="34" r="9" strokeWidth="0.9" />
-    {/* Lens reflection / highlight crescent (Animated narrow shimmer gradient sweep) */}
-    <path 
-      d="M35 30 a7 7 0 0 1 10 0" 
-      stroke="url(#lens-shimmer-grad)"
-      strokeWidth="1.25" 
-      opacity="0.95" 
-    />
-    {/* Flash LED */}
-    <circle cx="60" cy="22" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+  <svg 
+    className="tech-camera w-24 h-18 transition-opacity duration-1000" 
+    viewBox="0 0 100 80" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Camera Body Glow - breathing glow */}
+    <rect x="10" y="20" width="80" height="50" rx="6" stroke="#d4af37" strokeWidth="4.2" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.9s ease-in-out infinite" }} />
+    
+    {/* Camera Body */}
+    <rect x="10" y="20" width="80" height="50" rx="6" stroke="#d4af37" strokeWidth="1.2" />
+    <rect x="13" y="23" width="74" height="44" rx="3.5" stroke="#fbbf24" strokeWidth="0.55" opacity="0.75" />
+
+    {/* Grip Panel Engraving */}
+    <path d="M22 23 V67 M25 23 V67" stroke="#d4af37" strokeWidth="0.45" opacity="0.5" />
+    <path d="M13 32 H22 M13 38 H22 M13 44 H22 M13 50 H22" stroke="#d4af37" strokeWidth="0.4" opacity="0.5" />
+
+    {/* Top Dials & Shutter Button */}
+    {/* Hot Shoe */}
+    <path d="M43 20 V16 H57 V20" stroke="#d4af37" strokeWidth="0.9" />
+    <path d="M45 16 h10" stroke="#fbbf24" strokeWidth="0.5" />
+    {/* Mode Dial */}
+    <path d="M23 20 V15 H35 V20" stroke="#d4af37" strokeWidth="0.85" />
+    <path d="M26 15 v5 M29 15 v5 M32 15 v5" stroke="#fbbf24" strokeWidth="0.55" />
+    {/* Shutter Button */}
+    <path d="M72 20 V17 H80 V20" stroke="#d4af37" strokeWidth="0.85" />
+    <circle cx="76" cy="15" r="2.5" stroke="#fbbf24" strokeWidth="0.6" />
+
+    {/* Lens Barrel (Concentric rings) */}
+    <circle cx="50" cy="45" r="21" stroke="#d4af37" strokeWidth="1.0" />
+    <circle cx="50" cy="45" r="18" stroke="#fbbf24" strokeWidth="0.75" />
+    {/* Focus Ring Ridges */}
+    <circle cx="50" cy="45" r="16" stroke="#d4af37" strokeWidth="0.5" strokeDasharray="2 3" opacity="0.7" />
+    <circle cx="50" cy="45" r="13" stroke="#fbbf24" strokeWidth="0.85" />
+    <circle cx="50" cy="45" r="8" stroke="#d4af37" strokeWidth="0.55" />
+
+    {/* Lens Reflection (Glass glint) */}
+    <path d="M42 38 a10 10 0 0 1 14 0" stroke="url(#lens-shimmer-grad)" strokeWidth="1.5" opacity="0.9" />
+    <path d="M45 52 a10 10 0 0 0 10 0" stroke="#fffbe6" strokeWidth="0.5" opacity="0.75" />
+
+    {/* Autofocus Assist LED - drifted pulse */}
+    <circle cx="74" cy="30" r="2.5" stroke="#fbbf24" strokeWidth="0.6" />
+    <circle cx="74" cy="30" r="1.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 5.3s ease-in-out infinite" }} />
   </svg>
 ));
 TechCamera.displayName = "TechCamera";
 
 const TechGpu = memo(() => (
-  <svg className="tech-gpu w-44 h-24 transition-opacity duration-1000" viewBox="0 0 180 90" stroke="#d4af37" strokeWidth="0.85" fill="none">
-    {/* Casing and border lines - layered bloom */}
-    <rect x="10" y="15" width="160" height="60" rx="4" stroke="#d4af37" strokeWidth="4.5" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.6s ease-in-out infinite" }} />
-    <rect x="10" y="15" width="160" height="60" rx="4" stroke="url(#gpu-shimmer)" strokeWidth="1.2" />
-    <rect x="14" y="19" width="152" height="52" rx="2" strokeWidth="0.55" opacity="0.7" />
-    {/* Tri-fan layout */}
-    <circle cx="45" cy="45" r="17" strokeWidth="0.9" />
-    <circle cx="90" cy="45" r="17" strokeWidth="0.9" />
-    <circle cx="135" cy="45" r="17" strokeWidth="0.9" />
-    {/* Fan blades (completely static) */}
-    <path d="M45 28 V62 M28 45 H62" strokeWidth="0.55" opacity="0.85" />
-    <path d="M90 28 V62 M73 45 H107" strokeWidth="0.55" opacity="0.85" />
-    <path d="M135 28 V62 M118 45 H152" strokeWidth="0.55" opacity="0.85" />
+  <svg 
+    className="tech-gpu w-48 h-28 transition-opacity duration-1000" 
+    viewBox="0 0 180 100" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* GPU Outer Casing Glow - breathing glow */}
+    <polygon points="15,60 75,25 165,52 105,87" stroke="#d4af37" strokeWidth="4.5" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.1s ease-in-out infinite" }} />
+    
+    {/* Card Outer Shroud */}
+    <polygon points="15,60 75,25 165,52 105,87" stroke="#d4af37" strokeWidth="1.2" />
+    <polygon points="17,59 75,27 161,52 105,84" stroke="#fbbf24" strokeWidth="0.55" opacity="0.75" />
+    
+    {/* Thickness Edges */}
+    <path d="M15 60 v10 L105 97 v-10 M165 52 v10 L105 97" stroke="#d4af37" strokeWidth="0.9" opacity="0.75" />
+
+    {/* Exposed PCB & PCIe Connector Fingers */}
+    <path d="M22 72 L95 93" stroke="#fbbf24" strokeWidth="1.2" strokeDasharray="2 1" />
+    <path d="M22 70 L95 91" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" />
+
+    {/* Heatsink Fin Array (Behind shroud vents) */}
+    <path d="M24 45 L74 21 M24 49 L74 25" stroke="#d4af37" strokeWidth="0.5" opacity="0.5" />
+    {/* Fine Vertical Fins lines */}
+    <path d="M28 41 v8 M32 39 v8 M36 37 v8 M40 35 v8 M44 33 v8 M48 31 v8 M52 29 v8 M56 27 v8 M60 25 v8 M64 23 v8" stroke="#d4af37" strokeWidth="0.4" opacity="0.7" />
+
+    {/* Tri-Fan Assembly */}
+    {/* Fan 1 */}
+    <g transform="translate(55, 52)">
+      <ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="#fbbf24" strokeWidth="1.0" />
+      <ellipse cx="0" cy="0" rx="5" ry="3" stroke="#d4af37" strokeWidth="0.65" />
+      {/* Blades */}
+      <path d="M-5 -2 C-10 -5, -12 -1, -14 1 M5 2 C10 5, 12 1, 14 -1 M-8 6 C-12 7, -13 4, -13 2 M8 -6 C12 -7, 13 -4, 13 -2" stroke="#d4af37" strokeWidth="0.5" opacity="0.85" />
+    </g>
+    {/* Fan 2 */}
+    <g transform="translate(95, 64)">
+      <ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="#fbbf24" strokeWidth="1.0" />
+      <ellipse cx="0" cy="0" rx="5" ry="3" stroke="#d4af37" strokeWidth="0.65" />
+      {/* Blades */}
+      <path d="M-5 -2 C-10 -5, -12 -1, -14 1 M5 2 C10 5, 12 1, 14 -1 M-8 6 C-12 7, -13 4, -13 2 M8 -6 C12 -7, 13 -4, 13 -2" stroke="#d4af37" strokeWidth="0.5" opacity="0.85" />
+    </g>
+    {/* Fan 3 */}
+    <g transform="translate(135, 76)">
+      <ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="#fbbf24" strokeWidth="1.0" />
+      <ellipse cx="0" cy="0" rx="5" ry="3" stroke="#d4af37" strokeWidth="0.65" />
+      {/* Blades */}
+      <path d="M-5 -2 C-10 -5, -12 -1, -14 1 M5 2 C10 5, 12 1, 14 -1 M-8 6 C-12 7, -13 4, -13 2 M8 -6 C12 -7, 13 -4, 13 -2" stroke="#d4af37" strokeWidth="0.5" opacity="0.85" />
+    </g>
+
+    {/* Shroud Geometric Detail Panels */}
+    <path d="M20 38 L150 78 M25 35 L145 71" stroke="#d4af37" strokeWidth="0.55" opacity="0.6" />
+    
+    {/* Specular Edge Shimmer */}
+    <polygon points="15,60 75,25 165,52 105,87" stroke="url(#gpu-shimmer)" strokeWidth="1.2" />
   </svg>
 ));
 TechGpu.displayName = "TechGpu";
 
 const TechAiHead = memo(() => (
-  <svg className="tech-ai-head w-40 h-56 transition-opacity duration-1000" viewBox="0 0 160 220" stroke="#d4af37" strokeWidth="0.85" fill="none">
-    {/* Face contour remains static - layered bloom */}
-    <path d="M125 210 L105 210 C85 210, 80 190, 80 175 C80 165, 65 160, 60 150 C55 140, 65 135, 65 125 C65 115, 53 110, 53 100 C53 90, 63 85, 67 75 C71 65, 67 55, 80 35 C93 15, 125 15, 135 35 C145 55, 150 100, 135 190 Z" stroke="#d4af37" strokeWidth="4.2" opacity="0.85" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.8s ease-in-out infinite" }} />
-    <path d="M125 210 L105 210 C85 210, 80 190, 80 175 C80 165, 65 160, 60 150 C55 140, 65 135, 65 125 C65 115, 53 110, 53 100 C53 90, 63 85, 67 75 C71 65, 67 55, 80 35 C93 15, 125 15, 135 35 C145 55, 150 100, 135 190 Z" stroke="#fbbf24" strokeWidth="1.1" />
+  <svg 
+    className="tech-ai-head w-40 h-56 transition-opacity duration-1000" 
+    viewBox="0 0 160 220" 
+    stroke="#d4af37" 
+    strokeWidth="0.85" 
+    fill="none"
+  >
+    {/* Head Outline Glow - breathing glow */}
+    <path d="M125 210 L105 210 C85 210, 80 190, 80 175 C80 165, 65 160, 60 150 C55 140, 65 135, 65 125 C65 115, 53 110, 53 100 C53 90, 63 85, 67 75 C71 65, 67 55, 80 35 C93 15, 125 15, 135 35 C145 55, 150 100, 135 190 Z" stroke="#d4af37" strokeWidth="4.2" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 5.3s ease-in-out infinite" }} />
     
-    {/* Brain structures / neural network pathways - Flowing thought energy pulses */}
-    <path 
-      d="M90 60 L110 50 L120 70 L100 85 L90 60 M110 50 L100 85 M90 60 L120 70" 
-      strokeWidth="0.75" 
-      stroke="#fbbf24"
-      strokeDasharray="10 30" 
-      style={{ animation: "tech-pcb-flow 5s linear infinite" }}
-    />
-    
-    {/* Glowing synapses (pulsing sequentially) */}
-    <circle cx="90" cy="60" r="3.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 5s ease-in-out infinite" }} />
-    <circle cx="110" cy="50" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-3 5s ease-in-out infinite" }} />
-    <circle cx="120" cy="70" r="4.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-5 5s ease-in-out infinite" }} />
-    <circle cx="100" cy="85" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-7 5s ease-in-out infinite" }} />
+    {/* Head Outline */}
+    <path d="M125 210 L105 210 C85 210, 80 190, 80 175 C80 165, 65 160, 60 150 C55 140, 65 135, 65 125 C65 115, 53 110, 53 100 C53 90, 63 85, 67 75 C71 65, 67 55, 80 35 C93 15, 125 15, 135 35 C145 55, 150 100, 135 190 Z" stroke="#d4af37" strokeWidth="1.2" />
+    <path d="M122 206 L106 206 C88 206, 83 188, 83 174 C83 162, 67 157, 63 147 C58 138, 68 133, 68 123 C68 113, 56 108, 56 99 C56 90, 66 85, 70 75 C74 66, 70 57, 83 38 C95 19, 122 19, 132 38 C141 57, 146 99, 132 186 Z" stroke="#fbbf24" strokeWidth="0.6" opacity="0.75" />
+
+    {/* Mechanical Panel Lines on Face */}
+    <path d="M67 75 H80 M60 150 H80 M80 175 H105" stroke="#d4af37" strokeWidth="0.55" opacity="0.6" />
+    <path d="M68 123 H85 L95 130" stroke="#d4af37" strokeWidth="0.5" opacity="0.5" />
+    {/* Eye Socket detail */}
+    <path d="M72 88 H82 L86 94 H76 Z" stroke="#fbbf24" strokeWidth="0.7" />
+    <circle cx="79" cy="91" r="1.5" fill="#fbbf24" stroke="none" />
+
+    {/* Cervical Spine (Vertebrae blocks in neck) */}
+    <g transform="translate(100, 168)" stroke="#fbbf24" strokeWidth="0.8">
+      <rect x="0" y="0" width="16" height="6" rx="1" />
+      <rect x="-2" y="8" width="18" height="6" rx="1" />
+      <rect x="-4" y="16" width="20" height="6" rx="1" />
+      <rect x="-6" y="24" width="22" height="6" rx="1" />
+      {/* Spinal Chord wire */}
+      <path d="M8 -10 V38" stroke="#d4af37" strokeWidth="1.2" opacity="0.7" />
+    </g>
+
+    {/* Brain Cavity (Cerebral Cortex lobes outline) */}
+    <path d="M92 48 C90 35, 125 35, 128 50 C130 65, 110 70, 105 85 C100 88, 90 85, 92 48 Z" stroke="#d4af37" strokeWidth="0.8" opacity="0.65" strokeDasharray="4 2" />
+
+    {/* Brain Synapses / Neural Paths */}
+    <g stroke="#d4af37" strokeWidth="0.6" opacity="0.75">
+      <path d="M96 52 L110 46 L122 62 L106 74 Z M96 52 L122 62 M110 46 L106 74" />
+      {/* Flowing signals - drifted speed */}
+      <path d="M96 52 L110 46 L122 62 L106 74 Z" stroke="#fbbf24" strokeWidth="1.3" strokeDasharray="8 40" style={{ animation: "tech-pcb-flow 5.3s linear infinite" }} />
+    </g>
+
+    {/* Glowing Brain Nodes (Pulsing) - drifted sequence */}
+    <circle cx="96" cy="52" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 5.3s ease-in-out infinite" }} />
+    <circle cx="110" cy="46" r="2.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-3 5.3s ease-in-out infinite" }} />
+    <circle cx="122" cy="62" r="3.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-5 5.3s ease-in-out infinite" }} />
+    <circle cx="106" cy="74" r="2.5" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-7 5.3s ease-in-out infinite" }} />
   </svg>
 ));
 TechAiHead.displayName = "TechAiHead";
 
 const TechLotus = memo(() => (
-  <svg className="tech-lotus w-96 h-20 transition-opacity duration-1000" viewBox="0 0 400 80" stroke="#d4af37" strokeWidth="0.85" fill="none">
-    {/* Engraved Center Petals (Breathing/pulsing with bloom) */}
-    <g filter="url(#engraved-bloom)" style={{ animation: "tech-lotus-pulse 8.5s ease-in-out infinite" }}>
-      <path d="M200 15 C208 25, 208 35, 200 45 C192 35, 192 25, 200 15 Z" strokeWidth="1.38" />
-      <path d="M200 25 Q190 35, 200 25 Z" />
-    </g>
-    {/* Outer Petals */}
-    <path d="M200 30 C170 35, 165 48, 200 52 C175 46, 185 38, 200 30 Z" strokeWidth="0.7" />
-    <path d="M200 30 C230 35, 235 48, 200 52 C225 46, 215 38, 200 30 Z" strokeWidth="0.7" />
+  <svg 
+    className="tech-lotus w-[460px] h-24 transition-opacity duration-1000" 
+    viewBox="0 0 400 100" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Central Core Microchip Glow - breathing glow */}
+    <rect x="188" y="45" width="24" height="24" rx="2" stroke="#d4af37" strokeWidth="4.5" opacity="0.35" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 8.9s ease-in-out infinite" }} />
     
-    {/* Circuit traces extending (Base static layout) */}
-    <path d="M180 48 H120 L100 58 H10 M140 48 V38 H70" strokeWidth="0.9" opacity="0.45" />
-    <path d="M220 48 H280 L300 58 H390 M260 48 V38 H330" strokeWidth="0.9" opacity="0.45" />
+    {/* Central Core Microchip */}
+    <rect x="188" y="45" width="24" height="24" rx="2" stroke="#d4af37" strokeWidth="1.2" />
+    <rect x="192" y="49" width="16" height="16" stroke="#fbbf24" strokeWidth="0.65" />
+    <circle cx="200" cy="57" r="4" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+
+    {/* Detailed Symmetrical Petals */}
+    {/* Center Top Petal */}
+    <path d="M200 45 C205 30, 205 15, 200 5 C195 15, 195 30, 200 45 Z" stroke="#fbbf24" strokeWidth="1.15" />
+    <path d="M200 40 C202 28, 202 18, 200 10 C198 18, 198 28, 200 40 Z" stroke="#d4af37" strokeWidth="0.5" opacity="0.75" />
+
+    {/* Inner Left Petal */}
+    <path d="M188 50 C175 42, 168 28, 168 15 C180 22, 185 38, 188 50 Z" stroke="#fbbf24" strokeWidth="1.0" />
+    <path d="M188 47 C178 39, 173 29, 173 20 C182 25, 186 38, 188 47 Z" stroke="#d4af37" strokeWidth="0.5" opacity="0.75" />
     
-    {/* Circuit traces radiating energy flow (outward flow, staggered delay 5.2s, 2.0x brighter, thicker) */}
+    {/* Inner Right Petal */}
+    <path d="M212 50 C225 42, 232 28, 232 15 C220 22, 215 38, 212 50 Z" stroke="#fbbf24" strokeWidth="1.0" />
+    <path d="M212 47 C222 39, 227 29, 227 20 C218 25, 214 38, 212 47 Z" stroke="#d4af37" strokeWidth="0.5" opacity="0.75" />
+
+    {/* Middle Left Petal */}
+    <path d="M188 57 C165 52, 145 42, 145 28 C162 38, 178 48, 188 57 Z" stroke="#d4af37" strokeWidth="0.95" />
+    <path d="M188 57 C170 54, 155 45, 155 35 C168 42, 180 50, 188 57 Z" stroke="#fbbf24" strokeWidth="0.5" opacity="0.75" />
+    
+    {/* Middle Right Petal */}
+    <path d="M212 57 C235 52, 255 42, 255 28 C238 38, 222 48, 212 57 Z" stroke="#d4af37" strokeWidth="0.95" />
+    <path d="M212 57 C230 54, 245 45, 245 35 C232 42, 220 50, 212 57 Z" stroke="#fbbf24" strokeWidth="0.5" opacity="0.75" />
+
+    {/* Outer Bottom Left Petal */}
+    <path d="M188 65 C155 68, 125 65, 125 50 C145 56, 172 61, 188 65 Z" stroke="#d4af37" strokeWidth="0.95" />
+    {/* Outer Bottom Right Petal */}
+    <path d="M212 65 C245 68, 275 65, 275 50 C255 56, 228 61, 212 65 Z" stroke="#d4af37" strokeWidth="0.95" />
+
+    {/* Symmetrical Wings Circuit Board Traces */}
+    {/* Left Trace */}
+    <path d="M188 57 H125 L105 67 H15 M152 57 V47 H85" stroke="#d4af37" strokeWidth="0.8" opacity="0.5" />
+    {/* Right Trace */}
+    <path d="M212 57 H275 L295 67 H385 M248 57 V47 H315" stroke="#d4af37" strokeWidth="0.8" opacity="0.5" />
+
+    {/* Glowing energy flow travelling outward - drifted speed */}
     <path 
-      d="M180 48 H120 L100 58 H10 M140 48 V38 H70" 
-      strokeWidth="2.8" 
+      d="M188 57 H125 L105 67 H15 M152 57 V47 H85" 
+      strokeWidth="2.0" 
       stroke="#fbbf24"
-      strokeDasharray="25 130"
+      strokeDasharray="25 150"
       filter="url(#engraved-bloom)"
-      opacity="0.75"
-      style={{ animation: "tech-pcb-flow 8.5s linear infinite", animationDelay: "5.2s" }}
+      opacity="0.8"
+      style={{ animation: "tech-pcb-flow 8.9s linear infinite", animationDelay: "2s" }}
     />
     <path 
-      d="M180 48 H120 L100 58 H10 M140 48 V38 H70" 
-      strokeWidth="1.35" 
-      stroke="#fffbe6"
-      strokeDasharray="25 130"
-      opacity="1.0"
-      style={{ animation: "tech-pcb-flow 8.5s linear infinite", animationDelay: "5.2s" }}
-    />
-    
-    <path 
-      d="M220 48 H280 L300 58 H390 M260 48 V38 H330" 
-      strokeWidth="2.8" 
+      d="M212 57 H275 L295 67 H385 M248 57 V47 H315" 
+      strokeWidth="2.0" 
       stroke="#fbbf24"
-      strokeDasharray="25 130"
+      strokeDasharray="25 150"
       filter="url(#engraved-bloom)"
-      opacity="0.75"
-      style={{ animation: "tech-pcb-flow 8.5s linear infinite", animationDelay: "5.2s" }}
+      opacity="0.8"
+      style={{ animation: "tech-pcb-flow 8.9s linear infinite", animationDelay: "2s" }}
     />
-    <path 
-      d="M220 48 H280 L300 58 H390 M260 48 V38 H330" 
-      strokeWidth="1.35" 
-      stroke="#fffbe6"
-      strokeDasharray="25 130"
-      opacity="1.0"
-      style={{ animation: "tech-pcb-flow 8.5s linear infinite", animationDelay: "5.2s" }}
-    />
-    
+
     {/* Node terminals */}
-    <circle cx="10" cy="58" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
-    <circle cx="390" cy="58" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <circle cx="15" cy="67" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <circle cx="385" cy="67" r="3.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <circle cx="85" cy="47" r="2.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
+    <circle cx="315" cy="47" r="2.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" />
   </svg>
 ));
 TechLotus.displayName = "TechLotus";
 
 const TechBinary = memo(({ className }: { className?: string }) => (
-  <div className={`font-mono text-[11px] leading-relaxed select-none tracking-wider ${className}`}>
-    <div style={{ animation: "tech-binary-1 5.0s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
-    <div style={{ animation: "tech-binary-2 5.0s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>1010</div>
-    <div style={{ animation: "tech-binary-3 5.0s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>01011</div>
-    <div className="text-amber-500/50" style={{ animation: "tech-binary-4 5.0s ease-in-out infinite", filter: "drop-shadow(0 0 1.8px rgba(245,158,11,0.55))" }}>000980</div>
-    <div style={{ animation: "tech-binary-5 5.0s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>10101</div>
+  <div className={`font-mono text-[10px] leading-relaxed select-none tracking-widest px-3 py-1 border-l border-r border-gold-vintage/30 ${className}`}>
+    {/* Small horizontal ticks on left and right */}
+    <div className="absolute left-0 top-0 bottom-0 w-1 border-t border-b border-gold-vintage/40"></div>
+    <div className="absolute right-0 top-0 bottom-0 w-1 border-t border-b border-gold-vintage/40"></div>
+    
+    {/* Drifted binary flickers */}
+    <div style={{ animation: "tech-binary-1 6.1s ease-in-out infinite", filter: "drop-shadow(0 0 1.5px rgba(212,175,55,0.6))" }}>0101</div>
+    <div style={{ animation: "tech-binary-2 6.3s ease-in-out infinite", filter: "drop-shadow(0 0 1.5px rgba(212,175,55,0.6))" }}>1010</div>
+    <div style={{ animation: "tech-binary-3 6.7s ease-in-out infinite", filter: "drop-shadow(0 0 1.5px rgba(212,175,55,0.6))" }}>01011</div>
+    <div className="text-amber-500/50" style={{ animation: "tech-binary-4 7.1s ease-in-out infinite", filter: "drop-shadow(0 0 1.2px rgba(245,158,11,0.45))" }}>000980</div>
+    <div style={{ animation: "tech-binary-5 7.3s ease-in-out infinite", filter: "drop-shadow(0 0 1.5px rgba(212,175,55,0.6))" }}>10101</div>
   </div>
 ));
 TechBinary.displayName = "TechBinary";
 
 const TechEquation = memo(({ className }: { className?: string }) => (
   <div 
-    className={`font-serif text-[11px] italic leading-relaxed select-none space-y-1 ${className}`}
+    className={`font-serif text-[11px] italic leading-relaxed select-none space-y-1 pl-4 border-l border-gold-vintage/20 ${className}`}
     style={{ 
       backgroundImage: "linear-gradient(90deg, #d4af37 0%, #d4af37 35%, #fffbe6 50%, #d4af37 65%, #d4af37 100%)",
       backgroundSize: "200px 100%",
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
-      animation: "tech-text-shimmer 7.5s linear infinite",
-      filter: "drop-shadow(0 0 2.8px rgba(212,175,55,0.85))"
+      animation: "tech-text-shimmer 7.9s linear infinite",
+      filter: "drop-shadow(0 0 2.0px rgba(212,175,55,0.75))"
     }}
   >
+    {/* Fine brackets or markings */}
+    <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-gold-vintage/40 to-transparent"></div>
     <div>E = mc²</div>
     <div>∇ · E = ρ/ε₀</div>
   </div>
@@ -986,16 +1548,17 @@ TechEquation.displayName = "TechEquation";
 
 const TechCode = memo(({ className }: { className?: string }) => (
   <div 
-    className={`font-mono text-[10px] leading-normal text-left select-none ${className}`}
+    className={`font-mono text-[9px] leading-normal text-left select-none pl-3 border-l border-gold-vintage/20 ${className}`}
     style={{ 
       backgroundImage: "linear-gradient(90deg, #d4af37 0%, #d4af37 35%, #fffbe6 50%, #d4af37 65%, #d4af37 100%)",
       backgroundSize: "180px 100%",
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
-      animation: "tech-text-shimmer 8s linear infinite",
-      filter: "drop-shadow(0 0 2.5px rgba(212,175,55,0.75))"
+      animation: "tech-text-shimmer 8.3s linear infinite",
+      filter: "drop-shadow(0 0 1.8px rgba(212,175,55,0.65))"
     }}
   >
+    <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-gold-vintage/30 to-transparent"></div>
     <div>int main() &#123;</div>
     <div className="pl-3">consciousness = true;</div>
     <div className="pl-3">while (ignorance) &#123;</div>
@@ -1006,3 +1569,158 @@ const TechCode = memo(({ className }: { className?: string }) => (
   </div>
 ));
 TechCode.displayName = "TechCode";
+
+const TechTerminal = memo(() => (
+  <svg 
+    className="tech-terminal w-32 h-24 transition-opacity duration-1000" 
+    viewBox="0 0 120 90" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Frame Base Glow - breathing glow */}
+    <rect x="5" y="5" width="110" height="80" rx="3" stroke="#d4af37" strokeWidth="3" opacity="0.25" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 8.3s ease-in-out infinite" }} />
+    
+    {/* Outer Shell Window */}
+    <rect x="5" y="5" width="110" height="80" rx="3" stroke="#d4af37" strokeWidth="1.0" />
+    <path d="M5 18 H115" stroke="#fbbf24" strokeWidth="0.6" opacity="0.8" />
+    
+    {/* Window Controls */}
+    <circle cx="12" cy="11" r="2.0" stroke="#fbbf24" strokeWidth="0.65" />
+    <circle cx="20" cy="11" r="2.0" stroke="#fbbf24" strokeWidth="0.65" opacity="0.7" />
+    <circle cx="28" cy="11" r="2.0" stroke="#fbbf24" strokeWidth="0.65" opacity="0.7" />
+
+    {/* Terminal text traces */}
+    <g transform="translate(10, 24)" font-family="monospace" font-size="6" fill="#fbbf24" stroke="none">
+      <text x="0" y="8" fillOpacity="0.95">&gt; npm run dev</text>
+      <text x="0" y="18" fillOpacity="0.8">vite v6.4.3</text>
+      <text x="0" y="28" fillOpacity="0.8">Local: http://localhost:5173</text>
+      <text x="0" y="38" fillOpacity="0.95">ready in 320ms</text>
+      <text x="0" y="48" fillOpacity="0.95">&gt; _</text>
+    </g>
+
+    {/* Blinking cursor simulation - drifted rate */}
+    <rect x="18" y="70" width="4" height="6" fill="#fbbf24" stroke="none" style={{ animation: "terminal-cursor 1.3s infinite" }} />
+  </svg>
+));
+TechTerminal.displayName = "TechTerminal";
+
+const TechCloudApi = memo(() => (
+  <svg 
+    className="tech-cloud-api w-28 h-24 transition-opacity duration-1000" 
+    viewBox="0 0 100 80" 
+    stroke="#d4af37" 
+    strokeWidth="0.8" 
+    fill="none"
+  >
+    {/* Cloud silhouette - breathing glow */}
+    <path d="M25 55 A15 15 0 0 1 25 25 A20 20 0 0 1 65 20 A18 18 0 0 1 80 35 A15 15 0 0 1 75 55 Z" stroke="#d4af37" strokeWidth="3.5" opacity="0.25" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.1s ease-in-out infinite" }} />
+    <path d="M25 55 A15 15 0 0 1 25 25 A20 20 0 0 1 65 20 A18 18 0 0 1 80 35 A15 15 0 0 1 75 55 Z" stroke="#d4af37" strokeWidth="1.2" />
+    <path d="M28 52 A12 12 0 0 1 28 28 A17 17 0 0 1 62 24 A15 15 0 0 1 74 37 A12 12 0 0 1 71 52 Z" stroke="#fbbf24" strokeWidth="0.5" opacity="0.65" />
+    
+    {/* CPU Core - drifted pulse */}
+    <rect x="42" y="32" width="16" height="16" rx="1.5" stroke="#fbbf24" strokeWidth="0.9" style={{ animation: "tech-lotus-pulse 5.9s ease-in-out infinite" }} />
+    <circle cx="50" cy="40" r="3.5" stroke="#d4af37" strokeWidth="0.6" />
+    
+    {/* API text label */}
+    <g transform="translate(50, 42)" font-family="monospace" font-size="5" fill="#fbbf24" font-weight="bold" stroke="none" text-anchor="middle">
+      <text y="14" fillOpacity="0.9">API</text>
+    </g>
+
+    {/* Circuit lines */}
+    <path d="M42 40 H20 V65 M58 40 H80 V65 M50 32 V12 M50 48 V65" stroke="#d4af37" strokeWidth="0.6" opacity="0.7" />
+    <circle cx="20" cy="65" r="1.5" fill="#fbbf24" stroke="none" />
+    <circle cx="80" cy="65" r="1.5" fill="#fbbf24" stroke="none" />
+    <circle cx="50" cy="12" r="1.5" fill="#fbbf24" stroke="none" />
+  </svg>
+));
+TechCloudApi.displayName = "TechCloudApi";
+
+const TechDatabase = memo(() => (
+  <svg 
+    className="tech-database w-20 h-28 transition-opacity duration-1000" 
+    viewBox="0 0 80 110" 
+    stroke="#d4af37" 
+    strokeWidth="0.85" 
+    fill="none"
+  >
+    {/* Cylinder 1 (Top) - drifted LEDs */}
+    <g transform="translate(0, 10)">
+      <ellipse cx="40" cy="15" rx="25" ry="7" stroke="#fbbf24" strokeWidth="1.0" />
+      <path d="M15 15 v16 c0 4 50 4 50 0 v-16" stroke="#d4af37" strokeWidth="1.2" />
+      <ellipse cx="40" cy="31" rx="25" ry="7" stroke="#fbbf24" strokeWidth="0.5" opacity="0.6" />
+      <path d="M30 19 v10 M50 19 v10" stroke="#d4af37" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="25" cy="23" r="1.2" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-1 3.3s ease-in-out infinite" }} />
+      <circle cx="32" cy="25" r="1.2" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-3 3.7s ease-in-out infinite" }} />
+    </g>
+
+    {/* Cylinder 2 (Middle) - drifted LEDs */}
+    <g transform="translate(0, 36)">
+      <ellipse cx="40" cy="15" rx="25" ry="7" stroke="#fbbf24" strokeWidth="1.0" />
+      <path d="M15 15 v16 c0 4 50 4 50 0 v-16" stroke="#d4af37" strokeWidth="1.2" />
+      <ellipse cx="40" cy="31" rx="25" ry="7" stroke="#fbbf24" strokeWidth="0.5" opacity="0.6" />
+      <path d="M30 19 v10 M50 19 v10" stroke="#d4af37" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="25" cy="23" r="1.2" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-2 4.1s ease-in-out infinite" }} />
+      <circle cx="32" cy="25" r="1.2" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-4 4.3s ease-in-out infinite" }} />
+    </g>
+
+    {/* Cylinder 3 (Bottom) - drifted LEDs */}
+    <g transform="translate(0, 62)">
+      <ellipse cx="40" cy="15" rx="25" ry="7" stroke="#fbbf24" strokeWidth="1.0" />
+      <path d="M15 15 v16 c0 4 50 4 50 0 v-16" stroke="#d4af37" strokeWidth="1.2" />
+      <ellipse cx="40" cy="31" rx="25" ry="7" stroke="#fbbf24" strokeWidth="0.5" opacity="0.6" />
+      <path d="M30 19 v10 M50 19 v10" stroke="#d4af37" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="25" cy="23" r="1.2" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-5 4.7s ease-in-out infinite" }} />
+      <circle cx="32" cy="25" r="1.2" fill="#fbbf24" stroke="none" style={{ animation: "tech-node-7 5.1s ease-in-out infinite" }} />
+    </g>
+  </svg>
+));
+TechDatabase.displayName = "TechDatabase";
+
+const TechWaveform = memo(() => (
+  <svg 
+    className="tech-waveform w-32 h-20 transition-opacity duration-1000" 
+    viewBox="0 0 120 70" 
+    stroke="#d4af37" 
+    strokeWidth="0.85" 
+    fill="none"
+  >
+    {/* Grid coordinates */}
+    <path d="M10 35 H115 M15 10 V60" stroke="#d4af37" strokeWidth="0.45" strokeDasharray="2 3" opacity="0.6" />
+    <path d="M110 33 L115 35 L110 37 M13 15 L15 10 L17 15" stroke="#d4af37" strokeWidth="0.65" />
+
+    {/* Calibration ticks */}
+    <path d="M35 32 v6 M55 32 v6 M75 32 v6 M95 32 v6 M12 15 h6 M12 25 h6 M12 45 h6 M12 55 h6" stroke="#fbbf24" strokeWidth="0.5" />
+
+    {/* Mathematical Sine Wave */}
+    <path 
+      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115" 
+      stroke="#d4af37" 
+      strokeWidth="1.15" 
+    />
+    {/* Wave flow with breathing bloom */}
+    <path 
+      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115" 
+      stroke="#fbbf24" 
+      strokeWidth="2.0" 
+      strokeDasharray="12 48" 
+      filter="url(#engraved-bloom)"
+      opacity="0.85"
+      style={{ animation: "tech-wave-flow 6.3s linear infinite, tech-bloom-breathe 6.7s ease-in-out infinite" }}
+    />
+    <path 
+      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115" 
+      stroke="#fffbe6" 
+      strokeWidth="0.8" 
+      strokeDasharray="12 48" 
+      opacity="1.0"
+      style={{ animation: "tech-wave-flow 6.3s linear infinite" }}
+    />
+
+    {/* Formula Label */}
+    <g transform="translate(85, 18)" font-family="serif" font-size="5.5" font-style="italic" fill="#fbbf24" stroke="none">
+      <text>Ψ(x,t) = Ae^(iφ)</text>
+    </g>
+  </svg>
+));
+TechWaveform.displayName = "TechWaveform";

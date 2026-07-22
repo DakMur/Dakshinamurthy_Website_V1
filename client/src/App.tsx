@@ -145,7 +145,7 @@ export default function App() {
 
       {/* Absolute Base Layer: Interactive 3D Cosmic Model — lazy, heaviest chunk */}
       <Suspense fallback={null}>
-        <CosmicGalaxy isWarping={isWarping} />
+        <CosmicGalaxy isWarping={isWarping} isExplore={route !== "landing"} />
       </Suspense>
 
       {/* ॐ Om Transition Overlay — mounts at z-[999] above everything */}
