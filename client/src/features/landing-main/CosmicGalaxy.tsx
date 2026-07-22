@@ -12,17 +12,25 @@ interface GalaxyProps {
 
 export default function CosmicGalaxy({ isWarping, isExplore = false, route, activeTab }: GalaxyProps) {
   const currentTab = activeTab || route || 'landing';
-  const isSimulationActive = 
-    currentTab === 'landing' || 
-    currentTab === 'loading' || 
-    currentTab === 'prathama' || 
-    currentTab === 'prathama-prakasa' || 
-    currentTab === 'timeline' || 
+  const isSimulationActive =
+    currentTab === 'landing' ||
+    currentTab === 'loading' ||
+    currentTab === 'prathama' ||
+    currentTab === 'prathama-prakasa' ||
+    currentTab === 'timeline' ||
     currentTab === 'chronology-timeline';
 
   const isSimulationActiveRef = useRef(isSimulationActive);
+  const startLoopRef = useRef<(() => void) | null>(null);
+  const stopLoopRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
     isSimulationActiveRef.current = isSimulationActive;
+    if (isSimulationActive && startLoopRef.current) {
+      startLoopRef.current();
+    } else if (!isSimulationActive && stopLoopRef.current) {
+      stopLoopRef.current();
+    }
   }, [isSimulationActive]);
 
   const animTimeRef = useRef(0);
@@ -311,7 +319,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         const i3 = i * 3;
         const radius = Math.pow(Math.random(), 1.5) * parameters.radius;
         const branchAngle = ((i % parameters.branches) / parameters.branches) * Math.PI * 2;
-        
+
         radii[i] = radius;
         armAngles[i] = branchAngle;
         phases[i] = Math.random() * Math.PI * 2;
@@ -396,7 +404,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       alpha: true,
       powerPreference: "high-performance",
     });
-    renderer.setSize(sizes.width, sizes.height);
+    renderer.setSize(sizes.width, sizes.height, false);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const controls = new OrbitControls(camera, canvasRef.current);
@@ -412,19 +420,29 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       camera.aspect = sizes.width / sizes.height;
       camera.updateProjectionMatrix();
 
-      renderer.setSize(sizes.width, sizes.height);
+      renderer.setSize(sizes.width, sizes.height, false);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // ONE-SHOT REDRAW: If paused, render exactly 1 frame to fit new zoom level
+      // DO NOT start requestAnimationFrame loop
+      if (!isSimulationActiveRef.current) {
+        renderer.render(scene, camera);
+      }
     };
     window.addEventListener("resize", handleResize);
 
     // 7. Animation Loop
     const clock = new THREE.Clock();
 
-    let animationId: number;
+    let animationId: number | null = null;
+
     const tick = () => {
+      if (!isSimulationActiveRef.current) {
+        animationId = null;
+        return;
+      }
       animationId = window.requestAnimationFrame(tick);
       const delta = clock.getDelta();
-      if (!isSimulationActiveRef.current) return;
 
       const safeDelta = Math.min(delta, 0.033);
       animTimeRef.current += safeDelta;
@@ -441,7 +459,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
       const currentSpeed = isWarping ? parameters.rotationSpeed * 12 : parameters.rotationSpeed;
       galaxyGroup.rotation.y += safeDelta * currentSpeed;
-      
+
       if (ambientStars) {
         ambientStars.rotation.y += safeDelta * currentSpeed * 0.35;
       }
@@ -453,12 +471,28 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       renderer.render(scene, camera);
     };
 
+    startLoopRef.current = () => {
+      if (animationId === null) {
+        clock.getDelta(); // reset clock delta to avoid huge jump
+        tick();
+      }
+    };
+
+    stopLoopRef.current = () => {
+      if (animationId !== null) {
+        window.cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    };
+
     tick();
 
     // Cleanup System
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.cancelAnimationFrame(animationId);
+      if (animationId !== null) {
+        window.cancelAnimationFrame(animationId);
+      }
       controls.dispose();
       galaxyGeometry?.dispose();
       galaxyMaterial?.dispose();
@@ -476,7 +510,8 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden select-none -z-10" style={{ width: '100vw', height: '100vh' }}>
       {/* CSS Keyframes for travelling light and sequential ambient animations */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes tech-pcb-flow {
           0% { stroke-dashoffset: 80; }
           100% { stroke-dashoffset: 0; }
@@ -550,21 +585,21 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
             <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="blur-tight" />
             {/* Wide soft scattering halo */}
             <feGaussianBlur in="SourceGraphic" stdDeviation="6.5" result="blur-wide" />
-            
+
             {/* Map wide blur to antique gold with boosted alpha */}
             <feColorMatrix type="matrix" in="blur-wide" result="glow-wide" values="
               0.83 0 0 0 0
               0 0.69 0 0 0
               0 0 0.22 0 0
               0 0 0 1.35 0" />
-              
+
             {/* Map tight blur to warm gold with boosted alpha */}
             <feColorMatrix type="matrix" in="blur-tight" result="glow-tight" values="
               0.90 0 0 0 0
               0 0.75 0 0 0
               0 0 0.30 0 0
               0 0 0 2.40 0" />
-              
+
             <feMerge>
               <feMergeNode in="glow-wide" />
               <feMergeNode in="glow-tight" />
@@ -619,13 +654,13 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </defs>
       </svg>
       {/* 1. Technology Background Layer (breathing ambient opacity, thin gold outline strokes) - sits behind canvas */}
-      <div 
+      <div
         className="absolute inset-0 z-0 text-gold-vintage mix-blend-screen hidden md:block select-none pointer-events-none"
         style={{ animation: "tech-ambient-light 16s ease-in-out infinite" }}
       >
-        
+
         {/* Top Left Cluster - Adjusted to clear Jyothy logo safe zone */}
-        <div 
+        <div
           className="absolute left-[3vw] top-[18vh]"
           style={{
             opacity: isExplore ? 0.78 * 0.95 : 0.95,
@@ -634,7 +669,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechController />
         </div>
-        <div 
+        <div
           className="absolute left-[15vw] top-[19vh]"
           style={{
             opacity: isExplore ? 0.55 * 0.85 : 0.85,
@@ -645,7 +680,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Middle Left Cluster */}
-        <div 
+        <div
           className="absolute left-[2vw] top-[38vh]"
           style={{
             opacity: isExplore ? 0.78 * 0.90 : 0.90,
@@ -656,7 +691,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Left background additions */}
-        <div 
+        <div
           className="absolute left-[13vw] top-[46vh]"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
@@ -667,7 +702,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Bottom Left Cluster */}
-        <div 
+        <div
           className="absolute left-[14vw] bottom-[14vh]"
           style={{
             opacity: isExplore ? 0.78 * 0.90 : 0.90,
@@ -676,7 +711,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechPcb />
         </div>
-        <div 
+        <div
           className="absolute left-[2vw] bottom-[15vh]"
           style={{
             opacity: isExplore ? 0.68 * 0.95 : 0.95,
@@ -685,7 +720,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechRoboticArm />
         </div>
-        <div 
+        <div
           className="absolute left-[14vw] bottom-[4vh] text-gold-vintage"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
@@ -694,7 +729,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechWaveform />
         </div>
-        <div 
+        <div
           className="absolute left-[2vw] bottom-[3vh]"
           style={{
             opacity: isExplore ? 0.55 * 0.70 : 0.70,
@@ -705,7 +740,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Top Right Cluster - Framing the Vedanta Bharati logo */}
-        <div 
+        <div
           className="absolute right-[12vw] top-[18vh]"
           style={{
             opacity: isExplore ? 0.68 * 1.00 : 1.00,
@@ -716,7 +751,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Middle Right Cluster */}
-        <div 
+        <div
           className="absolute right-[2vw] top-[22vh]"
           style={{
             opacity: isExplore ? 0.78 * 0.95 : 0.95,
@@ -725,7 +760,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechNeural />
         </div>
-        <div 
+        <div
           className="absolute right-[20vw] top-[32vh]"
           style={{
             opacity: isExplore ? 0.78 * 0.90 : 0.90,
@@ -734,9 +769,9 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechCamera />
         </div>
-        
+
         {/* Right background additions */}
-        <div 
+        <div
           className="absolute right-[12vw] top-[42vh]"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
@@ -745,7 +780,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechCloudApi />
         </div>
-        <div 
+        <div
           className="absolute right-[2vw] top-[48vh]"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
@@ -755,7 +790,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechDatabase />
         </div>
 
-        <div 
+        <div
           className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage"
           style={{
             opacity: isExplore ? 0.55 * 0.80 : 0.80,
@@ -768,7 +803,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Bottom Right Cluster - Moved AI Head slightly up to clear Tat Tvam Asi text */}
-        <div 
+        <div
           className="absolute right-[20vw] bottom-[16vh]"
           style={{
             opacity: isExplore ? 0.68 * 0.95 : 0.95,
@@ -777,7 +812,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechGpu />
         </div>
-        <div 
+        <div
           className="absolute right-[2vw] bottom-[12vh]"
           style={{
             opacity: isExplore ? 0.68 * 1.00 : 1.00,
@@ -786,7 +821,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         >
           <TechAiHead />
         </div>
-        <div 
+        <div
           className="absolute right-[19vw] bottom-[3vh]"
           style={{
             opacity: isExplore ? 0.55 * 0.80 : 0.80,
@@ -797,7 +832,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         {/* Bottom Center Cluster */}
-        <div 
+        <div
           className="absolute bottom-[5vh] left-1/2 -translate-x-1/2"
           style={{
             opacity: isExplore ? 0.78 * 1.00 : 1.00,
@@ -821,19 +856,19 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
 // Static memoized technology background sub-components
 const TechController = memo(() => (
-  <svg 
-    className="tech-controller w-32 h-22 transition-opacity duration-1000" 
-    viewBox="0 0 200 140" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-controller w-32 h-22 transition-opacity duration-1000"
+    viewBox="0 0 200 140"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Glow Bloom (behind) - breathing glow */}
     <path d="M40 30 h120 c20 0, 32 12, 22 45 l-12 35 c-6 18, -22 18, -32 0 l-12 -18 h-32 l-12 18 c-10 18, -26 18, -32 0 l-12 -35 c-10 -33, 2 -45, 22 -45 Z" stroke="#d4af37" strokeWidth="4" opacity="0.4" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.3s ease-in-out infinite" }} />
-    
+
     {/* Main Engraved Outline */}
     <path d="M40 30 h120 c20 0, 32 12, 22 45 l-12 35 c-6 18, -22 18, -32 0 l-12 -18 h-32 l-12 18 c-10 18, -26 18, -32 0 l-12 -35 c-10 -33, 2 -45, 22 -45 Z" stroke="#d4af37" strokeWidth="1.2" />
-    
+
     {/* Inner Contour Offset */}
     <path d="M43 33 h114 c17 0, 27 10, 19 38 l-11 32 c-5 15, -18 15, -27 0 l-12 -18 h-32 l-12 18 c-9 15, -22 15, -27 0 l-11 -32 c-8 -28, 2 -38, 19 -38 Z" stroke="#fbbf24" strokeWidth="0.6" opacity="0.7" />
 
@@ -897,23 +932,23 @@ const TechController = memo(() => (
 TechController.displayName = "TechController";
 
 const TechMicrochip = memo(() => (
-  <svg 
-    className="tech-microchip w-28 h-28 transition-opacity duration-1000" 
-    viewBox="0 0 100 100" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-microchip w-28 h-28 transition-opacity duration-1000"
+    viewBox="0 0 100 100"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Outer Silicon Base Glow - breathing glow */}
     <rect x="20" y="20" width="60" height="60" rx="3" stroke="#d4af37" strokeWidth="4" opacity="0.35" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 5.7s ease-in-out infinite" }} />
-    
+
     {/* Base Outline */}
     <rect x="20" y="20" width="60" height="60" rx="3" stroke="#d4af37" strokeWidth="1.2" />
-    
+
     {/* Inner Concentric Heat Spreader */}
     <rect x="26" y="26" width="48" height="48" rx="1.5" stroke="#fbbf24" strokeWidth="0.75" />
     <rect x="32" y="32" width="36" height="36" stroke="#d4af37" strokeWidth="0.5" opacity="0.6" strokeDasharray="3 1" />
-    
+
     {/* Silicon Die in Center */}
     <rect x="40" y="40" width="20" height="20" stroke="#fbbf24" strokeWidth="0.9" />
     {/* Tiny circuit details inside die */}
@@ -927,7 +962,7 @@ const TechMicrochip = memo(() => (
 
     {/* Radiating PCB Tracks */}
     <path d="M15 28 H8 L3 23 M15 40 H5 V12 H2 M15 60 H5 V88 H2 M15 72 H8 L3 77 M85 28 H92 L97 23 M85 40 H95 V12 H98 M85 60 H95 V88 H98 M85 72 H92 L97 77 M40 15 V5 H12 M60 15 V5 H88 M40 85 V95 H12 M60 85 V95 H88" stroke="#d4af37" strokeWidth="0.65" opacity="0.55" />
-    
+
     {/* Animated Pulses on traces - drifted flow */}
     <path d="M15 28 H8 L3 23 M15 40 H5 V12 H2 M85 72 H92 L97 77 M60 85 V95 H88" stroke="#fbbf24" strokeWidth="1.5" strokeDasharray="8 60" style={{ animation: "tech-pcb-flow 5.7s linear infinite" }} opacity="0.8" filter="url(#engraved-bloom)" />
   </svg>
@@ -935,20 +970,20 @@ const TechMicrochip = memo(() => (
 TechMicrochip.displayName = "TechMicrochip";
 
 const TechPcb = memo(() => (
-  <svg 
-    className="tech-pcb w-44 h-32 transition-opacity duration-1000" 
-    viewBox="0 0 160 120" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-pcb w-44 h-32 transition-opacity duration-1000"
+    viewBox="0 0 160 120"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Motherboard Base Plate Glow - breathing glow */}
     <polygon points="15,65 85,25 150,62 80,102" stroke="#d4af37" strokeWidth="4" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 4.9s ease-in-out infinite" }} />
-    
+
     {/* Base Plate Outlines */}
     <polygon points="15,65 85,25 150,62 80,102" stroke="#d4af37" strokeWidth="1.2" />
     <polygon points="17,64 85,27 146,62 80,100" stroke="#fbbf24" strokeWidth="0.5" opacity="0.75" />
-    
+
     {/* Thickness side board edge */}
     <path d="M15 65 v4 L80 106 v-4 M150 62 v4 L80 106" stroke="#d4af37" strokeWidth="0.85" opacity="0.7" />
 
@@ -1005,16 +1040,16 @@ const TechRoboticArm = memo(() => (
       ease: ["easeInOut", "linear", "easeInOut", "easeInOut", "linear", "easeInOut"]
     }}
   >
-    <svg 
-      className="tech-robotic-arm w-44 h-48 transition-opacity duration-1000" 
-      viewBox="0 0 150 200" 
-      stroke="#d4af37" 
-      strokeWidth="0.8" 
+    <svg
+      className="tech-robotic-arm w-44 h-48 transition-opacity duration-1000"
+      viewBox="0 0 150 200"
+      stroke="#d4af37"
+      strokeWidth="0.8"
       fill="none"
     >
       {/* Base Stand Glow - breathing glow */}
       <rect x="35" y="175" width="80" height="15" rx="3" stroke="#d4af37" strokeWidth="3.5" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.3s ease-in-out infinite" }} />
-      
+
       {/* Base Stand */}
       <rect x="35" y="175" width="80" height="15" rx="3" stroke="#d4af37" strokeWidth="1.2" />
       <path d="M45 175 V165 H105 V175" stroke="#fbbf24" strokeWidth="0.75" />
@@ -1073,16 +1108,16 @@ const TechRoboticArm = memo(() => (
 TechRoboticArm.displayName = "TechRoboticArm";
 
 const TechDrone = memo(() => (
-  <svg 
-    className="tech-drone w-48 h-36 transition-opacity duration-1000" 
-    viewBox="0 0 180 120" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-drone w-48 h-36 transition-opacity duration-1000"
+    viewBox="0 0 180 120"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Main Body Glow - breathing glow */}
     <rect x="75" y="45" width="30" height="24" rx="5" stroke="#d4af37" strokeWidth="4.5" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.9s ease-in-out infinite" }} />
-    
+
     {/* Fuselage (Central Body) */}
     <rect x="75" y="45" width="30" height="24" rx="5" stroke="#d4af37" strokeWidth="1.2" />
     <rect x="79" y="49" width="22" height="16" rx="2.5" stroke="#fbbf24" strokeWidth="0.65" />
@@ -1204,11 +1239,11 @@ const TechDrone = memo(() => (
 TechDrone.displayName = "TechDrone";
 
 const TechNeural = memo(() => (
-  <svg 
-    className="tech-neural w-48 h-40 transition-opacity duration-1000" 
-    viewBox="0 0 180 150" 
-    stroke="#d4af37" 
-    strokeWidth="0.6" 
+  <svg
+    className="tech-neural w-48 h-40 transition-opacity duration-1000"
+    viewBox="0 0 180 150"
+    stroke="#d4af37"
+    strokeWidth="0.6"
     fill="none"
   >
     {/* Symmetrical central glow for visual weight */}
@@ -1227,10 +1262,10 @@ const TechNeural = memo(() => (
     </g>
 
     {/* Signal Pulses Travelling along Paths - drifted speed */}
-    <path 
-      d="M25 45 L65 25 L95 75 L135 95 L85 130 M50 85 L95 75 L155 45" 
-      strokeWidth="2.0" 
-      stroke="#fffbe6" 
+    <path
+      d="M25 45 L65 25 L95 75 L135 95 L85 130 M50 85 L95 75 L155 45"
+      strokeWidth="2.0"
+      stroke="#fffbe6"
       strokeDasharray="15 130"
       filter="url(#engraved-bloom)"
       opacity="0.8"
@@ -1298,16 +1333,16 @@ const TechNeural = memo(() => (
 TechNeural.displayName = "TechNeural";
 
 const TechCamera = memo(() => (
-  <svg 
-    className="tech-camera w-24 h-18 transition-opacity duration-1000" 
-    viewBox="0 0 100 80" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-camera w-24 h-18 transition-opacity duration-1000"
+    viewBox="0 0 100 80"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Camera Body Glow - breathing glow */}
     <rect x="10" y="20" width="80" height="50" rx="6" stroke="#d4af37" strokeWidth="4.2" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.9s ease-in-out infinite" }} />
-    
+
     {/* Camera Body */}
     <rect x="10" y="20" width="80" height="50" rx="6" stroke="#d4af37" strokeWidth="1.2" />
     <rect x="13" y="23" width="74" height="44" rx="3.5" stroke="#fbbf24" strokeWidth="0.55" opacity="0.75" />
@@ -1347,20 +1382,20 @@ const TechCamera = memo(() => (
 TechCamera.displayName = "TechCamera";
 
 const TechGpu = memo(() => (
-  <svg 
-    className="tech-gpu w-48 h-28 transition-opacity duration-1000" 
-    viewBox="0 0 180 100" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-gpu w-48 h-28 transition-opacity duration-1000"
+    viewBox="0 0 180 100"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* GPU Outer Casing Glow - breathing glow */}
     <polygon points="15,60 75,25 165,52 105,87" stroke="#d4af37" strokeWidth="4.5" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 6.1s ease-in-out infinite" }} />
-    
+
     {/* Card Outer Shroud */}
     <polygon points="15,60 75,25 165,52 105,87" stroke="#d4af37" strokeWidth="1.2" />
     <polygon points="17,59 75,27 161,52 105,84" stroke="#fbbf24" strokeWidth="0.55" opacity="0.75" />
-    
+
     {/* Thickness Edges */}
     <path d="M15 60 v10 L105 97 v-10 M165 52 v10 L105 97" stroke="#d4af37" strokeWidth="0.9" opacity="0.75" />
 
@@ -1398,7 +1433,7 @@ const TechGpu = memo(() => (
 
     {/* Shroud Geometric Detail Panels */}
     <path d="M20 38 L150 78 M25 35 L145 71" stroke="#d4af37" strokeWidth="0.55" opacity="0.6" />
-    
+
     {/* Specular Edge Shimmer */}
     <polygon points="15,60 75,25 165,52 105,87" stroke="url(#gpu-shimmer)" strokeWidth="1.2" />
   </svg>
@@ -1406,16 +1441,16 @@ const TechGpu = memo(() => (
 TechGpu.displayName = "TechGpu";
 
 const TechAiHead = memo(() => (
-  <svg 
-    className="tech-ai-head w-40 h-56 transition-opacity duration-1000" 
-    viewBox="0 0 160 220" 
-    stroke="#d4af37" 
-    strokeWidth="0.85" 
+  <svg
+    className="tech-ai-head w-40 h-56 transition-opacity duration-1000"
+    viewBox="0 0 160 220"
+    stroke="#d4af37"
+    strokeWidth="0.85"
     fill="none"
   >
     {/* Head Outline Glow - breathing glow */}
     <path d="M125 210 L105 210 C85 210, 80 190, 80 175 C80 165, 65 160, 60 150 C55 140, 65 135, 65 125 C65 115, 53 110, 53 100 C53 90, 63 85, 67 75 C71 65, 67 55, 80 35 C93 15, 125 15, 135 35 C145 55, 150 100, 135 190 Z" stroke="#d4af37" strokeWidth="4.2" opacity="0.3" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 5.3s ease-in-out infinite" }} />
-    
+
     {/* Head Outline */}
     <path d="M125 210 L105 210 C85 210, 80 190, 80 175 C80 165, 65 160, 60 150 C55 140, 65 135, 65 125 C65 115, 53 110, 53 100 C53 90, 63 85, 67 75 C71 65, 67 55, 80 35 C93 15, 125 15, 135 35 C145 55, 150 100, 135 190 Z" stroke="#d4af37" strokeWidth="1.2" />
     <path d="M122 206 L106 206 C88 206, 83 188, 83 174 C83 162, 67 157, 63 147 C58 138, 68 133, 68 123 C68 113, 56 108, 56 99 C56 90, 66 85, 70 75 C74 66, 70 57, 83 38 C95 19, 122 19, 132 38 C141 57, 146 99, 132 186 Z" stroke="#fbbf24" strokeWidth="0.6" opacity="0.75" />
@@ -1457,16 +1492,16 @@ const TechAiHead = memo(() => (
 TechAiHead.displayName = "TechAiHead";
 
 const TechLotus = memo(() => (
-  <svg 
-    className="tech-lotus w-[460px] h-24 transition-opacity duration-1000" 
-    viewBox="0 0 400 100" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-lotus w-[460px] h-24 transition-opacity duration-1000"
+    viewBox="0 0 400 100"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Central Core Microchip Glow - breathing glow */}
     <rect x="188" y="45" width="24" height="24" rx="2" stroke="#d4af37" strokeWidth="4.5" opacity="0.35" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 8.9s ease-in-out infinite" }} />
-    
+
     {/* Central Core Microchip */}
     <rect x="188" y="45" width="24" height="24" rx="2" stroke="#d4af37" strokeWidth="1.2" />
     <rect x="192" y="49" width="16" height="16" stroke="#fbbf24" strokeWidth="0.65" />
@@ -1480,7 +1515,7 @@ const TechLotus = memo(() => (
     {/* Inner Left Petal */}
     <path d="M188 50 C175 42, 168 28, 168 15 C180 22, 185 38, 188 50 Z" stroke="#fbbf24" strokeWidth="1.0" />
     <path d="M188 47 C178 39, 173 29, 173 20 C182 25, 186 38, 188 47 Z" stroke="#d4af37" strokeWidth="0.5" opacity="0.75" />
-    
+
     {/* Inner Right Petal */}
     <path d="M212 50 C225 42, 232 28, 232 15 C220 22, 215 38, 212 50 Z" stroke="#fbbf24" strokeWidth="1.0" />
     <path d="M212 47 C222 39, 227 29, 227 20 C218 25, 214 38, 212 47 Z" stroke="#d4af37" strokeWidth="0.5" opacity="0.75" />
@@ -1488,7 +1523,7 @@ const TechLotus = memo(() => (
     {/* Middle Left Petal */}
     <path d="M188 57 C165 52, 145 42, 145 28 C162 38, 178 48, 188 57 Z" stroke="#d4af37" strokeWidth="0.95" />
     <path d="M188 57 C170 54, 155 45, 155 35 C168 42, 180 50, 188 57 Z" stroke="#fbbf24" strokeWidth="0.5" opacity="0.75" />
-    
+
     {/* Middle Right Petal */}
     <path d="M212 57 C235 52, 255 42, 255 28 C238 38, 222 48, 212 57 Z" stroke="#d4af37" strokeWidth="0.95" />
     <path d="M212 57 C230 54, 245 45, 245 35 C232 42, 220 50, 212 57 Z" stroke="#fbbf24" strokeWidth="0.5" opacity="0.75" />
@@ -1505,18 +1540,18 @@ const TechLotus = memo(() => (
     <path d="M212 57 H275 L295 67 H385 M248 57 V47 H315" stroke="#d4af37" strokeWidth="0.8" opacity="0.5" />
 
     {/* Glowing energy flow travelling outward - drifted speed */}
-    <path 
-      d="M188 57 H125 L105 67 H15 M152 57 V47 H85" 
-      strokeWidth="2.0" 
+    <path
+      d="M188 57 H125 L105 67 H15 M152 57 V47 H85"
+      strokeWidth="2.0"
       stroke="#fbbf24"
       strokeDasharray="25 150"
       filter="url(#engraved-bloom)"
       opacity="0.8"
       style={{ animation: "tech-pcb-flow 8.9s linear infinite", animationDelay: "2s" }}
     />
-    <path 
-      d="M212 57 H275 L295 67 H385 M248 57 V47 H315" 
-      strokeWidth="2.0" 
+    <path
+      d="M212 57 H275 L295 67 H385 M248 57 V47 H315"
+      strokeWidth="2.0"
       stroke="#fbbf24"
       strokeDasharray="25 150"
       filter="url(#engraved-bloom)"
@@ -1538,7 +1573,7 @@ const TechBinary = memo(({ className }: { className?: string }) => (
     {/* Small horizontal ticks on left and right */}
     <div className="absolute left-0 top-0 bottom-0 w-1 border-t border-b border-gold-vintage/40"></div>
     <div className="absolute right-0 top-0 bottom-0 w-1 border-t border-b border-gold-vintage/40"></div>
-    
+
     {/* Drifted binary flickers */}
     <div style={{ animation: "tech-binary-1 6.1s ease-in-out infinite", filter: "drop-shadow(0 0 1.5px rgba(212,175,55,0.6))" }}>0101</div>
     <div style={{ animation: "tech-binary-2 6.3s ease-in-out infinite", filter: "drop-shadow(0 0 1.5px rgba(212,175,55,0.6))" }}>1010</div>
@@ -1550,9 +1585,9 @@ const TechBinary = memo(({ className }: { className?: string }) => (
 TechBinary.displayName = "TechBinary";
 
 const TechEquation = memo(({ className }: { className?: string }) => (
-  <div 
+  <div
     className={`font-serif text-[11px] italic leading-relaxed select-none space-y-1 pl-4 border-l border-gold-vintage/20 ${className}`}
-    style={{ 
+    style={{
       backgroundImage: "linear-gradient(90deg, #d4af37 0%, #d4af37 35%, #fffbe6 50%, #d4af37 65%, #d4af37 100%)",
       backgroundSize: "200px 100%",
       WebkitBackgroundClip: "text",
@@ -1570,9 +1605,9 @@ const TechEquation = memo(({ className }: { className?: string }) => (
 TechEquation.displayName = "TechEquation";
 
 const TechCode = memo(({ className }: { className?: string }) => (
-  <div 
+  <div
     className={`font-mono text-[9px] leading-normal text-left select-none pl-3 border-l border-gold-vintage/20 ${className}`}
-    style={{ 
+    style={{
       backgroundImage: "linear-gradient(90deg, #d4af37 0%, #d4af37 35%, #fffbe6 50%, #d4af37 65%, #d4af37 100%)",
       backgroundSize: "180px 100%",
       WebkitBackgroundClip: "text",
@@ -1594,20 +1629,20 @@ const TechCode = memo(({ className }: { className?: string }) => (
 TechCode.displayName = "TechCode";
 
 const TechTerminal = memo(() => (
-  <svg 
-    className="tech-terminal w-32 h-24 transition-opacity duration-1000" 
-    viewBox="0 0 120 90" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-terminal w-32 h-24 transition-opacity duration-1000"
+    viewBox="0 0 120 90"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Frame Base Glow - breathing glow */}
     <rect x="5" y="5" width="110" height="80" rx="3" stroke="#d4af37" strokeWidth="3" opacity="0.25" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 8.3s ease-in-out infinite" }} />
-    
+
     {/* Outer Shell Window */}
     <rect x="5" y="5" width="110" height="80" rx="3" stroke="#d4af37" strokeWidth="1.0" />
     <path d="M5 18 H115" stroke="#fbbf24" strokeWidth="0.6" opacity="0.8" />
-    
+
     {/* Window Controls */}
     <circle cx="12" cy="11" r="2.0" stroke="#fbbf24" strokeWidth="0.65" />
     <circle cx="20" cy="11" r="2.0" stroke="#fbbf24" strokeWidth="0.65" opacity="0.7" />
@@ -1629,22 +1664,22 @@ const TechTerminal = memo(() => (
 TechTerminal.displayName = "TechTerminal";
 
 const TechCloudApi = memo(() => (
-  <svg 
-    className="tech-cloud-api w-28 h-24 transition-opacity duration-1000" 
-    viewBox="0 0 100 80" 
-    stroke="#d4af37" 
-    strokeWidth="0.8" 
+  <svg
+    className="tech-cloud-api w-28 h-24 transition-opacity duration-1000"
+    viewBox="0 0 100 80"
+    stroke="#d4af37"
+    strokeWidth="0.8"
     fill="none"
   >
     {/* Cloud silhouette - breathing glow */}
     <path d="M25 55 A15 15 0 0 1 25 25 A20 20 0 0 1 65 20 A18 18 0 0 1 80 35 A15 15 0 0 1 75 55 Z" stroke="#d4af37" strokeWidth="3.5" opacity="0.25" filter="url(#engraved-bloom)" style={{ animation: "tech-bloom-breathe 7.1s ease-in-out infinite" }} />
     <path d="M25 55 A15 15 0 0 1 25 25 A20 20 0 0 1 65 20 A18 18 0 0 1 80 35 A15 15 0 0 1 75 55 Z" stroke="#d4af37" strokeWidth="1.2" />
     <path d="M28 52 A12 12 0 0 1 28 28 A17 17 0 0 1 62 24 A15 15 0 0 1 74 37 A12 12 0 0 1 71 52 Z" stroke="#fbbf24" strokeWidth="0.5" opacity="0.65" />
-    
+
     {/* CPU Core - drifted pulse */}
     <rect x="42" y="32" width="16" height="16" rx="1.5" stroke="#fbbf24" strokeWidth="0.9" style={{ animation: "tech-lotus-pulse 5.9s ease-in-out infinite" }} />
     <circle cx="50" cy="40" r="3.5" stroke="#d4af37" strokeWidth="0.6" />
-    
+
     {/* API text label */}
     <g transform="translate(50, 42)" font-family="monospace" font-size="5" fill="#fbbf24" font-weight="bold" stroke="none" text-anchor="middle">
       <text y="14" fillOpacity="0.9">API</text>
@@ -1660,11 +1695,11 @@ const TechCloudApi = memo(() => (
 TechCloudApi.displayName = "TechCloudApi";
 
 const TechDatabase = memo(() => (
-  <svg 
-    className="tech-database w-20 h-28 transition-opacity duration-1000" 
-    viewBox="0 0 80 110" 
-    stroke="#d4af37" 
-    strokeWidth="0.85" 
+  <svg
+    className="tech-database w-20 h-28 transition-opacity duration-1000"
+    viewBox="0 0 80 110"
+    stroke="#d4af37"
+    strokeWidth="0.85"
     fill="none"
   >
     {/* Cylinder 1 (Top) - drifted LEDs */}
@@ -1701,11 +1736,11 @@ const TechDatabase = memo(() => (
 TechDatabase.displayName = "TechDatabase";
 
 const TechWaveform = memo(() => (
-  <svg 
-    className="tech-waveform w-32 h-20 transition-opacity duration-1000" 
-    viewBox="0 0 120 70" 
-    stroke="#d4af37" 
-    strokeWidth="0.85" 
+  <svg
+    className="tech-waveform w-32 h-20 transition-opacity duration-1000"
+    viewBox="0 0 120 70"
+    stroke="#d4af37"
+    strokeWidth="0.85"
     fill="none"
   >
     {/* Grid coordinates */}
@@ -1716,26 +1751,26 @@ const TechWaveform = memo(() => (
     <path d="M35 32 v6 M55 32 v6 M75 32 v6 M95 32 v6 M12 15 h6 M12 25 h6 M12 45 h6 M12 55 h6" stroke="#fbbf24" strokeWidth="0.5" />
 
     {/* Mathematical Sine Wave */}
-    <path 
-      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115" 
-      stroke="#d4af37" 
-      strokeWidth="1.15" 
+    <path
+      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115"
+      stroke="#d4af37"
+      strokeWidth="1.15"
     />
     {/* Wave flow with breathing bloom */}
-    <path 
-      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115" 
-      stroke="#fbbf24" 
-      strokeWidth="2.0" 
-      strokeDasharray="12 48" 
+    <path
+      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115"
+      stroke="#fbbf24"
+      strokeWidth="2.0"
+      strokeDasharray="12 48"
       filter="url(#engraved-bloom)"
       opacity="0.85"
       style={{ animation: "tech-wave-flow 6.3s linear infinite, tech-bloom-breathe 6.7s ease-in-out infinite" }}
     />
-    <path 
-      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115" 
-      stroke="#fffbe6" 
-      strokeWidth="0.8" 
-      strokeDasharray="12 48" 
+    <path
+      d="M15 35 Q 30 10, 45 35 T 75 35 T 105 35 H115"
+      stroke="#fffbe6"
+      strokeWidth="0.8"
+      strokeDasharray="12 48"
       opacity="1.0"
       style={{ animation: "tech-wave-flow 6.3s linear infinite" }}
     />

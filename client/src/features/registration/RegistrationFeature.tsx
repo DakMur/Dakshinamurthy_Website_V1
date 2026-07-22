@@ -41,12 +41,12 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
 
   const handleAdminBypass = () => {
     // Admin bypass sets the current view to admin and auto-authenticates the parent session
-    props.onLogin({ 
-      id: "bypass", 
-      role: "admin", 
-      name: "Sovereign Admin", 
-      email: "admin@dakshina.org", 
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150" 
+    props.onLogin({
+      id: "bypass",
+      role: "admin",
+      name: "Sovereign Admin",
+      email: "admin@dakshina.org",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
     });
     setView('admin');
   };
@@ -66,11 +66,11 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   }
 
   return (
-    <div className="w-full min-h-screen pt-20 pb-12 px-4 flex flex-col items-center justify-start gap-4">
+    <div className="w-full min-h-screen flex flex-col items-center justify-start pt-16 md:pt-20 pb-12 px-4 space-y-4 z-10 relative">
       <AnimatePresence mode="wait">
         {view === 'gate' && (
           <motion.div key="gate" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-            <RegistrationGate 
+            <RegistrationGate
               config={config}
               onLoginSuccess={handleLoginSuccess}
               onAdminBypass={handleAdminBypass}
@@ -81,8 +81,8 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
 
         {view === 'form' && (
           <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-            <RegistrationForm 
-              config={config} 
+            <RegistrationForm
+              config={config}
               onBack={() => setView('gate')}
               onSuccess={(teamData) => handleLoginSuccess(teamData)}
             />
@@ -91,7 +91,7 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
 
         {view === 'dashboard' && team && (
           <motion.div key="dashboard" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-            <TeamDashboard 
+            <TeamDashboard
               team={team}
               config={config}
               onUpdateTeam={(updated) => setTeam(updated)}
@@ -107,7 +107,7 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
                 <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
               </div>
             }>
-              <AdminControlPanel 
+              <AdminControlPanel
                 {...props}
                 config={config}
                 onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}

@@ -7,13 +7,13 @@ import Layers from 'lucide-react/dist/esm/icons/layers';
 import { motion, AnimatePresence } from "motion/react";
 
 // ── Lazy-loaded route-level chunks ─────────────────────────────────────────
-const CosmicGalaxy      = lazy(() => import("./features/landing-main/CosmicGalaxy"));
-const LandingPage        = lazy(() => import("./features/landing-main/LandingPage"));
-const WarpTransition     = lazy(() => import("./features/loading-main/WarpTransition"));
-const WisdomLectures     = lazy(() => import("./features/wisdom-lectures"));
+const CosmicGalaxy = lazy(() => import("./features/landing-main/CosmicGalaxy"));
+const LandingPage = lazy(() => import("./features/landing-main/LandingPage"));
+const WarpTransition = lazy(() => import("./features/loading-main/WarpTransition"));
+const WisdomLectures = lazy(() => import("./features/wisdom-lectures"));
 const StorytellingSection = lazy(() => import("./features/timeline/StorytellingSection"));
-const PortalPage         = lazy(() => import("./features/dimension-portal/PortalPage"));
-const TimelineSection    = lazy(() => import("./features/timeline/TimelineSection"));
+const PortalPage = lazy(() => import("./features/dimension-portal/PortalPage"));
+const TimelineSection = lazy(() => import("./features/timeline/TimelineSection"));
 const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
 
@@ -31,7 +31,7 @@ export default function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
-    
+
     // Expose lenis globally for modals to pause it
     (window as any).lenis = lenis;
 

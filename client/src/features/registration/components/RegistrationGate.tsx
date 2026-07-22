@@ -135,7 +135,7 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
   };
 
   return (
-    <div className="max-w-md mx-auto py-12 px-4 w-full">
+    <div className="max-w-md mx-auto pt-0 pb-12 px-4 w-full">
       {renderBanner()}
       <div className="p-8 rounded-2xl glass-panel border border-gold-vintage/30 flex flex-col gap-6 relative overflow-hidden">
         <div className="text-center space-y-2 relative z-10">

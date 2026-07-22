@@ -49,11 +49,10 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     alt={article.title}
                     loading="lazy"
                     decoding="async"
-                    className={`w-full h-full filter brightness-85 transition-transform duration-[1.2s] ease-out ${
-                      article.id === "a1" ? "object-contain bg-black/40" : "object-cover group-hover:scale-105"
-                    }`}
+                    className={`w-full h-full filter brightness-85 transition-transform duration-[1.2s] ease-out ${article.id === "a1" ? "object-contain bg-black/40" : "object-cover group-hover:scale-105"
+                      }`}
                   />
-                  
+
                   {/* Golden/Purple ambient glow ring behind */}
                   <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-gold-vintage/30 transition-all duration-700 pointer-events-none" />
                 </div>
@@ -72,14 +71,10 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     <span>3-DAY MAKEATHON</span>
                   ) : (
                     <>
-                      <div className="flex items-center gap-2 text-xs font-mono text-gold-vintage/80 uppercase tracking-wider">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{article.category || article.tag || "SĀSTRA RATNĀKARA"}</span>
+                      <div className="flex items-center gap-2 text-xs font-mono text-gold-400 uppercase tracking-widest mb-2">
+                        <Clock className="w-3.5 h-3.5 text-gold-400" />
+                        <span>{article.category || article.tag}</span>
                       </div>
-                      <span>•</span>
-                      <span>{article.readTime}</span>
-                      <span>•</span>
-                      <span>{article.date}</span>
                     </>
                   )}
                 </div>
@@ -159,11 +154,6 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                   <h3 className="font-display font-medium text-xl text-slate-100 tracking-wider">
                     {selectedArticle.title}
                   </h3>
-                  {selectedArticle.id !== "a1" && selectedArticle.id !== "a2" && selectedArticle.id !== "a3" && (
-                    <p className="text-xs text-gold-vintage font-mono tracking-widest mt-1">
-                      BY {selectedArticle.author?.toUpperCase()} • {selectedArticle.readTime}
-                    </p>
-                  )}
                 </div>
                 <button
                   onClick={() => setSelectedArticle(null)}
@@ -189,13 +179,13 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
 
               {/* Story text */}
               <div className="prose prose-invert max-w-none text-slate-300 space-y-4 font-serif italic md:not-italic leading-relaxed text-sm md:text-base">
-                {selectedArticle.paragraphs 
+                {selectedArticle.paragraphs
                   ? selectedArticle.paragraphs.map((para, i) => (
-                      <p key={i}>{para}</p>
-                    ))
+                    <p key={i}>{para}</p>
+                  ))
                   : selectedArticle.content.split("\n\n").map((para, i) => (
-                      <p key={i}>{para}</p>
-                    ))}
+                    <p key={i}>{para}</p>
+                  ))}
               </div>
 
               {/* Community interactive chalk board (Comments) Removed */}
@@ -223,7 +213,7 @@ function ArticleImageSlideshow() {
     <div className="relative group overflow-hidden rounded-2xl h-[300px] md:h-[400px] w-full bg-black flex items-center justify-center">
       {/* Aurora nebula lighting inside frame */}
       <div className="absolute inset-0 bg-[#050505]/25 z-10 pointer-events-none" />
-      
+
       {/* Slider Image Container */}
       <div className="w-full h-full relative">
         <AnimatePresence mode="wait">
@@ -271,11 +261,10 @@ function ArticleImageSlideshow() {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                currentIndex === index
-                  ? "bg-gold-vintage w-4"
-                  : "bg-white/30 hover:bg-white/60"
-              }`}
+              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${currentIndex === index
+                ? "bg-gold-vintage w-4"
+                : "bg-white/30 hover:bg-white/60"
+                }`}
               aria-label={`Go to slide ${index}`}
             />
           );

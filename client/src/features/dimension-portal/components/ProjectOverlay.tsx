@@ -27,7 +27,7 @@ export default function ProjectOverlay({
   // Manage focus, body scroll lock, parent scroll lock, and ESC key listener
   useEffect(() => {
     const lenis = (window as any).lenis;
-    
+
     if (isOpen) {
       lenis?.stop();
       previousFocusRef.current = document.activeElement as HTMLElement;

@@ -257,7 +257,7 @@
       "headerLabel": "BEGIN HERE",
       "actionText": "READ CHAPTER",
       "hideMeta": true,
-      "views": 4
+      "views": 5
     },
     {
       "id": "a2",
@@ -291,11 +291,12 @@
       "headerLabel": "3-DAY MAKEATHON",
       "actionText": "EXPLORE NOW",
       "hideMeta": true,
-      "views": 3
+      "views": 6
     },
     {
       "id": "a4",
       "domainSlug": "science-and-spirituality",
+      "tag": "WHY DO THIS?",
       "title": "Why are we doing this?",
       "subtitle": "Discover how awareness transforms information into wisdom",
       "content": "In a world overflowing with information, knowledge alone is no longer enough. How we perceive, interpret, and respond to our experiences often shapes our understanding more than the experiences themselves. The same situation can inspire, challenge, or divide people depending on the perspective they bring to it.\n\nDakshinaasya Darshini was created to explore this fascinating relationship between knowledge, perception, and awareness. Through immersive exhibits, interactive experiences, and thought-provoking demonstrations, visitors are invited to examine not only the world around them but also the way they engage with it.\n\nInspired by the timeless teachings of Sri Dakshinamurthy, the exhibition encourages curiosity, critical thinking, and self-reflection—transforming learning into a journey from discovery to understanding, and from understanding to wisdom.",
@@ -303,11 +304,12 @@
       "actionText": "Step Inside",
       "headerLabel": "WHY DO THIS?",
       "hideMeta": true,
-      "views": 7
+      "views": 9
     },
     {
       "id": "a5",
       "domainSlug": "upcoming-events",
+      "tag": "UPCOMING EVENT",
       "title": "What's Next?",
       "subtitle": "The journey continues—explore the upcoming Makeathon edition",
       "content": "The journey continues. Building on the success of our exhibitions and immersive learning experiences, we are preparing the next edition of our Makeathon—an exciting platform where curiosity, creativity, and innovation come together. Staying true to the spirit of Dakshinaasya Darshini, the upcoming event will continue to explore the intersection of science, technology, and deeper understanding through engaging challenges, collaborative problem-solving, and hands-on experiences.\n\nAs plans evolve, new milestones, announcements, and event updates will be shared through the Timeline section of this website. We invite students, educators, innovators, and curious minds to follow the journey and be part of what comes next.",
@@ -315,7 +317,7 @@
       "actionText": "Explore Now",
       "headerLabel": "UPCOMING EVENT",
       "hideMeta": true,
-      "views": 7
+      "views": 10
     }
   ],
   "timeline": [
@@ -445,13 +447,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 150,
+      "home": 168,
       "storytelling": 75,
       "domains": 53,
       "flow": 22,
       "admin": 16
     },
-    "totalInteractions": 916,
+    "totalInteractions": 934,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {
