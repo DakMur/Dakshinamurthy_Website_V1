@@ -33,7 +33,7 @@ export default function Navbar({
   const navItems = [
     { id: "prathama", label: "Prathama Prakasa", active: isPrathamaActive },
     { id: "tattva", label: "Tattva Darśana", active: isTattvaActive },
-    { id: "timeline", label: "Chronology timeline", active: isTimelineActive },
+    { id: "timeline", label: "Innovation Timeline", active: isTimelineActive },
     { id: "registration", label: "Registration", active: isRegistrationActive }
   ];
 

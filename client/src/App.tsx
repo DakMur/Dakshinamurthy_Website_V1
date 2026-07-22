@@ -221,11 +221,14 @@ export default function App() {
               >
                 <div className="space-y-2 max-w-2xl mx-auto">
                   <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-                    The Evolutionary Chronology of Spirit
+                    The Innovation Journey
                   </span>
                   <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
-                    FLOW OF THE JOURNEY
+                    Mārga Darśana
                   </h2>
+                  <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed font-sans mt-3">
+                    From the first announcement to the final prototype, every phase guides participants through learning, collaboration, and innovation. Explore the journey from the theme announcement to the Makeathon Finals.
+                  </p>
                   <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
                 </div>
 

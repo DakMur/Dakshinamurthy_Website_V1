@@ -44,7 +44,7 @@ const PortalPage = memo(function PortalPage({ domains, onSelectDomain, loadDomai
           Tattva Darśana
         </h2>
         <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed font-sans mt-2">
-          Hover and step inside the portals to coordinate custom meditation practices, Hermetic scriptures, and atomic science calibrations.
+          Hover over each gateway to explore the wisdom of the ten Tattvas through interactive experiences, scientific demonstrations, and philosophical insights.
         </p>
         <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
       </div>

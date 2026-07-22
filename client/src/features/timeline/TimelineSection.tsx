@@ -1,11 +1,9 @@
 import { memo, useEffect } from "react";
-import Compass from 'lucide-react/dist/esm/icons/compass';
-import Flame from 'lucide-react/dist/esm/icons/flame';
-import Leaf from 'lucide-react/dist/esm/icons/leaf';
-import Moon from 'lucide-react/dist/esm/icons/moon';
 import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
-import Star from 'lucide-react/dist/esm/icons/star';
-import Sun from 'lucide-react/dist/esm/icons/sun';
+import Clipboard from 'lucide-react/dist/esm/icons/clipboard';
+import Lightbulb from 'lucide-react/dist/esm/icons/lightbulb';
+import GraduationCap from 'lucide-react/dist/esm/icons/graduation-cap';
+import Trophy from 'lucide-react/dist/esm/icons/trophy';
 import { motion } from "motion/react";
 import { TimelineStep } from "../../types/types";
 import { FALLBACK_TIMELINE } from "../../hooks/useDatabase";
@@ -22,25 +20,21 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
 
   const activeTimeline = timeline && timeline.length > 0 ? timeline : FALLBACK_TIMELINE;
 
-  // Mapping beautiful icon states to different spiritual stages
+  // Mapping beautiful icon states to different event stages
   const getStageIcon = (stage: string) => {
     switch (stage) {
-      case "Awakening":
+      case "Theme Announcement":
         return Sparkles;
-      case "Seeking Knowledge":
-        return Compass;
-      case "Meditation":
-        return Sun;
-      case "Spiritual Practice":
-        return Flame;
-      case "Transformation":
-        return Moon;
-      case "Service":
-        return Leaf;
-      case "Enlightenment":
-        return Star;
+      case "Registrations":
+        return Clipboard;
+      case "Ideathon":
+        return Lightbulb;
+      case "Expert Workshops":
+        return GraduationCap;
+      case "Makeathon Finals":
+        return Trophy;
       default:
-        return Star;
+        return Sparkles;
     }
   };
 
@@ -85,14 +79,16 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
                 <div className="space-y-4">
                   <div className="flex flex-col justify-start md:group">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-gold-vintage">
-                      STAGE 0{step.order} • {step.stage.toUpperCase()}
+                      PHASE 0{step.order} • {step.stage.toUpperCase()}
                     </span>
                     <h3 className="font-display font-medium text-lg md:text-xl text-slate-100 tracking-wider mt-1">
                       {step.title}
                     </h3>
-                    <p className="text-xs font-serif italic text-slate-400 mt-1">
-                      &ldquo;{step.subtitle}&rdquo;
-                    </p>
+                    {step.subtitle && (
+                      <p className="text-xs font-serif italic text-slate-400 mt-1">
+                        &ldquo;{step.subtitle}&rdquo;
+                      </p>
+                    )}
                   </div>
 
                   {/* Narrative content */}
@@ -100,17 +96,25 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
                     {step.description}
                   </p>
 
-                  {/* Quote block inside */}
+                  {/* Status & Date block inside */}
                   <div className={`p-4 rounded-xl border border-white/5 bg-white/[0.01] flex flex-col ${
-                    isRight ? "md:items-end" : "items-start"
+                    isRight ? "md:items-end animate-fade-in" : "items-start animate-fade-in"
                   }`}>
-                    <p className="font-serif italic text-slate-300 text-xs">
-                      &ldquo;{step.quote}&rdquo;
+                    <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase">
+                      STATUS
+                    </div>
+                    <p className="font-sans text-slate-300 text-xs font-semibold mt-0.5">
+                      {step.quote}
                     </p>
                     {step.quoteAuthor && (
-                      <span className="text-[10px] font-mono text-gold-vintage mt-1">
-                        — {step.quoteAuthor}
-                      </span>
+                      <>
+                        <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase mt-2">
+                          DATE
+                        </div>
+                        <span className="text-xs font-sans text-gold-vintage font-medium mt-0.5">
+                          {step.quoteAuthor}
+                        </span>
+                      </>
                     )}
                   </div>
 

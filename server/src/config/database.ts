@@ -5,7 +5,9 @@ import { DatabaseSchema } from '../types/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_FILE = path.join(__dirname, '../../data/database.json');
+const DB_FILE = __dirname.replace(/\\/g, '/').endsWith('/dist')
+  ? path.join(__dirname, '../data/database.json')
+  : path.join(__dirname, '../../data/database.json');
 
 // Default seed data matching the original monolithic server.ts
 const DEFAULT_DATABASE: DatabaseSchema = {
@@ -261,46 +263,34 @@ const DEFAULT_DATABASE: DatabaseSchema = {
   ],
   timeline: [
     {
-      id: "t1", order: 1, stage: "Awakening", title: "The First Stirring of Self-Inquiry",
-      subtitle: "When the eternal question arises within", description: "Every spiritual journey begins with a moment of awakening — a sudden or gradual realization that there is more to existence than meets the eye. This is the moment when the question 'Who am I?' first arises with genuine intensity.",
-      quote: "The unexamined life is not worth living.", quoteAuthor: "Socrates",
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format", milestone: "Recognition of the seeking impulse within consciousness"
+      id: "t1", order: 0, stage: "Theme Announcement", title: "THEME ANNOUNCEMENT",
+      subtitle: "", description: "Every edition of Dakshinaasya Darshini begins with a unique theme that inspires innovation and problem-solving. The official challenge statement and competition categories will be announced here. The announced theme will guide the workshops, judging criteria, and final Makeathon.",
+      quote: "Coming Soon", quoteAuthor: "To Be Announced",
+      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format", milestone: "Theme Announced"
     },
     {
-      id: "t2", order: 2, stage: "Seeking Knowledge", title: "Approaching the Sacred Texts",
-      subtitle: "Shravana — the disciplined art of listening", description: "Having recognized the call of the inner self, the seeker turns to the ancient wisdom texts and qualified teachers. In the Vedantic tradition, this is called Shravana — systematic and sustained listening to the teachings of the scriptures under the guidance of a realized master.",
-      quote: "Let the wise teach the wise.", quoteAuthor: "Mundaka Upanishad",
-      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format", milestone: "Systematic study of Prasthanatrayi under a qualified Guru"
+      id: "t2", order: 1, stage: "Registrations", title: "REGISTRATIONS",
+      subtitle: "", description: "Registrations will open shortly for interested students. Team size, eligibility criteria, registration process, and participation guidelines will be announced along with the registration portal. Whether participating individually or as a team, this marks the beginning of your innovation journey.",
+      quote: "Opening Soon", quoteAuthor: "To Be Announced",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format", milestone: "Registration Completed"
     },
     {
-      id: "t3", order: 3, stage: "Meditation", title: "Establishing the Practice of Dhyana",
-      subtitle: "Nididhyasana — deep contemplative meditation", description: "Knowledge gained through study must be internalized through sustained meditation practice. Nididhyasana — the third pillar of Vedantic practice — involves deep, prolonged contemplation on the truths revealed through Shravana and Manana.",
-      quote: "Meditation is the dissolution of thoughts in eternal awareness.", quoteAuthor: "Swami Sivananda",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format", milestone: "Established daily meditation practice of 1+ hours"
+      id: "t3", order: 2, stage: "Ideathon", title: "IDEATHON",
+      subtitle: "", description: "If the number of registered teams exceeds the available capacity, an Ideathon will be conducted as a preliminary selection round. Teams will present their ideas before a panel of mentors and judges. The most promising solutions will qualify for the Makeathon Finals.",
+      quote: "Coming Soon", quoteAuthor: "To Be Announced",
+      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format", milestone: "Selected for Makeathon"
     },
     {
-      id: "t4", order: 4, stage: "Spiritual Practice", title: "Integration of Knowledge and Practice",
-      subtitle: "Sadhana — the daily discipline of transformation", description: "True spiritual practice is not confined to the meditation cushion. It extends into every moment of daily life. The practitioner learns to see the non-dual reality in all interactions, all experiences, and all beings.",
-      quote: "Practice alone is the means to success.", quoteAuthor: "Hatha Yoga Pradipika",
-      image: "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format", milestone: "Seamless integration of spiritual awareness into daily activities"
+      id: "t4", order: 3, stage: "Expert Workshops", title: "EXPERT WORKSHOPS",
+      subtitle: "", description: "Qualified participants will attend expert-led workshops designed around the officially announced theme. Industry professionals and domain experts will introduce the concepts, tools, technologies, and practical approaches required for the Makeathon. The workshop content will vary depending on the announced challenge.",
+      quote: "Coming Soon", quoteAuthor: "To Be Announced",
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format", milestone: "Workshop Completed"
     },
     {
-      id: "t5", order: 5, stage: "Transformation", title: "The Dissolution of the Ego Boundary",
-      subtitle: "Aham Brahmasmi — I am Brahman", description: "Through sustained practice, a profound transformation occurs. The rigid boundary between 'self' and 'other' begins to dissolve. The practitioner directly experiences what the Upanishads declare: 'Aham Brahmasmi' — I am Brahman.",
-      quote: "When the mind is silent, the Self shines forth.", quoteAuthor: "Ramana Maharshi",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format", milestone: "Direct experiential glimpse of non-dual awareness (Savikalpa Samadhi)"
-    },
-    {
-      id: "t6", order: 6, stage: "Service", title: "Compassionate Action in the World",
-      subtitle: "Seva — selfless service as spiritual expression", description: "True realization naturally expresses itself as compassionate action. The realized being, seeing the Self in all beings, spontaneously acts for the welfare of all without any sense of personal doership.",
-      quote: "The hands that serve are holier than the lips that pray.", quoteAuthor: "Sai Baba",
-      image: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format", milestone: "Establishment of regular selfless service (Nishkama Karma)"
-    },
-    {
-      id: "t7", order: 7, stage: "Enlightenment", title: "Abiding in the Natural State",
-      subtitle: "Sahaja Sthiti — the effortless state of being", description: "The culmination of the spiritual journey is not an achievement but a recognition — the recognition that what was being sought was never lost. The seeker discovers that they have always been the Self, that the journey was the Self knowing itself.",
-      quote: "Brahma Satyam Jagan Mithya Jivo Brahmaiva Naparah.", quoteAuthor: "Adi Shankaracharya",
-      image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format", milestone: "Stable abidance in non-dual awareness (Nirvikalpa Samadhi → Sahaja Samadhi)"
+      id: "t5", order: 4, stage: "Makeathon Finals", title: "MAKEATHON FINALS",
+      subtitle: "", description: "Over three exciting days, shortlisted teams will transform their ideas into working prototypes under the guidance of mentors and experts. Participants will collaborate, experiment, innovate, and present their solutions before the judging panel. The Makeathon is designed to be an immersive learning experience that encourages creativity, teamwork, and real-world problem solving.",
+      quote: "Final Event", quoteAuthor: "2 • 3 • 4 October",
+      image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format", milestone: "Prototype Successfully Presented"
     }
   ],
   comments: [],
