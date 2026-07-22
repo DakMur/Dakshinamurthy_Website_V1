@@ -121,7 +121,7 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
                   {/* Final Milestone highlight */}
                   <div className="text-left">
                     <span className="text-[10px] font-mono tracking-widest text-slate-500 uppercase block mb-1">
-                      MILESTONE TARGET REACHED
+                      MILESTONE TO BE ACHIEVED
                     </span>
                     <div className="px-3 py-1.5 rounded-lg border border-gold-vintage/25 bg-gold-vintage/[0.03] text-[10.5px] font-mono text-slate-200">
                       {step.milestone}
