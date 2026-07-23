@@ -11,11 +11,23 @@ const app = express();
 // ── CORS Configuration at the VERY TOP ──────────────────────────────────
 const allowedOrigins = [
   'https://dakshinamurthy-website-v1-client.vercel.app',
-  ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : [])
-];
+  process.env.CLIENT_URL
+].filter(Boolean) as string[];
 
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin) return callback(null, true);
+    
+    // Allow exact matches OR any vercel preview deployment ending in .vercel.app
+    if (
+      allowedOrigins.includes(origin) || 
+      origin.endsWith('.vercel.app') || 
+      process.env.CLIENT_URL === '*'
+    ) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
