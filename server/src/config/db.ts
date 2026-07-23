@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE;
+const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
 
 if (!supabaseUrl || !supabaseServiceRole) {
-  throw new Error('Missing Supabase environment variables (SUPABASE_URL or SUPABASE_SERVICE_ROLE)');
+  throw new Error('Missing Supabase environment variables (SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY)');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseServiceRole, {

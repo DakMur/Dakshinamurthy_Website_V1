@@ -277,7 +277,7 @@ export async function updateConfigHandler(req: Request, res: Response) {
 
     const { data, error } = await supabase
       .from('admin_config')
-      .upsert({ id: 1, ...updateData })
+      .upsert({ id: 1, ...updateData }, { onConflict: 'id' })
       .select()
       .single();
 

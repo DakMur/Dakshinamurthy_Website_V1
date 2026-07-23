@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { readDB, writeDB } from '../config/database.js';
+import jwt from 'jsonwebtoken';
 
 // POST /api/v1/auth/login
 export function loginHandler(req: Request, res: Response) {
@@ -9,7 +10,16 @@ export function loginHandler(req: Request, res: Response) {
 
   if (user) {
     const { password: _, ...safeUser } = user;
-    res.json({ success: true, user: safeUser });
+    let token = undefined;
+    if (user.role === 'admin') {
+      const secret = process.env.JWT_SECRET;
+      if (secret) {
+        token = jwt.sign({ admin: true }, secret, { expiresIn: '12h' });
+      } else {
+        console.warn('JWT_SECRET is not configured for admin login token.');
+      }
+    }
+    res.json({ success: true, user: safeUser, token });
   } else {
     res.status(401).json({ success: false, message: "Invalid spiritual credentials." });
   }

@@ -117,6 +117,9 @@ export default function AdminControlPanel({
       });
       const data = await res.json();
       if (data.success) {
+        if (data.token) {
+          localStorage.setItem("admin_token", data.token);
+        }
         onLogin(data.user);
       } else {
         setLoginError(data.message || "Credential keys mismatch.");
@@ -131,18 +134,32 @@ export default function AdminControlPanel({
   const handleSaveConfig = async () => {
     setConfigSaving(true);
     try {
+      const adminToken = localStorage.getItem("admin_token");
+      const payload = { status: regStatus, openDate, closeDate, minMembers, maxMembers, disableTeamLogin };
+      
+      console.log("Sending commit configuration request with payload:", payload);
+      
       const res = await fetch("/api/v1/registration/config", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: regStatus, openDate, closeDate, minMembers, maxMembers, disableTeamLogin })
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": adminToken ? `Bearer ${adminToken}` : ""
+        },
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
+      
+      console.log("Received response for config commit:", data);
+      
       if (data.success) {
         onConfigUpdate(data.config);
-        alert("Registration config updated successfully.");
+        alert("Success: Registration configuration updated successfully.");
+      } else {
+        alert("Error: " + (data.message || "Failed to update configuration."));
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error committing config:", err);
+      alert("Error: Failed to communicate with server.");
     } finally {
       setConfigSaving(false);
     }
