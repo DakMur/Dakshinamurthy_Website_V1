@@ -8,36 +8,30 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 
-// Set CORS middleware before any routes or static handlers
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  
-  // Dynamic check for production, preview deployments, or local dev
-  if (
-    !origin || 
-    origin.endsWith('.vercel.app') || 
-    origin === 'https://dakshinamurthy-website-v1-client.vercel.app' ||
-    origin.includes('localhost')
-  ) {
-    res.setHeader('Access-Control-Allow-Origin', origin || '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
-  }
+const allowedOrigins = [
+  'https://dakshinamurthy-website-v1-client.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5173',
+];
 
-  // Intercept OPTIONS preflight requests immediately
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.some((o) => origin.startsWith(o) || origin.endsWith('.vercel.app'))) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Fallback open for public API access
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  })
+);
 
-  next();
-});
-
-// Apply standard express cors as backup
-app.use(cors({
-  origin: true,
-  credentials: true,
-}));
+// Explicit handler for OPTIONS preflight requests
+app.options('*', cors());
 
 // ── Performance middleware ────────────────────────────────────────────────
 // Gzip compression: reduces JSON payload sizes by ~60-80%
@@ -61,20 +55,20 @@ const apiLimiter = rateLimit({
 
 app.use('/api/v1', apiLimiter, apiRouter);
 
-// Fallback 404 handler for unmatched API routes
+// Fallback for unmatched API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: `API endpoint ${req.originalUrl} not found.`
+    message: `Route ${req.originalUrl} not found`,
   });
 });
 
-// Global error handler
+// Global Error Handler
 app.use((err: any, req: any, res: any, next: any) => {
-  console.error('Unhandled Server Error:', err);
+  console.error('Server Error:', err);
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Internal Server Error'
+    message: err.message || 'Internal Server Error',
   });
 });
 
