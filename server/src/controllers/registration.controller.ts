@@ -140,7 +140,7 @@ export async function loginHandler(req: Request, res: Response) {
         res.status(500).json({ success: false, message: 'JWT_SECRET not configured' });
         return;
       }
-      const token = jwt.sign({ admin: true }, secret, { expiresIn: '12h' });
+      const token = jwt.sign({ admin: true, role: 'ADMIN', isAdmin: true, email: adminEmail }, secret || 'your-default-secret', { expiresIn: '12h' });
       res.json({ success: true, admin: true, token });
       return;
     }

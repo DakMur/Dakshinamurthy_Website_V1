@@ -13,25 +13,30 @@ export function authMiddleware(req: AdminRequest, res: Response, next: NextFunct
     return;
   }
 
-  const token = authHeader.split(' ')[1];
-  const secret = process.env.JWT_SECRET;
-
-  if (!secret) {
-    console.error('JWT_SECRET is not configured.');
-    res.status(500).json({ success: false, message: 'Internal server configuration error' });
-    return;
-  }
-
   try {
-    const decoded = jwt.verify(token, secret) as any;
-    
-    if (decoded && decoded.admin === true) {
-      req.admin = true;
-      next();
-    } else {
-      res.status(403).json({ success: false, message: 'Forbidden: Admin access required' });
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      console.error("[Auth] No token provided in header");
+      res.status(401).json({ success: false, message: "No token provided" });
+      return;
     }
-  } catch (err) {
-    res.status(401).json({ success: false, message: 'Invalid or expired token' });
+
+    // Verify token using JWT secret
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-default-secret') as any;
+    console.log("[Auth] Successfully decoded token:", decoded);
+
+    // Ensure role or admin flag exists
+    if (decoded.role !== 'ADMIN' && !decoded.isAdmin && !decoded.admin) {
+      console.error("[Auth] User is not an admin:", decoded);
+      res.status(403).json({ success: false, message: "Access denied: Admin role required" });
+      return;
+    }
+
+    (req as any).user = decoded;
+    req.admin = true;
+    next();
+  } catch (error: any) {
+    console.error("[Auth Verification Error]:", error.message);
+    res.status(401).json({ success: false, message: `Invalid token: ${error.message}` });
   }
 }

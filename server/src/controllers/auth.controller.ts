@@ -14,7 +14,7 @@ export function loginHandler(req: Request, res: Response) {
     if (user.role === 'admin') {
       const secret = process.env.JWT_SECRET;
       if (secret) {
-        token = jwt.sign({ admin: true }, secret, { expiresIn: '12h' });
+        token = jwt.sign({ admin: true, role: 'ADMIN', isAdmin: true, email: user.email }, secret || 'your-default-secret', { expiresIn: '12h' });
       } else {
         console.warn('JWT_SECRET is not configured for admin login token.');
       }

@@ -75,6 +75,7 @@ export default function AdminControlPanel({
 
   const fetchTeams = async () => {
     try {
+      console.log("Admin token sent:", localStorage.getItem("admin_token"));
       const res = await fetch("/api/v1/registration/teams", {
         headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
       });
@@ -125,6 +126,7 @@ export default function AdminControlPanel({
       if (data.success) {
         if (data.token) {
           localStorage.setItem("admin_token", data.token);
+          console.log("Admin token stored:", localStorage.getItem("admin_token"));
         }
         onLogin(data.user);
       } else {
@@ -141,6 +143,7 @@ export default function AdminControlPanel({
     setConfigSaving(true);
     try {
       const adminToken = localStorage.getItem("admin_token");
+      console.log("Admin token sent:", adminToken);
       const payload = { status: regStatus, openDate, closeDate, minMembers, maxMembers, disableTeamLogin };
       
       console.log("Sending commit configuration request with payload:", payload);
