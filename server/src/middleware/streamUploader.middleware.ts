@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { s3Client } from '../config/storage.js';
 import { Upload } from '@aws-sdk/lib-storage';
+import { uploadToGoogleDrive } from '../services/googleDrive.service.js';
 import busboy from 'busboy';
 import crypto from 'crypto';
 import path from 'path';
+import { Transform } from 'stream';
 
 declare global {
   namespace Express {
@@ -13,8 +15,27 @@ declare global {
   }
 }
 
+/**
+ * Creates a transform stream that enforces a maximum file size.
+ * If the limit is exceeded, it emits an error.
+ */
+function createSizeLimitStream(maxBytes: number) {
+  let size = 0;
+  return new Transform({
+    transform(chunk, encoding, callback) {
+      size += chunk.length;
+      if (size > maxBytes) {
+        callback(new Error(`FILE_TOO_LARGE`));
+      } else {
+        callback(null, chunk);
+      }
+    }
+  });
+}
+
 export function streamUploader(req: Request, res: Response, next: NextFunction) {
-  const bb = busboy({ headers: req.headers, limits: { fileSize: 100 * 1024 * 1024 } }); // 100MB
+  // Global busboy limit protects against overall memory exhaustion DoS
+  const bb = busboy({ headers: req.headers, limits: { fileSize: 100 * 1024 * 1024 } }); // 100MB absolute max
   let isResponded = false;
   let fileProcessed = false;
   let uploadPromise: Promise<void> | null = null;
@@ -22,59 +43,89 @@ export function streamUploader(req: Request, res: Response, next: NextFunction) 
   bb.on('file', (name, file, info) => {
     fileProcessed = true;
     const { filename, mimeType } = info;
-    const allowedExtensions = ['.pdf', '.ppt', '.pptx', '.mp4'];
+    const allowedExtensions = ['.pdf', '.ppt', '.pptx', '.mp4', '.mov', '.mkv'];
     const ext = path.extname(filename).toLowerCase();
 
     if (!allowedExtensions.includes(ext)) {
       file.resume();
       if (!isResponded) {
         isResponded = true;
-        res.status(400).json({ error: 'Invalid file type. Only PDF, PPT, PPTX, and MP4 are allowed.' });
+        res.status(400).json({ error: 'Invalid file type. Only PDF, PPT, PPTX, and MP4/MOV/MKV are allowed.' });
       }
       return;
     }
 
+    // Determine max size based on file type
+    const isVideo = ['.mp4', '.mov', '.mkv'].includes(ext);
+    const maxFileSize = isVideo ? 100 * 1024 * 1024 : 15 * 1024 * 1024; // 100MB for videos, 15MB for documents
     const uniqueKey = `${crypto.randomUUID()}${ext}`;
-    const bucketName = process.env.R2_BUCKET_NAME;
 
-    if (!bucketName) {
+    const limitStream = createSizeLimitStream(maxFileSize);
+    file.pipe(limitStream);
+
+    limitStream.on('error', (err) => {
+      if (err.message === 'FILE_TOO_LARGE') {
+        file.resume(); // Drain the file stream
+        if (!isResponded) {
+          isResponded = true;
+          res.status(413).json({ error: `File size exceeds the limit of ${maxFileSize / (1024 * 1024)}MB for this file type.` });
+        }
+      }
+    });
+
+    if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_DRIVE_FOLDER_ID) {
+      // Primary: Google Drive Upload
+      uploadPromise = uploadToGoogleDrive(limitStream, uniqueKey, mimeType)
+        .then((url) => {
+          req.fileUrl = url;
+        })
+        .catch((err) => {
+          console.error('Google Drive upload stream error:', err);
+          if (!isResponded) {
+            isResponded = true;
+            res.status(500).json({ error: 'File upload to Google Drive failed' });
+          }
+        });
+    } else if (process.env.R2_BUCKET_NAME) {
+      // Fallback: Cloudflare R2 Upload
+      const bucketName = process.env.R2_BUCKET_NAME;
+
+      if (process.env.R2_ENDPOINT_URL?.includes('PLACEHOLDER') || process.env.R2_ENDPOINT_URL?.includes('<account_id>')) {
+        // Mock upload for local development without credentials
+        file.resume(); // consume the stream
+        req.fileUrl = process.env.R2_ENDPOINT_URL?.includes('PLACEHOLDER') 
+          ? 'https://placeholder-assets.com/demo.pdf' 
+          : `https://mock-storage.local/${bucketName}/${uniqueKey}`;
+        uploadPromise = Promise.resolve();
+        return;
+      }
+
+      const upload = new Upload({
+        client: s3Client,
+        params: {
+          Bucket: bucketName,
+          Key: uniqueKey,
+          Body: limitStream,
+          ContentType: mimeType,
+        },
+      });
+
+      uploadPromise = upload.done().then(() => {
+        req.fileUrl = `${process.env.R2_ENDPOINT_URL}/${bucketName}/${uniqueKey}`;
+      }).catch((err) => {
+        console.error('R2 upload stream error:', err);
+        if (!isResponded) {
+          isResponded = true;
+          res.status(500).json({ error: 'File upload to R2 storage failed' });
+        }
+      });
+    } else {
       file.resume();
       if (!isResponded) {
         isResponded = true;
-        res.status(500).json({ error: 'R2_BUCKET_NAME is not configured' });
+        res.status(500).json({ error: 'No storage provider configured (Google Drive or R2).' });
       }
-      return;
     }
-
-    if (process.env.R2_ENDPOINT_URL?.includes('PLACEHOLDER') || process.env.R2_ENDPOINT_URL?.includes('<account_id>')) {
-      // Mock upload for local development without credentials
-      file.resume(); // consume the stream
-      req.fileUrl = process.env.R2_ENDPOINT_URL?.includes('PLACEHOLDER') 
-        ? 'https://placeholder-assets.com/demo.pdf' 
-        : `https://mock-storage.local/${bucketName}/${uniqueKey}`;
-      uploadPromise = Promise.resolve();
-      return;
-    }
-
-    const upload = new Upload({
-      client: s3Client,
-      params: {
-        Bucket: bucketName,
-        Key: uniqueKey,
-        Body: file,
-        ContentType: mimeType,
-      },
-    });
-
-    uploadPromise = upload.done().then(() => {
-      req.fileUrl = `${process.env.R2_ENDPOINT_URL}/${bucketName}/${uniqueKey}`;
-    }).catch((err) => {
-      console.error('R2 upload stream error:', err);
-      if (!isResponded) {
-        isResponded = true;
-        res.status(500).json({ error: 'File upload to storage failed' });
-      }
-    });
   });
 
   bb.on('finish', () => {

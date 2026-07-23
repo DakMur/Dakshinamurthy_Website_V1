@@ -5,6 +5,22 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 import busboy from 'busboy';
 import crypto from 'crypto';
 import path from 'path';
+import jwt from 'jsonwebtoken';
+
+function validateAndSanitizeMembers(members: any[]) {
+  if (!Array.isArray(members) || members.length === 0 || members.length > 5) {
+    throw new Error('Team must have between 1 and 5 members.');
+  }
+  return members.map((m: any) => {
+    const name = m.name?.toString().trim() || '';
+    const email = m.email?.toString().trim() || '';
+    const phone = m.phone?.toString().trim() || '';
+    if (!name || name.length < 2 || name.length > 100) throw new Error('Invalid member name.');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error(`Invalid email: ${email}`);
+    if (!phone || !/^\+?[0-9\s\-]{7,15}$/.test(phone)) throw new Error(`Invalid phone format: ${phone}`);
+    return { name, email, phone };
+  });
+}
 
 export async function checkDuplicatesHandler(req: Request, res: Response) {
   try {
@@ -50,10 +66,24 @@ export async function signupHandler(req: Request, res: Response) {
   try {
     const { teamName, leaderEmail, leaderPhone, members, documentUrl } = req.body;
 
+    if (!teamName || typeof teamName !== 'string' || teamName.trim().length < 2 || teamName.trim().length > 50) {
+      res.status(400).json({ success: false, message: 'Invalid team name length' });
+      return;
+    }
+    const sanitizedTeamName = teamName.trim();
+
+    let sanitizedMembers;
+    try {
+      sanitizedMembers = validateAndSanitizeMembers(members);
+    } catch (e: any) {
+      res.status(400).json({ success: false, message: e.message });
+      return;
+    }
+
     const { data: teamData, error: teamError } = await supabase
       .from('teams')
       .insert({
-        team_name: teamName,
+        team_name: sanitizedTeamName,
         file_url: documentUrl || null
       })
       .select()
@@ -63,7 +93,7 @@ export async function signupHandler(req: Request, res: Response) {
 
     const teamId = teamData.id;
 
-    const membersToInsert = members.map((m: any, index: number) => ({
+    const membersToInsert = sanitizedMembers.map((m: any, index: number) => ({
       team_id: teamId,
       name: m.name,
       email: m.email,
@@ -84,10 +114,10 @@ export async function signupHandler(req: Request, res: Response) {
     const responseTeam = {
       id: teamId,
       teamName: teamData.team_name,
-      leaderEmail: leaderEmail,
-      leaderPhone: leaderPhone,
+      leaderEmail: sanitizedMembers[0].email,
+      leaderPhone: sanitizedMembers[0].phone,
       documentUrl: teamData.file_url,
-      members: members
+      members: sanitizedMembers
     };
 
     res.status(201).json({ success: true, team: responseTeam });
@@ -101,8 +131,17 @@ export async function loginHandler(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
 
-    if (email === 'admin@dakshina.org' && password === 'admin_secure_2026') {
-      res.json({ success: true, admin: true });
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (adminEmail && adminPassword && email === adminEmail && password === adminPassword) {
+      const secret = process.env.JWT_SECRET;
+      if (!secret) {
+        res.status(500).json({ success: false, message: 'JWT_SECRET not configured' });
+        return;
+      }
+      const token = jwt.sign({ admin: true }, secret, { expiresIn: '12h' });
+      res.json({ success: true, admin: true, token });
       return;
     }
 
@@ -280,10 +319,24 @@ export async function updateTeamHandler(req: Request, res: Response) {
     const { teamId } = req.params;
     const { teamName, members, documentUrl } = req.body;
 
+    if (!teamName || typeof teamName !== 'string' || teamName.trim().length < 2 || teamName.trim().length > 50) {
+      res.status(400).json({ success: false, message: 'Invalid team name length' });
+      return;
+    }
+    const sanitizedTeamName = teamName.trim();
+
+    let sanitizedMembers;
+    try {
+      sanitizedMembers = validateAndSanitizeMembers(members);
+    } catch (e: any) {
+      res.status(400).json({ success: false, message: e.message });
+      return;
+    }
+
     const { data: teamData, error: teamError } = await supabase
       .from('teams')
       .update({
-        team_name: teamName,
+        team_name: sanitizedTeamName,
         file_url: documentUrl
       })
       .eq('id', teamId)
@@ -305,7 +358,7 @@ export async function updateTeamHandler(req: Request, res: Response) {
 
     if (deleteError) throw deleteError;
 
-    const membersToInsert = members.map((m: any, index: number) => ({
+    const membersToInsert = sanitizedMembers.map((m: any, index: number) => ({
       team_id: teamId,
       name: m.name,
       email: m.email,
@@ -335,12 +388,12 @@ export async function updateTeamHandler(req: Request, res: Response) {
     const responseTeam = {
       id: teamData.id,
       teamName: teamData.team_name,
-      leaderEmail: members[0].email,
-      leaderPhone: members[0].phone,
+      leaderEmail: sanitizedMembers[0].email,
+      leaderPhone: sanitizedMembers[0].phone,
       documentUrl: teamData.file_url,
       demoVideoUrl: teamData.demo_video_url,
       passed_round: teamData.passed_round,
-      members: members
+      members: sanitizedMembers
     };
 
     res.json({ success: true, team: responseTeam });

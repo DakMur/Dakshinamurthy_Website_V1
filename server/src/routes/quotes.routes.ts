@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { getAllQuotes, createQuote, deleteQuote } from '../controllers/quotes.controller.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 export const quotesRouter = Router();
 
@@ -9,5 +10,5 @@ const cacheRead = (_req: Request, res: Response, next: NextFunction) => {
 };
 
 quotesRouter.get('/', cacheRead, getAllQuotes);
-quotesRouter.post('/', createQuote);
-quotesRouter.delete('/:id', deleteQuote);
+quotesRouter.post('/', authMiddleware, createQuote);
+quotesRouter.delete('/:id', authMiddleware, deleteQuote);

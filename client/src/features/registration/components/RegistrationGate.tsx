@@ -22,11 +22,7 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
     setLoading(true);
     setError("");
 
-    if (email === "admin@dakshina.org" && password === "admin_secure_2026") {
-      setLoading(false);
-      onAdminBypass();
-      return;
-    }
+
 
     try {
       const res = await fetch("/api/v1/registration/login", {

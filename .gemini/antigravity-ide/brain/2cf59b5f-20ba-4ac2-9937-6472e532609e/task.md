@@ -1,0 +1,10 @@
+- `[x]` 1. Update `.gitignore` configurations
+- `[x]` 2. Update `server/.env.example` with new environment variables
+- `[x]` 3. Install necessary npm packages (`googleapis`, `helmet`, `express-rate-limit`, `jsonwebtoken`)
+- `[x]` 4. Implement `server/src/services/googleDrive.service.ts`
+- `[x]` 5. Refactor `server/src/middleware/streamUploader.middleware.ts` for Google Drive and file limits
+- `[x]` 6. Create `server/src/middleware/auth.middleware.ts` for JWT validation
+- `[x]` 7. Refactor `server/src/controllers/registration.controller.ts` (JWT login, validation, sanitization)
+- `[x]` 8. Update `server/src/routes/registration.routes.ts` to protect admin routes
+- `[x]` 9. Update `server/src/app.ts` (Helmet, Rate Limiting, CORS)
+- `[x]` 10. Perform final secret check / code sanitization (Removed hardcoded `admin_secure_2026` from frontend)

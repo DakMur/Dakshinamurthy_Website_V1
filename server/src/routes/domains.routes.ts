@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { getAllDomains, createDomain, deleteDomain } from '../controllers/domains.controller.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 export const domainsRouter = Router();
 
@@ -10,5 +11,5 @@ const cacheRead = (_req: Request, res: Response, next: NextFunction) => {
 };
 
 domainsRouter.get('/', cacheRead, getAllDomains);
-domainsRouter.post('/', createDomain);
-domainsRouter.delete('/:id', deleteDomain);
+domainsRouter.post('/', authMiddleware, createDomain);
+domainsRouter.delete('/:id', authMiddleware, deleteDomain);
