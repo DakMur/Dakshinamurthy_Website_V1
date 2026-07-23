@@ -78,6 +78,8 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       ctx.fillRect(0, 0, 64, 64);
 
       const texture = new THREE.CanvasTexture(c);
+      texture.flipY = false;
+      texture.premultiplyAlpha = false;
       texture.needsUpdate = true;
       return texture;
     };
@@ -219,7 +221,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           uniform sampler2D uTexture;
           varying float vAlpha;
           void main() {
-            vec4 texColor = texture2D(uTexture, gl_PointCoord);
+            vec4 texColor = texture(uTexture, gl_PointCoord);
             gl_FragColor = vec4(texColor.rgb, texColor.a * vAlpha);
           }
         `,
@@ -288,7 +290,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           uniform sampler2D uTexture;
           varying float vAlpha;
           void main() {
-            vec4 texColor = texture2D(uTexture, gl_PointCoord);
+            vec4 texColor = texture(uTexture, gl_PointCoord);
             gl_FragColor = vec4(vec3(0.85, 0.72, 0.4) * texColor.rgb, texColor.a * vAlpha);
           }
         `,
@@ -369,7 +371,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           uniform sampler2D uTexture;
           varying float vAlpha;
           void main() {
-            vec4 texColor = texture2D(uTexture, gl_PointCoord);
+            vec4 texColor = texture(uTexture, gl_PointCoord);
             gl_FragColor = vec4(vec3(1.0, 0.9, 0.6) * texColor.rgb, texColor.a * vAlpha);
           }
         `,
@@ -432,7 +434,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
     window.addEventListener("resize", handleResize);
 
     // 7. Animation Loop
-    const clock = new THREE.Clock();
+    const clock = new THREE.Timer();
 
     let animationId: number | null = null;
 
@@ -609,42 +611,42 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
           {/* Controller Travelling Reflection Gradient */}
           <linearGradient id="controller-shimmer" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#d4af37">
+            <stop offset="0%" stopColor="#d4af37">
               <animate attributeName="offset" values="-1; 2" dur="7s" repeatCount="indefinite" />
             </stop>
-            <stop offset="50%" stop-color="#fffbe6" stop-opacity="0.8">
+            <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.8">
               <animate attributeName="offset" values="-0.5; 2.5" dur="7s" repeatCount="indefinite" />
             </stop>
-            <stop offset="100%" stop-color="#d4af37">
+            <stop offset="100%" stopColor="#d4af37">
               <animate attributeName="offset" values="0; 3" dur="7s" repeatCount="indefinite" />
             </stop>
           </linearGradient>
 
           {/* Drone Casing Shimmer Gradient */}
           <linearGradient id="drone-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#d4af37" />
-            <stop offset="50%" stop-color="#fffbe6" stop-opacity="0.75">
+            <stop offset="0%" stopColor="#d4af37" />
+            <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.75">
               <animate attributeName="offset" values="-0.5; 1.5" dur="6.5s" repeatCount="indefinite" />
             </stop>
-            <stop offset="100%" stop-color="#d4af37" />
+            <stop offset="100%" stopColor="#d4af37" />
           </linearGradient>
 
           {/* Camera Lens Reflection Shimmer */}
           <linearGradient id="lens-shimmer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.3" />
-            <stop offset="50%" stop-color="#ffffff" stop-opacity="0.95">
+            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
+            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.95">
               <animate attributeName="offset" values="-0.5; 1.5" dur="7.5s" repeatCount="indefinite" />
             </stop>
-            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.3" />
+            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3" />
           </linearGradient>
 
           {/* GPU Casing Shimmer Gradient */}
           <linearGradient id="gpu-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#d4af37" />
-            <stop offset="50%" stop-color="#fffbe6" stop-opacity="0.8">
+            <stop offset="0%" stopColor="#d4af37" />
+            <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.8">
               <animate attributeName="offset" values="-0.5; 1.5" dur="6s" repeatCount="indefinite" />
             </stop>
-            <stop offset="100%" stop-color="#d4af37" />
+            <stop offset="100%" stopColor="#d4af37" />
           </linearGradient>
 
           {/* Propeller motion blur filter */}
@@ -1649,7 +1651,7 @@ const TechTerminal = memo(() => (
     <circle cx="28" cy="11" r="2.0" stroke="#fbbf24" strokeWidth="0.65" opacity="0.7" />
 
     {/* Terminal text traces */}
-    <g transform="translate(10, 24)" font-family="monospace" font-size="6" fill="#fbbf24" stroke="none">
+    <g transform="translate(10, 24)" fontFamily="monospace" fontSize="6" fill="#fbbf24" stroke="none">
       <text x="0" y="8" fillOpacity="0.95">&gt; npm run dev</text>
       <text x="0" y="18" fillOpacity="0.8">vite v6.4.3</text>
       <text x="0" y="28" fillOpacity="0.8">Local: http://localhost:5173</text>
@@ -1681,7 +1683,7 @@ const TechCloudApi = memo(() => (
     <circle cx="50" cy="40" r="3.5" stroke="#d4af37" strokeWidth="0.6" />
 
     {/* API text label */}
-    <g transform="translate(50, 42)" font-family="monospace" font-size="5" fill="#fbbf24" font-weight="bold" stroke="none" text-anchor="middle">
+    <g transform="translate(50, 42)" fontFamily="monospace" fontSize="5" fill="#fbbf24" fontWeight="bold" stroke="none" textAnchor="middle">
       <text y="14" fillOpacity="0.9">API</text>
     </g>
 
@@ -1776,7 +1778,7 @@ const TechWaveform = memo(() => (
     />
 
     {/* Formula Label */}
-    <g transform="translate(85, 18)" font-family="serif" font-size="5.5" font-style="italic" fill="#fbbf24" stroke="none">
+    <g transform="translate(85, 18)" fontFamily="serif" fontSize="5.5" fontStyle="italic" fill="#fbbf24" stroke="none">
       <text>Ψ(x,t) = Ae^(iφ)</text>
     </g>
   </svg>
