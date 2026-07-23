@@ -143,6 +143,7 @@ export default function App() {
               route={route}
               isWarping={isWarping}
               isExplore={route !== "landing" && route !== "home"}
+              isModalOpen={selectedDomain !== null || isMobileMenuOpen}
             />
           </WebGLErrorBoundary>
         </Suspense>

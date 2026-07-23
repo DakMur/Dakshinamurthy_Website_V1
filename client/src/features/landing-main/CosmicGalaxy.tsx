@@ -8,17 +8,19 @@ interface GalaxyProps {
   isExplore?: boolean;
   route?: string;
   activeTab?: string;
+  isModalOpen?: boolean;
 }
 
-export default function CosmicGalaxy({ isWarping, isExplore = false, route, activeTab }: GalaxyProps) {
+export default function CosmicGalaxy({ isWarping, isExplore = false, route, activeTab, isModalOpen = false }: GalaxyProps) {
   const currentTab = activeTab || route || 'landing';
-  const isSimulationActive =
-    currentTab === 'landing' ||
-    currentTab === 'loading' ||
-    currentTab === 'prathama' ||
-    currentTab === 'prathama-prakasa' ||
-    currentTab === 'timeline' ||
-    currentTab === 'chronology-timeline';
+  const isPaused =
+    currentTab === 'tattva' ||
+    currentTab === 'registration' ||
+    window.location.pathname.includes('/tattva') ||
+    window.location.pathname.includes('/registration') ||
+    isModalOpen;
+
+  const isSimulationActive = !isPaused;
 
   const isSimulationActiveRef = useRef(isSimulationActive);
   const startLoopRef = useRef<(() => void) | null>(null);
@@ -438,16 +440,24 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
     let animationId: number | null = null;
 
-    const tick = () => {
+    const tick = (timestamp: number = performance.now()) => {
       if (!isSimulationActiveRef.current) {
         animationId = null;
         return;
       }
       animationId = window.requestAnimationFrame(tick);
+      
+      // 1. UPDATE TIMER FIRST (Required for THREE.Timer)
+      if (clock && typeof (clock as any).update === 'function') {
+        (clock as any).update(timestamp);
+      }
+
       const delta = clock.getDelta();
 
-      const safeDelta = Math.min(delta, 0.033);
+      // Fallback Safety: Use fixed ~60fps step if timer fails to return delta
+      const safeDelta = Math.min(delta > 0 ? delta : 0.016, 0.033);
       animTimeRef.current += safeDelta;
+      
       const elapsedTime = animTimeRef.current;
 
       if (starsMaterial) starsMaterial.uniforms.uTime.value = elapsedTime;
@@ -485,6 +495,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         window.cancelAnimationFrame(animationId);
         animationId = null;
       }
+      renderer.render(scene, camera);
     };
 
     tick();
