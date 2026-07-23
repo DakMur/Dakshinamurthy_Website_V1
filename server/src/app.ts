@@ -1,12 +1,28 @@
 import express from 'express';
 import compression from 'compression';
-import { corsMiddleware } from './middleware/cors.middleware.js';
+import cors from 'cors';
 import { errorMiddleware } from './middleware/error.middleware.js';
 import { apiRouter } from './routes/index.js';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 
 const app = express();
+
+// ── CORS Configuration at the VERY TOP ──────────────────────────────────
+const allowedOrigins = [
+  'https://dakshinamurthy-website-v1-client.vercel.app',
+  ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : [])
+];
+
+const corsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // ── Performance middleware ────────────────────────────────────────────────
 // Gzip compression: reduces JSON payload sizes by ~60-80%
@@ -16,7 +32,6 @@ app.use(compression());
 app.use(helmet());
 
 // ── Core middleware ───────────────────────────────────────────────────────
-app.use(corsMiddleware);
 app.use(express.json());
 
 // Mount all API routes under /api/v1
@@ -30,6 +45,11 @@ const apiLimiter = rateLimit({
 });
 
 app.use('/api/v1', apiLimiter, apiRouter);
+
+// 404 Handler to ensure preflights don't fail silently
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: 'API Route Not Found' });
+});
 
 // Global error handler
 app.use(errorMiddleware);
