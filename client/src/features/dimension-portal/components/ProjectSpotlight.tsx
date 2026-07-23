@@ -125,7 +125,7 @@ export default function ProjectSpotlight({ domain }: ProjectSpotlightProps) {
         >
           {/* Thumbnail image with subtle zoom and glow on hover */}
           <img
-            src={thumbnailSrc}
+            src={thumbnailSrc || undefined}
             alt={currentProject.projectTitle}
             onLoad={handleThumbnailLoad}
             onError={handleThumbnailError}
