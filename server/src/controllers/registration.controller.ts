@@ -145,6 +145,17 @@ export async function loginHandler(req: Request, res: Response) {
       return;
     }
 
+    const { data: configData } = await supabase
+      .from('admin_config')
+      .select('disable_team_login')
+      .eq('id', 1)
+      .maybeSingle();
+
+    if (configData?.disable_team_login) {
+      res.status(403).json({ success: false, message: 'System Access Paused by Administration.' });
+      return;
+    }
+
     const { data: leaderMember, error: leaderError } = await supabase
       .from('members')
       .select('team_id')
@@ -157,17 +168,6 @@ export async function loginHandler(req: Request, res: Response) {
 
     if (!leaderMember) {
       res.status(401).json({ success: false, message: 'Invalid credentials' });
-      return;
-    }
-
-    const { data: configData } = await supabase
-      .from('admin_config')
-      .select('disable_team_login')
-      .eq('id', 1)
-      .maybeSingle();
-
-    if (configData?.disable_team_login) {
-      res.status(403).json({ success: false, message: 'System Access Paused by Administration.' });
       return;
     }
 
