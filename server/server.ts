@@ -1,7 +1,15 @@
 import app from './src/app.js';
 
-const PORT = Number(process.env.PORT || 5000);
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[Dakshinaasya Darshini Server] listening on port ${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[Dakshinaasya Darshini Server] Listening on 0.0.0.0:${PORT}`);
+});
+
+// Handle SIGTERM gracefully so Railway doesn't abruptly kill connections
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    console.log('HTTP server closed');
+  });
 });
