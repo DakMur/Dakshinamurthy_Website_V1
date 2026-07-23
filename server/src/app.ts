@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 
 const app = express();
+app.set("trust proxy", 1);
 
 const allowedOrigins = [
   'https://dakshinamurthy-website-v1-client.vercel.app',
