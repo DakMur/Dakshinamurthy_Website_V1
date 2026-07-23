@@ -68,6 +68,11 @@ export default function AdminControlPanel({
   const [activeTab, setActiveTab] = useState<"analytics" | "teams" | "domains" | "articles" | "timeline" | "quotes" | "comments">("analytics");
 
   useEffect(() => {
+    console.log("[Storage Check] admin_token:", localStorage.getItem("admin_token"));
+    console.log("[Storage Check] token:", localStorage.getItem("token"));
+  }, []);
+
+  useEffect(() => {
     if (activeTab === "teams") {
       fetchTeams();
     }
@@ -75,9 +80,15 @@ export default function AdminControlPanel({
 
   const fetchTeams = async () => {
     try {
-      console.log("Admin token sent:", localStorage.getItem("admin_token"));
+      const token = localStorage.getItem("admin_token") || localStorage.getItem("token") || localStorage.getItem("jwt");
+      if (!token || token === "null" || token === "undefined") {
+        console.error("No valid admin token found in localStorage. Redirecting to login.");
+        onLogout();
+        return;
+      }
+      console.log("Admin token sent:", token);
       const res = await fetch("/api/v1/registration/teams", {
-        headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
+        headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.status === 401 || res.status === 403) {
         onLogout();
@@ -126,6 +137,7 @@ export default function AdminControlPanel({
       if (data.success) {
         if (data.token) {
           localStorage.setItem("admin_token", data.token);
+          localStorage.setItem("token", data.token);
           console.log("Admin token stored:", localStorage.getItem("admin_token"));
         }
         onLogin(data.user);
@@ -142,7 +154,14 @@ export default function AdminControlPanel({
   const handleSaveConfig = async () => {
     setConfigSaving(true);
     try {
-      const adminToken = localStorage.getItem("admin_token");
+      const adminToken = localStorage.getItem("admin_token") || localStorage.getItem("token") || localStorage.getItem("jwt");
+      
+      if (!adminToken || adminToken === "null" || adminToken === "undefined") {
+        console.error("No valid admin token found in localStorage. Redirecting to login.");
+        onLogout();
+        return;
+      }
+      
       console.log("Admin token sent:", adminToken);
       const payload = { status: regStatus, openDate, closeDate, minMembers, maxMembers, disableTeamLogin };
       
@@ -152,7 +171,7 @@ export default function AdminControlPanel({
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": adminToken ? `Bearer ${adminToken}` : ""
+          "Authorization": `Bearer ${adminToken}`
         },
         body: JSON.stringify(payload)
       });
