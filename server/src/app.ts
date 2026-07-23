@@ -14,24 +14,38 @@ const allowedOrigins = [
   process.env.CLIENT_URL
 ].filter(Boolean) as string[];
 
-const corsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // Allow non-browser requests (Postman, curl, server-to-server)
     if (!origin) return callback(null, true);
-    
-    // Allow exact matches OR any vercel preview deployment ending in .vercel.app
-    if (
+
+    // Check if exact match, wildcard, or Vercel preview domain
+    const isAllowed = 
       allowedOrigins.includes(origin) || 
       origin.endsWith('.vercel.app') || 
-      process.env.CLIENT_URL === '*'
-    ) {
+      process.env.CLIENT_URL === '*';
+
+    if (isAllowed) {
       return callback(null, true);
     }
-    return callback(new Error(`CORS blocked for origin: ${origin}`));
+    
+    // CRITICAL: Return null, false instead of new Error(...) so Express returns a clean 403/CORS block without throwing a 500 server crash during preflights.
+    return callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200 // Handle legacy browser preflights safely
 };
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && (origin.endsWith('.vercel.app') || allowedOrigins.includes(origin))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  next();
+});
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
