@@ -75,7 +75,13 @@ export default function AdminControlPanel({
 
   const fetchTeams = async () => {
     try {
-      const res = await fetch("/api/v1/registration/teams");
+      const res = await fetch("/api/v1/registration/teams", {
+        headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
+      });
+      if (res.status === 401 || res.status === 403) {
+        onLogout();
+        return;
+      }
       const data = await res.json();
       if (data.success) {
         setTeamsList(data.teams);
@@ -147,6 +153,12 @@ export default function AdminControlPanel({
         },
         body: JSON.stringify(payload)
       });
+      
+      if (res.status === 401 || res.status === 403) {
+        onLogout();
+        return;
+      }
+      
       const data = await res.json();
       
       console.log("Received response for config commit:", data);
@@ -173,7 +185,10 @@ export default function AdminControlPanel({
     try {
       const res = await fetch("/api/v1/domains", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`
+        },
         body: JSON.stringify(domainForms)
       });
       if (res.ok) {
@@ -192,7 +207,10 @@ export default function AdminControlPanel({
   const handleDeleteDomain = async (id: string) => {
     if (!confirm("Are you sure you want to extinguish this spiritual domain dimension?")) return;
     try {
-      const res = await fetch(`/api/v1/domains/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/v1/domains/${id}`, { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
+      });
       if (res.ok) onRefreshData();
     } catch (err) {
       console.error(err);
@@ -207,7 +225,10 @@ export default function AdminControlPanel({
     try {
       const res = await fetch("/api/v1/articles", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`
+        },
         body: JSON.stringify(articleForms)
       });
       if (res.ok) {
@@ -225,7 +246,10 @@ export default function AdminControlPanel({
   const handleDeleteArticle = async (id: string) => {
     if (!confirm("Extinguish this storytelling article permanently?")) return;
     try {
-      const res = await fetch(`/api/v1/articles/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/v1/articles/${id}`, { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
+      });
       if (res.ok) onRefreshData();
     } catch (err) {
       console.error(err);
@@ -240,7 +264,10 @@ export default function AdminControlPanel({
     try {
       const res = await fetch("/api/v1/quotes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("admin_token")}`
+        },
         body: JSON.stringify({ text: quoteText, author: quoteAuthor || "Unknown Mystic", category: quoteCategory })
       });
       if (res.ok) {
@@ -255,7 +282,10 @@ export default function AdminControlPanel({
 
   const handleDeleteQuote = async (id: string) => {
     try {
-      const res = await fetch(`/api/v1/quotes/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/v1/quotes/${id}`, { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
+      });
       if (res.ok) onRefreshData();
     } catch (err) {
       console.error(err);
@@ -265,7 +295,10 @@ export default function AdminControlPanel({
   // 4. Comment moderation
   const handleDeleteComment = async (id: string) => {
     try {
-      const res = await fetch(`/api/v1/comments/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/v1/comments/${id}`, { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${localStorage.getItem("admin_token")}` }
+      });
       if (res.ok) onRefreshData();
     } catch (err) {
       console.error(err);
@@ -629,7 +662,10 @@ export default function AdminControlPanel({
                               try {
                                 const res = await fetch(`/api/v1/registration/team/${t.id}/promotion`, {
                                   method: "PATCH",
-                                  headers: { "Content-Type": "application/json" },
+                                  headers: { 
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${localStorage.getItem("admin_token")}`
+                                  },
                                   body: JSON.stringify({ passed_round: newRound })
                                 });
                                 if (res.ok) fetchTeams();
