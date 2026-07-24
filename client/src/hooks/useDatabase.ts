@@ -348,7 +348,7 @@ export const FALLBACK_TIMELINE: TimelineStep[] = [
     subtitle: "",
     description: "Over three exciting days, shortlisted teams will transform their ideas into working prototypes under the guidance of mentors and experts. Participants will collaborate, experiment, innovate, and present their solutions before the judging panel. The Makeathon is designed to be an immersive learning experience that encourages creativity, teamwork, and real-world problem solving.",
     quote: "Final Event",
-    quoteAuthor: "2 • 3 • 4 October",
+    quoteAuthor: "7 • 8 • 9 October",
     image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format",
     milestone: "Prototype Successfully Presented"
   }
