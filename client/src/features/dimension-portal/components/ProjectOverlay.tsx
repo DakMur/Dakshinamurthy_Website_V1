@@ -67,6 +67,8 @@ export default function ProjectOverlay({
   if (typeof document === "undefined") return null;
   if (!project) return null;
 
+  const SHOW_CONTENT = false;
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (
@@ -125,16 +127,18 @@ export default function ProjectOverlay({
             </div>
 
             {/* Scrollable Modal Body: only the modal body scrolls when content exceeds overlay height */}
-            <div data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain p-8 md:p-10 space-y-10 custom-scrollbar" style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', pointerEvents: 'auto' }}>
+            <div data-lenis-prevent className={`flex-1 overflow-y-auto overscroll-contain p-8 md:p-10 ${SHOW_CONTENT ? 'space-y-10' : 'flex flex-col justify-center'} custom-scrollbar`} style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', pointerEvents: 'auto' }}>
               {/* Project Title and Subtitle */}
-              <div className="space-y-2">
-                <h2 className="font-display font-bold text-3xl md:text-5xl text-white tracking-wide leading-tight">
-                  {project.projectTitle}
-                </h2>
-                <p className="font-serif italic text-slate-300 text-sm md:text-base max-w-4xl leading-relaxed pl-1">
-                  &ldquo;{project.subtitle}&rdquo;
-                </p>
-              </div>
+              {SHOW_CONTENT && (
+                <div className="space-y-2">
+                  <h2 className="font-display font-bold text-3xl md:text-5xl text-white tracking-wide leading-tight">
+                    {project.projectTitle}
+                  </h2>
+                  <p className="font-serif italic text-slate-300 text-sm md:text-base max-w-4xl leading-relaxed pl-1">
+                    &ldquo;{project.subtitle}&rdquo;
+                  </p>
+                </div>
+              )}
 
               {/* Embedded YouTube Player (lazy-loaded iframe inside) */}
               <div className="w-full">
@@ -145,8 +149,9 @@ export default function ProjectOverlay({
               </div>
 
               {/* Educational Sections Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 pb-8">
-                {/* 1. PROJECT OVERVIEW */}
+              {SHOW_CONTENT && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 pb-8">
+                  {/* 1. PROJECT OVERVIEW */}
                 <div className="p-6 md:p-8 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4 hover:border-gold-vintage/15 transition-all duration-300">
                   <div className="flex items-center gap-2.5 text-gold-vintage">
                     <BookOpen className="w-4.5 h-4.5" />
@@ -172,6 +177,7 @@ export default function ProjectOverlay({
                   </p>
                 </div>
               </div>
+              )}
             </div>
           </motion.div>
         </div>

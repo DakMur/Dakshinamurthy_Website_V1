@@ -89,8 +89,10 @@ export default function ProjectSpotlight({ domain }: ProjectSpotlightProps) {
     );
   }
 
+  const SHOW_DETAILS = false;
+
   return (
-    <div className="p-5 rounded-2xl glass-panel border-white/10 flex flex-col justify-between min-h-[380px] relative overflow-hidden group">
+    <div className={`p-5 rounded-2xl glass-panel border-white/10 flex flex-col justify-between ${SHOW_DETAILS ? 'min-h-[380px]' : ''} relative overflow-hidden group`}>
       {/* Header row with capitalized section title & navigation triggers if multiple projects exist */}
       <div className="flex items-center justify-between mb-4 shrink-0">
         <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest pl-1">
@@ -157,14 +159,16 @@ export default function ProjectSpotlight({ domain }: ProjectSpotlightProps) {
         </button>
 
         {/* Project detail texts */}
-        <div className="space-y-1.5 px-1 py-1">
-          <h5 className="font-display font-semibold text-base text-slate-100 group-hover:text-gold-vintage transition-colors line-clamp-1">
-            {currentProject.projectTitle}
-          </h5>
-          <p className="font-sans text-xs text-slate-400 leading-relaxed line-clamp-2">
-            {currentProject.subtitle}
-          </p>
-        </div>
+        {SHOW_DETAILS && (
+          <div className="space-y-1.5 px-1 py-1">
+            <h5 className="font-display font-semibold text-base text-slate-100 group-hover:text-gold-vintage transition-colors line-clamp-1">
+              {currentProject.projectTitle}
+            </h5>
+            <p className="font-sans text-xs text-slate-400 leading-relaxed line-clamp-2">
+              {currentProject.subtitle}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Footer controls section containing carousel dots and CTA button */}
