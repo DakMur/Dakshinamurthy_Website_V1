@@ -21,33 +21,38 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="text-center space-y-8 max-w-4xl mx-auto py-12 relative flex flex-col justify-center items-center min-h-[75vh]"
+      className="text-center space-y-8 w-full max-w-7xl mx-auto pt-0 pb-12 relative flex flex-col justify-center items-center min-h-[75vh]"
     >
-      {/* Institutional Logos (Consistent top alignment & safe margins) */}
-      <div className="fixed top-4 sm:top-5 md:top-6 left-4 sm:left-6 md:left-8 z-30 pointer-events-none select-none">
-        <img 
-          src={jyothyLogo} 
-          className="h-10 sm:h-14 md:h-20 object-contain pointer-events-auto" 
-          style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
-          alt="Jyothy Institute of Technology" 
-        />
-      </div>
+      {/* Dedicated Hero Logo Banner (Standard document layout flow) */}
+      <div className="w-full max-w-7xl flex items-center justify-between px-4 sm:px-8 md:px-10 lg:px-12 -mt-6 sm:-mt-8 md:-mt-10 pb-6 select-none pointer-events-none">
+        {/* Left Logo: Jyothy Institute of Technology */}
+        <div className="flex-1 flex justify-start items-center">
+          <img 
+            src={jyothyLogo} 
+            className="h-10 sm:h-14 md:h-20 object-contain pointer-events-auto" 
+            style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
+            alt="Jyothy Institute of Technology" 
+          />
+        </div>
 
-      <div className="fixed top-4 sm:top-5 md:top-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none select-none">
-        <img 
-          src={sringeriLogo} 
-          className="h-10 sm:h-14 md:h-18 object-contain pointer-events-auto" 
-          style={{ clipPath: "circle(50% at 50% 50%)" }}
-          alt="Sringeri" 
-        />
-      </div>
+        {/* Center Logo: Sringeri Sharada Peetham */}
+        <div className="flex-1 flex justify-center items-center">
+          <img 
+            src={sringeriLogo} 
+            className="h-10 sm:h-14 md:h-18 object-contain pointer-events-auto" 
+            style={{ clipPath: "circle(50% at 50% 50%)" }}
+            alt="Sringeri" 
+          />
+        </div>
 
-      <div className="fixed top-4 sm:top-5 md:top-6 right-4 sm:right-6 md:right-8 z-30 pointer-events-none select-none">
-        <img 
-          src={vedantaBharatiLogo} 
-          className="h-8 sm:h-11 md:h-15 object-contain pointer-events-auto" 
-          alt="Vedanta Bharati" 
-        />
+        {/* Right Logo: Vedanta Bharati */}
+        <div className="flex-1 flex justify-end items-center">
+          <img 
+            src={vedantaBharatiLogo} 
+            className="h-8 sm:h-11 md:h-15 object-contain pointer-events-auto" 
+            alt="Vedanta Bharati" 
+          />
+        </div>
       </div>
       {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
       <div className="hidden sm:flex fixed right-10 bottom-10 pointer-events-none select-none z-20">
@@ -56,7 +61,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-4xl mx-auto">
         {/* Accent Line decoration */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
