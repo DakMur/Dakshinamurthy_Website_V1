@@ -218,6 +218,16 @@ export async function loginHandler(req: Request, res: Response) {
 }
 
 export async function getConfigHandler(req: Request, res: Response) {
+  const FALLBACK_CONFIG = {
+    status: 'Registration Open' as const,
+    minMembers: 2,
+    maxMembers: 4,
+    disableTeamLogin: false,
+    openDate: null,
+    closeDate: null,
+    countdownTarget: null,
+  };
+
   try {
     const { data, error } = await supabase
       .from('admin_config')
@@ -225,18 +235,14 @@ export async function getConfigHandler(req: Request, res: Response) {
       .eq('id', 1)
       .maybeSingle();
 
-    if (error) throw error;
-
-    if (!data) {
-      res.json({
-        status: 'Registrations Closed',
-        minMembers: 2,
-        maxMembers: 5
-      });
-      return;
+    // If DB query errored OR returned no rows, return a safe fallback — never 500
+    if (error || !data) {
+      if (error) console.warn('getConfigHandler: DB error, serving fallback config:', error.message);
+      else console.warn('getConfigHandler: No admin_config row found, serving fallback config.');
+      return res.status(200).json(FALLBACK_CONFIG);
     }
 
-    let statusString = 'Registration Not Yet Opened';
+    let statusString: 'Registration Not Yet Opened' | 'Registration Open' | 'Registrations Closed' = 'Registration Not Yet Opened';
     if (data.phase === 1) statusString = 'Registration Open';
     else if (data.phase === 2) statusString = 'Registrations Closed';
 
@@ -245,13 +251,14 @@ export async function getConfigHandler(req: Request, res: Response) {
       openDate: data.phase === 0 ? data.countdown_target : null,
       closeDate: data.close_date || (data.phase === 1 ? data.countdown_target : null),
       countdownTarget: data.countdown_target,
-      minMembers: data.min_members,
-      maxMembers: data.max_members,
-      disableTeamLogin: data.disable_team_login
+      minMembers: data.min_members ?? FALLBACK_CONFIG.minMembers,
+      maxMembers: data.max_members ?? FALLBACK_CONFIG.maxMembers,
+      disableTeamLogin: data.disable_team_login ?? false,
     });
   } catch (err: any) {
-    console.error('Error fetching config:', err);
-    res.status(500).json({ error: 'Failed to retrieve configuration' });
+    console.warn('getConfigHandler: Unexpected error, serving fallback config:', err?.message);
+    // Never expose a 500 to public visitors — fall back gracefully
+    return res.status(200).json(FALLBACK_CONFIG);
   }
 }
 

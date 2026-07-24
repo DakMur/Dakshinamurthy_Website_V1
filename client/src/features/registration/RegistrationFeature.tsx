@@ -24,14 +24,34 @@ interface RegistrationFeatureProps {
 export default function RegistrationFeature(props: RegistrationFeatureProps) {
   const [view, setView] = useState<'gate' | 'form' | 'dashboard' | 'admin'>('gate');
   const [team, setTeam] = useState<Team | null>(null);
-  const [config, setConfig] = useState<RegistrationConfig | null>(null);
+  const [config, setConfig] = useState<RegistrationConfig>({
+    status: 'Registration Open',
+    minMembers: 2,
+    maxMembers: 4,
+    disableTeamLogin: false,
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Fetch global registration config
-    fetch('/api/v1/registration/config')
-      .then(r => r.json())
-      .then(data => setConfig(data))
-      .catch(err => console.error("Error loading registration config:", err));
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch('/api/v1/registration/config');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const raw = await res.json();
+        // Safely unwrap nested or flat response shapes
+        const data = raw?.data || raw;
+        if (data && typeof data === 'object') {
+          setConfig(prev => ({ ...prev, ...data }));
+        }
+      } catch (err) {
+        console.warn('Using fallback config due to fetch error:', err);
+        // Keep the default state — component will still render
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchConfig();
   }, []);
 
   const handleLoginSuccess = (teamData: Team) => {
@@ -61,9 +81,6 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
     props.onLogout(); // If needed to sync with main app state
   };
 
-  if (!config) {
-    return <div className="text-white text-center py-12 font-mono">Loading Registration Core...</div>;
-  }
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-start pt-16 md:pt-20 pb-12 px-4 space-y-4 z-10 relative">
