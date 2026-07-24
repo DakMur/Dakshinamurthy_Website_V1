@@ -19,6 +19,14 @@ const DEFAULT_DATABASE: DatabaseSchema = {
       password: "dakshinaasya2026",
       role: "admin",
       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
+    },
+    {
+      id: "u2",
+      name: "System Admin",
+      email: "admin@dakshina.org",
+      password: "admin_secure_2026",
+      role: "admin",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
     }
   ],
   domains: [

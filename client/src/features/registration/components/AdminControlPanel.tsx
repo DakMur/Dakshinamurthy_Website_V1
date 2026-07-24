@@ -134,12 +134,17 @@ export default function AdminControlPanel({
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
+      console.log("Login API Response:", data);
+      
       if (data.success) {
-        if (data.token) {
-          localStorage.setItem("admin_token", data.token);
-          localStorage.setItem("token", data.token);
-          console.log("Admin token stored:", localStorage.getItem("admin_token"));
+        const token = data.token || data.accessToken || data.data?.token;
+        if (!token) {
+          throw new Error("Missing auth token from server response");
         }
+        localStorage.setItem("admin_token", token);
+        localStorage.setItem("token", token);
+        console.log("Admin token stored:", localStorage.getItem("admin_token"));
+        
         onLogin(data.user);
       } else {
         setLoginError(data.message || "Credential keys mismatch.");
