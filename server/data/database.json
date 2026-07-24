@@ -423,13 +423,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 227,
+      "home": 233,
       "storytelling": 75,
       "domains": 53,
       "flow": 22,
       "admin": 16
     },
-    "totalInteractions": 993,
+    "totalInteractions": 999,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {
