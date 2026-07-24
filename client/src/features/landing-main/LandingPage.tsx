@@ -65,7 +65,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           className="mb-4 flex items-center justify-center gap-4 text-xs font-mono"
         >
           <div className="h-[1px] w-14 bg-gradient-to-r from-transparent to-gold-vintage"></div>
-          <span className="text-[10px] tracking-[0.55em] uppercase text-gold-vintage">ADVAITA VEDANTA</span>
+          <span className="text-[10px] tracking-[0.55em] uppercase text-gold-vintage">VEDANTA AND SCIENCE</span>
           <div className="h-[1px] w-14 bg-gradient-to-l from-transparent to-gold-vintage"></div>
         </motion.div>
 
