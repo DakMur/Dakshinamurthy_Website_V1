@@ -56,9 +56,6 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         </div>
       </div>
 
-      {/* Ambient backdrop glow filter */}
-      <div className="absolute inset-0 bg-[#050505]/20 backdrop-blur-xs rounded-3xl -z-10" />
-
       <div className="space-y-6">
         {/* Accent Line decoration */}
         <motion.div
@@ -130,12 +127,12 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </span>
         </motion.h2>
 
-        {/* Subtitle description */}
+        {/* Subtitle description with rectangular glassmorphism border */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="text-sm md:text-base font-serif italic text-slate-300 max-w-2xl mx-auto leading-relaxed"
+          className="text-sm md:text-base font-serif italic text-slate-300 max-w-2xl mx-auto leading-relaxed p-5 md:p-6 rounded-xl bg-black/40 backdrop-blur-md border border-gold-vintage/30 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
         >
           &ldquo;To Him who sees the universe mirroring within Himself like a city reflected in a glass, yet appearing outside as if by a dream; to Him who reveals the absolute Non-Dual Self upon awakening; salutations to that ultimate Guru, Sri Dakshinamurthy.&rdquo;
         </motion.p>

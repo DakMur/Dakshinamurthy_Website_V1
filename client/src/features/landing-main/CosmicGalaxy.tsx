@@ -668,13 +668,13 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       </svg>
       {/* 1. Technology Background Layer (breathing ambient opacity, thin gold outline strokes) - sits behind canvas */}
       <div
-        className="absolute inset-0 z-0 text-gold-vintage mix-blend-screen hidden md:block select-none pointer-events-none"
+        className="absolute inset-0 z-0 text-gold-vintage mix-blend-screen select-none pointer-events-none tech-bg-layer"
         style={{ animation: "tech-ambient-light 16s ease-in-out infinite" }}
       >
 
         {/* Top Left Cluster - Adjusted to clear Jyothy logo safe zone */}
         <div
-          className="absolute left-[3vw] top-[18vh]"
+          className="absolute left-[3vw] top-[18vh] max-md:left-[2vw] max-md:top-[14vh] max-md:scale-[0.55] max-md:origin-top-left"
           style={{
             opacity: isExplore ? 0.78 * 0.95 : 0.95,
             transition: "opacity 700ms ease-in-out"
@@ -683,7 +683,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechController />
         </div>
         <div
-          className="absolute left-[15vw] top-[19vh]"
+          className="absolute left-[15vw] top-[19vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.85 : 0.85,
             transition: "opacity 700ms ease-in-out"
@@ -694,7 +694,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Middle Left Cluster */}
         <div
-          className="absolute left-[2vw] top-[38vh]"
+          className="absolute left-[2vw] top-[38vh] max-md:left-[1vw] max-md:top-[32vh] max-md:scale-[0.5] max-md:origin-top-left"
           style={{
             opacity: isExplore ? 0.78 * 0.90 : 0.90,
             transition: "opacity 700ms ease-in-out"
@@ -705,7 +705,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Left background additions */}
         <div
-          className="absolute left-[13vw] top-[46vh]"
+          className="absolute left-[13vw] top-[46vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
             transition: "opacity 700ms ease-in-out"
@@ -716,7 +716,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Bottom Left Cluster */}
         <div
-          className="absolute left-[14vw] bottom-[14vh]"
+          className="absolute left-[14vw] bottom-[14vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.78 * 0.90 : 0.90,
             transition: "opacity 700ms ease-in-out"
@@ -725,7 +725,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechPcb />
         </div>
         <div
-          className="absolute left-[2vw] bottom-[15vh]"
+          className="absolute left-[2vw] bottom-[15vh] max-md:left-[1vw] max-md:bottom-[12vh] max-md:scale-[0.5] max-md:origin-bottom-left"
           style={{
             opacity: isExplore ? 0.68 * 0.95 : 0.95,
             transition: "opacity 700ms ease-in-out"
@@ -734,7 +734,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechRoboticArm />
         </div>
         <div
-          className="absolute left-[14vw] bottom-[4vh] text-gold-vintage"
+          className="absolute left-[14vw] bottom-[4vh] text-gold-vintage max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
             transition: "opacity 700ms ease-in-out"
@@ -743,7 +743,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechWaveform />
         </div>
         <div
-          className="absolute left-[2vw] bottom-[3vh]"
+          className="absolute left-[2vw] bottom-[3vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.70 : 0.70,
             transition: "opacity 700ms ease-in-out"
@@ -754,7 +754,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Top Right Cluster - Framing the Vedanta Bharati logo */}
         <div
-          className="absolute right-[12vw] top-[18vh]"
+          className="absolute right-[12vw] top-[18vh] max-md:right-[1vw] max-md:top-[14vh] max-md:scale-[0.5] max-md:origin-top-right"
           style={{
             opacity: isExplore ? 0.68 * 1.00 : 1.00,
             transition: "opacity 700ms ease-in-out"
@@ -765,7 +765,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Middle Right Cluster */}
         <div
-          className="absolute right-[2vw] top-[22vh]"
+          className="absolute right-[2vw] top-[22vh] max-md:right-[1vw] max-md:top-[30vh] max-md:scale-[0.45] max-md:origin-top-right"
           style={{
             opacity: isExplore ? 0.78 * 0.95 : 0.95,
             transition: "opacity 700ms ease-in-out"
@@ -774,7 +774,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechNeural />
         </div>
         <div
-          className="absolute right-[20vw] top-[32vh]"
+          className="absolute right-[20vw] top-[32vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.78 * 0.90 : 0.90,
             transition: "opacity 700ms ease-in-out"
@@ -785,7 +785,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Right background additions */}
         <div
-          className="absolute right-[12vw] top-[42vh]"
+          className="absolute right-[12vw] top-[42vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
             transition: "opacity 700ms ease-in-out"
@@ -794,7 +794,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechCloudApi />
         </div>
         <div
-          className="absolute right-[2vw] top-[48vh]"
+          className="absolute right-[2vw] top-[48vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.35 : 0.35,
             transition: "opacity 700ms ease-in-out"
@@ -804,7 +804,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         </div>
 
         <div
-          className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage"
+          className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.80 : 0.80,
             transition: "opacity 700ms ease-in-out"
@@ -817,7 +817,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Bottom Right Cluster - Moved AI Head slightly up to clear Tat Tvam Asi text */}
         <div
-          className="absolute right-[20vw] bottom-[16vh]"
+          className="absolute right-[20vw] bottom-[16vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.68 * 0.95 : 0.95,
             transition: "opacity 700ms ease-in-out"
@@ -826,7 +826,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechGpu />
         </div>
         <div
-          className="absolute right-[2vw] bottom-[12vh]"
+          className="absolute right-[2vw] bottom-[12vh] max-md:right-[1vw] max-md:bottom-[10vh] max-md:scale-[0.5] max-md:origin-bottom-right"
           style={{
             opacity: isExplore ? 0.68 * 1.00 : 1.00,
             transition: "opacity 700ms ease-in-out"
@@ -835,7 +835,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
           <TechAiHead />
         </div>
         <div
-          className="absolute right-[19vw] bottom-[3vh]"
+          className="absolute right-[19vw] bottom-[3vh] max-md:hidden"
           style={{
             opacity: isExplore ? 0.55 * 0.80 : 0.80,
             transition: "opacity 700ms ease-in-out"
@@ -846,7 +846,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
         {/* Bottom Center Cluster */}
         <div
-          className="absolute bottom-[5vh] left-1/2 -translate-x-1/2"
+          className="absolute bottom-[5vh] left-1/2 -translate-x-1/2 max-md:bottom-[3vh] max-md:scale-[0.6]"
           style={{
             opacity: isExplore ? 0.78 * 1.00 : 1.00,
             transition: "opacity 700ms ease-in-out"

@@ -126,4 +126,9 @@ main {
   background: rgba(212, 175, 55, 0.5);
 }
 
-@media (min-width: 1024px) {}
+/* Phone layout: reduce decorative tech element opacity so main content stays readable */
+@media (max-width: 767px) {
+  .tech-bg-layer {
+    opacity: 0.45;
+  }
+}
