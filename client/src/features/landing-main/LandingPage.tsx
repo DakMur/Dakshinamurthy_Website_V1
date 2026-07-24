@@ -23,29 +23,29 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       exit={{ opacity: 0 }}
       className="text-center space-y-8 max-w-4xl mx-auto py-12 relative flex flex-col justify-center items-center min-h-[75vh]"
     >
-      {/* Institutional Logos (Independent viewport positioning) */}
-      <div className="fixed top-6 left-4 md:left-[70px] z-30 pointer-events-none select-none">
+      {/* Institutional Logos (Consistent top alignment & safe margins) */}
+      <div className="fixed top-4 sm:top-5 md:top-6 left-4 sm:left-6 md:left-8 z-30 pointer-events-none select-none">
         <img 
           src={jyothyLogo} 
-          className="h-14 sm:h-18 md:h-24 object-contain pointer-events-auto" 
+          className="h-10 sm:h-14 md:h-20 object-contain pointer-events-auto" 
           style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
           alt="Jyothy Institute of Technology" 
         />
       </div>
 
-      <div className="fixed top-2 left-1/2 -translate-x-1/2 z-30 pointer-events-none select-none">
+      <div className="fixed top-4 sm:top-5 md:top-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none select-none">
         <img 
           src={sringeriLogo} 
-          className="h-12 sm:h-15 md:h-19 object-contain pointer-events-auto" 
+          className="h-10 sm:h-14 md:h-18 object-contain pointer-events-auto" 
           style={{ clipPath: "circle(50% at 50% 50%)" }}
           alt="Sringeri" 
         />
       </div>
 
-      <div className="fixed top-6 right-4 md:right-[70px] z-30 pointer-events-none select-none">
+      <div className="fixed top-4 sm:top-5 md:top-6 right-4 sm:right-6 md:right-8 z-30 pointer-events-none select-none">
         <img 
           src={vedantaBharatiLogo} 
-          className="h-10 sm:h-13 md:h-17 object-contain pointer-events-auto" 
+          className="h-8 sm:h-11 md:h-15 object-contain pointer-events-auto" 
           alt="Vedanta Bharati" 
         />
       </div>
