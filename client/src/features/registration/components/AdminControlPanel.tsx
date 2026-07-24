@@ -68,8 +68,8 @@ export default function AdminControlPanel({
   const [activeTab, setActiveTab] = useState<"analytics" | "teams" | "domains" | "articles" | "timeline" | "quotes" | "comments">("analytics");
 
   useEffect(() => {
-    console.log("[Storage Check] admin_token:", localStorage.getItem("admin_token"));
-    console.log("[Storage Check] token:", localStorage.getItem("token"));
+    // Token presence is verified lazily when admin actions are performed;
+    // no need to log token values here (security: avoids leaking to console).
   }, []);
 
   useEffect(() => {
@@ -91,12 +91,17 @@ export default function AdminControlPanel({
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.status === 401 || res.status === 403) {
+        // Token rejected — clear stale credentials and redirect to gate
+        localStorage.removeItem("admin_token");
+        localStorage.removeItem("token");
         onLogout();
         return;
       }
       const data = await res.json();
       if (data.success) {
-        setTeamsList(data.teams);
+        setTeamsList(data.teams || []);
+      } else {
+        setTeamsList([]);
       }
     } catch (err) {
       console.error(err);
@@ -134,16 +139,16 @@ export default function AdminControlPanel({
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-      console.log("Login API Response:", data);
       
       if (data.success) {
         const token = data.token || data.accessToken || data.data?.token;
         if (!token) {
           throw new Error("Missing auth token from server response");
         }
+        // TODO(security): Storing tokens in localStorage is vulnerable to XSS.
+        // Migrate to HttpOnly cookie strategy when backend session support is added.
         localStorage.setItem("admin_token", token);
         localStorage.setItem("token", token);
-        console.log("Admin token stored:", localStorage.getItem("admin_token"));
         
         onLogin(data.user);
       } else {
@@ -162,15 +167,11 @@ export default function AdminControlPanel({
       const adminToken = localStorage.getItem("admin_token") || localStorage.getItem("token") || localStorage.getItem("jwt");
       
       if (!adminToken || adminToken === "null" || adminToken === "undefined") {
-        console.error("No valid admin token found in localStorage. Redirecting to login.");
         onLogout();
         return;
       }
       
-      console.log("Admin token sent:", adminToken);
       const payload = { status: regStatus, openDate, closeDate, minMembers, maxMembers, disableTeamLogin };
-      
-      console.log("Sending commit configuration request with payload:", payload);
       
       const res = await fetch("/api/v1/registration/config", {
         method: "POST",
@@ -182,13 +183,14 @@ export default function AdminControlPanel({
       });
       
       if (res.status === 401 || res.status === 403) {
+        // Token rejected — clear stale credentials and redirect to gate
+        localStorage.removeItem("admin_token");
+        localStorage.removeItem("token");
         onLogout();
         return;
       }
       
       const data = await res.json();
-      
-      console.log("Received response for config commit:", data);
       
       if (data.success) {
         onConfigUpdate(data.config);
@@ -671,7 +673,11 @@ export default function AdminControlPanel({
               </div>
               <div className="space-y-3">
                 {teamsList.length === 0 ? (
-                  <div className="p-6 text-center text-xs font-mono text-slate-600 border border-white/5 bg-[#050505] rounded-xl">No teams registered yet.</div>
+                  <div className="p-8 text-center border border-white/5 bg-white/[0.01] rounded-2xl space-y-2">
+                    <Users className="w-8 h-8 text-slate-700 mx-auto mb-3" />
+                    <p className="text-sm font-mono text-slate-500">No teams registered yet.</p>
+                    <p className="text-xs font-mono text-slate-700">Teams will appear here once participants complete the registration form.</p>
+                  </div>
                 ) : (
                   teamsList.map((t) => (
                     <div key={t.id} className="p-5 rounded-2xl glass-panel border-white/5 space-y-3 flex flex-col justify-between">

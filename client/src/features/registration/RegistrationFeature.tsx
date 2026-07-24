@@ -32,6 +32,14 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   });
   const [isLoading, setIsLoading] = useState(true);
 
+  // Safety guard: if dashboard view is active but team is null (e.g. from a
+  // payload mismatch during login), reset back to gate to avoid blank screen.
+  useEffect(() => {
+    if (view === 'dashboard' && !team) {
+      setView('gate');
+    }
+  }, [view, team]);
+
   useEffect(() => {
     // Fetch global registration config
     const fetchConfig = async () => {
@@ -78,7 +86,10 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   const handleLogout = () => {
     setTeam(null);
     setView('gate');
-    props.onLogout(); // If needed to sync with main app state
+    // Clear stored admin tokens so stale credentials don't persist
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('token');
+    props.onLogout();
   };
 
 

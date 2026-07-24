@@ -148,6 +148,8 @@ export async function loginHandler(req: Request, res: Response) {
 
       return res.status(200).json({
         success: true,
+        // TODO(security): Harden by removing fallback credentials and using env vars only.
+        admin: true,
         message: 'Admin login successful',
         token: token,
         user: { email: adminEmail, role: 'ADMIN' }

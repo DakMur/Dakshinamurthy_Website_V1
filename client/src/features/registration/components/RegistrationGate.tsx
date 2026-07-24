@@ -22,8 +22,6 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
     setLoading(true);
     setError("");
 
-
-
     try {
       const res = await fetch("/api/v1/registration/login", {
         method: "POST",
@@ -33,9 +31,20 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
       const data = await res.json();
 
       if (data.success) {
-        if (data.admin) {
+        // Detect admin login by explicit flag OR by role claim in user object
+        const isAdmin = data.admin === true || data.user?.role === 'ADMIN';
+
+        if (isAdmin && data.token) {
+          // TODO(security): Storing tokens in localStorage is vulnerable to XSS.
+          // Migrate to HttpOnly cookie strategy when backend session support is added.
+          localStorage.setItem("admin_token", data.token);
+          localStorage.setItem("token", data.token);
+          onAdminBypass();
+        } else if (isAdmin) {
+          // Admin detected but no token — still bypass (e.g. during testing)
           onAdminBypass();
         } else {
+          // Regular team leader login
           onLoginSuccess(data.team);
         }
       } else {
