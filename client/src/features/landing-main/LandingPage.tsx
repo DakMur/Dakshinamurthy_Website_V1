@@ -1,9 +1,10 @@
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
 import jyothyLogo from "../../assets/jyothy_logo.jpg";
 import sringeriLogo from "../../assets/sringeri_logo.jpg";
-import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo.png";
+import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo (2).png";
+import paramLogo from "../../assets/Param_logo.webp";
 
 interface LandingPageProps {
   isWarping: boolean;
@@ -11,55 +12,138 @@ interface LandingPageProps {
 }
 
 /**
- * Landing page JSX extracted from the monolithic App.tsx.
- * This component renders the hero section of the cosmic landing experience.
+ * Landing page component architecture matching Target Reference (Image 2).
+ * Shallow top logo layer integrated inside single hero container,
+ * positioned directly above the central hero content.
  */
 export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPageProps) {
+  const { scrollY } = useScroll();
+  const logoOpacity = useTransform(scrollY, [0, 200], [1, 0.4]);
+  const logoTranslateY = useTransform(scrollY, [0, 200], [0, -12]);
+
   return (
     <motion.div
       key="landing"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="text-center space-y-8 w-full max-w-7xl mx-auto pt-0 pb-12 relative flex flex-col justify-center items-center min-h-[75vh]"
+      className="w-full relative flex flex-col items-center min-h-[75vh]"
     >
-      {/* Dedicated Hero Logo Banner (Standard document layout flow) */}
-      <div className="w-full max-w-7xl flex items-center justify-between px-4 sm:px-8 md:px-10 lg:px-12 -mt-6 sm:-mt-8 md:-mt-10 pb-6 select-none pointer-events-none">
-        {/* Left Logo: Jyothy Institute of Technology */}
-        <div className="flex-1 flex justify-start items-center">
-          <img 
-            src={jyothyLogo} 
-            className="h-10 sm:h-14 md:h-20 object-contain pointer-events-auto" 
-            style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
-            alt="Jyothy Institute of Technology" 
-          />
+      {/* 1. FULL-WIDTH INSTITUTIONAL LOGO LAYER */}
+      <motion.div
+        style={{ opacity: logoOpacity, y: logoTranslateY }}
+        className="w-full relative select-none z-10 pointer-events-auto"
+      >
+        {/* Desktop / Tablet Layout: Explicit Viewport-Relative Anchors (14vw, 38vw, 62vw, 86vw) */}
+        <div className="hidden sm:block relative w-screen left-1/2 -translate-x-1/2 h-20 md:h-24 overflow-visible">
+          {/* Param — 14vw Anchor (Outer logo slightly smaller) */}
+          <div
+            className="absolute top-[-17px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
+            style={{ left: "14vw" }}
+          >
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+              TECHNICAL COLLABORATOR
+            </span>
+            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+              <img
+                src={paramLogo}
+                className="h-6 sm:h-8 md:h-10 object-contain scale-[0.92]"
+                alt="Param Technical Collaborator"
+              />
+            </div>
+          </div>
+
+          {/* Jyothy — 38vw Anchor (Enlarged Jyothy logo, shifted 12px upward) */}
+          <div
+            className="absolute top-[-29px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
+            style={{ left: "38vw" }}
+          >
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+              JYOTHY INSTITUTE OF TECHNOLOGY
+            </span>
+            <div className="h-12 sm:h-17 md:h-22 flex items-center justify-center">
+              <img
+                src={jyothyLogo}
+                className="h-12 sm:h-17 md:h-22 object-contain"
+                style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
+                alt="Jyothy Institute of Technology"
+              />
+            </div>
+          </div>
+
+          {/* Sringeri — 62vw Anchor (Enlarged inner logo, shifted 12px upward) */}
+          <div
+            className="absolute top-[-29px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
+            style={{ left: "62vw" }}
+          >
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+              SRINGERI SHARADA PEETHAM
+            </span>
+            <div className="h-10 sm:h-14 md:h-18 flex items-center justify-center">
+              <img
+                src={sringeriLogo}
+                className="h-10 sm:h-14 md:h-17 object-contain"
+                style={{ clipPath: "circle(50% at 50% 50%)" }}
+                alt="Sringeri"
+              />
+            </div>
+          </div>
+
+          {/* Vedanta Bharati — 86vw Anchor (Outer logo slightly smaller) */}
+          <div
+            className="absolute top-[-17px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
+            style={{ left: "86vw" }}
+          >
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+              SUPPORTED BY
+            </span>
+            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+              <img
+                src={vedantaBharatiLogo}
+                className="h-7 sm:h-10 md:h-12 object-contain scale-100"
+                alt="Vedanta Bharati"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Center Logo: Sringeri Sharada Peetham */}
-        <div className="flex-1 flex justify-center items-center">
-          <img 
-            src={sringeriLogo} 
-            className="h-10 sm:h-14 md:h-18 object-contain pointer-events-auto" 
-            style={{ clipPath: "circle(50% at 50% 50%)" }}
-            alt="Sringeri" 
-          />
+        {/* Mobile Layout: Responsive 2x2 Grid */}
+        <div className="sm:hidden grid grid-cols-2 gap-3 w-full px-4 pt-2 pb-1">
+          <div className="flex flex-col items-start justify-center">
+            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
+              TECHNICAL COLLABORATOR
+            </span>
+            <img src={paramLogo} className="h-6 object-contain" alt="Param Technical Collaborator" />
+          </div>
+          <div className="flex flex-col items-end justify-center">
+            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
+              JYOTHY INSTITUTE OF TECHNOLOGY
+            </span>
+            <img src={jyothyLogo} className="h-9 object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" />
+          </div>
+          <div className="flex flex-col items-start justify-center">
+            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
+              SRINGERI SHARADA PEETHAM
+            </span>
+            <img src={sringeriLogo} className="h-9 object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" />
+          </div>
+          <div className="flex flex-col items-end justify-center">
+            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
+              SUPPORTED BY
+            </span>
+            <img src={vedantaBharatiLogo} className="h-10 object-contain" alt="Vedanta Bharati" />
+          </div>
         </div>
+      </motion.div>
 
-        {/* Right Logo: Vedanta Bharati */}
-        <div className="flex-1 flex justify-end items-center">
-          <img 
-            src={vedantaBharatiLogo} 
-            className="h-8 sm:h-11 md:h-15 object-contain pointer-events-auto" 
-            alt="Vedanta Bharati" 
-          />
+      {/* 2. CENTERED HERO CONTENT (Constrained by max-w-7xl) */}
+      <div className="text-center space-y-4 sm:space-y-6 w-full max-w-7xl mx-auto pt-0 pb-12 relative flex flex-col justify-center items-center">
+        {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
+        <div className="hidden sm:flex fixed right-10 bottom-10 pointer-events-none select-none z-20">
+          <div className="text-right">
+            <div className="text-xs font-serif italic text-gold-vintage tracking-wider">Tat Tvam Asi</div>
+          </div>
         </div>
-      </div>
-      {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
-      <div className="hidden sm:flex fixed right-10 bottom-10 pointer-events-none select-none z-20">
-        <div className="text-right">
-          <div className="text-xs font-serif italic text-gold-vintage tracking-wider">Tat Tvam Asi</div>
-        </div>
-      </div>
 
       <div className="space-y-6 max-w-4xl mx-auto">
         {/* Accent Line decoration */}
@@ -78,9 +162,9 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         {/* Centered, respectful portrait image container of Sree Adi Shankaracharya */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 15 }}
-          animate={{ 
-            opacity: 1, 
-            scale: 1, 
+          animate={{
+            opacity: 1,
+            scale: 1,
             y: [0, -6, 0],
           }}
           transition={{
@@ -102,9 +186,9 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         >
           {/* Ambient Glow matching existing cosmic background theme */}
           <div className="absolute inset-0 rounded-full bg-gold-vintage/10 blur-xl w-3/4 h-3/4 mx-auto animate-pulse pointer-events-none"></div>
-          
+
           {/* Radially faded borderless container to blend all edges smoothly into the dark background */}
-          <div 
+          <div
             className="relative w-full h-full overflow-hidden"
             style={{
               maskImage: 'radial-gradient(ellipse at 50% 48%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 65%)',
@@ -171,6 +255,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       {/* Bottom Decorative Footer Status limits (Desktop only) */}
       <div className="hidden lg:flex fixed bottom-6 left-10 right-10 justify-between items-center z-20 pointer-events-none select-none font-mono">
         <span className="text-[8px] tracking-[0.4em] uppercase text-white/30">© Sri Shankara Parampara</span>
+      </div>
       </div>
     </motion.div>
   );
