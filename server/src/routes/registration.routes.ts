@@ -7,6 +7,7 @@ import {
   updateConfigHandler,
   updateTeamHandler,
   uploadDocumentHandler,
+  deleteDocumentHandler,
   getAllTeamsHandler,
   updateTeamPromotionHandler,
   updateDemoVideoHandler
@@ -23,6 +24,7 @@ registrationRouter.get('/config', getConfigHandler);
 registrationRouter.post('/config', authMiddleware, updateConfigHandler);
 registrationRouter.put('/team/:teamId', updateTeamHandler);
 registrationRouter.post('/upload', streamUploader, uploadDocumentHandler);
+registrationRouter.delete('/upload', deleteDocumentHandler);
 registrationRouter.get('/teams', authMiddleware, getAllTeamsHandler);
 registrationRouter.patch('/team/:teamId/promotion', authMiddleware, updateTeamPromotionHandler);
 registrationRouter.put('/team/:teamId/demo-video', updateDemoVideoHandler);

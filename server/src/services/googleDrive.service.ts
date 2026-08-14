@@ -124,3 +124,40 @@ export async function uploadToGoogleDrive(
   // 3. Return the preview link
   return `https://drive.google.com/file/d/${fileId}/preview`;
 }
+
+/**
+ * Deletes a file from Google Drive by its file ID.
+ * Accepts either a raw file ID or a full preview URL
+ * (https://drive.google.com/file/d/<fileId>/preview).
+ *
+ * @param fileIdOrUrl The Drive file ID or preview URL
+ */
+export async function deleteFromGoogleDrive(fileIdOrUrl: string): Promise<void> {
+  // Extract file ID from preview URL if a full URL is supplied
+  const match = fileIdOrUrl.match(/\/file\/d\/([^/]+)/);
+  const fileId = match ? match[1] : fileIdOrUrl;
+
+  let drive;
+  try {
+    drive = getDriveService();
+  } catch (initErr: any) {
+    console.error('[GoogleDrive] Service initialization failed during delete:', initErr.message);
+    throw initErr;
+  }
+
+  try {
+    await drive.files.delete({
+      fileId,
+      supportsAllDrives: true,
+    });
+    console.log(`[GoogleDrive] Deleted file ${fileId}`);
+  } catch (deleteErr: any) {
+    console.error('[GoogleDrive] drive.files.delete failed:', {
+      fileId,
+      message: deleteErr.message,
+      code: deleteErr.code,
+      status: deleteErr.status,
+    });
+    throw new Error(`Google Drive file deletion failed: ${deleteErr.message}`);
+  }
+}

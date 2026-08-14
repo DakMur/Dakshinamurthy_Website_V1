@@ -148,6 +148,24 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     }
   };
 
+  const handleDocumentDelete = async () => {
+    if (!documentUrl) return;
+    const urlToDelete = documentUrl;
+    // Clear the UI immediately so the user gets instant feedback
+    setDocumentUrl("");
+    setUploadError("");
+    try {
+      await fetch("/api/v1/registration/upload", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileUrl: urlToDelete })
+      });
+    } catch (err) {
+      console.error("Failed to delete file from Drive:", err);
+      // Non-fatal: the file is already removed from the form
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (duplicateError) return;
@@ -499,7 +517,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                 </div>
                 <button 
                   type="button" 
-                  onClick={() => { setDocumentUrl(""); setUploadError(""); }}
+                  onClick={handleDocumentDelete}
                   className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />

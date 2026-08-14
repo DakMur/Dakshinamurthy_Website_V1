@@ -6,6 +6,7 @@ import busboy from 'busboy';
 import crypto from 'crypto';
 import path from 'path';
 import jwt from 'jsonwebtoken';
+import { deleteFromGoogleDrive } from '../services/googleDrive.service.js';
 
 function validateAndSanitizeMembers(members: any[]) {
   if (!Array.isArray(members) || members.length === 0 || members.length > 5) {
@@ -554,5 +555,26 @@ export async function updateDemoVideoHandler(req: Request, res: Response) {
   } catch (err: any) {
     console.error('Error updating team demo video:', err);
     res.status(500).json({ success: false, message: 'Failed to update team demo video' });
+  }
+}
+
+export async function deleteDocumentHandler(req: Request, res: Response) {
+  try {
+    const { fileUrl } = req.body;
+    if (!fileUrl || typeof fileUrl !== 'string') {
+      res.status(400).json({ success: false, message: 'fileUrl is required.' });
+      return;
+    }
+
+    // Only attempt Drive deletion if it looks like a Drive URL
+    if (fileUrl.includes('drive.google.com')) {
+      await deleteFromGoogleDrive(fileUrl);
+    }
+    // R2/S3 deletion can be added here if needed in the future
+
+    res.json({ success: true });
+  } catch (err: any) {
+    console.error('Error deleting document:', err);
+    res.status(500).json({ success: false, message: err.message || 'Failed to delete document.' });
   }
 }
