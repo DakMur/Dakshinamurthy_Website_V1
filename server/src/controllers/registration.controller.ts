@@ -79,7 +79,7 @@ export async function signupHandler(req: Request, res: Response) {
     const { teamName, leaderEmail, leaderPhone, members, documentUrl } = req.body;
 
     if (!teamName || typeof teamName !== 'string' || teamName.trim().length < 2 || teamName.trim().length > 50) {
-      res.status(400).json({ success: false, message: 'Invalid team name length' });
+      res.status(400).json({ success: false, message: 'Team name must be between 2 and 50 characters.' });
       return;
     }
     const sanitizedTeamName = teamName.trim();
@@ -384,7 +384,7 @@ export async function updateTeamHandler(req: Request, res: Response) {
     const { teamName, members, documentUrl } = req.body;
 
     if (!teamName || typeof teamName !== 'string' || teamName.trim().length < 2 || teamName.trim().length > 50) {
-      res.status(400).json({ success: false, message: 'Invalid team name length' });
+      res.status(400).json({ success: false, message: 'Team name must be between 2 and 50 characters.' });
       return;
     }
     const sanitizedTeamName = teamName.trim();

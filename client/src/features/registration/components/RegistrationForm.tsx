@@ -294,15 +294,30 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
         <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
           <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Team Identity</h3>
           <div className="space-y-1 max-w-md">
-            <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Team Name</label>
+            <div className="flex items-center justify-between pl-1">
+              <label className="text-[10px] font-mono text-slate-400 uppercase">Team Name</label>
+              <span className="text-[9px] font-mono text-slate-500">2 – 50 characters</span>
+            </div>
             <input
               type="text"
               required
+              minLength={2}
+              maxLength={50}
               value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
+              onChange={(e) =>
+                {
+                  setTeamName(e.target.value);
+                  if (duplicateError) setDuplicateError("");
+                }
+              }
               className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
               placeholder="Enter your unique team name"
             />
+            <p className={`text-[9px] font-mono pl-1 text-right transition-colors ${
+              teamName.length > 45 ? 'text-rose-400' : 'text-slate-600'
+            }`}>
+              {teamName.length} / 50
+            </p>
           </div>
         </div>
 
@@ -411,6 +426,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                       </label>
                       <select
                         value={member.semester ?? ""}
+                        required={isCompulsory}
                         onChange={(e) => {
                           const val = e.target.value === "" ? undefined : parseInt(e.target.value, 10);
                           if (isLeader) handleLeaderSemesterChange(val);
@@ -418,7 +434,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                         }}
                         className="w-full px-3 py-2 rounded-lg border border-white/10 bg-slate-950 text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
                       >
-                        <option value="">��� Not Selected ���</option>
+                        <option value="">Enter Semester</option>
                         {SEMESTER_OPTIONS.map(s => (
                           <option key={s} value={s}>Semester {s}</option>
                         ))}
