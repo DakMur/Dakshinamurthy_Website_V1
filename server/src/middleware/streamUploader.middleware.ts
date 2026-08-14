@@ -73,17 +73,28 @@ export function streamUploader(req: Request, res: Response, next: NextFunction) 
       }
     });
 
-    if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_DRIVE_FOLDER_ID) {
+    // Accept GOOGLE_CLIENT_EMAIL (Railway/Vercel convention) or legacy GOOGLE_SERVICE_ACCOUNT_EMAIL
+    const hasGoogleCreds =
+      (process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) &&
+      process.env.GOOGLE_PRIVATE_KEY &&
+      process.env.GOOGLE_DRIVE_FOLDER_ID;
+
+    if (hasGoogleCreds) {
       // Primary: Google Drive Upload
       uploadPromise = uploadToGoogleDrive(limitStream, uniqueKey, mimeType)
         .then((url) => {
           req.fileUrl = url;
         })
         .catch((err) => {
-          console.error('Google Drive upload stream error:', err);
+          // Log the full error details so Railway/Vercel logs show the exact failure reason
+          console.error('[streamUploader] Google Drive upload failed:', {
+            message: err.message,
+            stack: err.stack,
+            code: err.code,
+          });
           if (!isResponded) {
             isResponded = true;
-            res.status(500).json({ error: 'File upload to Google Drive failed' });
+            res.status(500).json({ error: `File upload to Google Drive failed: ${err.message}` });
           }
         });
     } else if (process.env.R2_BUCKET_NAME) {

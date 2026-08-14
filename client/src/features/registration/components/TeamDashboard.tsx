@@ -24,6 +24,7 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
   const [demoVideoUrl, setDemoVideoUrl] = useState(team.demoVideoUrl || "");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [phoneErrors, setPhoneErrors] = useState<string[]>(Array(config.maxMembers).fill(""));
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   
@@ -34,13 +35,31 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
 
   // Fill up to maxMembers with empty objects if they don't exist
   while (members.length < config.maxMembers) {
-    members.push({ name: "", email: "", phone: "", college_name: "", semester: 1 });
+    members.push({ name: "", email: "", phone: "", college_name: "", semester: undefined });
   }
 
-  const handleMemberChange = (index: number, field: keyof TeamMember, value: string | number) => {
+  const handleMemberChange = (index: number, field: keyof TeamMember, value: string | number | undefined) => {
     const newMembers = [...members];
     newMembers[index] = { ...newMembers[index], [field]: value };
     setMembers(newMembers);
+  };
+
+  /** Validate phone for a specific member index and update phoneErrors state */
+  const validatePhone = (index: number, value: string) => {
+    const newErrors = [...phoneErrors];
+    if (value.length > 0 && !/^\d{10}$/.test(value)) {
+      newErrors[index] = "Phone number must be exactly 10 digits.";
+    } else {
+      newErrors[index] = "";
+    }
+    setPhoneErrors(newErrors);
+  };
+
+  const handlePhoneChange = (index: number, value: string) => {
+    // Strip non-digit characters
+    const digits = value.replace(/[^0-9]/g, "");
+    handleMemberChange(index, 'phone', digits);
+    validatePhone(index, digits);
   };
 
   const handleFileSelection = async (file?: globalThis.File) => {
@@ -59,16 +78,16 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
         if (data.success) {
           setDocumentUrl(data.url);
         } else {
-          alert(data.error || "File upload failed.");
+          setMessage(data.error || "File upload failed. Please try again.");
         }
       } catch (err) {
         console.error(err);
-        alert("An error occurred during file upload.");
+        setMessage("An error occurred during file upload. Please check your connection.");
       } finally {
         setSaving(false);
       }
     } else {
-      alert("Please upload a .pdf, .ppt, or .pptx file.");
+      setMessage("Invalid file type. Please upload a .pdf, .ppt, or .pptx file.");
     }
   };
 
@@ -95,22 +114,29 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
           });
           setMessage("Video uploaded successfully.");
         } else {
-          alert(data.error || "Video upload failed.");
+          setMessage(data.error || "Video upload failed. Please try again.");
         }
       } catch (err) {
         console.error(err);
-        alert("An error occurred during video upload.");
+        setMessage("An error occurred during video upload. Please check your connection.");
       } finally {
         setSaving(false);
       }
     } else {
-      alert("Please upload a valid video file.");
+      setMessage("Please upload a valid video file (MP4, WEBM, etc.).");
     }
   };
 
   const handleSave = async () => {
     setSaving(true);
     setMessage("");
+
+    // Guard: block save if any phone errors exist
+    if (phoneErrors.some(err => err !== "")) {
+      setMessage("Please fix phone number errors before saving.");
+      setSaving(false);
+      return;
+    }
 
     const activeMembers = members.filter((m, i) => i < config.minMembers || m.name);
 
@@ -120,9 +146,16 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
       return;
     }
 
+    // Normalize optional fields to null for DB cleanliness
+    const normalizedMembers = activeMembers.map(m => ({
+      ...m,
+      college_name: m.college_name?.trim() || null,
+      semester: (m.semester !== undefined && m.semester !== null) ? m.semester : null,
+    }));
+
     const updates = {
       teamName,
-      members: activeMembers,
+      members: normalizedMembers,
       documentUrl
     };
 
@@ -260,25 +293,41 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
                           isEmailPhoneLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
                         }`}
                       />
-                      <input
-                        type="tel"
-                        placeholder="Phone Number"
-                        disabled={isEmailPhoneLocked}
-                        value={member.phone}
-                        onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
-                        className={`w-full px-3 py-2 rounded-lg border text-sm ${
-                          isEmailPhoneLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
-                        }`}
-                      />
+                      <div className="space-y-1">
+                        <input
+                          type="tel"
+                          placeholder="Phone Number"
+                          disabled={isEmailPhoneLocked}
+                          value={member.phone}
+                          maxLength={10}
+                          onChange={(e) => handlePhoneChange(idx, e.target.value)}
+                          onKeyDown={(e) => {
+                            if (isEmailPhoneLocked) return;
+                            const allowedKeys = ['Backspace','Delete','Tab','Escape','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'];
+                            if (allowedKeys.includes(e.key)) return;
+                            if (!/^\d$/.test(e.key)) e.preventDefault();
+                          }}
+                          className={`w-full px-3 py-2 rounded-lg border text-sm ${
+                            isEmailPhoneLocked
+                              ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed'
+                              : phoneErrors[idx]
+                                ? 'border-rose-500/60 bg-white/[0.02] text-white focus:outline-none focus:border-rose-500'
+                                : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
+                          }`}
+                        />
+                        {!isEmailPhoneLocked && phoneErrors[idx] && (
+                          <p className="text-[10px] font-mono text-rose-400 pl-1">{phoneErrors[idx]}</p>
+                        )}
+                      </div>
                     </div>
 
                     {/* College Name / Semester */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">College / Institution</label>
+                        <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">College Name</label>
                         <input
                           type="text"
-                          placeholder="e.g., Sri Venkateswara College"
+                          placeholder="College Name"
                           value={member.college_name || ""}
                           disabled={isMemberEditLocked}
                           onChange={(e) => handleMemberChange(idx, 'college_name', e.target.value)}
@@ -290,13 +339,14 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
                       <div className="space-y-1">
                         <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">Semester</label>
                         <select
-                          value={member.semester || 1}
+                          value={member.semester ?? ""}
                           disabled={isMemberEditLocked}
-                          onChange={(e) => handleMemberChange(idx, 'semester', parseInt(e.target.value, 10))}
+                          onChange={(e) => handleMemberChange(idx, 'semester', e.target.value === "" ? undefined : parseInt(e.target.value, 10))}
                           className={`w-full px-3 py-2 rounded-lg border text-sm ${
                             isMemberEditLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-slate-950 text-white focus:outline-none focus:border-gold-vintage/50'
                           }`}
                         >
+                          <option value="">— Not Selected —</option>
                           {SEMESTER_OPTIONS.map(s => (
                             <option key={s} value={s}>Semester {s}</option>
                           ))}

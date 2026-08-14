@@ -15,15 +15,30 @@ interface RegistrationFormProps {
 
 const SEMESTER_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
 
+/**
+ * Returns true if a member is "partially filled":
+ * at least one of Name / Email / Phone has a value, but NOT all three are filled.
+ */
+function isMemberPartiallyFilled(member: TeamMember): boolean {
+  const hasName = member.name.trim().length > 0;
+  const hasEmail = member.email.trim().length > 0;
+  const hasPhone = member.phone.trim().length > 0;
+  const anyFilled = hasName || hasEmail || hasPhone;
+  const allFilled = hasName && hasEmail && hasPhone;
+  return anyFilled && !allFilled;
+}
+
 export default function RegistrationForm({ config, onBack, onSuccess }: RegistrationFormProps) {
   const [teamName, setTeamName] = useState("");
   const [members, setMembers] = useState<TeamMember[]>(
     Array.from({ length: config.maxMembers }).map(() => ({
-      name: "", email: "", phone: "", college_name: "", semester: 1
+      name: "", email: "", phone: "", college_name: "", semester: undefined
     }))
   );
   const [documentUrl, setDocumentUrl] = useState("");
   const [duplicateError, setDuplicateError] = useState("");
+  const [uploadError, setUploadError] = useState("");
+  const [phoneErrors, setPhoneErrors] = useState<string[]>(Array(config.maxMembers).fill(""));
   const [loading, setLoading] = useState(false);
 
   // Drag and drop state
@@ -49,13 +64,31 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     }
   };
 
-  const handleMemberChange = (index: number, field: keyof TeamMember, value: string | number) => {
+  const handleMemberChange = (index: number, field: keyof TeamMember, value: string | number | undefined) => {
     const newMembers = [...members];
     newMembers[index] = { ...newMembers[index], [field]: value };
     setMembers(newMembers);
   };
 
-  // When team leader changes college_name — autofill all subsequent members unless manually set
+  /** Validate phone for a specific member index and update phoneErrors state */
+  const validatePhone = (index: number, value: string) => {
+    const newErrors = [...phoneErrors];
+    if (value.length > 0 && !/^\d{10}$/.test(value)) {
+      newErrors[index] = "Phone number must be exactly 10 digits.";
+    } else {
+      newErrors[index] = "";
+    }
+    setPhoneErrors(newErrors);
+  };
+
+  const handlePhoneChange = (index: number, value: string) => {
+    // Strip non-digit characters
+    const digits = value.replace(/[^0-9]/g, "");
+    handleMemberChange(index, 'phone', digits);
+    validatePhone(index, digits);
+  };
+
+  // When team leader changes college_name ��� autofill all subsequent members unless manually set
   const handleLeaderCollegeChange = useCallback((value: string) => {
     setMembers(prev => prev.map((m, i) => {
       if (i === 0) return { ...m, college_name: value };
@@ -67,11 +100,11 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     }));
   }, []);
 
-  // When team leader changes semester — autofill all subsequent members unless manually set
-  const handleLeaderSemesterChange = useCallback((value: number) => {
+  // When team leader changes semester ��� autofill all subsequent members unless manually set
+  const handleLeaderSemesterChange = useCallback((value: number | undefined) => {
     setMembers(prev => prev.map((m, i) => {
       if (i === 0) return { ...m, semester: value };
-      if (i > 0 && (m.semester === 1 || m.semester === prev[0].semester)) {
+      if (i > 0 && (m.semester === undefined || m.semester === prev[0].semester)) {
         return { ...m, semester: value };
       }
       return m;
@@ -90,6 +123,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     const validTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
     if (validTypes.includes(file.type) || file.name.endsWith('.pdf') || file.name.endsWith('.ppt') || file.name.endsWith('.pptx')) {
       setLoading(true);
+      setUploadError("");
       try {
         const formData = new FormData();
         formData.append("file", file);
@@ -101,16 +135,16 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
         if (data.success) {
           setDocumentUrl(data.url);
         } else {
-          alert(data.error || "File upload failed.");
+          setUploadError(data.error || "File upload failed. Please try again.");
         }
       } catch (err) {
         console.error(err);
-        alert("An error occurred during file upload.");
+        setUploadError("An error occurred during file upload. Please check your connection and try again.");
       } finally {
         setLoading(false);
       }
     } else {
-      alert("Please upload a .pdf, .ppt, or .pptx file.");
+      setUploadError("Invalid file type. Please upload a .pdf, .ppt, or .pptx file.");
     }
   };
 
@@ -118,17 +152,38 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     e.preventDefault();
     if (duplicateError) return;
 
-    // Filter out empty optional members
-    const activeMembers = members.filter((m, i) => i < config.minMembers || m.name);
+    // Check if any phone errors exist
+    if (phoneErrors.some(err => err !== "")) return;
+
+    // Check for partial member fill on optional members
+    for (let i = config.minMembers; i < members.length; i++) {
+      if (isMemberPartiallyFilled(members[i])) {
+        setDuplicateError(`Please complete all fields for Member ${i + 1} or leave all fields blank to skip.`);
+        return;
+      }
+    }
+
+    // Filter out completely empty optional members (Name, Email, Phone all blank)
+    const activeMembers = members.filter((m, i) => {
+      if (i < config.minMembers) return true; // always include compulsory members
+      return m.name.trim() || m.email.trim() || m.phone.trim();
+    });
 
     if (activeMembers.length < config.minMembers) {
-      alert(`Minimum ${config.minMembers} members required.`);
+      setDuplicateError(`Minimum ${config.minMembers} members required.`);
       return;
     }
 
+    // Normalize optional fields to null for DB cleanliness
+    const normalizedMembers = activeMembers.map(m => ({
+      ...m,
+      college_name: m.college_name?.trim() || null,
+      semester: (m.semester !== undefined && m.semester !== null) ? m.semester : null,
+    }));
+
     // Pre-submit: check for cross-member duplicate emails/phones within the form
-    const emails = activeMembers.map(m => m.email.toLowerCase());
-    const phones = activeMembers.map(m => m.phone);
+    const emails = normalizedMembers.map(m => m.email.toLowerCase());
+    const phones = normalizedMembers.map(m => m.phone);
     const emailSet = new Set(emails);
     const phoneSet = new Set(phones);
     if (emailSet.size !== emails.length) {
@@ -140,9 +195,17 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
       return;
     }
 
+    // Validate all active member phones
+    for (const member of normalizedMembers) {
+      if (!/^\d{10}$/.test(member.phone)) {
+        setDuplicateError(`Phone number for "${member.name}" must be exactly 10 digits.`);
+        return;
+      }
+    }
+
     // Pre-submit: check each member email/phone against DB
     setLoading(true);
-    for (const member of activeMembers) {
+    for (const member of normalizedMembers) {
       try {
         const res = await fetch("/api/v1/registration/check-duplicates", {
           method: "POST",
@@ -162,9 +225,9 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
 
     const teamData = {
       teamName,
-      leaderEmail: activeMembers[0].email,
-      leaderPhone: activeMembers[0].phone,
-      members: activeMembers,
+      leaderEmail: normalizedMembers[0].email,
+      leaderPhone: normalizedMembers[0].phone,
+      members: normalizedMembers,
       documentUrl
     };
 
@@ -256,9 +319,19 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
             {members.map((member, idx) => {
               const isLeader = idx === 0;
               const isCompulsory = idx < config.minMembers;
+              const isPartial = !isCompulsory && isMemberPartiallyFilled(member);
               
               return (
-                <div key={idx} className={`p-4 rounded-xl border ${isLeader ? 'border-gold-vintage/30 bg-gold-vintage/5' : 'border-white/5 bg-white/[0.01]'} space-y-3`}>
+                <div
+                  key={idx}
+                  className={`p-4 rounded-xl border space-y-3 transition-colors ${
+                    isPartial
+                      ? 'border-rose-500/50 bg-rose-500/5'
+                      : isLeader
+                        ? 'border-gold-vintage/30 bg-gold-vintage/5'
+                        : 'border-white/5 bg-white/[0.01]'
+                  }`}
+                >
                   <div className="flex justify-between items-center mb-2">
                     <h4 className={`text-xs font-mono font-semibold uppercase tracking-wider ${isLeader ? 'text-gold-vintage' : 'text-slate-300'}`}>
                       {isLeader ? 'Team Leader (Row 1)' : `Member ${idx + 1}`}
@@ -287,27 +360,42 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                       onBlur={() => checkSingleDuplicate(member.email, "")}
                       className="w-full px-3 py-2 rounded-lg border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
                     />
-                    <input
-                      type="tel"
-                      placeholder="Phone Number"
-                      required={isCompulsory}
-                      value={member.phone}
-                      onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
-                      onBlur={() => checkSingleDuplicate("", member.phone)}
-                      className="w-full px-3 py-2 rounded-lg border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
-                    />
+                    <div className="space-y-1">
+                      <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        required={isCompulsory}
+                        value={member.phone}
+                        maxLength={10}
+                        onChange={(e) => handlePhoneChange(idx, e.target.value)}
+                        onKeyDown={(e) => {
+                          // Allow: backspace, delete, tab, escape, enter, arrow keys
+                          const allowedKeys = ['Backspace','Delete','Tab','Escape','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'];
+                          if (allowedKeys.includes(e.key)) return;
+                          // Block non-digit keys
+                          if (!/^\d$/.test(e.key)) e.preventDefault();
+                        }}
+                        onBlur={() => checkSingleDuplicate("", member.phone)}
+                        className={`w-full px-3 py-2 rounded-lg border bg-white/[0.02] text-white focus:outline-none text-sm transition-colors ${
+                          phoneErrors[idx] ? 'border-rose-500/60 focus:border-rose-500' : 'border-white/10 focus:border-gold-vintage/50'
+                        }`}
+                      />
+                      {phoneErrors[idx] && (
+                        <p className="text-[10px] font-mono text-rose-400 pl-1">{phoneErrors[idx]}</p>
+                      )}
+                    </div>
                   </div>
 
                   {/* College Name / Semester row */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">
-                        College / Institution Name
+                        College Name
                         {isLeader && <span className="ml-2 text-gold-vintage/60">(autofills members)</span>}
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g., Sri Venkateswara College"
+                        placeholder="College Name"
                         value={member.college_name || ""}
                         onChange={(e) => {
                           if (isLeader) handleLeaderCollegeChange(e.target.value);
@@ -322,30 +410,47 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                         {isLeader && <span className="ml-2 text-gold-vintage/60">(autofills members)</span>}
                       </label>
                       <select
-                        value={member.semester || 1}
+                        value={member.semester ?? ""}
                         onChange={(e) => {
-                          const val = parseInt(e.target.value, 10);
+                          const val = e.target.value === "" ? undefined : parseInt(e.target.value, 10);
                           if (isLeader) handleLeaderSemesterChange(val);
                           else handleMemberChange(idx, 'semester', val);
                         }}
                         className="w-full px-3 py-2 rounded-lg border border-white/10 bg-slate-950 text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
                       >
+                        <option value="">��� Not Selected ���</option>
                         {SEMESTER_OPTIONS.map(s => (
                           <option key={s} value={s}>Semester {s}</option>
                         ))}
                       </select>
                     </div>
                   </div>
+
+                  {/* Partial fill warning */}
+                  {isPartial && (
+                    <p className="text-[11px] font-mono text-rose-400 flex items-center gap-1.5 pt-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      Please complete all fields for Member {idx + 1} or leave all fields blank to skip.
+                    </p>
+                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* File Upload — only shown if allowDocumentUpload is true (default) */}
+        {/* File Upload ��� only shown if allowDocumentUpload is true (default) */}
         {config.allowDocumentUpload !== false && (
           <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
             <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Project Document</h3>
+            
+            {/* Inline upload error */}
+            {uploadError && (
+              <div className="p-3 rounded-lg border border-rose-500/40 bg-rose-500/10 text-rose-400 text-xs font-mono flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{uploadError}</span>
+              </div>
+            )}
             
             {!documentUrl ? (
               <div 
@@ -378,7 +483,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                 </div>
                 <button 
                   type="button" 
-                  onClick={() => setDocumentUrl("")}
+                  onClick={() => { setDocumentUrl(""); setUploadError(""); }}
                   className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
@@ -391,7 +496,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
         <div className="flex justify-end pt-4">
           <button
             type="submit"
-            disabled={loading || !!duplicateError}
+            disabled={loading || !!duplicateError || phoneErrors.some(e => e !== "")}
             className="px-8 py-3.5 rounded-xl bg-gold-vintage hover:bg-gold-bright text-black font-mono font-semibold tracking-widest text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "VERIFYING & SUBMITTING..." : "REGISTER TEAM"}

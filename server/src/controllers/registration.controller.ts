@@ -16,11 +16,16 @@ function validateAndSanitizeMembers(members: any[]) {
     const email = m.email?.toString().trim() || '';
     const phone = m.phone?.toString().trim() || '';
     const college_name = m.college_name?.toString().trim() || null;
-    const semester = m.semester ? parseInt(m.semester, 10) : null;
+    // semester: treat empty string, null, or undefined as null (not a default 1)
+    const rawSemester = m.semester;
+    const semester = (rawSemester !== undefined && rawSemester !== null && rawSemester !== '')
+      ? parseInt(rawSemester, 10)
+      : null;
 
     if (!name || name.length < 2 || name.length > 100) throw new Error('Invalid member name.');
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error(`Invalid email: ${email}`);
-    if (!phone || !/^\+?[0-9\s\-]{7,15}$/.test(phone)) throw new Error(`Invalid phone format: ${phone}`);
+    // Strict 10-digit phone validation
+    if (!phone || !/^\d{10}$/.test(phone)) throw new Error(`Phone number must be exactly 10 digits: "${phone}"`);
     if (semester !== null && (isNaN(semester) || semester < 1 || semester > 8)) {
       throw new Error(`Invalid semester value for ${name}. Must be 1–8.`);
     }
