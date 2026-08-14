@@ -8,6 +8,7 @@ import { quotesRouter } from './quotes.routes.js';
 import { analyticsRouter } from './analytics.routes.js';
 import { geminiRouter } from './gemini.routes.js';
 import { registrationRouter } from './registration.routes.js';
+import { noticesRouter } from './notices.routes.js';
 
 export const apiRouter = Router();
 
@@ -20,4 +21,5 @@ apiRouter.use('/quotes', quotesRouter);
 apiRouter.use('/analytics', analyticsRouter);
 apiRouter.use('/gemini', geminiRouter);
 apiRouter.use('/registration', registrationRouter);
+apiRouter.use('/notices', noticesRouter);
 

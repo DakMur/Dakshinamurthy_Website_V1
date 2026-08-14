@@ -5,6 +5,7 @@ import File from 'lucide-react/dist/esm/icons/file';
 import X from 'lucide-react/dist/esm/icons/x';
 import Save from 'lucide-react/dist/esm/icons/save';
 import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
+import Lock from 'lucide-react/dist/esm/icons/lock';
 import { Team, RegistrationConfig, TeamMember } from "../../../types/types";
 
 interface TeamDashboardProps {
@@ -13,6 +14,8 @@ interface TeamDashboardProps {
   onUpdateTeam: (team: Team) => void;
   onLogout: () => void;
 }
+
+const SEMESTER_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: TeamDashboardProps) {
   const [teamName, setTeamName] = useState(team.teamName);
@@ -25,13 +28,16 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
   const videoInputRef = useRef<HTMLInputElement>(null);
   
   const isClosed = config.status === "Registrations Closed";
+  // Lock member edits if registration is closed OR if admin has disabled member edits
+  const isMemberEditLocked = isClosed || config.allowMemberEdits === false;
+  const isDocumentUploadEnabled = config.allowDocumentUpload !== false;
 
   // Fill up to maxMembers with empty objects if they don't exist
   while (members.length < config.maxMembers) {
-    members.push({ name: "", email: "", phone: "" });
+    members.push({ name: "", email: "", phone: "", college_name: "", semester: 1 });
   }
 
-  const handleMemberChange = (index: number, field: keyof TeamMember, value: string) => {
+  const handleMemberChange = (index: number, field: keyof TeamMember, value: string | number) => {
     const newMembers = [...members];
     newMembers[index] = { ...newMembers[index], [field]: value };
     setMembers(newMembers);
@@ -131,6 +137,8 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
         onUpdateTeam(data.team);
         setMessage("Team details updated successfully.");
         setTimeout(() => setMessage(""), 3000);
+      } else {
+        setMessage(data.message || "Failed to update team.");
       }
     } catch (err) {
       setMessage("Failed to update team.");
@@ -172,6 +180,14 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
         </div>
       </div>
 
+      {/* Admin-set member edit lock notice */}
+      {config.allowMemberEdits === false && !isClosed && (
+        <div className="mb-6 p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 flex items-center gap-3 text-amber-400">
+          <Lock className="w-4 h-4 shrink-0" />
+          <p className="text-xs font-mono">Member details editing has been temporarily locked by the administrator.</p>
+        </div>
+      )}
+
       {message && (
         <div className={`p-4 mb-6 rounded-xl border text-sm font-mono text-center ${message.includes('successfully') ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-400' : 'border-red-500/50 bg-red-500/10 text-red-400'}`}>
           {message}
@@ -196,12 +212,20 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
           </div>
 
           <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
-            <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Members Directory</h3>
+            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <h3 className="font-display text-lg text-white tracking-widest uppercase">Members Directory</h3>
+              {isMemberEditLocked && (
+                <span className="flex items-center gap-1.5 text-[9px] font-mono text-slate-500 uppercase bg-slate-800/60 border border-white/5 px-2 py-1 rounded-full">
+                  <Lock className="w-3 h-3" /> Locked
+                </span>
+              )}
+            </div>
             
             <div className="space-y-4">
               {members.map((member, idx) => {
                 const isLeader = idx === 0;
                 const isCompulsory = idx < config.minMembers;
+                const isEmailPhoneLocked = isLeader || isMemberEditLocked;
                 
                 return (
                   <div key={idx} className={`p-4 rounded-xl border ${isLeader ? 'border-gold-vintage/30 bg-gold-vintage/5' : 'border-white/5 bg-white/[0.01]'} space-y-3`}>
@@ -214,37 +238,70 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
                       )}
                     </div>
 
+                    {/* Name / Email / Phone */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <input
                         type="text"
                         placeholder="Full Name"
                         value={member.name}
-                        disabled={isClosed}
+                        disabled={isMemberEditLocked}
                         onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
                         className={`w-full px-3 py-2 rounded-lg border text-sm ${
-                          isClosed ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
+                          isMemberEditLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
                         }`}
                       />
                       <input
                         type="email"
                         placeholder="Email Address"
-                        disabled={isLeader || isClosed}
+                        disabled={isEmailPhoneLocked}
                         value={member.email}
                         onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
                         className={`w-full px-3 py-2 rounded-lg border text-sm ${
-                          isLeader || isClosed ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
+                          isEmailPhoneLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
                         }`}
                       />
                       <input
                         type="tel"
                         placeholder="Phone Number"
-                        disabled={isLeader || isClosed}
+                        disabled={isEmailPhoneLocked}
                         value={member.phone}
                         onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
                         className={`w-full px-3 py-2 rounded-lg border text-sm ${
-                          isLeader || isClosed ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
+                          isEmailPhoneLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
                         }`}
                       />
+                    </div>
+
+                    {/* College Name / Semester */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">College / Institution</label>
+                        <input
+                          type="text"
+                          placeholder="e.g., Sri Venkateswara College"
+                          value={member.college_name || ""}
+                          disabled={isMemberEditLocked}
+                          onChange={(e) => handleMemberChange(idx, 'college_name', e.target.value)}
+                          className={`w-full px-3 py-2 rounded-lg border text-sm ${
+                            isMemberEditLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50'
+                          }`}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">Semester</label>
+                        <select
+                          value={member.semester || 1}
+                          disabled={isMemberEditLocked}
+                          onChange={(e) => handleMemberChange(idx, 'semester', parseInt(e.target.value, 10))}
+                          className={`w-full px-3 py-2 rounded-lg border text-sm ${
+                            isMemberEditLocked ? 'border-white/5 bg-black/40 text-slate-500 cursor-not-allowed' : 'border-white/10 bg-slate-950 text-white focus:outline-none focus:border-gold-vintage/50'
+                          }`}
+                        >
+                          {SEMESTER_OPTIONS.map(s => (
+                            <option key={s} value={s}>Semester {s}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
                 );
@@ -254,54 +311,57 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4 sticky top-24">
-            <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Project Document</h3>
-            
-            {!documentUrl ? (
-              <div 
-                onClick={() => !isClosed && fileInputRef.current?.click()}
-                className={`w-full p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3 text-center ${
-                  isClosed ? 'border-white/5 bg-black/40 cursor-not-allowed' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04] transition-all cursor-pointer'
-                }`}
-              >
-                <UploadCloud className="w-8 h-8 text-slate-400" />
-                <div>
-                  <p className="text-sm text-white font-medium">Click to upload document</p>
-                  <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX</p>
-                </div>
-                <input 
-                  type="file" 
-                  ref={fileInputRef}
-                  disabled={isClosed}
-                  className="hidden" 
-                  accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                  onChange={(e) => handleFileSelection(e.target.files?.[0])}
-                />
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col gap-3">
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    <File className="w-5 h-5 text-emerald-400 shrink-0" />
-                    <span className="text-sm text-white font-medium truncate">{documentUrl}</span>
+          {/* Document Upload — conditional on allowDocumentUpload */}
+          {isDocumentUploadEnabled && (
+            <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4 sticky top-24">
+              <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Project Document</h3>
+              
+              {!documentUrl ? (
+                <div 
+                  onClick={() => !isClosed && fileInputRef.current?.click()}
+                  className={`w-full p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3 text-center ${
+                    isClosed ? 'border-white/5 bg-black/40 cursor-not-allowed' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04] transition-all cursor-pointer'
+                  }`}
+                >
+                  <UploadCloud className="w-8 h-8 text-slate-400" />
+                  <div>
+                    <p className="text-sm text-white font-medium">Click to upload document</p>
+                    <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX</p>
                   </div>
-                  <button 
-                    onClick={() => !isClosed && setDocumentUrl("")}
+                  <input 
+                    type="file" 
+                    ref={fileInputRef}
                     disabled={isClosed}
-                    className={`w-full py-2 rounded-lg border text-xs font-mono transition-colors flex items-center justify-center gap-2 ${
-                      isClosed ? 'border-white/5 text-slate-500 cursor-not-allowed' : 'border-red-500/30 text-red-400 hover:bg-red-500/10 cursor-pointer'
-                    }`}
-                  >
-                    <X className="w-3.5 h-3.5" />
-                    Delete Document
-                  </button>
+                    className="hidden" 
+                    accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                    onChange={(e) => handleFileSelection(e.target.files?.[0])}
+                  />
                 </div>
-                <p className="text-[10px] text-slate-500 font-mono text-center px-2 leading-relaxed">
-                  Note: The file uploader is disabled while a document is attached. Delete it first to upload a new one.
-                </p>
-              </div>
-            )}
-          </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col gap-3">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      <File className="w-5 h-5 text-emerald-400 shrink-0" />
+                      <span className="text-sm text-white font-medium truncate">{documentUrl}</span>
+                    </div>
+                    <button 
+                      onClick={() => !isClosed && setDocumentUrl("")}
+                      disabled={isClosed}
+                      className={`w-full py-2 rounded-lg border text-xs font-mono transition-colors flex items-center justify-center gap-2 ${
+                        isClosed ? 'border-white/5 text-slate-500 cursor-not-allowed' : 'border-red-500/30 text-red-400 hover:bg-red-500/10 cursor-pointer'
+                      }`}
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      Delete Document
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-slate-500 font-mono text-center px-2 leading-relaxed">
+                    Note: Delete the current document first to upload a new one.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {team.passed_round === 1 && (
             <div className="p-6 rounded-2xl border border-gold-vintage/30 space-y-4 bg-gradient-to-b from-gold-vintage/10 to-transparent sticky top-72">

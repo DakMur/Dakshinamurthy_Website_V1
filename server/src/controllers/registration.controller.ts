@@ -15,10 +15,17 @@ function validateAndSanitizeMembers(members: any[]) {
     const name = m.name?.toString().trim() || '';
     const email = m.email?.toString().trim() || '';
     const phone = m.phone?.toString().trim() || '';
+    const college_name = m.college_name?.toString().trim() || null;
+    const semester = m.semester ? parseInt(m.semester, 10) : null;
+
     if (!name || name.length < 2 || name.length > 100) throw new Error('Invalid member name.');
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error(`Invalid email: ${email}`);
     if (!phone || !/^\+?[0-9\s\-]{7,15}$/.test(phone)) throw new Error(`Invalid phone format: ${phone}`);
-    return { name, email, phone };
+    if (semester !== null && (isNaN(semester) || semester < 1 || semester > 8)) {
+      throw new Error(`Invalid semester value for ${name}. Must be 1–8.`);
+    }
+
+    return { name, email, phone, college_name, semester };
   });
 }
 
@@ -80,6 +87,28 @@ export async function signupHandler(req: Request, res: Response) {
       return;
     }
 
+    // Server-side duplicate check across all submitted members
+    const emails = sanitizedMembers.map((m: any) => m.email);
+    const phones = sanitizedMembers.map((m: any) => m.phone);
+    const uniqueEmails = new Set(emails);
+    const uniquePhones = new Set(phones);
+    if (uniqueEmails.size !== emails.length || uniquePhones.size !== phones.length) {
+      res.status(400).json({ success: false, message: 'Duplicate email or phone number found within the team.' });
+      return;
+    }
+
+    // Check existing DB records for email/phone collision
+    const emailConditions = emails.map((e: string) => `email.eq.${e}`).join(',');
+    const phoneConditions = phones.map((p: string) => `phone.eq.${p}`).join(',');
+    const { data: existingMembers } = await supabase
+      .from('members')
+      .select('id')
+      .or(`${emailConditions},${phoneConditions}`);
+    if (existingMembers && existingMembers.length > 0) {
+      res.status(400).json({ success: false, message: 'One or more email/phone numbers are already registered.' });
+      return;
+    }
+
     const { data: teamData, error: teamError } = await supabase
       .from('teams')
       .insert({
@@ -98,6 +127,8 @@ export async function signupHandler(req: Request, res: Response) {
       name: m.name,
       email: m.email,
       phone: m.phone,
+      college_name: m.college_name,
+      semester: m.semester,
       role: index === 0 ? 'leader' : 'member'
     }));
 
@@ -208,7 +239,9 @@ export async function loginHandler(req: Request, res: Response) {
       members: membersData.map((m: any) => ({
         name: m.name,
         email: m.email,
-        phone: m.phone
+        phone: m.phone,
+        college_name: m.college_name || '',
+        semester: m.semester || null
       }))
     };
 
@@ -228,6 +261,8 @@ export async function getConfigHandler(req: Request, res: Response) {
     openDate: null,
     closeDate: null,
     countdownTarget: null,
+    allowDocumentUpload: true,
+    allowMemberEdits: true,
   };
 
   try {
@@ -256,6 +291,8 @@ export async function getConfigHandler(req: Request, res: Response) {
       minMembers: data.min_members ?? FALLBACK_CONFIG.minMembers,
       maxMembers: data.max_members ?? FALLBACK_CONFIG.maxMembers,
       disableTeamLogin: data.disable_team_login ?? false,
+      allowDocumentUpload: data.allow_document_upload ?? true,
+      allowMemberEdits: data.allow_member_edits ?? true,
     });
   } catch (err: any) {
     console.warn('getConfigHandler: Unexpected error, serving fallback config:', err?.message);
@@ -292,6 +329,8 @@ export async function updateConfigHandler(req: Request, res: Response) {
     if (config.minMembers !== undefined) updateData.min_members = config.minMembers;
     if (config.maxMembers !== undefined) updateData.max_members = config.maxMembers;
     if (config.disableTeamLogin !== undefined) updateData.disable_team_login = config.disableTeamLogin;
+    if (config.allowDocumentUpload !== undefined) updateData.allow_document_upload = config.allowDocumentUpload;
+    if (config.allowMemberEdits !== undefined) updateData.allow_member_edits = config.allowMemberEdits;
 
     const { data, error } = await supabase
       .from('admin_config')
@@ -314,7 +353,9 @@ export async function updateConfigHandler(req: Request, res: Response) {
         countdownTarget: data.countdown_target,
         minMembers: data.min_members,
         maxMembers: data.max_members,
-        disableTeamLogin: data.disable_team_login
+        disableTeamLogin: data.disable_team_login,
+        allowDocumentUpload: data.allow_document_upload ?? true,
+        allowMemberEdits: data.allow_member_edits ?? true,
       }
     });
   } catch (err: any) {
@@ -381,6 +422,8 @@ export async function updateTeamHandler(req: Request, res: Response) {
       name: m.name,
       email: m.email,
       phone: m.phone,
+      college_name: m.college_name,
+      semester: m.semester,
       role: index === 0 ? 'leader' : 'member'
     }));
 
@@ -396,6 +439,8 @@ export async function updateTeamHandler(req: Request, res: Response) {
           name: m.name,
           email: m.email,
           phone: m.phone,
+          college_name: m.college_name,
+          semester: m.semester,
           role: m.role
         }));
         await supabase.from('members').insert(membersToRestore);
@@ -451,6 +496,8 @@ export async function getAllTeamsHandler(req: Request, res: Response) {
           name: m.name,
           email: m.email,
           phone: m.phone,
+          college_name: m.college_name || '',
+          semester: m.semester || null,
           role: m.role
         }))
       };

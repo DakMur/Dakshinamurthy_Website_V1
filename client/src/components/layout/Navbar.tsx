@@ -28,12 +28,14 @@ export default function Navbar({
   const isPrathamaActive = route === "prathama" || route === "prathama-prakasa" || route === "storytelling";
   const isTattvaActive = route === "tattva" || route === "tattva-darsana" || route === "domains";
   const isTimelineActive = route === "timeline" || route === "chronology-timeline" || route === "flow";
+  const isNoticeBoardActive = route === "notices";
   const isRegistrationActive = route === "registration" || route === "admin";
 
   const navItems = [
     { id: "prathama", label: "Prathama Prakasa", active: isPrathamaActive },
     { id: "tattva", label: "Tattva Darśana", active: isTattvaActive },
     { id: "timeline", label: "Innovation Timeline", active: isTimelineActive },
+    { id: "notices", label: "Notice Board", active: isNoticeBoardActive },
     { id: "registration", label: "Registration", active: isRegistrationActive }
   ];
 

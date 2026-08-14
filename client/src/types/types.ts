@@ -102,12 +102,16 @@ export interface RegistrationConfig {
   minMembers: number;
   maxMembers: number;
   disableTeamLogin?: boolean;
+  allowDocumentUpload?: boolean;
+  allowMemberEdits?: boolean;
 }
 
 export interface TeamMember {
   name: string;
   email: string;
   phone: string;
+  college_name?: string;
+  semester?: number;
 }
 
 export interface Team {
@@ -121,3 +125,11 @@ export interface Team {
   passed_round?: number;
 }
 
+export interface Notice {
+  id: string;
+  title: string;
+  short_description: string;
+  full_content: string;
+  is_published: boolean;
+  created_at: string;
+}

@@ -8,13 +8,6 @@ const AdminControlPanel = lazy(() => import("./components/AdminControlPanel"));
 import { Team, RegistrationConfig } from "../../types/types";
 
 interface RegistrationFeatureProps {
-  // Existing props from AdminPanel
-  domains: any[];
-  articles: any[];
-  timeline: any[];
-  quotes: any[];
-  comments: any[];
-  analytics: any;
   currentUser: any;
   onLogin: (user: any) => void;
   onLogout: () => void;
@@ -29,6 +22,8 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
     minMembers: 2,
     maxMembers: 4,
     disableTeamLogin: false,
+    allowDocumentUpload: true,
+    allowMemberEdits: true,
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -92,7 +87,6 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
     props.onLogout();
   };
 
-
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-start pt-16 md:pt-20 pb-12 px-4 space-y-4 z-10 relative">
       <AnimatePresence mode="wait">
@@ -129,17 +123,19 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
         )}
 
         {view === 'admin' && (
-          <motion.div key="admin" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+          <motion.div key="admin" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
             <Suspense fallback={
               <div className="flex items-center justify-center min-h-[40vh]">
                 <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
               </div>
             }>
               <AdminControlPanel
-                {...props}
+                currentUser={props.currentUser}
                 config={config}
-                onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}
+                onLogin={(usr) => props.onLogin(usr)}
                 onLogout={handleLogout}
+                onRefreshData={props.onRefreshData}
+                onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}
               />
             </Suspense>
           </motion.div>

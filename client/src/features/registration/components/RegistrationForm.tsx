@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import AlertCircle from 'lucide-react/dist/esm/icons/alert-circle';
 import UploadCloud from 'lucide-react/dist/esm/icons/upload-cloud';
 import File from 'lucide-react/dist/esm/icons/file';
@@ -13,20 +13,24 @@ interface RegistrationFormProps {
   onSuccess: (team: Team) => void;
 }
 
+const SEMESTER_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
+
 export default function RegistrationForm({ config, onBack, onSuccess }: RegistrationFormProps) {
   const [teamName, setTeamName] = useState("");
   const [members, setMembers] = useState<TeamMember[]>(
-    Array.from({ length: config.maxMembers }).map(() => ({ name: "", email: "", phone: "" }))
+    Array.from({ length: config.maxMembers }).map(() => ({
+      name: "", email: "", phone: "", college_name: "", semester: 1
+    }))
   );
   const [documentUrl, setDocumentUrl] = useState("");
   const [duplicateError, setDuplicateError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   // Drag and drop state
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleCheckDuplicate = async (email: string, phone: string) => {
+  const checkSingleDuplicate = async (email: string, phone: string) => {
     if (!email && !phone) return;
     try {
       const res = await fetch("/api/v1/registration/check-duplicates", {
@@ -36,7 +40,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
       });
       const data = await res.json();
       if (data.isDuplicate) {
-        setDuplicateError(`The email or phone (${email || phone}) is already registered.`);
+        setDuplicateError(`The email or phone (${email || phone}) is already registered in the system.`);
       } else {
         setDuplicateError("");
       }
@@ -45,11 +49,34 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     }
   };
 
-  const handleMemberChange = (index: number, field: keyof TeamMember, value: string) => {
+  const handleMemberChange = (index: number, field: keyof TeamMember, value: string | number) => {
     const newMembers = [...members];
     newMembers[index] = { ...newMembers[index], [field]: value };
     setMembers(newMembers);
   };
+
+  // When team leader changes college_name — autofill all subsequent members unless manually set
+  const handleLeaderCollegeChange = useCallback((value: string) => {
+    setMembers(prev => prev.map((m, i) => {
+      if (i === 0) return { ...m, college_name: value };
+      // Only autofill if not manually overridden (i.e. still matches leader or is empty)
+      if (i > 0 && (m.college_name === "" || m.college_name === prev[0].college_name)) {
+        return { ...m, college_name: value };
+      }
+      return m;
+    }));
+  }, []);
+
+  // When team leader changes semester — autofill all subsequent members unless manually set
+  const handleLeaderSemesterChange = useCallback((value: number) => {
+    setMembers(prev => prev.map((m, i) => {
+      if (i === 0) return { ...m, semester: value };
+      if (i > 0 && (m.semester === 1 || m.semester === prev[0].semester)) {
+        return { ...m, semester: value };
+      }
+      return m;
+    }));
+  }, []);
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -99,7 +126,40 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
       return;
     }
 
+    // Pre-submit: check for cross-member duplicate emails/phones within the form
+    const emails = activeMembers.map(m => m.email.toLowerCase());
+    const phones = activeMembers.map(m => m.phone);
+    const emailSet = new Set(emails);
+    const phoneSet = new Set(phones);
+    if (emailSet.size !== emails.length) {
+      setDuplicateError("Duplicate email addresses found within your team members.");
+      return;
+    }
+    if (phoneSet.size !== phones.length) {
+      setDuplicateError("Duplicate phone numbers found within your team members.");
+      return;
+    }
+
+    // Pre-submit: check each member email/phone against DB
     setLoading(true);
+    for (const member of activeMembers) {
+      try {
+        const res = await fetch("/api/v1/registration/check-duplicates", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: member.email, phone: member.phone })
+        });
+        const data = await res.json();
+        if (data.isDuplicate) {
+          setDuplicateError(`Email or phone for "${member.name}" is already registered in the system.`);
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     const teamData = {
       teamName,
       leaderEmail: activeMembers[0].email,
@@ -118,9 +178,12 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
       if (data.success) {
         window.alert("Registered Successfully!");
         onSuccess(data.team);
+      } else {
+        setDuplicateError(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
       console.error(err);
+      setDuplicateError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -189,7 +252,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
             </span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             {members.map((member, idx) => {
               const isLeader = idx === 0;
               const isCompulsory = idx < config.minMembers;
@@ -205,6 +268,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                     </span>
                   </div>
 
+                  {/* Name / Email / Phone row */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input
                       type="text"
@@ -220,7 +284,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                       required={isCompulsory}
                       value={member.email}
                       onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
-                      onBlur={() => handleCheckDuplicate(member.email, "")}
+                      onBlur={() => checkSingleDuplicate(member.email, "")}
                       className="w-full px-3 py-2 rounded-lg border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
                     />
                     <input
@@ -229,9 +293,48 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
                       required={isCompulsory}
                       value={member.phone}
                       onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
-                      onBlur={() => handleCheckDuplicate("", member.phone)}
+                      onBlur={() => checkSingleDuplicate("", member.phone)}
                       className="w-full px-3 py-2 rounded-lg border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
                     />
+                  </div>
+
+                  {/* College Name / Semester row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">
+                        College / Institution Name
+                        {isLeader && <span className="ml-2 text-gold-vintage/60">(autofills members)</span>}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g., Sri Venkateswara College"
+                        value={member.college_name || ""}
+                        onChange={(e) => {
+                          if (isLeader) handleLeaderCollegeChange(e.target.value);
+                          else handleMemberChange(idx, 'college_name', e.target.value);
+                        }}
+                        className="w-full px-3 py-2 rounded-lg border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-mono text-slate-500 uppercase pl-1">
+                        Current Semester
+                        {isLeader && <span className="ml-2 text-gold-vintage/60">(autofills members)</span>}
+                      </label>
+                      <select
+                        value={member.semester || 1}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value, 10);
+                          if (isLeader) handleLeaderSemesterChange(val);
+                          else handleMemberChange(idx, 'semester', val);
+                        }}
+                        className="w-full px-3 py-2 rounded-lg border border-white/10 bg-slate-950 text-white focus:outline-none focus:border-gold-vintage/50 text-sm transition-colors"
+                      >
+                        {SEMESTER_OPTIONS.map(s => (
+                          <option key={s} value={s}>Semester {s}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
               );
@@ -239,49 +342,51 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
           </div>
         </div>
 
-        {/* File Upload */}
-        <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
-          <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Project Document</h3>
-          
-          {!documentUrl ? (
-            <div 
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={handleFileDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`w-full p-8 rounded-xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-3 text-center ${
-                isDragging ? 'border-gold-vintage bg-gold-vintage/10' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04]'
-              }`}
-            >
-              <UploadCloud className={`w-8 h-8 ${isDragging ? 'text-gold-vintage' : 'text-slate-400'}`} />
-              <div>
-                <p className="text-sm text-white font-medium">Click to upload or drag and drop</p>
-                <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX (Max 10MB)</p>
-              </div>
-              <input 
-                type="file" 
-                ref={fileInputRef}
-                className="hidden" 
-                accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                onChange={(e) => handleFileSelection(e.target.files?.[0])}
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-between p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10">
-              <div className="flex items-center gap-3">
-                <File className="w-5 h-5 text-emerald-400" />
-                <span className="text-sm text-white font-medium">{documentUrl}</span>
-              </div>
-              <button 
-                type="button" 
-                onClick={() => setDocumentUrl("")}
-                className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+        {/* File Upload — only shown if allowDocumentUpload is true (default) */}
+        {config.allowDocumentUpload !== false && (
+          <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4">
+            <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Project Document</h3>
+            
+            {!documentUrl ? (
+              <div 
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={handleFileDrop}
+                onClick={() => fileInputRef.current?.click()}
+                className={`w-full p-8 rounded-xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-3 text-center ${
+                  isDragging ? 'border-gold-vintage bg-gold-vintage/10' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04]'
+                }`}
               >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-        </div>
+                <UploadCloud className={`w-8 h-8 ${isDragging ? 'text-gold-vintage' : 'text-slate-400'}`} />
+                <div>
+                  <p className="text-sm text-white font-medium">Click to upload or drag and drop</p>
+                  <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX (Max 10MB)</p>
+                </div>
+                <input 
+                  type="file" 
+                  ref={fileInputRef}
+                  className="hidden" 
+                  accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                  onChange={(e) => handleFileSelection(e.target.files?.[0])}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-between p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10">
+                <div className="flex items-center gap-3">
+                  <File className="w-5 h-5 text-emerald-400" />
+                  <span className="text-sm text-white font-medium truncate max-w-xs">{documentUrl}</span>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setDocumentUrl("")}
+                  className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex justify-end pt-4">
           <button
@@ -289,7 +394,7 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
             disabled={loading || !!duplicateError}
             className="px-8 py-3.5 rounded-xl bg-gold-vintage hover:bg-gold-bright text-black font-mono font-semibold tracking-widest text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "SUBMITTING..." : "REGISTER TEAM"}
+            {loading ? "VERIFYING & SUBMITTING..." : "REGISTER TEAM"}
           </button>
         </div>
       </form>

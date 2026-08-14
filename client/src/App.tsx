@@ -15,6 +15,7 @@ const StorytellingSection = lazy(() => import("./features/timeline/StorytellingS
 const PortalPage = lazy(() => import("./features/dimension-portal/PortalPage"));
 const TimelineSection = lazy(() => import("./features/timeline/TimelineSection"));
 const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
+const NoticeBoard = lazy(() => import("./features/notices/NoticeBoard"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
 
 import Navbar from "./components/layout/Navbar";
@@ -237,22 +238,21 @@ export default function App() {
               </motion.div>
             )}
 
-            {/* PAGE 5: REGISTRATION / ADMIN WORKSPACE */}
+            {/* PAGE 5: NOTICE BOARD */}
+            {route === "notices" && (
+              <NoticeBoard setRoute={setRoute} />
+            )}
+
+            {/* PAGE 6: REGISTRATION / ADMIN WORKSPACE */}
             {(route === "registration" || route === "admin") && (
               <motion.div
                 key="registration"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="py-4"
+                className="py-4 w-full"
               >
                 <RegistrationFeature
-                  domains={domains}
-                  articles={articles}
-                  timeline={timeline}
-                  quotes={quotes}
-                  comments={comments}
-                  analytics={analytics}
                   currentUser={currentUser}
                   onLogin={(usr) => setCurrentUser(usr)}
                   onLogout={() => setCurrentUser(null)}
