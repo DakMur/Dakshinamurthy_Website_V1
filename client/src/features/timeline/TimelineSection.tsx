@@ -96,37 +96,19 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
                     {step.description}
                   </p>
 
-                  {/* Status & Date block inside */}
-                  <div className={`p-4 rounded-xl border border-white/5 bg-white/[0.01] flex flex-col ${
-                    isRight ? "md:items-end animate-fade-in" : "items-start animate-fade-in"
-                  }`}>
-                    <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase">
-                      STATUS
+                  {/* Date block inside */}
+                  {step.quoteAuthor && (
+                    <div className={`p-4 rounded-xl border border-white/5 bg-white/[0.01] flex flex-col ${
+                      isRight ? "md:items-end animate-fade-in" : "items-start animate-fade-in"
+                    }`}>
+                      <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase">
+                        DATE
+                      </div>
+                      <span className="text-xs font-sans text-gold-vintage font-medium mt-0.5">
+                        {step.quoteAuthor}
+                      </span>
                     </div>
-                    <p className="font-sans text-slate-300 text-xs font-semibold mt-0.5">
-                      {step.quote}
-                    </p>
-                    {step.quoteAuthor && (
-                      <>
-                        <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase mt-2">
-                          DATE
-                        </div>
-                        <span className="text-xs font-sans text-gold-vintage font-medium mt-0.5">
-                          {step.quoteAuthor}
-                        </span>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Final Milestone highlight */}
-                  <div className="text-left">
-                    <span className="text-[10px] font-mono tracking-widest text-slate-500 uppercase block mb-1">
-                      MILESTONE TO BE ACHIEVED
-                    </span>
-                    <div className="px-3 py-1.5 rounded-lg border border-gold-vintage/25 bg-gold-vintage/[0.03] text-[10.5px] font-mono text-slate-200">
-                      {step.milestone}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </motion.div>

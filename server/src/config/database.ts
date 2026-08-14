@@ -273,32 +273,32 @@ const DEFAULT_DATABASE: DatabaseSchema = {
     {
       id: "t1", order: 0, stage: "Theme Announcement", title: "THEME ANNOUNCEMENT",
       subtitle: "", description: "Every edition of Dakshinaasya Darshini begins with a unique theme that inspires innovation and problem-solving. The official challenge statement and competition categories will be announced here. The announced theme will guide the workshops, judging criteria, and final Makeathon.",
-      quote: "Coming Soon", quoteAuthor: "To Be Announced",
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format", milestone: "Theme Announced"
+      quote: "", quoteAuthor: "20 August",
+      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format", milestone: ""
     },
     {
       id: "t2", order: 1, stage: "Registrations", title: "REGISTRATIONS",
-      subtitle: "", description: "Registrations will open shortly for interested students. Team size, eligibility criteria, registration process, and participation guidelines will be announced along with the registration portal. Whether participating individually or as a team, this marks the beginning of your innovation journey.",
-      quote: "Opening Soon", quoteAuthor: "To Be Announced",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format", milestone: "Registration Completed"
+      subtitle: "", description: "Registrations are open from 20 August to 20 September for interested students. Team size, eligibility criteria, registration process, and participation guidelines are available on the registration portal. Whether participating individually or as a team, this marks the beginning of your innovation journey.",
+      quote: "", quoteAuthor: "20 August – 20 September",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format", milestone: ""
     },
     {
       id: "t3", order: 2, stage: "Ideathon", title: "IDEATHON",
       subtitle: "", description: "If the number of registered teams exceeds the available capacity, an Ideathon will be conducted as a preliminary selection round. Teams will present their ideas before a panel of mentors and judges. The most promising solutions will qualify for the Makeathon Finals.",
-      quote: "Coming Soon", quoteAuthor: "To Be Announced",
-      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format", milestone: "Selected for Makeathon"
+      quote: "", quoteAuthor: "25 – 27 September • Online",
+      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format", milestone: ""
     },
     {
       id: "t4", order: 3, stage: "Expert Workshops", title: "EXPERT WORKSHOPS",
       subtitle: "", description: "Qualified participants will attend expert-led workshops designed around the officially announced theme. Industry professionals and domain experts will introduce the concepts, tools, technologies, and practical approaches required for the Makeathon. The workshop content will vary depending on the announced challenge.",
-      quote: "Coming Soon", quoteAuthor: "To Be Announced",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format", milestone: "Workshop Completed"
+      quote: "", quoteAuthor: "First Week of October • Dates to be Confirmed",
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format", milestone: ""
     },
     {
       id: "t5", order: 4, stage: "Makeathon Finals", title: "MAKEATHON FINALS",
       subtitle: "", description: "Over three exciting days, shortlisted teams will transform their ideas into working prototypes under the guidance of mentors and experts. Participants will collaborate, experiment, innovate, and present their solutions before the judging panel. The Makeathon is designed to be an immersive learning experience that encourages creativity, teamwork, and real-world problem solving.",
-      quote: "Final Event", quoteAuthor: "2 • 3 • 4 October",
-      image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format", milestone: "Prototype Successfully Presented"
+      quote: "", quoteAuthor: "7 • 8 • 9 October",
+      image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format", milestone: ""
     }
   ],
   comments: [],

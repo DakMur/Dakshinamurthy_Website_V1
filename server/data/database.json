@@ -328,10 +328,10 @@
       "title": "THEME ANNOUNCEMENT",
       "subtitle": "The challenge statement and categories are announced",
       "description": "Every edition begins with a clear theme that inspires innovation, problem-solving, and collaboration. The official challenge statement and competition categories are shared here to guide the journey ahead.",
-      "quote": "Coming Soon",
-      "quoteAuthor": "To Be Announced",
+      "quote": "",
+      "quoteAuthor": "20 August",
       "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format",
-      "milestone": "Theme Announced"
+      "milestone": ""
     },
     {
       "id": "t2",
@@ -339,11 +339,11 @@
       "stage": "Registrations",
       "title": "REGISTRATIONS",
       "subtitle": "Teams and individuals begin signing up",
-      "description": "Registrations open for interested students and teams. The portal will share team size, eligibility, participation guidelines, and the process to join the innovation journey.",
-      "quote": "Opening Soon",
-      "quoteAuthor": "To Be Announced",
+      "description": "Registrations are open from 20 August to 20 September for interested students. Team size, eligibility criteria, registration process, and participation guidelines are available on the registration portal. Whether participating individually or as a team, this marks the beginning of your innovation journey.",
+      "quote": "",
+      "quoteAuthor": "20 August – 20 September",
       "image": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format",
-      "milestone": "Registration Completed"
+      "milestone": ""
     },
     {
       "id": "t3",
@@ -352,10 +352,10 @@
       "title": "IDEATHON",
       "subtitle": "Ideas are shortlisted for the next stage",
       "description": "If participation exceeds capacity, an ideathon will be conducted as a preliminary selection round. Teams will present their concepts before mentors and judges for the next stage.",
-      "quote": "Coming Soon",
-      "quoteAuthor": "To Be Announced",
+      "quote": "",
+      "quoteAuthor": "25 – 27 September • Online",
       "image": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format",
-      "milestone": "Selected for Makeathon"
+      "milestone": ""
     },
     {
       "id": "t4",
@@ -364,10 +364,10 @@
       "title": "EXPERT WORKSHOPS",
       "subtitle": "Guidance from mentors and industry experts",
       "description": "Qualified participants will attend expert-led workshops that build the skills, tools, and practical know-how needed to develop solutions for the final challenge.",
-      "quote": "Coming Soon",
-      "quoteAuthor": "To Be Announced",
+      "quote": "",
+      "quoteAuthor": "First Week of October • Dates to be Confirmed",
       "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format",
-      "milestone": "Workshop Completed"
+      "milestone": ""
     },
     {
       "id": "t5",
@@ -376,10 +376,10 @@
       "title": "MAKEATHON FINALS",
       "subtitle": "Final prototypes and presentations",
       "description": "Shortlisted teams will transform their ideas into working prototypes, collaborate with mentors, and present their solutions before the judging panel in the final event.",
-      "quote": "Final Event",
+      "quote": "",
       "quoteAuthor": "7 • 8 • 9 October",
       "image": "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format",
-      "milestone": "Prototype Successfully Presented"
+      "milestone": ""
     }
   ],
   "comments": [],
