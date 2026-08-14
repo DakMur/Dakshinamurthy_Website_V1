@@ -23,6 +23,9 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
   const [documentUrl, setDocumentUrl] = useState(team.documentUrl || "");
   const [demoVideoUrl, setDemoVideoUrl] = useState(team.demoVideoUrl || "");
   const [saving, setSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState("");
   const [phoneErrors, setPhoneErrors] = useState<string[]>(Array(config.maxMembers).fill(""));
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,28 +69,75 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
     if (!file) return;
     const validTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
     if (validTypes.includes(file.type) || file.name.endsWith('.pdf') || file.name.endsWith('.ppt') || file.name.endsWith('.pptx')) {
-      setSaving(true);
+      setIsUploading(true);
+      setUploadProgress(0);
+      setUploadedFileName(file.name);
+      setMessage("");
       try {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/v1/registration/upload", {
-          method: "POST",
-          body: formData
+        await new Promise<void>((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "/api/v1/registration/upload");
+
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+              setUploadProgress(Math.round((e.loaded / e.total) * 100));
+            }
+          };
+
+          xhr.onload = () => {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              if (data.success) {
+                setDocumentUrl(data.url);
+                setUploadProgress(100);
+                resolve();
+              } else {
+                setMessage(data.error || "File upload failed. Please try again.");
+                setUploadProgress(0);
+                setUploadedFileName("");
+                reject();
+              }
+            } catch {
+              setMessage("Unexpected server response.");
+              setUploadProgress(0);
+              setUploadedFileName("");
+              reject();
+            }
+          };
+
+          xhr.onerror = () => {
+            setMessage("An error occurred during file upload. Please check your connection.");
+            setUploadProgress(0);
+            setUploadedFileName("");
+            reject();
+          };
+
+          xhr.send(formData);
         });
-        const data = await res.json();
-        if (data.success) {
-          setDocumentUrl(data.url);
-        } else {
-          setMessage(data.error || "File upload failed. Please try again.");
-        }
-      } catch (err) {
-        console.error(err);
-        setMessage("An error occurred during file upload. Please check your connection.");
       } finally {
-        setSaving(false);
+        setIsUploading(false);
       }
     } else {
       setMessage("Invalid file type. Please upload a .pdf, .ppt, or .pptx file.");
+    }
+  };
+
+  const handleDocumentDelete = async () => {
+    if (!documentUrl || isClosed) return;
+    const urlToDelete = documentUrl;
+    setDocumentUrl("");
+    setUploadProgress(0);
+    setUploadedFileName("");
+    try {
+      await fetch("/api/v1/registration/upload", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileUrl: urlToDelete })
+      });
+    } catch (err) {
+      console.error("Failed to delete file from Drive:", err);
     }
   };
 
@@ -365,28 +415,49 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
           {isDocumentUploadEnabled && (
             <div className="p-6 rounded-2xl glass-panel border border-white/10 space-y-4 sticky top-24">
               <h3 className="font-display text-lg text-white tracking-widest uppercase border-b border-white/5 pb-3">Project Document</h3>
-              
+
               {!documentUrl ? (
-                <div 
-                  onClick={() => !isClosed && fileInputRef.current?.click()}
-                  className={`w-full p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3 text-center ${
-                    isClosed ? 'border-white/5 bg-black/40 cursor-not-allowed' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04] transition-all cursor-pointer'
-                  }`}
-                >
-                  <UploadCloud className="w-8 h-8 text-slate-400" />
-                  <div>
-                    <p className="text-sm text-white font-medium">Click to upload document</p>
-                    <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX</p>
+                isUploading ? (
+                  /* ── Uploading: progress bar ── */
+                  <div className="w-full p-5 rounded-xl border border-gold-vintage/30 bg-gold-vintage/5 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <UploadCloud className="w-5 h-5 text-gold-vintage shrink-0 animate-pulse" />
+                      <span className="text-sm text-white font-medium truncate flex-1">{uploadedFileName}</span>
+                      <span className="text-xs font-mono text-gold-vintage shrink-0">{uploadProgress}%</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-gold-vintage to-gold-bright transition-all duration-300 ease-out"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] font-mono text-slate-400 text-center">
+                      {uploadProgress < 100 ? 'Uploading to Google Drive…' : 'Processing…'}
+                    </p>
                   </div>
-                  <input 
-                    type="file" 
-                    ref={fileInputRef}
-                    disabled={isClosed}
-                    className="hidden" 
-                    accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    onChange={(e) => handleFileSelection(e.target.files?.[0])}
-                  />
-                </div>
+                ) : (
+                  /* ── Idle: drop zone ── */
+                  <div
+                    onClick={() => !isClosed && fileInputRef.current?.click()}
+                    className={`w-full p-6 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3 text-center ${
+                      isClosed ? 'border-white/5 bg-black/40 cursor-not-allowed' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04] transition-all cursor-pointer'
+                    }`}
+                  >
+                    <UploadCloud className="w-8 h-8 text-slate-400" />
+                    <div>
+                      <p className="text-sm text-white font-medium">Click to upload document</p>
+                      <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX (Max 15MB)</p>
+                    </div>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      disabled={isClosed}
+                      className="hidden"
+                      accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                      onChange={(e) => handleFileSelection(e.target.files?.[0])}
+                    />
+                  </div>
+                )
               ) : (
                 <div className="space-y-3">
                   <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col gap-3">
@@ -394,8 +465,8 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
                       <File className="w-5 h-5 text-emerald-400 shrink-0" />
                       <span className="text-sm text-white font-medium truncate">{documentUrl}</span>
                     </div>
-                    <button 
-                      onClick={() => !isClosed && setDocumentUrl("")}
+                    <button
+                      onClick={handleDocumentDelete}
                       disabled={isClosed}
                       className={`w-full py-2 rounded-lg border text-xs font-mono transition-colors flex items-center justify-center gap-2 ${
                         isClosed ? 'border-white/5 text-slate-500 cursor-not-allowed' : 'border-red-500/30 text-red-400 hover:bg-red-500/10 cursor-pointer'
