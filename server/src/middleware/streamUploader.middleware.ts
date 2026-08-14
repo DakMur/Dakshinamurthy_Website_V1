@@ -73,11 +73,17 @@ export function streamUploader(req: Request, res: Response, next: NextFunction) 
       }
     });
 
-    // Accept GOOGLE_CLIENT_EMAIL (Railway/Vercel convention) or legacy GOOGLE_SERVICE_ACCOUNT_EMAIL
-    const hasGoogleCreds =
+    // Accept OAuth2 Refresh Token (Personal Google Drive) or Service Account (Workspace Shared Drive)
+    const hasOAuth =
+      process.env.GOOGLE_OAUTH_CLIENT_ID &&
+      process.env.GOOGLE_OAUTH_CLIENT_SECRET &&
+      process.env.GOOGLE_OAUTH_REFRESH_TOKEN;
+
+    const hasServiceAccount =
       (process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) &&
-      process.env.GOOGLE_PRIVATE_KEY &&
-      process.env.GOOGLE_DRIVE_FOLDER_ID;
+      process.env.GOOGLE_PRIVATE_KEY;
+
+    const hasGoogleCreds = (hasOAuth || hasServiceAccount) && process.env.GOOGLE_DRIVE_FOLDER_ID;
 
     if (hasGoogleCreds) {
       // Primary: Google Drive Upload

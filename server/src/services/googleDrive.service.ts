@@ -9,32 +9,43 @@ import { Readable } from 'stream';
  * multiline values in Railway / Vercel environment dashboards).
  */
 function getDriveService() {
-  // Support both GOOGLE_CLIENT_EMAIL (Railway convention) and legacy GOOGLE_SERVICE_ACCOUNT_EMAIL
+  // 1. Personal Google Drive (@gmail.com): OAuth2 with Refresh Token
+  if (
+    process.env.GOOGLE_OAUTH_CLIENT_ID &&
+    process.env.GOOGLE_OAUTH_CLIENT_SECRET &&
+    process.env.GOOGLE_OAUTH_REFRESH_TOKEN
+  ) {
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_OAUTH_CLIENT_ID,
+      process.env.GOOGLE_OAUTH_CLIENT_SECRET
+    );
+    oauth2Client.setCredentials({
+      refresh_token: process.env.GOOGLE_OAUTH_REFRESH_TOKEN,
+    });
+    return google.drive({ version: 'v3', auth: oauth2Client });
+  }
+
+  // 2. Google Workspace Shared Drive: Service Account Credentials
   const email = process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  // Replace literal '\\n' with actual newlines — required when the private key
-  // is stored as a single-line string in Railway/Vercel env dashboards.
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? '';
+  const privateKey = rawKey
+    .replace(/^["']|["']$/g, '')
+    .replace(/\\n/g, '\n');
 
-  if (!email) {
-    throw new Error(
-      'Google Drive credentials missing: set GOOGLE_CLIENT_EMAIL in your Railway/Vercel environment variables.'
-    );
+  if (email && privateKey) {
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: email,
+        private_key: privateKey,
+      },
+      scopes: ['https://www.googleapis.com/auth/drive.file'],
+    });
+    return google.drive({ version: 'v3', auth });
   }
-  if (!privateKey) {
-    throw new Error(
-      'Google Drive credentials missing: set GOOGLE_PRIVATE_KEY in your Railway/Vercel environment variables.'
-    );
-  }
 
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: email,
-      private_key: privateKey,
-    },
-    scopes: ['https://www.googleapis.com/auth/drive.file'],
-  });
-
-  return google.drive({ version: 'v3', auth });
+  throw new Error(
+    'Google Drive credentials missing. Please set either OAuth2 credentials (GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_OAUTH_REFRESH_TOKEN) for personal Drive, or Service Account credentials (GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY).'
+  );
 }
 
 /**
@@ -78,6 +89,7 @@ export async function uploadToGoogleDrive(
         body: fileStream,
       },
       fields: 'id, webViewLink',
+      supportsAllDrives: true,
     });
   } catch (uploadErr: any) {
     console.error('[GoogleDrive] drive.files.create failed:', {
@@ -102,6 +114,7 @@ export async function uploadToGoogleDrive(
         role: 'reader',
         type: 'anyone',
       },
+      supportsAllDrives: true,
     });
   } catch (permErr: any) {
     // Non-fatal: file was uploaded; log and continue
