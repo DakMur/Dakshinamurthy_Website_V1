@@ -58,7 +58,14 @@ export function streamUploader(req: Request, res: Response, next: NextFunction) 
     // Determine max size based on file type
     const isVideo = ['.mp4', '.mov', '.mkv'].includes(ext);
     const maxFileSize = isVideo ? 100 * 1024 * 1024 : 15 * 1024 * 1024; // 100MB for videos, 15MB for documents
-    const uniqueKey = `${crypto.randomUUID()}${ext}`;
+
+    // Keep the original filename but sanitize it: strip unsafe characters, collapse spaces
+    const baseName = path.basename(filename, ext)
+      .replace(/[^a-zA-Z0-9._\- ]/g, '')  // strip non-safe chars
+      .replace(/\s+/g, '_')               // spaces → underscores
+      .slice(0, 200)                       // cap length
+      || crypto.randomUUID();              // fallback if name becomes empty
+    const uniqueKey = `${baseName}${ext}`;
 
     const limitStream = createSizeLimitStream(maxFileSize);
     file.pipe(limitStream);

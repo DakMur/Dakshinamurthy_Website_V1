@@ -36,8 +36,10 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     }))
   );
   const [documentUrl, setDocumentUrl] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0); // 0–100
   const [duplicateError, setDuplicateError] = useState("");
   const [uploadError, setUploadError] = useState("");
+  const [uploadedFileName, setUploadedFileName] = useState("");
   const [phoneErrors, setPhoneErrors] = useState<string[]>(Array(config.maxMembers).fill(""));
   const [loading, setLoading] = useState(false);
 
@@ -124,22 +126,51 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     if (validTypes.includes(file.type) || file.name.endsWith('.pdf') || file.name.endsWith('.ppt') || file.name.endsWith('.pptx')) {
       setLoading(true);
       setUploadError("");
+      setUploadProgress(0);
+      setUploadedFileName(file.name);
       try {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/v1/registration/upload", {
-          method: "POST",
-          body: formData
+        await new Promise<void>((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "/api/v1/registration/upload");
+
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+              setUploadProgress(Math.round((e.loaded / e.total) * 100));
+            }
+          };
+
+          xhr.onload = () => {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              if (data.success) {
+                setDocumentUrl(data.url);
+                setUploadProgress(100);
+                resolve();
+              } else {
+                setUploadError(data.error || "File upload failed. Please try again.");
+                setUploadProgress(0);
+                setUploadedFileName("");
+                reject();
+              }
+            } catch {
+              setUploadError("Unexpected server response.");
+              setUploadProgress(0);
+              setUploadedFileName("");
+              reject();
+            }
+          };
+
+          xhr.onerror = () => {
+            setUploadError("An error occurred during file upload. Please check your connection and try again.");
+            setUploadProgress(0);
+            setUploadedFileName("");
+            reject();
+          };
+
+          xhr.send(formData);
         });
-        const data = await res.json();
-        if (data.success) {
-          setDocumentUrl(data.url);
-        } else {
-          setUploadError(data.error || "File upload failed. Please try again.");
-        }
-      } catch (err) {
-        console.error(err);
-        setUploadError("An error occurred during file upload. Please check your connection and try again.");
       } finally {
         setLoading(false);
       }
@@ -154,6 +185,8 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
     // Clear the UI immediately so the user gets instant feedback
     setDocumentUrl("");
     setUploadError("");
+    setUploadProgress(0);
+    setUploadedFileName("");
     try {
       await fetch("/api/v1/registration/upload", {
         method: "DELETE",
@@ -487,28 +520,50 @@ export default function RegistrationForm({ config, onBack, onSuccess }: Registra
             )}
             
             {!documentUrl ? (
-              <div 
-                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={handleFileDrop}
-                onClick={() => fileInputRef.current?.click()}
-                className={`w-full p-8 rounded-xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-3 text-center ${
-                  isDragging ? 'border-gold-vintage bg-gold-vintage/10' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04]'
-                }`}
-              >
-                <UploadCloud className={`w-8 h-8 ${isDragging ? 'text-gold-vintage' : 'text-slate-400'}`} />
-                <div>
-                  <p className="text-sm text-white font-medium">Click to upload or drag and drop</p>
-                  <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX (Max 10MB)</p>
+              loading ? (
+                /* ── Uploading: progress bar ── */
+                <div className="w-full p-6 rounded-xl border border-gold-vintage/30 bg-gold-vintage/5 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <UploadCloud className="w-5 h-5 text-gold-vintage shrink-0 animate-pulse" />
+                    <span className="text-sm text-white font-medium truncate flex-1">{uploadedFileName}</span>
+                    <span className="text-xs font-mono text-gold-vintage shrink-0">{uploadProgress}%</span>
+                  </div>
+                  {/* Track */}
+                  <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-gold-vintage to-gold-bright transition-all duration-300 ease-out"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                  <p className="text-[10px] font-mono text-slate-400 text-center">
+                    {uploadProgress < 100 ? 'Uploading to Google Drive…' : 'Processing…'}
+                  </p>
                 </div>
-                <input 
-                  type="file" 
-                  ref={fileInputRef}
-                  className="hidden" 
-                  accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                  onChange={(e) => handleFileSelection(e.target.files?.[0])}
-                />
-              </div>
+              ) : (
+                /* ── Idle: drop zone ── */
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={handleFileDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`w-full p-8 rounded-xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-3 text-center ${
+                    isDragging ? 'border-gold-vintage bg-gold-vintage/10' : 'border-white/20 bg-white/[0.02] hover:border-gold-vintage/50 hover:bg-white/[0.04]'
+                  }`}
+                >
+                  <UploadCloud className={`w-8 h-8 ${isDragging ? 'text-gold-vintage' : 'text-slate-400'}`} />
+                  <div>
+                    <p className="text-sm text-white font-medium">Click to upload or drag and drop</p>
+                    <p className="text-[10px] font-mono text-slate-400 mt-1 uppercase">PDF, PPT, or PPTX (Max 15MB)</p>
+                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                    onChange={(e) => handleFileSelection(e.target.files?.[0])}
+                  />
+                </div>
+              )
             ) : (
               <div className="flex items-center justify-between p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10">
                 <div className="flex items-center gap-3">
