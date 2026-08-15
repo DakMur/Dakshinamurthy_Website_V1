@@ -22,7 +22,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Hold your lungs empty for 4 seconds, resting in pure unmanifested consciousness."
     ],
     energyIndicator: "1st Tattva",
-    relatedSlugs: ["mindfulness", "divine-energy"]
+    relatedSlugs: ["mindfulness", "divine-energy"],
+    audioSrc: "/audio/tattva-01.mp3"
   },
   {
     id: "d2",
@@ -43,7 +44,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Rest in the blissful, undifferentiated state of 'Nirvikalpa'."
     ],
     energyIndicator: "2nd Tattva",
-    relatedSlugs: ["meditation", "divine-energy"]
+    relatedSlugs: ["meditation", "divine-energy"],
+    audioSrc: "/audio/tattva-02.mp3"
   },
   {
     id: "d3",
@@ -63,7 +65,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Rest with the reflection question: Can any experience be known without awareness?"
     ],
     energyIndicator: "3rd Tattva",
-    relatedSlugs: ["meditation", "yoga"]
+    relatedSlugs: ["meditation", "yoga"],
+    audioSrc: "/audio/tattva-03.mp3"
   },
   {
     id: "d4",
@@ -83,7 +86,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Rest in the recognition that this inner consciousness is Dakshinamurty within."
     ],
     energyIndicator: "4th Tattva",
-    relatedSlugs: ["self-inquiry", "silent-witness"]
+    relatedSlugs: ["self-inquiry", "silent-witness"],
+    audioSrc: "/audio/tattva-04.mp3"
   },
   {
     id: "d5",
@@ -103,7 +107,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Retract your identity fully from the sensor feedback loop into the unchanging observer."
     ],
     energyIndicator: "5th Tattva",
-    relatedSlugs: ["sacred-geometry", "cosmic-philosophy"]
+    relatedSlugs: ["sacred-geometry", "cosmic-philosophy"],
+    audioSrc: "/audio/tattva-05.mp3"
   },
   {
     id: "d6",
@@ -123,7 +128,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Observe awareness as the constant presence that remains through waking, dream, and deep sleep."
     ],
     energyIndicator: "6th Tattva",
-    relatedSlugs: ["mindfulness", "ancient-wisdom"]
+    relatedSlugs: ["mindfulness", "ancient-wisdom"],
+    audioSrc: "/audio/tattva-06.mp3"
   },
   {
     id: "d7",
@@ -143,7 +149,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Contemplate the Chinmudra as the silent reveal of your non-separateness."
     ],
     energyIndicator: "7th Tattva",
-    relatedSlugs: ["meditation", "ancient-wisdom"]
+    relatedSlugs: ["meditation", "ancient-wisdom"],
+    audioSrc: "/audio/tattva-07.mp3"
   },
   {
     id: "d8",
@@ -163,7 +170,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Reflect on the waking and dreaming states."
     ],
     energyIndicator: "8th Tattva",
-    relatedSlugs: ["ancient-wisdom", "universal-consciousness"]
+    relatedSlugs: ["ancient-wisdom", "universal-consciousness"],
+    audioSrc: "/audio/tattva-08.mp3"
   },
   {
     id: "d9",
@@ -183,7 +191,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Focus exclusively on the highest pole."
     ],
     energyIndicator: "9th Tattva",
-    relatedSlugs: ["scriptures", "cosmic-philosophy"]
+    relatedSlugs: ["scriptures", "cosmic-philosophy"],
+    audioSrc: "/audio/tattva-09.mp3"
   },
   {
     id: "d10",
@@ -203,7 +212,8 @@ export const FALLBACK_DOMAINS: DomainContent[] = [
       "Rest in the realization of Sarvātmatvam."
     ],
     energyIndicator: "10th Tattva",
-    relatedSlugs: ["scriptures", "meditation"]
+    relatedSlugs: ["scriptures", "meditation"],
+    audioSrc: "/audio/tattva-10.mp3"
   }
 ];
 

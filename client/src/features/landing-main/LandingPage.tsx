@@ -34,73 +34,61 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         style={{ opacity: logoOpacity, y: logoTranslateY }}
         className="w-full relative select-none z-10 pointer-events-auto"
       >
-        {/* Desktop / Tablet Layout: Explicit Viewport-Relative Anchors (14vw, 38vw, 62vw, 86vw) */}
-        <div className="hidden sm:block relative w-screen left-1/2 -translate-x-1/2 h-20 md:h-24 overflow-visible">
-          {/* Param — 14vw Anchor (Outer logo slightly smaller) */}
-          <div
-            className="absolute top-[-17px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
-            style={{ left: "14vw" }}
-          >
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+        {/* Desktop / Tablet Layout: Responsive 4-Column Grid bounded by container */}
+        <div className="hidden sm:grid grid-cols-4 w-full h-22 md:h-26 items-start">
+          {/* Param — Far Left */}
+          <div className="relative top-[-15px] flex flex-col items-center justify-start text-center">
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               TECHNICAL COLLABORATOR
             </span>
-            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+            <div className="h-11 sm:h-13 md:h-16 flex items-center justify-center">
               <img
                 src={paramLogo}
-                className="h-6 sm:h-8 md:h-10 object-contain scale-[0.92]"
+                className="h-7 sm:h-9 md:h-12 object-contain"
                 alt="Param Technical Collaborator"
               />
             </div>
           </div>
 
-          {/* Jyothy — 38vw Anchor (Enlarged Jyothy logo, shifted 12px upward) */}
-          <div
-            className="absolute top-[-29px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
-            style={{ left: "38vw" }}
-          >
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+          {/* Jyothy — Inner Left */}
+          <div className="relative top-[-27px] flex flex-col items-center justify-start text-center">
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               JYOTHY INSTITUTE OF TECHNOLOGY
             </span>
-            <div className="h-12 sm:h-17 md:h-22 flex items-center justify-center">
+            <div className="h-14 sm:h-19 md:h-25 flex items-center justify-center">
               <img
                 src={jyothyLogo}
-                className="h-12 sm:h-17 md:h-22 object-contain"
+                className="h-14 sm:h-19 md:h-25 object-contain"
                 style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
                 alt="Jyothy Institute of Technology"
               />
             </div>
           </div>
 
-          {/* Sringeri — 62vw Anchor (Enlarged inner logo, shifted 12px upward) */}
-          <div
-            className="absolute top-[-29px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
-            style={{ left: "62vw" }}
-          >
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+          {/* Sringeri — Inner Right */}
+          <div className="relative top-[-27px] flex flex-col items-center justify-start text-center">
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               SRINGERI SHARADA PEETHAM
             </span>
-            <div className="h-10 sm:h-14 md:h-18 flex items-center justify-center">
+            <div className="h-12 sm:h-16 md:h-21 flex items-center justify-center">
               <img
                 src={sringeriLogo}
-                className="h-10 sm:h-14 md:h-17 object-contain"
+                className="h-12 sm:h-16 md:h-20 object-contain"
                 style={{ clipPath: "circle(50% at 50% 50%)" }}
                 alt="Sringeri"
               />
             </div>
           </div>
 
-          {/* Vedanta Bharati — 86vw Anchor (Outer logo slightly smaller) */}
-          <div
-            className="absolute top-[-17px] -translate-x-1/2 flex flex-col items-center justify-start text-center"
-            style={{ left: "86vw" }}
-          >
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+          {/* Vedanta Bharati — Far Right */}
+          <div className="relative top-[-15px] flex flex-col items-center justify-start text-center">
+            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               SUPPORTED BY
             </span>
-            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+            <div className="h-11 sm:h-13 md:h-16 flex items-center justify-center">
               <img
                 src={vedantaBharatiLogo}
-                className="h-7 sm:h-10 md:h-12 object-contain scale-100"
+                className="h-8 sm:h-11 md:h-14 object-contain"
                 alt="Vedanta Bharati"
               />
             </div>

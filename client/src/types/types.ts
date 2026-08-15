@@ -21,6 +21,7 @@ export interface DomainContent {
   practiceSteps?: string[];
   energyIndicator?: string;
   relatedSlugs?: string[];
+  audioSrc?: string;
 }
 
 export interface Article {

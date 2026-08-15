@@ -50,7 +50,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Hold your lungs empty for 4 seconds, resting in pure unmanifested consciousness."
       ],
       "energyIndicator": "1st Tattva",
-      "relatedSlugs": ["mindfulness", "divine-energy"]
+      "relatedSlugs": ["mindfulness", "divine-energy"],
+      "audioSrc": "/audio/tattva-01.mp3"
     },
     {
       "id": "d2",
@@ -71,7 +72,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Rest in the blissful, undifferentiated state of 'Nirvikalpa' prior to names and forms, identifying with the source rather than the projection."
       ],
       "energyIndicator": "2nd Tattva",
-      "relatedSlugs": ["meditation", "divine-energy"]
+      "relatedSlugs": ["meditation", "divine-energy"],
+      "audioSrc": "/audio/tattva-02.mp3"
     },
     {
       "id": "d3",
@@ -92,7 +94,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Rest with the reflection question: Can any experience be known without awareness? Before every thought, perception, or emotion, what is the light that makes it known?"
       ],
       "energyIndicator": "3rd Tattva",
-      "relatedSlugs": ["meditation", "yoga"]
+      "relatedSlugs": ["meditation", "yoga"],
+      "audioSrc": "/audio/tattva-03.mp3"
     },
     {
       "id": "d4",
@@ -112,7 +115,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Rest in the recognition that this inner consciousness is Dakshinamurty within."
       ],
       "energyIndicator": "4th Tattva",
-      "relatedSlugs": ["self-inquiry", "silent-witness"]
+      "relatedSlugs": ["self-inquiry", "silent-witness"],
+      "audioSrc": "/audio/tattva-04.mp3"
     },
     {
       "id": "d5",
@@ -130,7 +134,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Retract your identity fully from the sensor feedback loop of the mind-body complex, anchoring back into the unchanging observer."
       ],
       "energyIndicator": "5th Tattva",
-      "relatedSlugs": ["sacred-geometry", "cosmic-philosophy"]
+      "relatedSlugs": ["sacred-geometry", "cosmic-philosophy"],
+      "audioSrc": "/audio/tattva-05.mp3"
     },
     {
       "id": "d6",
@@ -150,7 +155,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Observe awareness as the constant presence that remains through waking, dream, and deep sleep."
       ],
       "energyIndicator": "6th Tattva",
-      "relatedSlugs": ["mindfulness", "ancient-wisdom"]
+      "relatedSlugs": ["mindfulness", "ancient-wisdom"],
+      "audioSrc": "/audio/tattva-06.mp3"
     },
     {
       "id": "d7",
@@ -170,7 +176,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Contemplate the Chinmudra (the auspicious hand gesture) as the silent reveal of your non-separateness from the absolute Reality."
       ],
       "energyIndicator": "7th Tattva",
-      "relatedSlugs": ["meditation", "ancient-wisdom"]
+      "relatedSlugs": ["meditation", "ancient-wisdom"],
+      "audioSrc": "/audio/tattva-07.mp3"
     },
     {
       "id": "d8",
@@ -190,7 +197,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Reflect on the waking and dreaming states, recognizing that the one who experiences both states remains the same, untouched by the shifting states of consciousness."
       ],
       "energyIndicator": "8th Tattva",
-      "relatedSlugs": ["ancient-wisdom", "universal-consciousness"]
+      "relatedSlugs": ["ancient-wisdom", "universal-consciousness"],
+      "audioSrc": "/audio/tattva-08.mp3"
     },
     {
       "id": "d9",
@@ -210,7 +218,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Focus exclusively on the highest pole, letting the lower one dissolve naturally."
       ],
       "energyIndicator": "9th Tattva",
-      "relatedSlugs": ["scriptures", "cosmic-philosophy"]
+      "relatedSlugs": ["scriptures", "cosmic-philosophy"],
+      "audioSrc": "/audio/tattva-09.mp3"
     },
     {
       "id": "d10",
@@ -230,7 +239,8 @@ const DEFAULT_DATABASE: DatabaseSchema = {
         "Rest in the realization of Sarvātmatvam—the state of being the Self of all—where the boundary between the observer and the observed is completely dissolved."
       ],
       "energyIndicator": "10th Tattva",
-      "relatedSlugs": ["scriptures", "meditation"]
+      "relatedSlugs": ["scriptures", "meditation"],
+      "audioSrc": "/audio/tattva-10.mp3"
     }
   ],
 

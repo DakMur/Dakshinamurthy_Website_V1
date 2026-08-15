@@ -33,7 +33,8 @@
       "relatedSlugs": [
         "mindfulness",
         "divine-energy"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-01.mp3"
     },
     {
       "id": "d2",
@@ -57,7 +58,8 @@
       "relatedSlugs": [
         "meditation",
         "divine-energy"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-02.mp3"
     },
     {
       "id": "d3",
@@ -82,7 +84,8 @@
       "relatedSlugs": [
         "meditation",
         "yoga"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-03.mp3"
     },
     {
       "id": "d4",
@@ -105,7 +108,8 @@
       "relatedSlugs": [
         "self-inquiry",
         "silent-witness"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-04.mp3"
     },
     {
       "id": "d5",
@@ -126,7 +130,8 @@
       "relatedSlugs": [
         "sacred-geometry",
         "cosmic-philosophy"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-05.mp3"
     },
     {
       "id": "d6",
@@ -149,7 +154,8 @@
       "relatedSlugs": [
         "mindfulness",
         "ancient-wisdom"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-06.mp3"
     },
     {
       "id": "d7",
@@ -172,7 +178,8 @@
       "relatedSlugs": [
         "meditation",
         "ancient-wisdom"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-07.mp3"
     },
     {
       "id": "d8",
@@ -195,7 +202,8 @@
       "relatedSlugs": [
         "ancient-wisdom",
         "universal-consciousness"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-08.mp3"
     },
     {
       "id": "d9",
@@ -218,7 +226,8 @@
       "relatedSlugs": [
         "scriptures",
         "cosmic-philosophy"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-09.mp3"
     },
     {
       "id": "d10",
@@ -241,7 +250,8 @@
       "relatedSlugs": [
         "scriptures",
         "meditation"
-      ]
+      ],
+      "audioSrc": "/audio/tattva-10.mp3"
     }
   ],
   "articles": [
@@ -257,7 +267,7 @@
       "headerLabel": "BEGIN HERE",
       "actionText": "READ CHAPTER",
       "hideMeta": true,
-      "views": 6
+      "views": 7
     },
     {
       "id": "a2",
@@ -268,7 +278,8 @@
       "image": "/ArticleImages/dakshinamurthy-a2.webp",
       "headerLabel": "SEEK WISDOM",
       "actionText": "EXPLORE NOW",
-      "hideMeta": true
+      "hideMeta": true,
+      "views": 1
     },
     {
       "id": "a3",
@@ -291,7 +302,7 @@
       "headerLabel": "3-DAY MAKEATHON",
       "actionText": "EXPLORE NOW",
       "hideMeta": true,
-      "views": 6
+      "views": 7
     },
     {
       "id": "a4",
@@ -304,7 +315,7 @@
       "actionText": "Step Inside",
       "headerLabel": "WHY DO THIS?",
       "hideMeta": true,
-      "views": 9
+      "views": 10
     },
     {
       "id": "a5",
@@ -317,7 +328,7 @@
       "actionText": "Explore Now",
       "headerLabel": "UPCOMING EVENT",
       "hideMeta": true,
-      "views": 10
+      "views": 11
     }
   ],
   "timeline": [
@@ -423,13 +434,13 @@
   ],
   "analytics": {
     "pageViews": {
-      "home": 263,
+      "home": 278,
       "storytelling": 75,
       "domains": 53,
       "flow": 22,
       "admin": 16
     },
-    "totalInteractions": 1029,
+    "totalInteractions": 1044,
     "totalComments": 0,
     "activeSessions": 3,
     "usersByRole": {

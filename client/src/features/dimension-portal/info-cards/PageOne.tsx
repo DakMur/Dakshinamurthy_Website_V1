@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import BookOpen from 'lucide-react/dist/esm/icons/book-open';
 import Compass from 'lucide-react/dist/esm/icons/compass';
-import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
-import Play from 'lucide-react/dist/esm/icons/play';
-import Square from 'lucide-react/dist/esm/icons/square';
 import { motion, AnimatePresence } from "motion/react";
 import { DomainContent } from "../../../types/types";
 import ProjectSpotlight from "../components/ProjectSpotlight";
+import TattvaAudioPlayer from "../components/TattvaAudioPlayer";
 
 interface InfoCardProps {
   domain: DomainContent;
@@ -17,57 +15,6 @@ interface InfoCardProps {
 
 export default function PageOne({ domain, allDomains = [], onNavigateToDomain }: InfoCardProps) {
   const [activeTab, setActiveTab] = useState<"teachings" | "practice">("teachings");
-
-  // Breathing simulation state
-  const [breathingActive, setBreathingActive] = useState(false);
-  const [breathPhase, setBreathPhase] = useState<"Inhale" | "Hold (Full)" | "Exhale" | "Hold (Empty)">("Inhale");
-  const [breathTimer, setBreathTimer] = useState(4);
-
-  // Filter down related domains safely
-  
-
-  // Handle breathing sequence intervals
-  useEffect(() => {
-    let timerId: NodeJS.Timeout;
-
-    if (breathingActive) {
-      timerId = setInterval(() => {
-        setBreathTimer((prev) => {
-          if (prev === 1) {
-            // Transition to next breathing stage (4s interval Box Breathing)
-            setBreathPhase((currentPhase) => {
-              switch (currentPhase) {
-                case "Inhale":
-                  return "Hold (Full)";
-                case "Hold (Full)":
-                  return "Exhale";
-                case "Exhale":
-                  return "Hold (Empty)";
-                case "Hold (Empty)":
-                  return "Inhale";
-                default:
-                  return "Inhale";
-              }
-            });
-            return 4; // Reset timer to 4s
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      setBreathTimer(4);
-      setBreathPhase("Inhale");
-    }
-
-    return () => clearInterval(timerId);
-  }, [breathingActive]);
-
-  const images = [
-    "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600"
-  ];
 
   return (
     <>
@@ -166,102 +113,11 @@ export default function PageOne({ domain, allDomains = [], onNavigateToDomain }:
                   exit={{ opacity: 0, y: -10 }}
                   className="space-y-6"
                 >
-                  <div className="p-6 rounded-2xl glass-panel-gold flex flex-col items-center justify-center p-8 text-center border-gold-vintage/30 relative overflow-hidden">
-                    {/* Guided Circle Breathing Simulator */}
-                    <div className="absolute inset-0 bg-radial-gradient from-gold-vintage/5 to-transparent pointer-events-none" />
-                    
-                    <h3 className="font-display font-medium text-lg text-gold-vintage tracking-wider mb-2">
-                      {domain.practiceTitle || "Box Breathing Simulator"}
-                    </h3>
-                    
-
-                    <div className="relative w-48 h-48 flex items-center justify-center mb-8">
-                      {/* Glowing Breathing Sphere */}
-                      <motion.div
-                        animate={{
-                          scale: !breathingActive
-                            ? 1
-                            : breathPhase === "Inhale"
-                            ? 2.1
-                            : breathPhase === "Hold (Full)"
-                            ? 2.1
-                            : breathPhase === "Exhale"
-                            ? 1
-                            : 1,
-                          opacity: !breathingActive
-                            ? 0.45
-                            : breathPhase.startsWith("Hold")
-                            ? 0.95
-                            : 0.7
-                        }}
-                        transition={{
-                          duration: 4,
-                          ease: "easeInOut"
-                        }}
-                        className="absolute w-20 h-20 rounded-full bg-radial-gradient from-gold-vintage/40 to-cosmic-purple/10 filter blur-xs border border-gold-bright shadow-2xl shadow-gold-vintage/20"
-                      />
-
-                      {/* Text prompts inside sphere */}
-                      <div className="relative z-10 flex flex-col items-center">
-                        <span className="font-mono text-xs text-gold-vintage/70 uppercase tracking-widest">
-                          {breathingActive ? "ALIGN" : "READY"}
-                        </span>
-                        <span className="font-display font-bold text-2xl text-white my-1">
-                          {breathingActive ? breathPhase : "Calm"}
-                        </span>
-                        <span className="font-mono text-xl text-gold-vintage antialiased font-semibold">
-                          {breathingActive ? `${breathTimer}s` : "00"}
-                        </span>
-                      </div>
-
-                      {/* Outer geometric orbits rotating slowly */}
-                      <div className="absolute inset-0 border border-white/5 rounded-full animate-spin-slow pointer-events-none" />
-                      <div className="absolute -inset-1 border border-gold-vintage/10 rounded-full animate-pulse pointer-events-none transform rotate-45" />
-                    </div>
-
-                    {/* Control buttons */}
-                    <div className="flex gap-4">
-                      {!breathingActive ? (
-                        <button
-                          onClick={() => setBreathingActive(true)}
-                          className="px-6 py-2 rounded-full bg-gold-vintage hover:bg-gold-bright text-black font-mono text-xs tracking-wider font-semibold transition-all flex items-center gap-2 cursor-pointer"
-                        >
-                          <Play className="w-3.5 h-3.5 fill-black" />
-                          <span>BEGIN PATH</span>
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => setBreathingActive(false)}
-                          className="px-6 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-mono text-xs tracking-wider font-semibold transition-all flex items-center gap-2 cursor-pointer"
-                        >
-                          <Square className="w-3.5 h-3.5 fill-white" />
-                          <span>HALT PRACTICE</span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Step by step outline details */}
-                  <div className="space-y-4">
-                    <h4 className="text-xs font-mono uppercase text-gold-vintage tracking-widest">
-                      Instructions for alignment
-                    </h4>
-                    <div className="space-y-3">
-                      {domain.practiceSteps?.map((step, idx) => (
-                        <div
-                          key={idx}
-                          className="p-4 rounded-lg bg-white/[0.02] border border-white/5 flex items-start gap-3"
-                        >
-                          <span className="font-mono text-xs text-gold-vintage/60 shrink-0 mt-0.5">
-                            0{idx + 1}.
-                          </span>
-                          <p className="text-xs text-slate-300 font-sans leading-relaxed">
-                            {step}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <TattvaAudioPlayer
+                    audioSrc={domain.audioSrc}
+                    title={domain.title}
+                    subtitle={domain.subtitle}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -273,7 +129,7 @@ export default function PageOne({ domain, allDomains = [], onNavigateToDomain }:
           {/* Scientific Demonstration Spotlight */}
           <ProjectSpotlight domain={domain} />
 
-                    {/* Portal Navigation */}
+          {/* Portal Navigation */}
           {allDomains && allDomains.length > 0 && (() => {
             const currentIndex = allDomains.findIndex(d => d.id === domain.id);
             if (currentIndex === -1) return null;
