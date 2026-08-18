@@ -91,9 +91,11 @@ export default function App() {
   // Isolated Full-Viewport Overlay State: 'workspace' | 'register' | 'admin' | null
   const [overlayView, setOverlayView] = useState<'workspace' | 'register' | 'admin' | null>(() => {
     if (typeof window !== "undefined") {
-      if (window.location.hash === "#workspace") return "workspace";
-      if (window.location.hash === "#register") return "register";
-      if (window.location.hash === "#admin") return "admin";
+      const p = window.location.pathname;
+      const h = window.location.hash;
+      if (h === "#workspace" || p === "/workspace") return "workspace";
+      if (h === "#register" || p === "/register") return "register";
+      if (h === "#admin" || p === "/admin") return "admin";
     }
     return null;
   });
@@ -187,12 +189,12 @@ export default function App() {
       .catch((err) => console.error("Error incrementing analytics metrics:", err));
   }, [isLanding, activeSection, analytics.pageViews, setAnalytics]);
 
-  // Open full-viewport isolated overlay with hash and history entry
+  // Open full-viewport isolated overlay with clean root path and history entry
   const openOverlay = useCallback((view: 'workspace' | 'register' | 'admin') => {
     setOverlayView(view);
-    const hash = `#${view}`;
-    if (window.location.hash !== hash) {
-      window.history.pushState({ overlay: view }, '', hash);
+    const targetPath = `/${view}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ overlay: view }, '', targetPath);
     }
   }, []);
 
@@ -206,7 +208,7 @@ export default function App() {
     }
 
     const regPath = getSectionPath("registration");
-    if (window.location.hash) {
+    if (window.location.pathname !== regPath) {
       window.history.replaceState({ sectionId: "registration" }, "", regPath);
     }
 
@@ -291,6 +293,11 @@ export default function App() {
       sectionId = "registration";
     }
 
+    if (sectionId === "admin") {
+      openOverlay('admin');
+      return;
+    }
+
     isProgrammaticScrollRef.current = true;
     if (scrollLockTimeoutRef.current) {
       clearTimeout(scrollLockTimeoutRef.current);
@@ -346,7 +353,7 @@ export default function App() {
     activeSectionRef.current = "landing";
     setSelectedDomain(null);
     setIsMobileMenuOpen(false);
-    if (window.location.pathname !== LANDING_PATH && window.location.pathname !== "/") {
+    if (window.location.pathname !== LANDING_PATH) {
       window.history.pushState({ sectionId: "landing" }, "", LANDING_PATH);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -379,28 +386,52 @@ export default function App() {
   // Handle browser Back and Forward buttons (popstate)
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      // If overlay was open, close overlay and logout / return to continuous page
-      if (overlayView) {
-        closeOverlayAndLogout();
-        return;
-      }
+      const parsed = parsePath(window.location.pathname);
+      const pathname = window.location.pathname;
 
-      // Check if navigating into an overlay via state or hash
-      if (event.state?.overlay || window.location.hash === '#workspace' || window.location.hash === '#register' || window.location.hash === '#admin') {
-        const hashView = (event.state?.overlay || window.location.hash.replace('#', '')) as 'workspace' | 'register' | 'admin';
-        if (hashView === 'workspace' && currentTeam) {
+      // Check if navigating into an overlay via state, pathname, or hash
+      if (
+        event.state?.overlay === 'workspace' ||
+        pathname === '/workspace' ||
+        window.location.hash === '#workspace'
+      ) {
+        if (currentTeam) {
+          setIsLanding(false);
           setOverlayView('workspace');
-          return;
-        } else if (hashView === 'register') {
-          setOverlayView('register');
-          return;
-        } else if (hashView === 'admin') {
-          setOverlayView('admin');
           return;
         }
       }
 
-      const parsed = parsePath(window.location.pathname);
+      if (
+        event.state?.overlay === 'register' ||
+        pathname === '/register' ||
+        window.location.hash === '#register'
+      ) {
+        setIsLanding(false);
+        setOverlayView('register');
+        return;
+      }
+
+      if (
+        event.state?.overlay === 'admin' ||
+        pathname === '/admin' ||
+        window.location.hash === '#admin'
+      ) {
+        setIsLanding(false);
+        setOverlayView('admin');
+        return;
+      }
+
+      // If overlay was open, close overlay
+      if (overlayView) {
+        setOverlayView(null);
+        document.body.style.overflow = "";
+        const lenis = (window as any).lenis;
+        if (lenis && typeof lenis.start === "function") {
+          lenis.start();
+        }
+      }
+
       const sectionFromState = event.state?.sectionId || event.state?.section;
 
       if (parsed.isLanding || sectionFromState === "landing") {
@@ -436,21 +467,22 @@ export default function App() {
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [overlayView, currentTeam, closeOverlayAndLogout]);
+  }, [overlayView, currentTeam]);
 
   // Direct URL access initialization on first mount
   useEffect(() => {
-    if (window.location.hash === '#workspace' && currentTeam) {
+    const pathname = window.location.pathname;
+    if ((window.location.hash === '#workspace' || pathname === '/workspace') && currentTeam) {
       setIsLanding(false);
       setOverlayView('workspace');
       return;
     }
-    if (window.location.hash === '#register') {
+    if (window.location.hash === '#register' || pathname === '/register') {
       setIsLanding(false);
       setOverlayView('register');
       return;
     }
-    if (window.location.hash === '#admin') {
+    if (window.location.hash === '#admin' || pathname === '/admin') {
       setIsLanding(false);
       setOverlayView('admin');
       return;
@@ -458,6 +490,11 @@ export default function App() {
     if (initialRoute.activeSectionId === 'workspace' && currentTeam) {
       setIsLanding(false);
       setOverlayView('workspace');
+      return;
+    }
+    if (initialRoute.activeSectionId === 'admin') {
+      setIsLanding(false);
+      setOverlayView('admin');
       return;
     }
 
@@ -799,8 +836,8 @@ export default function App() {
                         localStorage.setItem("dakshina_current_team", JSON.stringify(teamData));
                       } catch {}
                       setOverlayView('workspace');
-                      if (window.location.hash !== '#workspace') {
-                        window.history.pushState({ overlay: 'workspace' }, '', '#workspace');
+                      if (window.location.pathname !== '/workspace') {
+                        window.history.pushState({ overlay: 'workspace' }, '', '/workspace');
                       }
                     }}
                   />

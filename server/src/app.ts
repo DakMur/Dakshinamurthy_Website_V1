@@ -10,6 +10,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 const allowedOrigins = [
+  'https://vedanta-makeathon.vercel.app',
   'https://dakshinamurthy-website-v1-client.vercel.app',
   'http://localhost:3000',
   'http://localhost:5173',

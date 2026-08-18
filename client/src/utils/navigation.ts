@@ -5,52 +5,60 @@ export interface NavSection {
   aliases: string[];
 }
 
+export const BASE_DOMAIN = "https://vedanta-makeathon.vercel.app";
+
 export const NAV_SECTIONS: NavSection[] = [
   {
     id: "prathama-prakasha",
-    path: "/dakshinamurthy-darshini/prathama-prakasha",
+    path: "/prathama-prakasha",
     label: "Prathama Prakasa",
     aliases: ["prathama", "prathama-prakasa", "storytelling", "wisdom"],
   },
   {
     id: "technical-workshop",
-    path: "/dakshinamurthy-darshini/technical-workshop",
+    path: "/technical-workshop",
     label: "Technical Workshop",
     aliases: ["workshop", "param-workshop", "technical-workshop"],
   },
   {
     id: "tattva-darshana",
-    path: "/dakshinamurthy-darshini/tattva-darshana",
+    path: "/tattva-darshana",
     label: "Tattva Darśana",
     aliases: ["tattva", "tattva-darsana", "domains"],
   },
   {
     id: "innovation-timeline",
-    path: "/dakshinamurthy-darshini/innovation-timeline",
+    path: "/innovation-timeline",
     label: "Innovation Timeline",
     aliases: ["timeline", "chronology-timeline", "flow", "marga-darshana"],
   },
   {
     id: "notice-board",
-    path: "/dakshinamurthy-darshini/notice-board",
+    path: "/notice-board",
     label: "Notice Board",
     aliases: ["notices", "notice-board", "sucana-patta"],
   },
   {
     id: "registration",
-    path: "/dakshinamurthy-darshini/registration",
+    path: "/registration",
     label: "Registration",
-    aliases: ["registration", "admin", "register", "login"],
+    aliases: ["registration", "register", "login"],
   },
   {
     id: "workspace",
-    path: "/dakshinamurthy-darshini/workspace",
+    path: "/workspace",
     label: "Team Workspace",
     aliases: ["workspace", "team-workspace", "dashboard"],
   },
+  {
+    id: "admin",
+    path: "/admin",
+    label: "Admin Panel",
+    aliases: ["admin", "control-panel"],
+  },
 ];
 
-export const LANDING_PATH = "/dakshinamurthy-darshini";
+export const LANDING_PATH = "/";
 
 export function normalizePathname(pathname: string): string {
   const clean = pathname.trim().replace(/\/+$/, "") || "/";
@@ -58,7 +66,12 @@ export function normalizePathname(pathname: string): string {
 }
 
 export function parsePath(pathname: string): { isLanding: boolean; activeSectionId: string } {
-  const clean = normalizePathname(pathname);
+  let clean = normalizePathname(pathname);
+
+  // Strip legacy subpath prefix if present (e.g. /dakshinamurthy-darshini/...)
+  if (clean.startsWith("/dakshinamurthy-darshini")) {
+    clean = clean.replace(/^\/dakshinamurthy-darshini/, "") || "/";
+  }
 
   // Check if landing page
   if (
@@ -77,12 +90,11 @@ export function parsePath(pathname: string): { isLanding: boolean; activeSection
     }
   }
 
-  // Check aliases (e.g. /dakshinamurthy-darshini/tattva or /tattva or /domains)
+  // Check aliases (e.g. /tattva or /domains)
   for (const sec of NAV_SECTIONS) {
     for (const alias of sec.aliases) {
       if (
         clean === `/${alias}` ||
-        clean === `/dakshinamurthy-darshini/${alias}` ||
         clean.endsWith(`/${alias}`)
       ) {
         return { isLanding: false, activeSectionId: sec.id };
@@ -90,21 +102,21 @@ export function parsePath(pathname: string): { isLanding: boolean; activeSection
     }
   }
 
-  // If path starts with /dakshinamurthy-darshini/... but unknown subsection, treat as section page
-  if (clean.startsWith("/dakshinamurthy-darshini")) {
-    return { isLanding: false, activeSectionId: "prathama-prakasha" };
-  }
-
   // Default to landing
   return { isLanding: true, activeSectionId: "prathama-prakasha" };
 }
 
 export function getSectionPath(sectionId: string): string {
-  if (sectionId === "landing" || sectionId === "home") {
+  if (sectionId === "landing" || sectionId === "home" || sectionId === "") {
     return LANDING_PATH;
   }
   const found = NAV_SECTIONS.find(
     (s) => s.id === sectionId || s.aliases.includes(sectionId)
   );
-  return found ? found.path : `/dakshinamurthy-darshini/${sectionId}`;
+  return found ? found.path : `/${sectionId}`;
+}
+
+export function getFullUrl(path: string = "/"): string {
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  return `${BASE_DOMAIN}${cleanPath === "/" ? "" : cleanPath}`;
 }

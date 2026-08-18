@@ -142,7 +142,9 @@ export default function AdminControlPanel({
     }
 
     // Push an isolated history entry so browser Back can be intercepted
-    window.history.pushState({ view: 'admin' }, '', '#admin');
+    if (window.location.pathname !== '/admin') {
+      window.history.pushState({ view: 'admin' }, '', '/admin');
+    }
 
     const handlePopState = (_event: PopStateEvent) => {
       // Back button pressed — perform logout and return to registration page
@@ -162,9 +164,9 @@ export default function AdminControlPanel({
       if (rootScrollContainer) {
         rootScrollContainer.classList.remove('overflow-hidden');
       }
-      // Clean up the #admin hash if still present
-      if (window.location.hash === '#admin') {
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      // Clean up the /admin path or #admin hash if still present
+      if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
+        window.history.replaceState(null, '', '/registration');
       }
     };
   }, [onLogout]);
