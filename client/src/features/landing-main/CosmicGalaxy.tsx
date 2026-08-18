@@ -529,7 +529,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
   }, [isWarping]);
 
   return (
-    <div className="fixed inset-0 w-screen h-[100dvh] z-[-1] pointer-events-none overflow-hidden select-none bg-[#07070a]">
+    <div className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden select-none">
       {/* CSS Keyframes for travelling light and sequential ambient animations */}
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -868,7 +868,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       {/* 2. Star Layer + Galaxy Canvas (Three.js Canvas, screens over background) */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full block transform-gpu z-10 relative"
+        className="w-full h-full block transform-gpu z-10 relative pointer-events-none"
         style={{ mixBlendMode: "screen" }}
       />
     </div>

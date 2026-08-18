@@ -67,16 +67,17 @@
 /* Base resets & scroll behavior */
 html,
 body {
-  background-color: #07070a !important;
+  background-color: #07070a;
   color: #ffffff;
   margin: 0;
   padding: 0;
   width: 100%;
   min-height: 100%;
-  overflow-x: hidden;
-  /* Prevent mobile elastic rubber-band overscroll white bleed */
-  overscroll-behavior-y: none;
+  /* Enable touch panning explicitly so mobile scrolling works smoothly */
+  touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {

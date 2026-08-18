@@ -346,13 +346,13 @@ export default function App() {
   const handleCloseDomainModal = useCallback(() => setSelectedDomain(null), []);
 
   return (
-    <div className="relative min-h-screen text-white selection:bg-gold-vintage selection:text-black font-sans">
+    <div className="relative w-full min-h-screen text-white selection:bg-gold-vintage selection:text-black font-sans">
 
-      {/* Fixed Background Gradient Layer */}
-      <div className="fixed inset-0 z-[-20] bg-[#07070a] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-[#07070a] pointer-events-none transform-gpu" />
+      {/* Fixed Subtle Ambient Gradient Layer behind canvas */}
+      <div className="fixed inset-0 z-[-1] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black/40 to-transparent pointer-events-none transform-gpu" />
 
       {/* Persistent WebGL Background Container */}
-      <div className="fixed inset-0 w-screen h-[100dvh] z-[-1] pointer-events-none overflow-hidden bg-[#07070a]">
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
         <Suspense fallback={null}>
           <WebGLErrorBoundary>
             <CosmicGalaxy
