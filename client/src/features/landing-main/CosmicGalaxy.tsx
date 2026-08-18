@@ -454,7 +454,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         return;
       }
       animationId = window.requestAnimationFrame(tick);
-      
+
       // 1. UPDATE TIMER FIRST (Required for THREE.Timer)
       if (clock && typeof (clock as any).update === 'function') {
         (clock as any).update(timestamp);
@@ -465,7 +465,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       // Fallback Safety: Use fixed ~60fps step if timer fails to return delta
       const safeDelta = Math.min(delta > 0 ? delta : 0.016, 0.033);
       animTimeRef.current += safeDelta;
-      
+
       const elapsedTime = animTimeRef.current;
 
       if (starsMaterial) starsMaterial.uniforms.uTime.value = elapsedTime;
@@ -473,7 +473,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       if (sparklesMaterial) sparklesMaterial.uniforms.uTime.value = elapsedTime;
 
       if (galaxyMaterial) {
-        galaxyMaterial.opacity = 0.6 + 0.16 * Math.sin(elapsedTime * (Math.PI * 2 / 14));
+        galaxyMaterial.opacity = 0.9 + 0.1 * Math.sin(elapsedTime * (Math.PI * 2 / 14));
         galaxyMaterial.size = parameters.size * (0.92 + 0.08 * Math.sin(elapsedTime * (Math.PI * 2 / 14)));
       }
 
