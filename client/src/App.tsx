@@ -151,7 +151,7 @@ export default function App() {
       }
     }
 
-    if (effectiveSectionId === "workspace") {
+    if (effectiveSectionId === "workspace" || effectiveSectionId === "registration" || effectiveSectionId === "register") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       scrollLockTimeoutRef.current = window.setTimeout(() => {
         isProgrammaticScrollRef.current = false;
@@ -187,10 +187,12 @@ export default function App() {
   // Return to landing page
   const navigateToLanding = useCallback(() => {
     setIsLanding(true);
+    setActiveSection("landing");
+    activeSectionRef.current = "landing";
     setSelectedDomain(null);
     setIsMobileMenuOpen(false);
     if (window.location.pathname !== LANDING_PATH && window.location.pathname !== "/") {
-      window.history.pushState(null, "", LANDING_PATH);
+      window.history.pushState({ sectionId: "landing" }, "", LANDING_PATH);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -221,24 +223,29 @@ export default function App() {
 
   // Handle browser Back and Forward buttons (popstate)
   useEffect(() => {
-    const handlePopState = () => {
+    const handlePopState = (event: PopStateEvent) => {
       const parsed = parsePath(window.location.pathname);
-      if (parsed.isLanding) {
+      const sectionFromState = event.state?.sectionId || event.state?.section;
+
+      if (parsed.isLanding || sectionFromState === "landing") {
         setIsLanding(true);
+        setActiveSection("landing");
+        activeSectionRef.current = "landing";
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
+        const targetSection = sectionFromState || parsed.activeSectionId;
         setIsLanding(false);
-        setActiveSection(parsed.activeSectionId);
-        activeSectionRef.current = parsed.activeSectionId;
+        setActiveSection(targetSection);
+        activeSectionRef.current = targetSection;
 
-        if (parsed.activeSectionId === "workspace") {
+        if (targetSection === "workspace" || targetSection === "registration" || targetSection === "register") {
           window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         }
 
         // Position viewport at section without creating additional history entries
         setTimeout(() => {
-          const el = document.getElementById(parsed.activeSectionId);
+          const el = document.getElementById(targetSection);
           if (el) {
             isProgrammaticScrollRef.current = true;
             const lenis = (window as any).lenis;
@@ -263,7 +270,7 @@ export default function App() {
   // Direct URL access initialization on first mount
   useEffect(() => {
     if (!initialRoute.isLanding && initialRoute.activeSectionId) {
-      if (initialRoute.activeSectionId === "workspace") {
+      if (initialRoute.activeSectionId === "workspace" || initialRoute.activeSectionId === "registration" || initialRoute.activeSectionId === "register") {
         window.scrollTo({ top: 0, behavior: "auto" });
         return;
       }
@@ -285,7 +292,7 @@ export default function App() {
 
   // ScrollSpy: observe viewport scroll and passively synchronize active navbar item and URL
   useEffect(() => {
-    if (isLanding || activeSection === "workspace") return;
+    if (isLanding || activeSection === "workspace" || activeSection === "registration" || activeSection === "register" || activeSection === "admin") return;
 
     let ticking = false;
 
@@ -296,7 +303,7 @@ export default function App() {
       }
 
       const sectionElements = NAV_SECTIONS
-        .filter((sec) => sec.id !== "workspace")
+        .filter((sec) => sec.id !== "workspace" && sec.id !== "registration" && sec.id !== "register")
         .map((sec) => document.getElementById(sec.id))
         .filter((el): el is HTMLElement => el !== null);
 
@@ -443,8 +450,40 @@ export default function App() {
             <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
           </Suspense>
         </main>
+      ) : activeSection === "registration" || activeSection === "register" ? (
+        /* 2. STANDALONE REGISTRATION VIEW */
+        <main className="relative z-10 w-full min-h-screen pt-16 sm:pt-20 pb-16 px-4 max-w-5xl mx-auto">
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <RegistrationFeature
+              currentUser={currentUser}
+              currentTeam={currentTeam}
+              onLogin={(usr) => setCurrentUser(usr)}
+              onLogout={() => {
+                setCurrentUser(null);
+                setCurrentTeam(null);
+                try {
+                  localStorage.removeItem("dakshina_current_team");
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("admin_token");
+                  sessionStorage.removeItem("dakshina_current_team");
+                  sessionStorage.removeItem("token");
+                } catch {}
+              }}
+              onTeamLogin={(t) => {
+                setCurrentTeam(t);
+                try {
+                  localStorage.setItem("dakshina_current_team", JSON.stringify(t));
+                } catch {}
+                scrollToSection("workspace", true);
+              }}
+              onNavigateWorkspace={() => scrollToSection("workspace", true)}
+              onRefreshData={loadDatabase}
+              onBack={navigateToLanding}
+            />
+          </Suspense>
+        </main>
       ) : activeSection === "workspace" ? (
-        /* 2. DEDICATED TEAM WORKSPACE VIEW */
+        /* 3. STANDALONE TEAM WORKSPACE VIEW */
         <main className="relative z-10 w-full min-h-screen">
           <Suspense fallback={<div className="min-h-screen" />}>
             {currentTeam ? (
@@ -469,6 +508,7 @@ export default function App() {
                   scrollToSection("registration", true);
                 }}
                 onNavigateHome={navigateToLanding}
+                onBack={navigateToLanding}
               />
             ) : (
               <div className="pt-16 md:pt-20 pb-12 flex flex-col items-center justify-center">
@@ -503,7 +543,7 @@ export default function App() {
           </Suspense>
         </main>
       ) : (
-        /* 3. CONTINUOUS FINITE SINGLE-PAGE SECTION EXPERIENCE */
+        /* 4. CONTINUOUS SHOWCASE LANDING PAGE */
         <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col space-y-20 md:space-y-28 pt-6">
           <Suspense fallback={<div className="min-h-screen" />}>
 
@@ -543,7 +583,7 @@ export default function App() {
               />
             </section>
 
-            {/* SECTION 3: INNOVATION TIMELINE & CHRONOLOGY */}
+            {/* SECTION 4: INNOVATION TIMELINE & CHRONOLOGY */}
             <section id="innovation-timeline" className="scroll-mt-8 space-y-12 text-center py-4">
               <div className="space-y-2 max-w-2xl mx-auto">
                 <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
@@ -561,36 +601,9 @@ export default function App() {
               <TimelineSection timeline={timeline} loadTimeline={loadTimeline} />
             </section>
 
-            {/* SECTION 4: NOTICE BOARD */}
+            {/* SECTION 5: NOTICE BOARD */}
             <section id="notice-board" className="scroll-mt-8 py-4">
               <NoticeBoard setRoute={scrollToSection} />
-            </section>
-
-            {/* SECTION 5: REGISTRATION / ADMIN WORKSPACE */}
-            <section id="registration" className="scroll-mt-8 py-4 w-full">
-              <RegistrationFeature
-                currentUser={currentUser}
-                currentTeam={currentTeam}
-                onLogin={(usr) => setCurrentUser(usr)}
-                onLogout={() => {
-                  setCurrentUser(null);
-                  setCurrentTeam(null);
-                  try {
-                    localStorage.removeItem("dakshina_current_team");
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("admin_token");
-                  } catch {}
-                }}
-                onTeamLogin={(t) => {
-                  setCurrentTeam(t);
-                  try {
-                    localStorage.setItem("dakshina_current_team", JSON.stringify(t));
-                  } catch {}
-                  scrollToSection("workspace", true);
-                }}
-                onNavigateWorkspace={() => scrollToSection("workspace", true)}
-                onRefreshData={loadDatabase}
-              />
             </section>
 
           </Suspense>

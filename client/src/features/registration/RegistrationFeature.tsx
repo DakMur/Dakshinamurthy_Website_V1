@@ -15,6 +15,7 @@ interface RegistrationFeatureProps {
   onTeamLogin?: (team: Team) => void;
   onNavigateWorkspace?: () => void;
   onRefreshData: () => void;
+  onBack?: () => void;
 }
 
 export default function RegistrationFeature(props: RegistrationFeatureProps) {
@@ -119,6 +120,7 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
               onLoginSuccess={handleLoginSuccess}
               onAdminBypass={handleAdminBypass}
               onRegisterClick={handleGoToRegister}
+              onBack={props.onBack}
             />
           </motion.div>
         )}
@@ -141,6 +143,8 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
               currentUser={props.currentUser}
               onUpdateTeam={(updated) => setTeam(updated)}
               onLogout={handleLogout}
+              onNavigateHome={props.onBack}
+              onBack={props.onBack}
             />
           </motion.div>
         )}

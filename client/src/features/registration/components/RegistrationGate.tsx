@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Key from 'lucide-react/dist/esm/icons/key';
 import UserPlus from 'lucide-react/dist/esm/icons/user-plus';
 import LogIn from 'lucide-react/dist/esm/icons/log-in';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
 import { Team, RegistrationConfig } from "../../../types/types";
 
 interface RegistrationGateProps {
@@ -9,9 +10,10 @@ interface RegistrationGateProps {
   onLoginSuccess: (team: Team) => void;
   onAdminBypass: () => void;
   onRegisterClick: () => void;
+  onBack?: () => void;
 }
 
-export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass, onRegisterClick }: RegistrationGateProps) {
+export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass, onRegisterClick, onBack }: RegistrationGateProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -144,6 +146,15 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
 
   return (
     <div className="max-w-md mx-auto pt-0 pb-12 px-4 w-full">
+      {onBack && (
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-4 text-slate-400 hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2 font-mono text-xs"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Darśini
+        </button>
+      )}
       {renderBanner()}
       <div className="p-8 rounded-2xl glass-panel border border-gold-vintage/30 flex flex-col gap-6 relative overflow-hidden">
         <div className="text-center space-y-2 relative z-10">

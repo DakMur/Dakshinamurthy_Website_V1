@@ -100,6 +100,9 @@ export function parsePath(pathname: string): { isLanding: boolean; activeSection
 }
 
 export function getSectionPath(sectionId: string): string {
+  if (sectionId === "landing" || sectionId === "home") {
+    return LANDING_PATH;
+  }
   const found = NAV_SECTIONS.find(
     (s) => s.id === sectionId || s.aliases.includes(sectionId)
   );

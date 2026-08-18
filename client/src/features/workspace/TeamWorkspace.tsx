@@ -20,6 +20,7 @@ interface TeamWorkspaceProps {
   onUpdateTeam?: (team: Team) => void;
   onLogout?: () => void;
   onNavigateHome?: () => void;
+  onBack?: () => void;
 }
 
 const SEMESTER_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -33,7 +34,9 @@ export default function TeamWorkspace({
   onUpdateTeam,
   onLogout,
   onNavigateHome,
+  onBack,
 }: TeamWorkspaceProps) {
+  const handleBack = onBack || onNavigateHome;
   // Global config fallback / fetch
   const [config, setConfig] = useState<RegistrationConfig>(
     initialConfig || {
@@ -378,9 +381,9 @@ export default function TeamWorkspace({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-3 flex-wrap">
-              {onNavigateHome && (
+              {handleBack && (
                 <button
-                  onClick={onNavigateHome}
+                  onClick={handleBack}
                   className="p-1.5 rounded-lg border border-white/10 hover:border-gold-vintage/40 text-slate-400 hover:text-white transition-colors cursor-pointer mr-1"
                   title="Return to Darśini Home"
                 >
