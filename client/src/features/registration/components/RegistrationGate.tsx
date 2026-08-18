@@ -211,11 +211,12 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
         <div className="mt-2 text-center relative z-10 border-t border-white/10 pt-6">
           <p className="text-xs text-slate-400 font-sans mb-3">Don't have an established team yet?</p>
           <button
+            type="button"
             onClick={onRegisterClick}
-            className="text-gold-vintage hover:text-white transition-colors text-xs font-mono border-b border-gold-vintage/30 pb-0.5 cursor-pointer inline-flex items-center gap-1.5"
+            className="px-6 py-2.5 rounded-xl border border-gold-vintage/40 bg-gold-vintage/10 hover:bg-gold-vintage/20 text-gold-vintage hover:text-white transition-all text-xs font-mono font-medium shadow-[0_0_12px_rgba(212,175,55,0.15)] cursor-pointer inline-flex items-center gap-2"
           >
-            <UserPlus className="w-3.5 h-3.5" />
-            Register
+            <UserPlus className="w-4 h-4" />
+            Register Team
           </button>
         </div>
       </div>

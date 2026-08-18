@@ -374,7 +374,7 @@ export default function TeamWorkspace({
   }, [onLogout]);
 
   return (
-    <div className="relative z-10 min-h-screen w-full bg-[#07070a]/70 backdrop-blur-sm text-white pt-16 sm:pt-20 pb-16 selection:bg-gold-vintage selection:text-black">
+    <div className="relative z-10 min-h-screen w-full bg-[#07070a] text-white pt-6 sm:pt-10 pb-16 selection:bg-gold-vintage selection:text-black">
       
       {/* ── Top Header Bar (Unified) ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-6 border-b border-white/10">

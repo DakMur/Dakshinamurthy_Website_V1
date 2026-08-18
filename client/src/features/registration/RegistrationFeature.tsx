@@ -13,6 +13,8 @@ interface RegistrationFeatureProps {
   onLogin: (user: any) => void;
   onLogout: () => void;
   onTeamLogin?: (team: Team) => void;
+  onRegisterClick?: () => void;
+  onAdminBypass?: () => void;
   onNavigateWorkspace?: () => void;
   onRefreshData: () => void;
   onBack?: () => void;
@@ -74,8 +76,7 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
     } catch {}
     if (props.onTeamLogin) {
       props.onTeamLogin(teamData);
-    }
-    if (props.onNavigateWorkspace) {
+    } else if (props.onNavigateWorkspace) {
       props.onNavigateWorkspace();
     } else {
       setView('workspace');
@@ -90,11 +91,19 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
       email: "admin@dakshina.org",
       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
     });
-    setView('admin');
+    if (props.onAdminBypass) {
+      props.onAdminBypass();
+    } else {
+      setView('admin');
+    }
   };
 
   const handleGoToRegister = () => {
-    setView('form');
+    if (props.onRegisterClick) {
+      props.onRegisterClick();
+    } else {
+      setView('form');
+    }
   };
 
   const handleLogout = () => {

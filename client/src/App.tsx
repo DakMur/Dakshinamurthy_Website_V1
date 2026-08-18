@@ -11,11 +11,12 @@ const WisdomLectures = lazy(() => import("./features/wisdom-lectures"));
 const TechnicalWorkshopSection = lazy(() => import("./features/technical-workshop/TechnicalWorkshopSection"));
 const PortalPage = lazy(() => import("./features/dimension-portal/PortalPage"));
 const TimelineSection = lazy(() => import("./features/timeline/TimelineSection"));
-const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
 const NoticeBoard = lazy(() => import("./features/notices/NoticeBoard"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
 const TeamWorkspace = lazy(() => import("./features/workspace/TeamWorkspace"));
-const AuthModal = lazy(() => import("./features/auth/AuthModal"));
+const RegistrationGate = lazy(() => import("./features/registration/components/RegistrationGate"));
+const RegistrationForm = lazy(() => import("./features/registration/components/RegistrationForm"));
+const AdminControlPanel = lazy(() => import("./features/registration/components/AdminControlPanel"));
 
 import Navbar from "./components/layout/Navbar";
 import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
@@ -23,7 +24,7 @@ import { WebGLErrorBoundary } from "./components/error/WebGLErrorBoundary";
 import Footer from "./components/layout/Footer";
 import { useDatabase } from "./hooks/useDatabase";
 import { useWarpEffect } from "./hooks/useWarpEffect";
-import { User, DomainContent, Team } from "./types/types";
+import { User, DomainContent, Team, RegistrationConfig } from "./types/types";
 import { NAV_SECTIONS, LANDING_PATH, parsePath, getSectionPath } from "./utils/navigation";
 
 export default function App() {
@@ -73,6 +74,26 @@ export default function App() {
     }
   });
 
+  // Global registration config state
+  const [registrationConfig, setRegistrationConfig] = useState<RegistrationConfig>({
+    status: 'Registration Open',
+    minMembers: 2,
+    maxMembers: 4,
+    disableTeamLogin: false,
+    allowDocumentUpload: true,
+    allowMemberEdits: true,
+  });
+
+  // Isolated Full-Viewport Overlay State: 'workspace' | 'register' | 'admin' | null
+  const [overlayView, setOverlayView] = useState<'workspace' | 'register' | 'admin' | null>(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.hash === "#workspace") return "workspace";
+      if (window.location.hash === "#register") return "register";
+      if (window.location.hash === "#admin") return "admin";
+    }
+    return null;
+  });
+
   // Mobile responsive menu active state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -91,6 +112,49 @@ export default function App() {
     domains, articles, timeline, quotes, comments, analytics, dailyQuote,
     setArticles, setAnalytics, loadDatabase, loadDomains, loadArticles, loadTimeline
   } = useDatabase();
+
+  // Fetch registration configuration
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch('/api/v1/registration/config');
+        if (!res.ok) return;
+        const raw = await res.json();
+        const data = raw?.data || raw;
+        if (data && typeof data === 'object') {
+          setRegistrationConfig((prev) => ({ ...prev, ...data }));
+        }
+      } catch (err) {
+        console.warn("Using fallback registration config:", err);
+      }
+    };
+    fetchConfig();
+  }, []);
+
+  // Lock background scroll whenever overlay is open
+  useEffect(() => {
+    if (overlayView) {
+      document.body.style.overflow = "hidden";
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.stop === "function") {
+        lenis.stop();
+      }
+    } else {
+      document.body.style.overflow = "";
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    };
+  }, [overlayView]);
 
   // Close mobile navigation drawer whenever active section changes
   useEffect(() => {
@@ -123,13 +187,108 @@ export default function App() {
       .catch((err) => console.error("Error incrementing analytics metrics:", err));
   }, [isLanding, activeSection, analytics.pageViews, setAnalytics]);
 
+  // Open full-viewport isolated overlay with hash and history entry
+  const openOverlay = useCallback((view: 'workspace' | 'register' | 'admin') => {
+    setOverlayView(view);
+    const hash = `#${view}`;
+    if (window.location.hash !== hash) {
+      window.history.pushState({ overlay: view }, '', hash);
+    }
+  }, []);
+
+  // Close overlay and return focus to inline registration section
+  const closeOverlayAndReturnToRegistration = useCallback(() => {
+    setOverlayView(null);
+    document.body.style.overflow = "";
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.start === "function") {
+      lenis.start();
+    }
+
+    const regPath = getSectionPath("registration");
+    if (window.location.hash) {
+      window.history.replaceState({ sectionId: "registration" }, "", regPath);
+    }
+
+    setIsLanding(false);
+    setActiveSection("registration");
+    activeSectionRef.current = "registration";
+
+    setTimeout(() => {
+      const el = document.getElementById("registration");
+      if (el) {
+        const lenisInstance = (window as any).lenis;
+        if (lenisInstance && typeof lenisInstance.scrollTo === "function") {
+          lenisInstance.scrollTo(el, { offset: -24, immediate: true });
+        } else {
+          const targetY = el.getBoundingClientRect().top + window.scrollY - 24;
+          window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
+        }
+      }
+    }, 60);
+  }, []);
+
+  // Close overlay, purge team session credentials, and return focus to registration
+  const closeOverlayAndLogout = useCallback(() => {
+    setCurrentTeam(null);
+    try {
+      localStorage.removeItem("dakshina_current_team");
+      localStorage.removeItem("token");
+      localStorage.removeItem("admin_token");
+      sessionStorage.removeItem("dakshina_current_team");
+      sessionStorage.removeItem("token");
+    } catch {}
+    closeOverlayAndReturnToRegistration();
+  }, [closeOverlayAndReturnToRegistration]);
+
+  // Team login success handler
+  const handleTeamLogin = useCallback((teamData: Team) => {
+    setCurrentTeam(teamData);
+    try {
+      localStorage.setItem("dakshina_current_team", JSON.stringify(teamData));
+    } catch {}
+    openOverlay('workspace');
+  }, [openOverlay]);
+
+  // Admin bypass / login handler
+  const handleAdminBypass = useCallback(() => {
+    setCurrentUser({
+      id: "bypass",
+      role: "admin",
+      name: "Sovereign Admin",
+      email: "admin@dakshina.org",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
+    });
+    openOverlay('admin');
+  }, [openOverlay]);
+
+  // Open full registration wizard
+  const handleOpenRegisterOverlay = useCallback(() => {
+    openOverlay('register');
+  }, [openOverlay]);
+
   // Scroll to target section smoothly with history & state update
   const scrollToSection = useCallback((sectionId: string, pushHistory = true) => {
-    // If user clicks registration and is already authenticated as a team, redirect to workspace
-    const effectiveSectionId = (sectionId === "registration" && currentTeam) ? "workspace" : sectionId;
+    if (overlayView) {
+      setOverlayView(null);
+      document.body.style.overflow = "";
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    }
 
     if (isLanding) {
       setIsLanding(false);
+    }
+
+    // If sectionId is workspace and team is authenticated, open workspace overlay
+    if (sectionId === "workspace") {
+      if (currentTeam) {
+        openOverlay('workspace');
+        return;
+      }
+      sectionId = "registration";
     }
 
     isProgrammaticScrollRef.current = true;
@@ -137,31 +296,23 @@ export default function App() {
       clearTimeout(scrollLockTimeoutRef.current);
     }
 
-    setActiveSection(effectiveSectionId);
-    activeSectionRef.current = effectiveSectionId;
+    setActiveSection(sectionId);
+    activeSectionRef.current = sectionId;
 
-    const targetPath = getSectionPath(effectiveSectionId);
+    const targetPath = getSectionPath(sectionId);
     if (pushHistory) {
       if (window.location.pathname !== targetPath) {
-        window.history.pushState({ sectionId: effectiveSectionId }, "", targetPath);
+        window.history.pushState({ sectionId }, "", targetPath);
       }
     } else {
       if (window.location.pathname !== targetPath) {
-        window.history.replaceState({ sectionId: effectiveSectionId }, "", targetPath);
+        window.history.replaceState({ sectionId }, "", targetPath);
       }
-    }
-
-    if (effectiveSectionId === "workspace" || effectiveSectionId === "registration" || effectiveSectionId === "register") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      scrollLockTimeoutRef.current = window.setTimeout(() => {
-        isProgrammaticScrollRef.current = false;
-      }, 500);
-      return;
     }
 
     // Smooth scroll to element in normal document flow
     const performScroll = () => {
-      const el = document.getElementById(effectiveSectionId);
+      const el = document.getElementById(sectionId);
       if (el) {
         const lenis = (window as any).lenis;
         if (lenis && typeof lenis.scrollTo === "function") {
@@ -182,10 +333,14 @@ export default function App() {
     scrollLockTimeoutRef.current = window.setTimeout(() => {
       isProgrammaticScrollRef.current = false;
     }, 1200);
-  }, [isLanding, currentTeam]);
+  }, [isLanding, currentTeam, overlayView, openOverlay]);
 
   // Return to landing page
   const navigateToLanding = useCallback(() => {
+    if (overlayView) {
+      setOverlayView(null);
+      document.body.style.overflow = "";
+    }
     setIsLanding(true);
     setActiveSection("landing");
     activeSectionRef.current = "landing";
@@ -195,7 +350,7 @@ export default function App() {
       window.history.pushState({ sectionId: "landing" }, "", LANDING_PATH);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [overlayView]);
 
   // Warp Speed Sequence triggers on Landing explore click
   const triggerWarpSpeed = useCallback(() => {
@@ -224,6 +379,27 @@ export default function App() {
   // Handle browser Back and Forward buttons (popstate)
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
+      // If overlay was open, close overlay and logout / return to continuous page
+      if (overlayView) {
+        closeOverlayAndLogout();
+        return;
+      }
+
+      // Check if navigating into an overlay via state or hash
+      if (event.state?.overlay || window.location.hash === '#workspace' || window.location.hash === '#register' || window.location.hash === '#admin') {
+        const hashView = (event.state?.overlay || window.location.hash.replace('#', '')) as 'workspace' | 'register' | 'admin';
+        if (hashView === 'workspace' && currentTeam) {
+          setOverlayView('workspace');
+          return;
+        } else if (hashView === 'register') {
+          setOverlayView('register');
+          return;
+        } else if (hashView === 'admin') {
+          setOverlayView('admin');
+          return;
+        }
+      }
+
       const parsed = parsePath(window.location.pathname);
       const sectionFromState = event.state?.sectionId || event.state?.section;
 
@@ -237,11 +413,6 @@ export default function App() {
         setIsLanding(false);
         setActiveSection(targetSection);
         activeSectionRef.current = targetSection;
-
-        if (targetSection === "workspace" || targetSection === "registration" || targetSection === "register") {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          return;
-        }
 
         // Position viewport at section without creating additional history entries
         setTimeout(() => {
@@ -265,15 +436,32 @@ export default function App() {
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [overlayView, currentTeam, closeOverlayAndLogout]);
 
   // Direct URL access initialization on first mount
   useEffect(() => {
+    if (window.location.hash === '#workspace' && currentTeam) {
+      setIsLanding(false);
+      setOverlayView('workspace');
+      return;
+    }
+    if (window.location.hash === '#register') {
+      setIsLanding(false);
+      setOverlayView('register');
+      return;
+    }
+    if (window.location.hash === '#admin') {
+      setIsLanding(false);
+      setOverlayView('admin');
+      return;
+    }
+    if (initialRoute.activeSectionId === 'workspace' && currentTeam) {
+      setIsLanding(false);
+      setOverlayView('workspace');
+      return;
+    }
+
     if (!initialRoute.isLanding && initialRoute.activeSectionId) {
-      if (initialRoute.activeSectionId === "workspace" || initialRoute.activeSectionId === "registration" || initialRoute.activeSectionId === "register") {
-        window.scrollTo({ top: 0, behavior: "auto" });
-        return;
-      }
       const timer = setTimeout(() => {
         const el = document.getElementById(initialRoute.activeSectionId);
         if (el) {
@@ -292,7 +480,7 @@ export default function App() {
 
   // ScrollSpy: observe viewport scroll and passively synchronize active navbar item and URL
   useEffect(() => {
-    if (isLanding || activeSection === "workspace" || activeSection === "registration" || activeSection === "register" || activeSection === "admin") return;
+    if (isLanding || overlayView || activeSection === "admin") return;
 
     let ticking = false;
 
@@ -303,7 +491,7 @@ export default function App() {
       }
 
       const sectionElements = NAV_SECTIONS
-        .filter((sec) => sec.id !== "workspace" && sec.id !== "registration" && sec.id !== "register")
+        .filter((sec) => sec.id !== "workspace")
         .map((sec) => document.getElementById(sec.id))
         .filter((el): el is HTMLElement => el !== null);
 
@@ -361,7 +549,7 @@ export default function App() {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [isLanding, activeSection]);
+  }, [isLanding, activeSection, overlayView]);
 
   // Like feedback triggers incrementing article likes real-time
   const handleLikeArticle = useCallback(async (articleId: string) => {
@@ -407,7 +595,7 @@ export default function App() {
               route={isLanding ? "landing" : activeSection}
               isWarping={isWarping}
               isExplore={!isLanding}
-              isModalOpen={selectedDomain !== null || isMobileMenuOpen}
+              isModalOpen={selectedDomain !== null || isMobileMenuOpen || overlayView !== null}
             />
           </WebGLErrorBoundary>
         </Suspense>
@@ -450,101 +638,9 @@ export default function App() {
             <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
           </Suspense>
         </main>
-      ) : activeSection === "registration" || activeSection === "register" ? (
-        /* 2. STANDALONE REGISTRATION VIEW */
-        <main className="relative z-10 w-full min-h-screen pt-16 sm:pt-20 pb-16 px-4 max-w-5xl mx-auto">
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <RegistrationFeature
-              currentUser={currentUser}
-              currentTeam={currentTeam}
-              onLogin={(usr) => setCurrentUser(usr)}
-              onLogout={() => {
-                setCurrentUser(null);
-                setCurrentTeam(null);
-                try {
-                  localStorage.removeItem("dakshina_current_team");
-                  localStorage.removeItem("token");
-                  localStorage.removeItem("admin_token");
-                  sessionStorage.removeItem("dakshina_current_team");
-                  sessionStorage.removeItem("token");
-                } catch {}
-              }}
-              onTeamLogin={(t) => {
-                setCurrentTeam(t);
-                try {
-                  localStorage.setItem("dakshina_current_team", JSON.stringify(t));
-                } catch {}
-                scrollToSection("workspace", true);
-              }}
-              onNavigateWorkspace={() => scrollToSection("workspace", true)}
-              onRefreshData={loadDatabase}
-              onBack={navigateToLanding}
-            />
-          </Suspense>
-        </main>
-      ) : activeSection === "workspace" ? (
-        /* 3. STANDALONE TEAM WORKSPACE VIEW */
-        <main className="relative z-10 w-full min-h-screen">
-          <Suspense fallback={<div className="min-h-screen" />}>
-            {currentTeam ? (
-              <TeamWorkspace
-                team={currentTeam}
-                currentUser={currentUser}
-                onUpdateTeam={(updated) => {
-                  setCurrentTeam(updated);
-                  try {
-                    localStorage.setItem("dakshina_current_team", JSON.stringify(updated));
-                  } catch {}
-                }}
-                onLogout={() => {
-                  setCurrentTeam(null);
-                  try {
-                    localStorage.removeItem("dakshina_current_team");
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("admin_token");
-                    sessionStorage.removeItem("dakshina_current_team");
-                    sessionStorage.removeItem("token");
-                  } catch {}
-                  scrollToSection("registration", true);
-                }}
-                onNavigateHome={navigateToLanding}
-                onBack={navigateToLanding}
-              />
-            ) : (
-              <div className="pt-16 md:pt-20 pb-12 flex flex-col items-center justify-center">
-                <AuthModal
-                  initialTab="login"
-                  currentTeam={currentTeam}
-                  onLoginSuccess={(team) => {
-                    setCurrentTeam(team);
-                    try {
-                      localStorage.setItem("dakshina_current_team", JSON.stringify(team));
-                    } catch {}
-                  }}
-                  onAdminBypass={() => {
-                    setCurrentUser({
-                      id: "bypass",
-                      role: "admin",
-                      name: "Sovereign Admin",
-                      email: "admin@dakshina.org",
-                      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
-                    });
-                    scrollToSection("registration", true);
-                  }}
-                  onNavigateWorkspace={() => {
-                    scrollToSection("workspace", true);
-                  }}
-                  onLogout={() => {
-                    setCurrentTeam(null);
-                  }}
-                />
-              </div>
-            )}
-          </Suspense>
-        </main>
       ) : (
-        /* 4. CONTINUOUS SHOWCASE LANDING PAGE */
-        <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col space-y-20 md:space-y-28 pt-6">
+        /* 2. CONTINUOUS SHOWCASE LANDING PAGE WITH INLINE REGISTRATION */
+        <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-16 flex flex-col space-y-20 md:space-y-28 pt-6">
           <Suspense fallback={<div className="min-h-screen" />}>
 
             {/* SECTION 1: PRATHAMA PRAKASHA / WISDOM LECTURES */}
@@ -606,6 +702,29 @@ export default function App() {
               <NoticeBoard setRoute={scrollToSection} />
             </section>
 
+            {/* SECTION 6: REGISTRATION & ACCESS */}
+            <section id="registration" className="scroll-mt-8 space-y-8 text-center py-4">
+              <div className="space-y-3 max-w-3xl mx-auto px-2">
+                <span className="font-mono text-[11px] md:text-xs uppercase text-gold-vintage/90 tracking-[0.28em] block">
+                  PARTICIPATION & ACCESS
+                </span>
+                <h2 className="font-display font-semibold sm:font-bold text-3xl sm:text-4xl md:text-5xl tracking-[0.16em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5D6] via-[#D4AF37] to-[#8C6B1C] uppercase drop-shadow-[0_2px_14px_rgba(212,175,55,0.3)] filter antialiased py-1">
+                  Team Registration
+                </h2>
+                <p className="text-xs md:text-sm text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-sans mt-2">
+                  Access your team workspace, manage team members, and submit your project documents and demo video for Dakshinamurthy Hackathon.
+                </p>
+                <div className="w-16 h-[1.5px] bg-gold-vintage/40 mx-auto mt-4" />
+              </div>
+
+              <RegistrationGate
+                config={registrationConfig}
+                onLoginSuccess={handleTeamLogin}
+                onAdminBypass={handleAdminBypass}
+                onRegisterClick={handleOpenRegisterOverlay}
+              />
+            </section>
+
           </Suspense>
         </main>
       )}
@@ -613,7 +732,7 @@ export default function App() {
       {/* Footer */}
       <Footer dailyQuote={dailyQuote} isLanding={isLanding} route={isLanding ? "landing" : activeSection} />
 
-      {/* Modal overlays */}
+      {/* Modal domain overlay */}
       <Suspense fallback={null}>
         <AnimatePresence>
           {selectedDomain && (
@@ -627,6 +746,87 @@ export default function App() {
           )}
         </AnimatePresence>
       </Suspense>
+
+      {/* Isolated Full-Viewport Overlay for Active Workspace or Full Registration Wizard / Admin Panel */}
+      <AnimatePresence>
+        {overlayView && (
+          <motion.div
+            key="workspace-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] h-screen w-screen bg-[#07070a] overflow-y-auto overscroll-contain"
+          >
+            {overlayView === 'workspace' && currentTeam && (
+              <Suspense fallback={
+                <div className="flex items-center justify-center min-h-screen">
+                  <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+                </div>
+              }>
+                <TeamWorkspace
+                  team={currentTeam}
+                  config={registrationConfig}
+                  currentUser={currentUser}
+                  onUpdateTeam={(updated) => {
+                    setCurrentTeam(updated);
+                    try {
+                      localStorage.setItem("dakshina_current_team", JSON.stringify(updated));
+                    } catch {}
+                  }}
+                  onLogout={closeOverlayAndLogout}
+                  onNavigateHome={closeOverlayAndReturnToRegistration}
+                  onBack={closeOverlayAndReturnToRegistration}
+                />
+              </Suspense>
+            )}
+
+            {overlayView === 'register' && (
+              <div className="min-h-screen w-full max-w-4xl mx-auto px-4 py-8 sm:py-12">
+                <Suspense fallback={
+                  <div className="flex items-center justify-center min-h-[50vh]">
+                    <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+                  </div>
+                }>
+                  <RegistrationForm
+                    config={registrationConfig}
+                    onBack={closeOverlayAndReturnToRegistration}
+                    onSuccess={(teamData) => {
+                      setCurrentTeam(teamData);
+                      try {
+                        localStorage.setItem("dakshina_current_team", JSON.stringify(teamData));
+                      } catch {}
+                      setOverlayView('workspace');
+                      if (window.location.hash !== '#workspace') {
+                        window.history.pushState({ overlay: 'workspace' }, '', '#workspace');
+                      }
+                    }}
+                  />
+                </Suspense>
+              </div>
+            )}
+
+            {overlayView === 'admin' && (
+              <div className="min-h-screen w-full max-w-5xl mx-auto px-4 py-8 sm:py-12">
+                <Suspense fallback={
+                  <div className="flex items-center justify-center min-h-[50vh]">
+                    <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+                  </div>
+                }>
+                  <AdminControlPanel
+                    currentUser={currentUser}
+                    config={registrationConfig}
+                    onLogin={(usr) => setCurrentUser(usr)}
+                    onLogout={closeOverlayAndLogout}
+                    onRefreshData={loadDatabase}
+                    onConfigUpdate={(updatedConfig) => setRegistrationConfig(updatedConfig)}
+                  />
+                </Suspense>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
