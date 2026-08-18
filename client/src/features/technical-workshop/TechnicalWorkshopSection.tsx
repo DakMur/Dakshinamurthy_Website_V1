@@ -404,26 +404,26 @@ export default function TechnicalWorkshopSection() {
             About the Workshops
           </h3>
           <ul className="text-left space-y-3 text-sm md:text-[0.94rem] text-slate-300 leading-relaxed font-sans">
-          <li className="flex items-start gap-2.5">
-            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-            <span>Learn how to code interactive AR/VR graphics with various devices.</span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-            <span>Explore Generative AI and its applications in generating images, videos, and more.</span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-            <span>Discover Brain-Computer Interfaces using EEG/EOG-based embedded control, robotic systems, and emotion control and synthesis.</span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-            <span>Explore Robotics and IoT through autonomous feedback control, robotic vision, and AI-powered IoT systems.</span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-            <span>Experience Param Open Blocks — IoT building blocks designed to achieve diverse input-output functionalities, and unlock exciting opportunities at Param's Makerspace.</span>
-          </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
+              <span>Learn how to code interactive AR/VR graphics with various devices.</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
+              <span>Explore Generative AI and its applications in generating images, videos, and more.</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
+              <span>Discover Brain-Computer Interfaces using EEG/EOG-based embedded control, robotic systems, and emotion control and synthesis.</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
+              <span>Explore Robotics and IoT through autonomous feedback control, robotic vision, and AI-powered IoT systems.</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
+              <span>Experience Param Open Blocks — IoT building blocks designed to achieve diverse input-output functionalities, and unlock exciting opportunities at Param's Makerspace.</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -435,10 +435,10 @@ export default function TechnicalWorkshopSection() {
         </h4>
         <p className="text-sm md:text-base text-gold-vintage/80 italic font-serif">Building ideas. Supporting innovation.</p>
         <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-          During the <strong className="text-white">Makeathon</strong>, Param Makerspace will provide hands-on support to help participants <strong className="text-white">build, prototype, troubleshoot, and develop their projects</strong>.
+          Before the <strong className="text-white">Makeathon</strong>, Param Makerspace will provide hands-on support to help participants <strong className="text-white">build, prototype, troubleshoot, and develop their projects</strong>.
         </p>
         <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-          The Makerspace will also provide <strong className="text-white">live support throughout the hackathon</strong>, giving participants access to guidance, tools, and practical assistance as they turn their ideas into working prototypes.
+          The Makerspace will provide <strong className="text-white">live support throughout the Makeathon</strong>, giving participants access to guidance, tools, and practical assistance as they turn their ideas into working prototypes.
         </p>
         <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
           From experimentation to execution, the Makerspace helps bridge the gap between <strong className="text-white">an idea and a real project</strong>.
