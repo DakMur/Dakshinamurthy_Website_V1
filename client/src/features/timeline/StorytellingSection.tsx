@@ -76,6 +76,60 @@ export default function StorytellingSection({ articles, onLike, onExploreDomain,
     <div className="space-y-24 py-12" style={{ contain: "content" }}>
       {visibleArticles.map((article, idx) => {
         const isLeftImage = idx % 2 === 0;
+
+        /* ── Special layout: "Why are we doing this?" — no image, premium glass card ── */
+        const isWhySection = article.id === "a4" || article.id === "why-are-we-doing-this" || (article.title && article.title.toLowerCase().includes("why are we doing this"));
+        if (isWhySection) {
+          return (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-4xl mx-auto w-full"
+            >
+              <div className="rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-8 md:p-12 space-y-5 text-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:border-gold-vintage/25 transition-all">
+                {/* Tag */}
+                <div className="flex items-center justify-center gap-2 text-xs font-mono text-gold-vintage uppercase tracking-widest">
+                  <Clock className="w-3.5 h-3.5 text-gold-vintage" />
+                  <span>{article.tag || article.headerLabel || "WHY DO THIS?"}</span>
+                </div>
+
+                {/* Title */}
+                <h3 className="font-display font-medium text-2xl md:text-3.5xl text-slate-100 tracking-wider leading-snug uppercase">
+                  {article.title}
+                </h3>
+
+                {/* Subtitle */}
+                <h4 className="font-serif italic text-base md:text-lg text-gold-vintage/90">
+                  {article.subtitle}
+                </h4>
+
+                <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto" />
+
+                {/* Excerpt / Content (clamped to 3 lines with ellipsis, full content in modal) */}
+                <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-2xl mx-auto line-clamp-3">
+                  {article.excerpt || article.content}
+                </p>
+
+                {/* Step Inside button */}
+                <div className="pt-3">
+                  <button
+                    onClick={() => {
+                      setSelectedArticle(article);
+                      fetch(`/api/v1/articles/${article.id}/view`, { method: "POST" });
+                    }}
+                    className="px-7 py-3 rounded-full border border-gold-vintage/35 hover:border-gold-bright bg-gold-vintage/5 hover:bg-gold-vintage/15 text-xs font-mono font-semibold tracking-widest text-gold-vintage hover:text-gold-bright transition-all cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]"
+                  >
+                    {article.buttonText || article.actionText || "Step Inside"}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          );
+        }
+
         return (
           <motion.div
             key={article.id}
