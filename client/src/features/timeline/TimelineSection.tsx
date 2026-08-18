@@ -46,18 +46,31 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
       return;
     }
 
-    // Otherwise self-fetch from the Supabase-backed API
+    // Otherwise self-fetch from the Supabase-backed API (cache-bust to always get fresh data)
     let cancelled = false;
     async function fetchTimeline() {
       try {
-        const res = await fetch('/api/v1/timeline');
+        const res = await fetch(`/api/v1/timeline?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (!cancelled) {
           const items: TimelineItem[] = data.timeline || [];
           if (items.length > 0) {
-            setActiveTimeline(items.map(mapToTimelineStep));
+            // Map all DB fields: phase_number, phase_tag, title, quote, description, date_text
+            setActiveTimeline(items.map((item, idx) => ({
+              id: String(item.id),
+              order: item.phase_number ?? item.display_order ?? idx + 1,
+              stage: item.phase_tag || 'Phase',
+              title: item.title,
+              subtitle: item.quote || '',
+              description: item.description || '',
+              quote: item.quote || '',
+              quoteAuthor: item.date_text || undefined,
+              image: '',
+              milestone: item.phase_tag || '',
+            })));
           } else {
+            // Only fall back to static constants when the API returns empty
             setActiveTimeline(FALLBACK_TIMELINE);
           }
         }

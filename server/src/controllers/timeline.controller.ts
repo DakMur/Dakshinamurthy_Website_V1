@@ -12,6 +12,10 @@ export async function getTimelineHandler(req: Request, res: Response) {
       .order('display_order', { ascending: true });
 
     if (error) throw error;
+    // Strict cache-busting: prevent browser/proxy caching of timeline data
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.json({ success: true, timeline: data || [] });
   } catch (err: any) {
     console.error('getTimelineHandler error:', err);

@@ -122,6 +122,34 @@ export default function AdminControlPanel({
     if (activeTab === "timeline") fetchTimeline();
   }, [activeTab]);
 
+  // Full-page isolation + browser back-button logout
+  useEffect(() => {
+    if (!currentUser) return;
+
+    // Lock body scroll while admin panel is open
+    document.body.style.overflow = 'hidden';
+
+    // Push an isolated history entry so browser Back can be intercepted
+    window.history.pushState({ view: 'admin' }, '', '#admin');
+
+    const handlePopState = (_event: PopStateEvent) => {
+      // Back button pressed — perform logout and return to registration page
+      onLogout();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      // Restore body scroll when panel unmounts
+      document.body.style.overflow = '';
+      // Clean up the #admin hash if still present
+      if (window.location.hash === '#admin') {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    };
+  }, [currentUser, onLogout]);
+
   // Sync config props → local state when parent config updates
   useEffect(() => {
     setRegStatus(config?.status || "Registrations Closed");
@@ -555,7 +583,8 @@ export default function AdminControlPanel({
   ];
 
   return (
-    <div className="space-y-8 py-4 w-full">
+    <div className="fixed inset-0 z-[100] min-h-screen w-full bg-[#07070a] overflow-y-auto p-4 sm:p-8">
+      <div className="space-y-8 py-4 w-full max-w-7xl mx-auto">
       {/* Admin Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/5 pb-6">
         <div>
@@ -1243,6 +1272,7 @@ export default function AdminControlPanel({
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }
