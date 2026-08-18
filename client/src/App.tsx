@@ -34,24 +34,28 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>(initialRoute.activeSectionId);
 
   // Smooth scrolling engine
+  const [lenis, setLenis] = useState<Lenis | null>(null);
+
   useEffect(() => {
-    const lenis = new Lenis({
+    const lenisInstance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
 
+    setLenis(lenisInstance);
     // Expose lenis globally for modals to pause it
-    (window as any).lenis = lenis;
+    (window as any).lenis = lenisInstance;
 
     function raf(time: number) {
-      lenis.raf(time);
+      lenisInstance.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
     return () => {
-      lenis.destroy();
+      lenisInstance.destroy();
       delete (window as any).lenis;
+      setLenis(null);
     };
   }, []);
 
@@ -131,30 +135,26 @@ export default function App() {
     fetchConfig();
   }, []);
 
-  // Lock background scroll whenever overlay is open
+  // Pause / Resume smooth scroll and lock body scroll whenever overlay is open
   useEffect(() => {
     if (overlayView) {
-      document.body.style.overflow = "hidden";
-      const lenis = (window as any).lenis;
-      if (lenis && typeof lenis.stop === "function") {
-        lenis.stop();
-      }
+      // Pause background smooth scroll
+      lenis?.stop();
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
     } else {
-      document.body.style.overflow = "";
-      const lenis = (window as any).lenis;
-      if (lenis && typeof lenis.start === "function") {
-        lenis.start();
-      }
+      // Resume background smooth scroll
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+      lenis?.start();
     }
 
     return () => {
-      document.body.style.overflow = "";
-      const lenis = (window as any).lenis;
-      if (lenis && typeof lenis.start === "function") {
-        lenis.start();
-      }
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+      lenis?.start();
     };
-  }, [overlayView]);
+  }, [overlayView, lenis]);
 
   // Close mobile navigation drawer whenever active section changes
   useEffect(() => {
@@ -756,7 +756,9 @@ export default function App() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] h-screen w-screen bg-[#07070a] overflow-y-auto overscroll-contain"
+            className="fixed inset-0 z-[100] h-screen w-screen bg-[#07070a] overflow-y-auto overscroll-contain touch-pan-y"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
           >
             {overlayView === 'workspace' && currentTeam && (
               <Suspense fallback={

@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import RegistrationGate from "./components/RegistrationGate";
 import RegistrationForm from "./components/RegistrationForm";
@@ -21,6 +21,7 @@ interface RegistrationFeatureProps {
 }
 
 export default function RegistrationFeature(props: RegistrationFeatureProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<'gate' | 'form' | 'workspace' | 'admin'>(() => {
     return props.currentTeam ? 'workspace' : 'gate';
   });
@@ -34,6 +35,13 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
     allowMemberEdits: true,
   });
   const [isLoading, setIsLoading] = useState(true);
+
+  // Reset scroll container position to top on mount and view changes
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [view]);
 
   useEffect(() => {
     if (props.currentTeam) {
@@ -120,63 +128,70 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-start pt-8 pb-12 px-4 space-y-4 z-10 relative">
-      <AnimatePresence mode="wait">
-        {view === 'gate' && (
-          <motion.div key="gate" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
-            <RegistrationGate
-              config={config}
-              onLoginSuccess={handleLoginSuccess}
-              onAdminBypass={handleAdminBypass}
-              onRegisterClick={handleGoToRegister}
-              onBack={props.onBack}
-            />
-          </motion.div>
-        )}
-
-        {view === 'form' && (
-          <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
-            <RegistrationForm
-              config={config}
-              onBack={() => setView('gate')}
-              onSuccess={(teamData) => handleLoginSuccess(teamData)}
-            />
-          </motion.div>
-        )}
-
-        {view === 'workspace' && (team || props.currentTeam) && (
-          <motion.div key="workspace" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
-            <TeamWorkspace
-              team={team || props.currentTeam!}
-              config={config}
-              currentUser={props.currentUser}
-              onUpdateTeam={(updated) => setTeam(updated)}
-              onLogout={handleLogout}
-              onNavigateHome={props.onBack}
-              onBack={props.onBack}
-            />
-          </motion.div>
-        )}
-
-        {view === 'admin' && (
-          <motion.div key="admin" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
-            <Suspense fallback={
-              <div className="flex items-center justify-center min-h-[40vh]">
-                <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
-              </div>
-            }>
-              <AdminControlPanel
-                currentUser={props.currentUser}
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[100] h-screen w-screen bg-[#07070a] overflow-y-auto overscroll-contain touch-pan-y"
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
+    >
+      <div className="w-full min-h-screen flex flex-col items-center justify-start pt-8 pb-12 px-4 space-y-4 z-10 relative">
+        <AnimatePresence mode="wait">
+          {view === 'gate' && (
+            <motion.div key="gate" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
+              <RegistrationGate
                 config={config}
-                onLogin={(usr) => props.onLogin(usr)}
-                onLogout={handleLogout}
-                onRefreshData={props.onRefreshData}
-                onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}
+                onLoginSuccess={handleLoginSuccess}
+                onAdminBypass={handleAdminBypass}
+                onRegisterClick={handleGoToRegister}
+                onBack={props.onBack}
               />
-            </Suspense>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+
+          {view === 'form' && (
+            <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
+              <RegistrationForm
+                config={config}
+                onBack={() => setView('gate')}
+                onSuccess={(teamData) => handleLoginSuccess(teamData)}
+              />
+            </motion.div>
+          )}
+
+          {view === 'workspace' && (team || props.currentTeam) && (
+            <motion.div key="workspace" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
+              <TeamWorkspace
+                team={team || props.currentTeam!}
+                config={config}
+                currentUser={props.currentUser}
+                onUpdateTeam={(updated) => setTeam(updated)}
+                onLogout={handleLogout}
+                onNavigateHome={props.onBack}
+                onBack={props.onBack}
+              />
+            </motion.div>
+          )}
+
+          {view === 'admin' && (
+            <motion.div key="admin" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
+              <Suspense fallback={
+                <div className="flex items-center justify-center min-h-[40vh]">
+                  <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+                </div>
+              }>
+                <AdminControlPanel
+                  currentUser={props.currentUser}
+                  config={config}
+                  onLogin={(usr) => props.onLogin(usr)}
+                  onLogout={handleLogout}
+                  onRefreshData={props.onRefreshData}
+                  onConfigUpdate={(updatedConfig) => setConfig(updatedConfig)}
+                />
+              </Suspense>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
