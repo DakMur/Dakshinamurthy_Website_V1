@@ -17,10 +17,10 @@ interface StorytellingSectionProps {
 export default function WisdomLectures({ articles, onLike, onExploreDomain }: StorytellingSectionProps) {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
-
-  const safeArticles = articles && articles.length > 0 ? articles : FALLBACK_ARTICLES;
-
-
+  // Filter out any "Upcoming Event" items so the section is completely removed
+  const safeArticles = (articles && articles.length > 0 ? articles : FALLBACK_ARTICLES).filter(
+    (a) => a.id !== "whats-next" && a.tag !== "UPCOMING EVENT" && a.domainSlug !== "upcoming-events"
+  );
 
   return (
     <div className="space-y-24 py-12">
@@ -39,7 +39,15 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
             {/* Image Columns (Alternating layout) */}
             <div className={`col-span-1 lg:col-span-6 ${isLeftImage ? "" : "lg:order-2"}`}>
               {article.id === "a3" ? (
-                <ArticleImageSlideshow />
+                <ArticleImageSlideshow
+                  images={EXHIBITION_IMAGES}
+                  altPrefix="The 3-Day Exhibition"
+                />
+              ) : article.id === "a2" ? (
+                <ArticleImageSlideshow
+                  images={DAAKSHINAASYA_IMAGES}
+                  altPrefix="What is Daakshinaasya Darshini"
+                />
               ) : (
                 <div className="relative group overflow-hidden rounded-2xl border border-white/10 shadow-2xl h-[300px] md:h-[400px]">
                   {/* Aurora nebula lighting inside frame */}
@@ -49,8 +57,9 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                     alt={article.title}
                     loading="lazy"
                     decoding="async"
-                    className={`w-full h-full filter brightness-85 transition-transform duration-[1.2s] ease-out ${article.id === "a1" ? "object-contain bg-black/40" : "object-cover group-hover:scale-105"
-                      }`}
+                    className={`w-full h-full filter brightness-85 transition-transform duration-[1.2s] ease-out ${
+                      article.id === "a1" ? "object-contain bg-black/40" : "object-cover group-hover:scale-105"
+                    }`}
                   />
 
                   {/* Golden/Purple ambient glow ring behind */}
@@ -70,12 +79,10 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                   ) : article.id === "a3" ? (
                     <span>3-DAY MAKEATHON</span>
                   ) : (
-                    <>
-                      <div className="flex items-center gap-2 text-xs font-mono text-gold-400 uppercase tracking-widest mb-2">
-                        <Clock className="w-3.5 h-3.5 text-gold-400" />
-                        <span>{article.category || article.tag}</span>
-                      </div>
-                    </>
+                    <div className="flex items-center gap-2 text-xs font-mono text-gold-400 uppercase tracking-widest mb-2">
+                      <Clock className="w-3.5 h-3.5 text-gold-400" />
+                      <span>{article.category || article.tag}</span>
+                    </div>
                   )}
                 </div>
 
@@ -148,47 +155,40 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
               exit={{ opacity: 0, scale: 0.96 }}
               className="w-full max-w-3xl rounded-2xl glass-panel border border-white/10 p-6 md:p-8 flex flex-col max-h-[85vh] overflow-y-auto space-y-6 scrollbar"
             >
-              {/* Header */}
-              <div className="flex items-start justify-between border-b border-white/5 pb-4">
-                <div>
-                  <h3 className="font-display font-medium text-xl text-slate-100 tracking-wider">
-                    {selectedArticle.title}
-                  </h3>
-                </div>
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <span className="text-xs font-mono text-gold-vintage tracking-widest uppercase">
+                  {selectedArticle.category || selectedArticle.tag || "Wisdom Lecture"}
+                </span>
                 <button
                   onClick={() => setSelectedArticle(null)}
-                  className="p-1 px-3 rounded-full hover:bg-white/5 text-xs text-slate-400 hover:text-white font-mono cursor-pointer border border-white/10"
+                  className="text-slate-400 hover:text-white transition-colors text-sm font-mono cursor-pointer"
                 >
-                  Close
+                  ✕ CLOSE
                 </button>
               </div>
 
-              {/* Sanskrit Quote / Translation (for introductory experience) */}
-              {selectedArticle.id === "a1" && selectedArticle.quote && (
-                <div className="p-6 rounded-xl border border-gold-vintage/20 bg-gold-vintage/[0.02] text-center my-4 space-y-2">
-                  <p className="font-serif text-lg text-gold-vintage font-semibold tracking-wide">
-                    {selectedArticle.quote}
-                  </p>
-                  {selectedArticle.translation && (
-                    <p className="font-serif italic text-sm text-slate-300">
-                      &ldquo;{selectedArticle.translation}&rdquo;
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Story text */}
-              <div className="prose prose-invert max-w-none text-slate-300 space-y-4 font-serif italic md:not-italic leading-relaxed text-sm md:text-base">
-                {selectedArticle.paragraphs
-                  ? selectedArticle.paragraphs.map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))
-                  : selectedArticle.content.split("\n\n").map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
+              <div className="space-y-4">
+                <h3 className="font-display font-medium text-3xl text-white">
+                  {selectedArticle.title}
+                </h3>
+                <h4 className="font-serif italic text-lg text-gold-vintage">
+                  {selectedArticle.subtitle}
+                </h4>
               </div>
 
-              {/* Community interactive chalk board (Comments) Removed */}
+              <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed font-sans space-y-4">
+                {selectedArticle.paragraphs ? (
+                  selectedArticle.paragraphs.map((p, idx) => (
+                    <p key={idx} className="text-sm md:text-base leading-relaxed text-slate-300">
+                      {p}
+                    </p>
+                  ))
+                ) : (
+                  <p className="text-sm md:text-base leading-relaxed text-slate-300">
+                    {selectedArticle.content}
+                  </p>
+                )}
+              </div>
             </motion.div>
           </div>
         )}
@@ -211,34 +211,61 @@ const EXHIBITION_IMAGES = [
   "/3dayexhibition/image11.webp",
 ];
 
-function ArticleImageSlideshow() {
+const DAAKSHINAASYA_IMAGES = [
+  "/What%20is%20Daakshinaasya/image1.webp",
+  "/What%20is%20Daakshinaasya/image3.webp",
+  "/What%20is%20Daakshinaasya/image4.webp",
+  "/What%20is%20Daakshinaasya/image5.webp",
+  "/What%20is%20Daakshinaasya/image6.webp",
+];
+
+interface ArticleImageSlideshowProps {
+  images: string[];
+  altPrefix: string;
+}
+
+function ArticleImageSlideshow({ images, altPrefix }: ArticleImageSlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const totalImages = EXHIBITION_IMAGES.length;
+  const [isHovered, setIsHovered] = useState(false);
+  const totalImages = images.length;
+
+  // Auto-advance slideshow every 4.5 seconds; pause on hover
+  useEffect(() => {
+    if (isHovered || totalImages <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % totalImages);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isHovered, totalImages]);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === totalImages - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev + 1) % totalImages);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? totalImages - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev - 1 + totalImages) % totalImages);
   };
 
   return (
-    <div className="relative group overflow-hidden rounded-2xl h-[300px] md:h-[400px] w-full bg-black flex items-center justify-center">
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative group overflow-hidden rounded-2xl h-[300px] md:h-[400px] w-full bg-black flex items-center justify-center shadow-2xl border border-white/10"
+    >
       {/* Aurora nebula lighting inside frame */}
       <div className="absolute inset-0 bg-[#050505]/25 z-10 pointer-events-none" />
 
-      {/* Slider Image Container */}
+      {/* Slider Image Container with Cinematic Fade Transition */}
       <div className="w-full h-full relative">
         <AnimatePresence mode="wait">
           <motion.img
             key={currentIndex}
-            src={EXHIBITION_IMAGES[currentIndex]}
-            alt={`3-Day Exhibition Image ${currentIndex + 1}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            src={images[currentIndex]}
+            alt={`${altPrefix} Image ${currentIndex + 1}`}
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover filter brightness-85"
@@ -251,39 +278,39 @@ function ArticleImageSlideshow() {
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.65)_0%,transparent_10%,transparent_90%,rgba(0,0,0,0.65)_100%)] z-20 pointer-events-none" />
       <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.6)] z-20 pointer-events-none" />
 
-      {/* Navigation Arrows */}
+      {/* Minimal Navigation Arrows (Subtle, visible on hover) */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 z-30 p-2 rounded-full bg-black/60 hover:bg-gold-vintage/20 border border-white/10 text-white hover:text-gold-vintage transition-all cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100"
-        aria-label="Previous image"
+        className="absolute left-3 z-30 p-2 rounded-full bg-black/50 hover:bg-gold-vintage/20 border border-white/10 text-white hover:text-gold-vintage transition-all cursor-pointer opacity-0 group-hover:opacity-80 hover:!opacity-100"
+        aria-label={`Previous ${altPrefix} image`}
       >
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="w-4 h-4" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 z-30 p-2 rounded-full bg-black/60 hover:bg-gold-vintage/20 border border-white/10 text-white hover:text-gold-vintage transition-all cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100"
-        aria-label="Next image"
+        className="absolute right-3 z-30 p-2 rounded-full bg-black/50 hover:bg-gold-vintage/20 border border-white/10 text-white hover:text-gold-vintage transition-all cursor-pointer opacity-0 group-hover:opacity-80 hover:!opacity-100"
+        aria-label={`Next ${altPrefix} image`}
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-4 h-4" />
       </button>
 
       {/* Dots / Indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-        {EXHIBITION_IMAGES.map((_, index) => (
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full border border-white/5">
+        {images.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+            className={`transition-all duration-300 rounded-full cursor-pointer ${
               currentIndex === index
-                ? "bg-gold-vintage w-4"
-                : "bg-white/30 hover:bg-white/60"
+                ? "bg-gold-vintage w-3.5 h-1.5 shadow-[0_0_6px_rgba(212,175,55,0.8)]"
+                : "bg-white/30 hover:bg-white/60 w-1.5 h-1.5"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
-      {/* Golden/Purple ambient glow ring behind */}
+      {/* Golden ambient glow ring */}
       <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-gold-vintage/30 transition-all duration-700 pointer-events-none z-10" />
     </div>
   );

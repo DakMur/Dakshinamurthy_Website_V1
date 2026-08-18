@@ -237,7 +237,14 @@ export const FALLBACK_ARTICLES: Article[] = [
     title: "What is Daakshinaasya Darshini?",
     subtitle: "Enlightenment via Scientific Thought",
     content: "Daakshinaasya Darshini is a science and technology exhibition inspired by Sri Dakshinamurthy, the timeless embodiment of knowledge, wisdom, and learning. Celebrating humanity's enduring quest to understand the universe, the exhibition brings together science, innovation, mathematics, and engineering under a common theme of discovery.\n\nThrough interactive exhibits, working models, and immersive visual experiences, visitors are encouraged to explore the principles that shape our world.",
-    image: "/ArticleImages/dakshinamurthy-a2.webp",
+    image: "/What%20is%20Daakshinaasya/image1.webp",
+    images: [
+      "/What%20is%20Daakshinaasya/image1.webp",
+      "/What%20is%20Daakshinaasya/image3.webp",
+      "/What%20is%20Daakshinaasya/image4.webp",
+      "/What%20is%20Daakshinaasya/image5.webp",
+      "/What%20is%20Daakshinaasya/image6.webp"
+    ],
     headerLabel: "SEEK WISDOM",
     actionText: "EXPLORE NOW",
     hideMeta: true
@@ -284,22 +291,6 @@ export const FALLBACK_ARTICLES: Article[] = [
     image: "/ArticleImages/dakshinamurthy-a4.webp",
     hideMeta: true,
     views: 1
-  },
-  {
-    id: "whats-next",
-    domainSlug: "upcoming-events",
-    tag: "UPCOMING EVENT",
-    title: "WHAT'S NEXT?",
-    subtitle: "The journey continues—explore the upcoming Makeathon edition",
-    content: "",
-    excerpt: "The journey continues. Building on the success of our exhibitions and immersive learning experiences, we are preparing the next edition of our Makeathon—an exciting platform where curiosity, creativity, and innovation come together. Staying...",
-    buttonText: "Explore Now",
-    paragraphs: [
-      "The journey continues. Building on the success of our exhibitions and immersive learning experiences, we are preparing the next edition of our Makeathon—an exciting platform where curiosity, creativity, and innovation come together. Staying true to the spirit of Dakshinaasya Darshini, the upcoming event will continue to explore the intersection of science, technology, and deeper understanding through engaging challenges, collaborative problem-solving, and hands-on experiences.",
-      "As plans evolve, new milestones, announcements, and event updates will be shared through the Timeline section of this website. We invite students, educators, innovators, and curious minds to follow the journey and be part of what comes next."
-    ],
-    image: "/ArticleImages/dakshinamurthy-a5.webp",
-    hideMeta: true
   }
 ];
 
