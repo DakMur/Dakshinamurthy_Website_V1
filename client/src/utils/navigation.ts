@@ -40,7 +40,13 @@ export const NAV_SECTIONS: NavSection[] = [
     id: "registration",
     path: "/dakshinamurthy-darshini/registration",
     label: "Registration",
-    aliases: ["registration", "admin"],
+    aliases: ["registration", "admin", "register", "login"],
+  },
+  {
+    id: "workspace",
+    path: "/dakshinamurthy-darshini/workspace",
+    label: "Team Workspace",
+    aliases: ["workspace", "team-workspace", "dashboard"],
   },
 ];
 

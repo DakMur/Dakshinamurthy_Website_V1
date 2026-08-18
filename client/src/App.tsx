@@ -14,6 +14,8 @@ const TimelineSection = lazy(() => import("./features/timeline/TimelineSection")
 const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
 const NoticeBoard = lazy(() => import("./features/notices/NoticeBoard"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
+const TeamWorkspace = lazy(() => import("./features/workspace/TeamWorkspace"));
+const AuthModal = lazy(() => import("./features/auth/AuthModal"));
 
 import Navbar from "./components/layout/Navbar";
 import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
@@ -21,7 +23,7 @@ import { WebGLErrorBoundary } from "./components/error/WebGLErrorBoundary";
 import Footer from "./components/layout/Footer";
 import { useDatabase } from "./hooks/useDatabase";
 import { useWarpEffect } from "./hooks/useWarpEffect";
-import { User, DomainContent } from "./types/types";
+import { User, DomainContent, Team } from "./types/types";
 import { NAV_SECTIONS, LANDING_PATH, parsePath, getSectionPath } from "./utils/navigation";
 
 export default function App() {
@@ -60,6 +62,16 @@ export default function App() {
 
   // Authenticated user state
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  // Authenticated team state (hydrated from localStorage)
+  const [currentTeam, setCurrentTeam] = useState<Team | null>(() => {
+    try {
+      const saved = localStorage.getItem("dakshina_current_team");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
 
   // Mobile responsive menu active state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -113,6 +125,9 @@ export default function App() {
 
   // Scroll to target section smoothly with history & state update
   const scrollToSection = useCallback((sectionId: string, pushHistory = true) => {
+    // If user clicks registration and is already authenticated as a team, redirect to workspace
+    const effectiveSectionId = (sectionId === "registration" && currentTeam) ? "workspace" : sectionId;
+
     if (isLanding) {
       setIsLanding(false);
     }
@@ -122,23 +137,31 @@ export default function App() {
       clearTimeout(scrollLockTimeoutRef.current);
     }
 
-    setActiveSection(sectionId);
-    activeSectionRef.current = sectionId;
+    setActiveSection(effectiveSectionId);
+    activeSectionRef.current = effectiveSectionId;
 
-    const targetPath = getSectionPath(sectionId);
+    const targetPath = getSectionPath(effectiveSectionId);
     if (pushHistory) {
       if (window.location.pathname !== targetPath) {
-        window.history.pushState({ sectionId }, "", targetPath);
+        window.history.pushState({ sectionId: effectiveSectionId }, "", targetPath);
       }
     } else {
       if (window.location.pathname !== targetPath) {
-        window.history.replaceState({ sectionId }, "", targetPath);
+        window.history.replaceState({ sectionId: effectiveSectionId }, "", targetPath);
       }
+    }
+
+    if (effectiveSectionId === "workspace") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollLockTimeoutRef.current = window.setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+      }, 500);
+      return;
     }
 
     // Smooth scroll to element in normal document flow
     const performScroll = () => {
-      const el = document.getElementById(sectionId);
+      const el = document.getElementById(effectiveSectionId);
       if (el) {
         const lenis = (window as any).lenis;
         if (lenis && typeof lenis.scrollTo === "function") {
@@ -159,7 +182,7 @@ export default function App() {
     scrollLockTimeoutRef.current = window.setTimeout(() => {
       isProgrammaticScrollRef.current = false;
     }, 1200);
-  }, [isLanding]);
+  }, [isLanding, currentTeam]);
 
   // Return to landing page
   const navigateToLanding = useCallback(() => {
@@ -208,6 +231,11 @@ export default function App() {
         setActiveSection(parsed.activeSectionId);
         activeSectionRef.current = parsed.activeSectionId;
 
+        if (parsed.activeSectionId === "workspace") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+
         // Position viewport at section without creating additional history entries
         setTimeout(() => {
           const el = document.getElementById(parsed.activeSectionId);
@@ -235,6 +263,10 @@ export default function App() {
   // Direct URL access initialization on first mount
   useEffect(() => {
     if (!initialRoute.isLanding && initialRoute.activeSectionId) {
+      if (initialRoute.activeSectionId === "workspace") {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        return;
+      }
       const timer = setTimeout(() => {
         const el = document.getElementById(initialRoute.activeSectionId);
         if (el) {
@@ -253,7 +285,7 @@ export default function App() {
 
   // ScrollSpy: observe viewport scroll and passively synchronize active navbar item and URL
   useEffect(() => {
-    if (isLanding) return;
+    if (isLanding || activeSection === "workspace") return;
 
     let ticking = false;
 
@@ -264,6 +296,7 @@ export default function App() {
       }
 
       const sectionElements = NAV_SECTIONS
+        .filter((sec) => sec.id !== "workspace")
         .map((sec) => document.getElementById(sec.id))
         .filter((el): el is HTMLElement => el !== null);
 
@@ -321,7 +354,7 @@ export default function App() {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [isLanding]);
+  }, [isLanding, activeSection]);
 
   // Like feedback triggers incrementing article likes real-time
   const handleLikeArticle = useCallback(async (articleId: string) => {
@@ -410,8 +443,67 @@ export default function App() {
             <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
           </Suspense>
         </main>
+      ) : activeSection === "workspace" ? (
+        /* 2. DEDICATED TEAM WORKSPACE VIEW */
+        <main className="relative z-10 w-full min-h-screen">
+          <Suspense fallback={<div className="min-h-screen" />}>
+            {currentTeam ? (
+              <TeamWorkspace
+                team={currentTeam}
+                currentUser={currentUser}
+                onUpdateTeam={(updated) => {
+                  setCurrentTeam(updated);
+                  try {
+                    localStorage.setItem("dakshina_current_team", JSON.stringify(updated));
+                  } catch {}
+                }}
+                onLogout={() => {
+                  setCurrentTeam(null);
+                  try {
+                    localStorage.removeItem("dakshina_current_team");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("admin_token");
+                    sessionStorage.removeItem("dakshina_current_team");
+                    sessionStorage.removeItem("token");
+                  } catch {}
+                  scrollToSection("registration", true);
+                }}
+                onNavigateHome={navigateToLanding}
+              />
+            ) : (
+              <div className="pt-16 md:pt-20 pb-12 flex flex-col items-center justify-center">
+                <AuthModal
+                  initialTab="login"
+                  currentTeam={currentTeam}
+                  onLoginSuccess={(team) => {
+                    setCurrentTeam(team);
+                    try {
+                      localStorage.setItem("dakshina_current_team", JSON.stringify(team));
+                    } catch {}
+                  }}
+                  onAdminBypass={() => {
+                    setCurrentUser({
+                      id: "bypass",
+                      role: "admin",
+                      name: "Sovereign Admin",
+                      email: "admin@dakshina.org",
+                      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"
+                    });
+                    scrollToSection("registration", true);
+                  }}
+                  onNavigateWorkspace={() => {
+                    scrollToSection("workspace", true);
+                  }}
+                  onLogout={() => {
+                    setCurrentTeam(null);
+                  }}
+                />
+              </div>
+            )}
+          </Suspense>
+        </main>
       ) : (
-        /* 2. CONTINUOUS FINITE SINGLE-PAGE SECTION EXPERIENCE */
+        /* 3. CONTINUOUS FINITE SINGLE-PAGE SECTION EXPERIENCE */
         <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col space-y-20 md:space-y-28 pt-6">
           <Suspense fallback={<div className="min-h-screen" />}>
 
@@ -475,8 +567,25 @@ export default function App() {
             <section id="registration" className="scroll-mt-8 py-4 w-full">
               <RegistrationFeature
                 currentUser={currentUser}
+                currentTeam={currentTeam}
                 onLogin={(usr) => setCurrentUser(usr)}
-                onLogout={() => setCurrentUser(null)}
+                onLogout={() => {
+                  setCurrentUser(null);
+                  setCurrentTeam(null);
+                  try {
+                    localStorage.removeItem("dakshina_current_team");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("admin_token");
+                  } catch {}
+                }}
+                onTeamLogin={(t) => {
+                  setCurrentTeam(t);
+                  try {
+                    localStorage.setItem("dakshina_current_team", JSON.stringify(t));
+                  } catch {}
+                  scrollToSection("workspace", true);
+                }}
+                onNavigateWorkspace={() => scrollToSection("workspace", true)}
                 onRefreshData={loadDatabase}
               />
             </section>

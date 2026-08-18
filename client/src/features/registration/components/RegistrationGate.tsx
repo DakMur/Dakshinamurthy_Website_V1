@@ -45,6 +45,9 @@ export default function RegistrationGate({ config, onLoginSuccess, onAdminBypass
           onAdminBypass();
         } else {
           // Regular team leader login
+          try {
+            localStorage.setItem("dakshina_current_team", JSON.stringify(data.team));
+          } catch {}
           onLoginSuccess(data.team);
         }
       } else {

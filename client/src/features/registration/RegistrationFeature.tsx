@@ -2,21 +2,26 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import RegistrationGate from "./components/RegistrationGate";
 import RegistrationForm from "./components/RegistrationForm";
-import TeamDashboard from "./components/TeamDashboard";
+import TeamWorkspace from "../workspace/TeamWorkspace";
 // Admin panel is lazy — only fetched when admin bypass is triggered
 const AdminControlPanel = lazy(() => import("./components/AdminControlPanel"));
 import { Team, RegistrationConfig } from "../../types/types";
 
 interface RegistrationFeatureProps {
   currentUser: any;
+  currentTeam?: Team | null;
   onLogin: (user: any) => void;
   onLogout: () => void;
+  onTeamLogin?: (team: Team) => void;
+  onNavigateWorkspace?: () => void;
   onRefreshData: () => void;
 }
 
 export default function RegistrationFeature(props: RegistrationFeatureProps) {
-  const [view, setView] = useState<'gate' | 'form' | 'dashboard' | 'admin'>('gate');
-  const [team, setTeam] = useState<Team | null>(null);
+  const [view, setView] = useState<'gate' | 'form' | 'workspace' | 'admin'>(() => {
+    return props.currentTeam ? 'workspace' : 'gate';
+  });
+  const [team, setTeam] = useState<Team | null>(props.currentTeam || null);
   const [config, setConfig] = useState<RegistrationConfig>({
     status: 'Registration Open',
     minMembers: 2,
@@ -27,13 +32,19 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  // Safety guard: if dashboard view is active but team is null (e.g. from a
-  // payload mismatch during login), reset back to gate to avoid blank screen.
   useEffect(() => {
-    if (view === 'dashboard' && !team) {
+    if (props.currentTeam) {
+      setTeam(props.currentTeam);
+      setView('workspace');
+    }
+  }, [props.currentTeam]);
+
+  // Safety guard: if workspace view is active but team is null, reset back to gate
+  useEffect(() => {
+    if (view === 'workspace' && !team && !props.currentTeam) {
       setView('gate');
     }
-  }, [view, team]);
+  }, [view, team, props.currentTeam]);
 
   useEffect(() => {
     // Fetch global registration config
@@ -42,14 +53,12 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
         const res = await fetch('/api/v1/registration/config');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const raw = await res.json();
-        // Safely unwrap nested or flat response shapes
         const data = raw?.data || raw;
         if (data && typeof data === 'object') {
           setConfig(prev => ({ ...prev, ...data }));
         }
       } catch (err) {
         console.warn('Using fallback config due to fetch error:', err);
-        // Keep the default state — component will still render
       } finally {
         setIsLoading(false);
       }
@@ -59,11 +68,20 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
 
   const handleLoginSuccess = (teamData: Team) => {
     setTeam(teamData);
-    setView('dashboard');
+    try {
+      localStorage.setItem("dakshina_current_team", JSON.stringify(teamData));
+    } catch {}
+    if (props.onTeamLogin) {
+      props.onTeamLogin(teamData);
+    }
+    if (props.onNavigateWorkspace) {
+      props.onNavigateWorkspace();
+    } else {
+      setView('workspace');
+    }
   };
 
   const handleAdminBypass = () => {
-    // Admin bypass sets the current view to admin and auto-authenticates the parent session
     props.onLogin({
       id: "bypass",
       role: "admin",
@@ -81,17 +99,21 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
   const handleLogout = () => {
     setTeam(null);
     setView('gate');
-    // Clear stored admin tokens so stale credentials don't persist
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('token');
+    try {
+      localStorage.removeItem('dakshina_current_team');
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('dakshina_current_team');
+      sessionStorage.removeItem('token');
+    } catch {}
     props.onLogout();
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-start pt-16 md:pt-20 pb-12 px-4 space-y-4 z-10 relative">
+    <div className="w-full min-h-screen flex flex-col items-center justify-start pt-8 pb-12 px-4 space-y-4 z-10 relative">
       <AnimatePresence mode="wait">
         {view === 'gate' && (
-          <motion.div key="gate" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+          <motion.div key="gate" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
             <RegistrationGate
               config={config}
               onLoginSuccess={handleLoginSuccess}
@@ -102,7 +124,7 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
         )}
 
         {view === 'form' && (
-          <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+          <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
             <RegistrationForm
               config={config}
               onBack={() => setView('gate')}
@@ -111,11 +133,12 @@ export default function RegistrationFeature(props: RegistrationFeatureProps) {
           </motion.div>
         )}
 
-        {view === 'dashboard' && team && (
-          <motion.div key="dashboard" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-            <TeamDashboard
-              team={team}
+        {view === 'workspace' && (team || props.currentTeam) && (
+          <motion.div key="workspace" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full">
+            <TeamWorkspace
+              team={team || props.currentTeam!}
               config={config}
+              currentUser={props.currentUser}
               onUpdateTeam={(updated) => setTeam(updated)}
               onLogout={handleLogout}
             />
