@@ -258,7 +258,9 @@ export const FALLBACK_ARTICLES: Article[] = [
       "/3dayexhibition/image6.webp",
       "/3dayexhibition/image7.webp",
       "/3dayexhibition/image8.webp",
-      "/3dayexhibition/image9.webp"
+      "/3dayexhibition/image9.webp",
+      "/3dayexhibition/image10.webp",
+      "/3dayexhibition/image11.webp"
     ],
     headerLabel: "3-DAY MAKEATHON",
     actionText: "EXPLORE NOW",

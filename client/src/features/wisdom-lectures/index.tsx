@@ -197,16 +197,30 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
   );
 }
 
+const EXHIBITION_IMAGES = [
+  "/3dayexhibition/image1.webp",
+  "/3dayexhibition/image2.webp",
+  "/3dayexhibition/image3.webp",
+  "/3dayexhibition/image4.webp",
+  "/3dayexhibition/image5.webp",
+  "/3dayexhibition/image6.webp",
+  "/3dayexhibition/image7.webp",
+  "/3dayexhibition/image8.webp",
+  "/3dayexhibition/image9.webp",
+  "/3dayexhibition/image10.webp",
+  "/3dayexhibition/image11.webp",
+];
+
 function ArticleImageSlideshow() {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const totalImages = 9;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const totalImages = EXHIBITION_IMAGES.length;
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === totalImages ? 1 : prev + 1));
+    setCurrentIndex((prev) => (prev === totalImages - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 1 ? totalImages : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? totalImages - 1 : prev - 1));
   };
 
   return (
@@ -219,8 +233,8 @@ function ArticleImageSlideshow() {
         <AnimatePresence mode="wait">
           <motion.img
             key={currentIndex}
-            src={`/3dayexhibition/image${currentIndex}.webp`}
-            alt={`3-Day Exhibition Image ${currentIndex}`}
+            src={EXHIBITION_IMAGES[currentIndex]}
+            alt={`3-Day Exhibition Image ${currentIndex + 1}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -255,20 +269,18 @@ function ArticleImageSlideshow() {
 
       {/* Dots / Indicators */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-        {Array.from({ length: totalImages }).map((_, i) => {
-          const index = i + 1;
-          return (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${currentIndex === index
+        {EXHIBITION_IMAGES.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+              currentIndex === index
                 ? "bg-gold-vintage w-4"
                 : "bg-white/30 hover:bg-white/60"
-                }`}
-              aria-label={`Go to slide ${index}`}
-            />
-          );
-        })}
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
 
       {/* Golden/Purple ambient glow ring behind */}
