@@ -1,0 +1,71 @@
+/* ─── Technical Workshop — Gallery Infinite Scroll Animation ─── */
+
+.tw-gallery-track {
+  display: flex;
+  width: max-content;
+  animation: tw-gallery-scroll 60s linear infinite;
+  will-change: transform;
+}
+
+.tw-gallery-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes tw-gallery-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tw-gallery-track {
+    animation: none;
+  }
+}
+
+/* Gallery container — contain horizontal overflow */
+.tw-gallery-container {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+/* Uniform gallery image sizing */
+.tw-gallery-img {
+  width: 320px;
+  height: 220px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+  .tw-gallery-img {
+    width: 400px;
+    height: 270px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tw-gallery-img {
+    width: 460px;
+    height: 300px;
+  }
+}

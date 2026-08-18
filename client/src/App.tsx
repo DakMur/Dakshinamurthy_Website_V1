@@ -10,6 +10,7 @@ const CosmicGalaxy = lazy(() => import("./features/landing-main/CosmicGalaxy"));
 const LandingPage = lazy(() => import("./features/landing-main/LandingPage"));
 const WarpTransition = lazy(() => import("./features/loading-main/WarpTransition"));
 const WisdomLectures = lazy(() => import("./features/wisdom-lectures"));
+const TechnicalWorkshopSection = lazy(() => import("./features/technical-workshop/TechnicalWorkshopSection"));
 const PortalPage = lazy(() => import("./features/dimension-portal/PortalPage"));
 const TimelineSection = lazy(() => import("./features/timeline/TimelineSection"));
 const RegistrationFeature = lazy(() => import("./features/registration/RegistrationFeature"));
@@ -416,7 +417,12 @@ export default function App() {
               />
             </section>
 
-            {/* SECTION 2: TATTVA DARSHANA / DOMAINS HUB */}
+            {/* SECTION 2: TECHNICAL WORKSHOP / PARAM FOUNDATION */}
+            <section id="technical-workshop" className="scroll-mt-8 py-4">
+              <TechnicalWorkshopSection />
+            </section>
+
+            {/* SECTION 3: TATTVA DARSHANA / DOMAINS HUB */}
             <section id="tattva-darshana" className="scroll-mt-8 py-4">
               <PortalPage
                 domains={domains}

@@ -13,6 +13,12 @@ export const NAV_SECTIONS: NavSection[] = [
     aliases: ["prathama", "prathama-prakasa", "storytelling", "wisdom"],
   },
   {
+    id: "technical-workshop",
+    path: "/dakshinamurthy-darshini/technical-workshop",
+    label: "Technical Workshop",
+    aliases: ["workshop", "param-workshop", "technical-workshop"],
+  },
+  {
     id: "tattva-darshana",
     path: "/dakshinamurthy-darshini/tattva-darshana",
     label: "Tattva Darśana",

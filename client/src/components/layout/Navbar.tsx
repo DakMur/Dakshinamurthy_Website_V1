@@ -34,6 +34,7 @@ export default function Navbar({
   const currentActive = activeSection || route;
 
   const isPrathamaActive = currentActive === "prathama-prakasha" || currentActive === "prathama" || currentActive === "prathama-prakasa" || currentActive === "storytelling";
+  const isWorkshopActive = currentActive === "technical-workshop" || currentActive === "workshop" || currentActive === "param-workshop";
   const isTattvaActive = currentActive === "tattva-darshana" || currentActive === "tattva" || currentActive === "tattva-darsana" || currentActive === "domains";
   const isTimelineActive = currentActive === "innovation-timeline" || currentActive === "timeline" || currentActive === "chronology-timeline" || currentActive === "flow";
   const isNoticeBoardActive = currentActive === "notice-board" || currentActive === "notices";
@@ -41,6 +42,7 @@ export default function Navbar({
 
   const navItems = [
     { id: "prathama-prakasha", label: "Prathama Prakasa", active: isPrathamaActive },
+    { id: "technical-workshop", label: "Technical Workshop", active: isWorkshopActive },
     { id: "tattva-darshana", label: "Tattva Darśana", active: isTattvaActive },
     { id: "innovation-timeline", label: "Innovation Timeline", active: isTimelineActive },
     { id: "notice-board", label: "Notice Board", active: isNoticeBoardActive },
