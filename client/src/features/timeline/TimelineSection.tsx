@@ -88,7 +88,7 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
   return (
     <div className="relative w-full max-w-5xl mx-auto py-12 px-4">
       {/* 1. Auto-Extending Vertical connecting line that tracks container bounds with pixel-perfect center anchoring */}
-      <div className="absolute left-[32px] sm:left-1/2 top-6 bottom-6 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none z-0" />
+      <div className="absolute left-[36px] sm:left-1/2 top-6 bottom-6 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none z-0" />
 
       {/* 2. Dynamic Timeline Phase Cards with CSS Grid alignment */}
       <div className="relative z-10 space-y-8 sm:space-y-12">
@@ -144,7 +144,7 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="grid grid-cols-[32px_1fr] sm:grid-cols-[1fr_48px_1fr] gap-4 sm:gap-8 items-start relative z-10"
+              className="grid grid-cols-[40px_1fr] sm:grid-cols-[1fr_48px_1fr] gap-4 sm:gap-8 items-start relative z-10"
             >
               {/* Desktop Left / Card on Left (when isEven) */}
               {isEven ? (
@@ -155,14 +155,14 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
                 <div className="hidden sm:block sm:col-start-1 sm:row-start-1" />
               )}
 
-              {/* Icon Column (Fixed width: 32px on mobile, 48px on desktop) */}
-              <div className="col-start-1 sm:col-start-2 sm:row-start-1 relative flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 rounded-full border-2 border-gold-vintage bg-[#07070a] z-10 mx-auto shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+              {/* Icon Column (Fixed width: 40px on mobile, 48px on desktop) */}
+              <div className="col-start-1 sm:col-start-2 sm:row-start-1 relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-gold-vintage bg-[#07070a] z-10 mx-auto self-start mt-1 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
                 <motion.div
                   className="w-full h-full flex items-center justify-center text-gold-vintage relative"
                   whileHover={{ scale: 1.15, borderColor: "#fbbf24" }}
                   style={{ willChange: "transform" }}
                 >
-                  <NodeIcon className="w-4 h-4 sm:w-6 sm:h-6 text-gold-vintage" />
+                  <NodeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gold-vintage" />
                   <span className="absolute -inset-1 sm:-inset-2 rounded-full border border-gold-vintage/20 animate-ping opacity-60 pointer-events-none" />
                 </motion.div>
               </div>
