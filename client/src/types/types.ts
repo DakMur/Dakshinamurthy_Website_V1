@@ -124,6 +124,19 @@ export interface Team {
   documentUrl?: string;
   demoVideoUrl?: string;
   passed_round?: number;
+  serial_number?: string | number;
+}
+
+export interface TimelineItem {
+  id: string | number;
+  phase_number?: number;
+  phase_tag?: string;
+  title: string;
+  quote?: string;
+  description?: string;
+  date_text?: string;
+  display_order: number;
+  is_published: boolean;
 }
 
 export interface Notice {

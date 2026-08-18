@@ -234,9 +234,16 @@ export default function TeamDashboard({ team, config, onUpdateTeam, onLogout }: 
     <div className="max-w-5xl mx-auto py-8 px-4 w-full">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 border-b border-white/10 pb-6">
         <div>
-          <h2 className="font-display font-medium text-2xl tracking-widest text-gold-vintage uppercase">
-            Team Workspace
-          </h2>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h2 className="font-display font-medium text-2xl tracking-widest text-gold-vintage uppercase">
+              Team Workspace
+            </h2>
+            {team.serial_number != null && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full border border-gold-vintage/40 bg-gold-vintage/10 text-gold-vintage font-mono text-xs tracking-widest select-none">
+                SERIAL NO: #{String(team.serial_number).padStart(3, '0')}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-slate-400 font-mono mt-1 flex items-center gap-2">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             Authenticated as Team Leader

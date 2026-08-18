@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import Clipboard from 'lucide-react/dist/esm/icons/clipboard';
 import Lightbulb from 'lucide-react/dist/esm/icons/lightbulb';
@@ -6,19 +6,72 @@ import GraduationCap from 'lucide-react/dist/esm/icons/graduation-cap';
 import Trophy from 'lucide-react/dist/esm/icons/trophy';
 import { motion } from "motion/react";
 import { TimelineStep } from "../../types/types";
+import { TimelineItem } from "../../types/types";
 import { FALLBACK_TIMELINE } from "../../hooks/useDatabase";
 
 interface TimelineSectionProps {
-  timeline: TimelineStep[];
+  timeline?: TimelineStep[];
   loadTimeline?: () => void;
 }
 
+/** Map a Supabase TimelineItem to the TimelineStep shape expected by the renderer */
+function mapToTimelineStep(item: TimelineItem, idx: number): TimelineStep {
+  return {
+    id: String(item.id),
+    order: item.display_order ?? idx + 1,
+    stage: item.phase_tag || 'Phase',
+    title: item.title,
+    subtitle: item.quote || '',
+    description: item.description || '',
+    quote: item.quote || '',
+    quoteAuthor: item.date_text || undefined,
+    image: '',
+    milestone: item.phase_tag || '',
+  };
+}
+
 const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }: TimelineSectionProps) {
+  const [activeTimeline, setActiveTimeline] = useState<TimelineStep[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (loadTimeline) loadTimeline();
   }, [loadTimeline]);
 
-  const activeTimeline = timeline && timeline.length > 0 ? timeline : FALLBACK_TIMELINE;
+  useEffect(() => {
+    // If parent supplies a non-empty timeline prop, use it directly (backward compat)
+    if (timeline && timeline.length > 0) {
+      setActiveTimeline(timeline);
+      setLoading(false);
+      return;
+    }
+
+    // Otherwise self-fetch from the Supabase-backed API
+    let cancelled = false;
+    async function fetchTimeline() {
+      try {
+        const res = await fetch('/api/v1/timeline');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!cancelled) {
+          const items: TimelineItem[] = data.timeline || [];
+          if (items.length > 0) {
+            setActiveTimeline(items.map(mapToTimelineStep));
+          } else {
+            setActiveTimeline(FALLBACK_TIMELINE);
+          }
+        }
+      } catch (err) {
+        console.error('TimelineSection fetch error:', err);
+        if (!cancelled) setActiveTimeline(FALLBACK_TIMELINE);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchTimeline();
+    return () => { cancelled = true; };
+  }, [timeline]);
 
   // Mapping beautiful icon states to different event stages
   const getStageIcon = (stage: string) => {
@@ -37,6 +90,14 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
         return Sparkles;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-24">
+        <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative py-12 max-w-4xl mx-auto">

@@ -115,11 +115,21 @@ export async function signupHandler(req: Request, res: Response) {
       return;
     }
 
+
+    // Get the next serial number (gap-filling) from Supabase function
+    const { data: snData, error: snError } = await supabase.rpc('get_next_team_serial_number');
+    if (snError) {
+      console.error('Serial number RPC failed:', snError);
+      throw snError;
+    }
+    const snValue = snData as number;
+
     const { data: teamData, error: teamError } = await supabase
       .from('teams')
       .insert({
         team_name: sanitizedTeamName,
-        file_url: documentUrl || null
+        file_url: documentUrl || null,
+        serial_number: snValue
       })
       .select()
       .single();
@@ -154,6 +164,7 @@ export async function signupHandler(req: Request, res: Response) {
       leaderEmail: sanitizedMembers[0].email,
       leaderPhone: sanitizedMembers[0].phone,
       documentUrl: teamData.file_url,
+      serial_number: teamData.serial_number != null ? String(teamData.serial_number).padStart(3, '0') : undefined,
       members: sanitizedMembers
     };
 
@@ -242,6 +253,7 @@ export async function loginHandler(req: Request, res: Response) {
       documentUrl: teamData.file_url,
       demoVideoUrl: teamData.demo_video_url,
       passed_round: teamData.passed_round,
+      serial_number: teamData.serial_number != null ? String(teamData.serial_number).padStart(3, '0') : undefined,
       members: membersData.map((m: any) => ({
         name: m.name,
         email: m.email,
@@ -498,6 +510,7 @@ export async function getAllTeamsHandler(req: Request, res: Response) {
         documentUrl: t.file_url,
         demoVideoUrl: t.demo_video_url,
         passed_round: t.passed_round,
+        serial_number: t.serial_number != null ? String(t.serial_number).padStart(3, '0') : '—',
         members: tMembers.map(m => ({
           name: m.name,
           email: m.email,

@@ -11,8 +11,11 @@ import Check from 'lucide-react/dist/esm/icons/check';
 import X from 'lucide-react/dist/esm/icons/x';
 import Eye from 'lucide-react/dist/esm/icons/eye';
 import EyeOff from 'lucide-react/dist/esm/icons/eye-off';
+import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
+import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
+import LayoutList from 'lucide-react/dist/esm/icons/layout-list';
 import { motion } from "motion/react";
-import { User, RegistrationConfig, Notice } from "../../../types/types";
+import { User, RegistrationConfig, Notice, TimelineItem } from "../../../types/types";
 
 interface AdminControlPanelProps {
   currentUser: User | null;
@@ -23,7 +26,7 @@ interface AdminControlPanelProps {
   onConfigUpdate: (config: RegistrationConfig) => void;
 }
 
-type AdminTab = "teams" | "registration" | "notices";
+type AdminTab = "teams" | "registration" | "notices" | "timeline";
 
 export default function AdminControlPanel({
   currentUser,
@@ -82,6 +85,29 @@ export default function AdminControlPanel({
   });
   const [noticeSaving, setNoticeSaving] = useState(false);
 
+  // Timeline management state
+  const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
+  const [timelineLoading, setTimelineLoading] = useState(false);
+  const [editingTimelineItem, setEditingTimelineItem] = useState<TimelineItem | null>(null);
+  const [showTimelineForm, setShowTimelineForm] = useState(false);
+  const [timelineForm, setTimelineForm] = useState({
+    phase_number: '',
+    phase_tag: '',
+    title: '',
+    quote: '',
+    description: '',
+    date_text: '',
+    display_order: 1,
+    is_published: false,
+  });
+  const [timelineSaving, setTimelineSaving] = useState(false);
+  const [timelineFeedback, setTimelineFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const showTimelineFeedback = (type: 'success' | 'error', text: string) => {
+    setTimelineFeedback({ type, text });
+    setTimeout(() => setTimelineFeedback(null), 4000);
+  };
+
   // On login — immediately fetch teams
   useEffect(() => {
     if (currentUser && activeTab === "teams") {
@@ -93,6 +119,7 @@ export default function AdminControlPanel({
     if (!currentUser) return;
     if (activeTab === "teams") fetchTeams();
     if (activeTab === "notices") fetchNotices();
+    if (activeTab === "timeline") fetchTimeline();
   }, [activeTab]);
 
   // Sync config props → local state when parent config updates
@@ -138,6 +165,22 @@ export default function AdminControlPanel({
       console.error(err);
     } finally {
       setTeamsLoading(false);
+    }
+  };
+
+  const fetchTimeline = async () => {
+    setTimelineLoading(true);
+    try {
+      const token = getAdminToken();
+      const res = await fetch('/api/v1/timeline/admin', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) setTimelineItems(data.timeline || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTimelineLoading(false);
     }
   };
 
@@ -238,6 +281,113 @@ export default function AdminControlPanel({
     setEditingNotice(null);
     setNoticeForm({ title: "", short_description: "", full_content: "", is_published: false });
     setShowNoticeForm(true);
+  };
+
+  // Timeline CRUD helpers
+  const openCreateTimeline = () => {
+    setEditingTimelineItem(null);
+    setTimelineForm({ phase_number: '', phase_tag: '', title: '', quote: '', description: '', date_text: '', display_order: (timelineItems.length > 0 ? Math.max(...timelineItems.map(i => i.display_order)) + 1 : 1), is_published: false });
+    setShowTimelineForm(true);
+  };
+
+  const openEditTimeline = (item: TimelineItem) => {
+    setEditingTimelineItem(item);
+    setTimelineForm({
+      phase_number: item.phase_number != null ? String(item.phase_number) : '',
+      phase_tag: item.phase_tag || '',
+      title: item.title,
+      quote: item.quote || '',
+      description: item.description || '',
+      date_text: item.date_text || '',
+      display_order: item.display_order,
+      is_published: item.is_published,
+    });
+    setShowTimelineForm(true);
+  };
+
+  const handleSaveTimeline = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!timelineForm.title.trim()) { alert('Title is required.'); return; }
+    setTimelineSaving(true);
+    try {
+      const token = getAdminToken();
+      const url = editingTimelineItem ? `/api/v1/timeline/${editingTimelineItem.id}` : '/api/v1/timeline';
+      const method = editingTimelineItem ? 'PUT' : 'POST';
+      const payload = {
+        phase_number: timelineForm.phase_number !== '' ? Number(timelineForm.phase_number) : null,
+        phase_tag: timelineForm.phase_tag || null,
+        title: timelineForm.title.trim(),
+        quote: timelineForm.quote || null,
+        description: timelineForm.description || null,
+        date_text: timelineForm.date_text || null,
+        display_order: Number(timelineForm.display_order),
+        is_published: timelineForm.is_published,
+      };
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setShowTimelineForm(false);
+        setEditingTimelineItem(null);
+        fetchTimeline();
+        showTimelineFeedback('success', editingTimelineItem ? 'Phase updated.' : 'Phase created.');
+      } else {
+        showTimelineFeedback('error', data.message || 'Failed to save phase.');
+      }
+    } catch (err) {
+      console.error(err);
+      showTimelineFeedback('error', 'Network error.');
+    } finally {
+      setTimelineSaving(false);
+    }
+  };
+
+  const handleDeleteTimeline = async (id: string | number) => {
+    if (!confirm('Delete this phase permanently?')) return;
+    try {
+      const token = getAdminToken();
+      const res = await fetch(`/api/v1/timeline/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (res.ok) { fetchTimeline(); showTimelineFeedback('success', 'Phase deleted.'); }
+    } catch (err) { console.error(err); }
+  };
+
+  const handleTogglePublishTimeline = async (item: TimelineItem) => {
+    try {
+      const token = getAdminToken();
+      const res = await fetch(`/api/v1/timeline/${item.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ is_published: !item.is_published }),
+      });
+      if (res.ok) fetchTimeline();
+    } catch (err) { console.error(err); }
+  };
+
+  const handleReorderTimeline = async (index: number, direction: 'up' | 'down') => {
+    const sorted = [...timelineItems].sort((a, b) => a.display_order - b.display_order);
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= sorted.length) return;
+    const a = sorted[index];
+    const b = sorted[targetIdx];
+    const newOrder = [
+      { id: a.id, display_order: b.display_order },
+      { id: b.id, display_order: a.display_order },
+    ];
+    try {
+      const token = getAdminToken();
+      const res = await fetch('/api/v1/timeline/reorder', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ items: newOrder }),
+      });
+      if (res.ok) fetchTimeline();
+    } catch (err) { console.error(err); }
   };
 
   const openEditNotice = (notice: Notice) => {
@@ -401,6 +551,7 @@ export default function AdminControlPanel({
     { id: "teams", label: "Team Directory", icon: Users },
     { id: "registration", label: "Registration Controls", icon: Settings },
     { id: "notices", label: "Notice Management", icon: Bell },
+    { id: "timeline", label: "Timeline Management", icon: LayoutList },
   ];
 
   return (
@@ -484,7 +635,14 @@ export default function AdminControlPanel({
                 <div key={t.id} className="p-5 rounded-2xl glass-panel border border-white/5 space-y-3">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1 flex-1 min-w-0">
-                      <h5 className="font-display text-lg text-white truncate">{t.teamName}</h5>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h5 className="font-display text-lg text-white truncate">{t.teamName}</h5>
+                        {t.serial_number && (
+                          <span className="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-full border border-gold-vintage/40 bg-gold-vintage/10 text-gold-vintage tracking-wider">
+                            #{String(t.serial_number).padStart(3, '0')}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs font-mono text-slate-400">
                         Leader: {t.members?.find((m: any) => m.role === 'leader')?.email || t.leaderEmail}
                       </p>
@@ -872,6 +1030,209 @@ export default function AdminControlPanel({
                         onClick={() => handleDeleteNotice(notice.id)}
                         className="p-2 rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
                       >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      {/* ── TAB: TIMELINE MANAGEMENT ──────────────────────────────────────── */}
+      {activeTab === "timeline" && (
+        <div className="space-y-6">
+          {timelineFeedback && (
+            <div className={`px-4 py-3 rounded-xl border text-xs font-mono text-center transition-all ${
+              timelineFeedback.type === 'success'
+                ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+            }`}>
+              {timelineFeedback.text}
+            </div>
+          )}
+
+          <div className="flex justify-between items-center">
+            <h4 className="text-xs uppercase font-mono tracking-wider text-gold-vintage">
+              Timeline Phases ({timelineItems.length})
+            </h4>
+            <div className="flex gap-2">
+              <button
+                onClick={fetchTimeline}
+                className="px-3 py-1.5 rounded-lg border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] text-xs font-mono text-white cursor-pointer transition-colors flex items-center gap-2"
+              >
+                <RefreshCcw className="w-3 h-3" /> Refresh
+              </button>
+              <button
+                onClick={openCreateTimeline}
+                className="px-4 py-2 rounded-xl bg-gold-vintage/10 border border-gold-vintage/30 text-gold-vintage hover:bg-gold-vintage hover:text-black font-mono text-xs cursor-pointer transition-all flex items-center gap-2"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Phase
+              </button>
+            </div>
+          </div>
+
+          {/* Create / Edit Form */}
+          {showTimelineForm && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-6 rounded-2xl glass-panel border border-gold-vintage/20 space-y-4"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h5 className="text-xs font-mono tracking-widest text-gold-vintage uppercase">
+                  {editingTimelineItem ? 'Edit Phase' : 'Create New Phase'}
+                </h5>
+                <button onClick={() => setShowTimelineForm(false)} className="text-slate-400 hover:text-white cursor-pointer">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveTimeline} className="space-y-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Phase #</label>
+                    <input type="number" value={timelineForm.phase_number}
+                      onChange={e => setTimelineForm({ ...timelineForm, phase_number: e.target.value })}
+                      placeholder="e.g. 1"
+                      className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Phase Tag</label>
+                    <input type="text" value={timelineForm.phase_tag}
+                      onChange={e => setTimelineForm({ ...timelineForm, phase_tag: e.target.value })}
+                      placeholder="e.g. Registrations"
+                      className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Display Order</label>
+                    <input type="number" value={timelineForm.display_order}
+                      onChange={e => setTimelineForm({ ...timelineForm, display_order: Number(e.target.value) })}
+                      className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Date Text</label>
+                    <input type="text" value={timelineForm.date_text}
+                      onChange={e => setTimelineForm({ ...timelineForm, date_text: e.target.value })}
+                      placeholder="e.g. Jan 2025"
+                      className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm" />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Title *</label>
+                  <input type="text" required value={timelineForm.title}
+                    onChange={e => setTimelineForm({ ...timelineForm, title: e.target.value })}
+                    placeholder="Phase title"
+                    className="w-full px-3 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm" />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Quote / Subtitle</label>
+                  <input type="text" value={timelineForm.quote}
+                    onChange={e => setTimelineForm({ ...timelineForm, quote: e.target.value })}
+                    placeholder="Inspiring quote or subtitle"
+                    className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm" />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-mono text-slate-400 uppercase pl-1">Description</label>
+                  <textarea rows={3} value={timelineForm.description}
+                    onChange={e => setTimelineForm({ ...timelineForm, description: e.target.value })}
+                    placeholder="Narrative description of this phase..."
+                    className="w-full px-3 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] text-white focus:outline-none focus:border-gold-vintage/50 text-sm resize-none" />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Toggle
+                      checked={timelineForm.is_published}
+                      onChange={() => setTimelineForm({ ...timelineForm, is_published: !timelineForm.is_published })}
+                      colorClass="bg-emerald-500"
+                    />
+                    <span className="text-xs font-mono text-slate-300">
+                      {timelineForm.is_published ? 'Published (visible to public)' : 'Draft (hidden from public)'}
+                    </span>
+                  </div>
+                  <div className="flex gap-3">
+                    <button type="button" onClick={() => setShowTimelineForm(false)}
+                      className="px-4 py-2 rounded-xl border border-white/10 text-slate-400 hover:text-white font-mono text-xs cursor-pointer transition-all">
+                      Cancel
+                    </button>
+                    <button type="submit" disabled={timelineSaving}
+                      className="px-5 py-2 rounded-xl bg-gold-vintage hover:bg-gold-bright text-black font-mono text-xs font-semibold cursor-pointer disabled:opacity-50 flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5" />
+                      {timelineSaving ? 'Saving...' : editingTimelineItem ? 'Update Phase' : 'Create Phase'}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </motion.div>
+          )}
+
+          {/* Timeline List */}
+          {timelineLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/30 border-t-gold-vintage animate-spin" />
+            </div>
+          ) : timelineItems.length === 0 ? (
+            <div className="p-8 text-center border border-white/5 bg-white/[0.01] rounded-2xl space-y-2">
+              <LayoutList className="w-8 h-8 text-slate-700 mx-auto mb-3" />
+              <p className="text-sm font-mono text-slate-500">No timeline phases yet.</p>
+              <p className="text-xs font-mono text-slate-700">Create a phase to display it on the Timeline page.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {[...timelineItems].sort((a, b) => a.display_order - b.display_order).map((item, idx, arr) => (
+                <div key={item.id} className="p-5 rounded-2xl glass-panel border border-white/5 space-y-2">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-[10px] font-mono text-gold-vintage tracking-widest">
+                          {item.phase_tag ? `PHASE ${item.phase_number ?? ''} • ${item.phase_tag.toUpperCase()}` : `ORDER ${item.display_order}`}
+                        </span>
+                        <span className={`shrink-0 text-[9px] font-mono px-2 py-0.5 rounded-full border ${
+                          item.is_published
+                            ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10'
+                            : 'border-slate-500/30 text-slate-500 bg-slate-500/10'
+                        }`}>
+                          {item.is_published ? 'PUBLISHED' : 'DRAFT'}
+                        </span>
+                      </div>
+                      <h5 className="font-display text-base text-white truncate">{item.title}</h5>
+                      {item.quote && <p className="text-xs font-serif italic text-slate-400 line-clamp-1">&ldquo;{item.quote}&rdquo;</p>}
+                      {item.date_text && <p className="text-[10px] font-mono text-slate-500 mt-1">{item.date_text}</p>}
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      {/* Reorder up/down */}
+                      <button onClick={() => handleReorderTimeline(idx, 'up')} disabled={idx === 0}
+                        className="p-2 rounded-lg border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                        <ChevronUp className="w-3.5 h-3.5" />
+                      </button>
+                      <button onClick={() => handleReorderTimeline(idx, 'down')} disabled={idx === arr.length - 1}
+                        className="p-2 rounded-lg border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                        <ChevronDown className="w-3.5 h-3.5" />
+                      </button>
+                      {/* Publish toggle */}
+                      <button onClick={() => handleTogglePublishTimeline(item)}
+                        title={item.is_published ? 'Unpublish' : 'Publish'}
+                        className={`p-2 rounded-lg border transition-all cursor-pointer ${
+                          item.is_published
+                            ? 'border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10'
+                            : 'border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                        }`}>
+                        {item.is_published ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                      </button>
+                      {/* Edit */}
+                      <button onClick={() => openEditTimeline(item)}
+                        className="p-2 rounded-lg border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer">
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      {/* Delete */}
+                      <button onClick={() => handleDeleteTimeline(item.id)}
+                        className="p-2 rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all cursor-pointer">
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
