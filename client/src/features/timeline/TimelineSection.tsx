@@ -88,7 +88,7 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
   return (
     <div className="relative w-full max-w-5xl mx-auto py-12 px-4">
       {/* 1. Auto-Extending Vertical connecting line that tracks container bounds */}
-      <div className="absolute left-6 md:left-1/2 top-12 bottom-12 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none" />
+      <div className="absolute left-6 md:left-1/2 top-8 bottom-8 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none z-0" />
 
       {/* 2. Dynamic Timeline Phase Cards */}
       <div className="space-y-20 md:space-y-28 relative">
@@ -106,14 +106,14 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
               className="flex flex-col md:flex-row items-start md:items-center relative"
             >
               {/* Dynamic node circle snapping directly onto connecting line */}
-              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10">
+              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full border-2 border-gold-vintage bg-[#07070a] z-10 top-0 md:top-1/2 md:-translate-y-1/2 shadow-xl shadow-gold-vintage/15">
                 <motion.div
-                  className="w-10 h-10 rounded-full bg-[#050505] border-2 border-gold-vintage flex items-center justify-center text-gold-vintage shadow-xl shadow-gold-vintage/15 relative"
+                  className="w-full h-full flex items-center justify-center text-gold-vintage relative"
                   whileHover={{ scale: 1.15, borderColor: "#fbbf24" }}
                   style={{ willChange: "transform" }}
                 >
                   <NodeIcon className="w-5 h-5 animate-pulse" />
-                  <span className="absolute -inset-2 rounded-full border border-gold-vintage/20 animate-ping opacity-60" />
+                  <span className="absolute -inset-2 rounded-full border border-gold-vintage/20 animate-ping opacity-60 pointer-events-none" />
                 </motion.div>
               </div>
 

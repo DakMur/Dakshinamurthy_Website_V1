@@ -359,7 +359,7 @@ export default function App() {
       <div className="fixed inset-0 z-[-1] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black/40 to-transparent pointer-events-none transform-gpu" />
 
       {/* Persistent WebGL Background Container */}
-      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 w-screen h-screen z-0 pointer-events-none overflow-hidden">
         <Suspense fallback={null}>
           <WebGLErrorBoundary>
             <CosmicGalaxy

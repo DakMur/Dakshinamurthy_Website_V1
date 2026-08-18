@@ -4,36 +4,18 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { motion } from "motion/react";
 
 interface GalaxyProps {
-  isWarping: boolean;
+  isWarping?: boolean;
   isExplore?: boolean;
   route?: string;
   activeTab?: string;
   isModalOpen?: boolean;
 }
 
-export default function CosmicGalaxy({ isWarping, isExplore = false, route, activeTab, isModalOpen = false }: GalaxyProps) {
-  const currentTab = activeTab || route || 'landing';
-  const isPaused =
-    currentTab === 'tattva' ||
-    currentTab === 'registration' ||
-    window.location.pathname.includes('/tattva') ||
-    window.location.pathname.includes('/registration') ||
-    isModalOpen;
-
-  const isSimulationActive = !isPaused;
-
-  const isSimulationActiveRef = useRef(isSimulationActive);
-  const startLoopRef = useRef<(() => void) | null>(null);
-  const stopLoopRef = useRef<(() => void) | null>(null);
-
+export default function CosmicGalaxy({ isWarping = false, isExplore = false, route, activeTab, isModalOpen = false }: GalaxyProps) {
+  const isWarpingRef = useRef(isWarping);
   useEffect(() => {
-    isSimulationActiveRef.current = isSimulationActive;
-    if (isSimulationActive && startLoopRef.current) {
-      startLoopRef.current();
-    } else if (!isSimulationActive && stopLoopRef.current) {
-      stopLoopRef.current();
-    }
-  }, [isSimulationActive]);
+    isWarpingRef.current = isWarping;
+  }, [isWarping]);
 
   const animTimeRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -417,14 +399,19 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
     controls.maxDistance = 25;
     controls.minDistance = 2;
 
+    let lastWidth = window.innerWidth;
+
     const handleResize = () => {
       const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
 
-      // Avoid vertical jumps during mobile scrolling when address bar toggles
-      if (sizes.width === newWidth && Math.abs(sizes.height - newHeight) < 120) {
+      // ONLY re-initialize or resize the canvas if window.innerWidth changes (orientation change or desktop resize)
+      // Ignore height-only resize triggers caused by mobile Chrome address bar toggling
+      if (newWidth === lastWidth) {
         return;
       }
+
+      lastWidth = newWidth;
+      const newHeight = window.innerHeight;
 
       sizes.width = newWidth;
       sizes.height = newHeight;
@@ -434,25 +421,15 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
 
       renderer.setSize(sizes.width, sizes.height, false);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      // ONE-SHOT REDRAW: If paused, render exactly 1 frame to fit new zoom level
-      // DO NOT start requestAnimationFrame loop
-      if (!isSimulationActiveRef.current) {
-        renderer.render(scene, camera);
-      }
     };
     window.addEventListener("resize", handleResize);
 
-    // 7. Animation Loop
+    // 7. Continuous Animation Loop
     const clock = new THREE.Timer();
 
     let animationId: number | null = null;
 
     const tick = (timestamp: number = performance.now()) => {
-      if (!isSimulationActiveRef.current) {
-        animationId = null;
-        return;
-      }
       animationId = window.requestAnimationFrame(tick);
 
       // 1. UPDATE TIMER FIRST (Required for THREE.Timer)
@@ -477,7 +454,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
         galaxyMaterial.size = parameters.size * (0.92 + 0.08 * Math.sin(elapsedTime * (Math.PI * 2 / 14)));
       }
 
-      const currentSpeed = isWarping ? parameters.rotationSpeed * 12 : parameters.rotationSpeed;
+      const currentSpeed = isWarpingRef.current ? parameters.rotationSpeed * 12 : parameters.rotationSpeed;
       galaxyGroup.rotation.y += safeDelta * currentSpeed;
 
       if (ambientStars) {
@@ -488,21 +465,6 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       }
 
       controls.update();
-      renderer.render(scene, camera);
-    };
-
-    startLoopRef.current = () => {
-      if (animationId === null) {
-        clock.getDelta(); // reset clock delta to avoid huge jump
-        tick();
-      }
-    };
-
-    stopLoopRef.current = () => {
-      if (animationId !== null) {
-        window.cancelAnimationFrame(animationId);
-        animationId = null;
-      }
       renderer.render(scene, camera);
     };
 
@@ -526,10 +488,10 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
       particleTexture?.dispose();
       renderer.dispose();
     };
-  }, [isWarping]);
+  }, []);
 
   return (
-    <div className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden select-none">
+    <div className="fixed inset-0 w-screen h-screen z-0 pointer-events-none overflow-hidden select-none">
       {/* CSS Keyframes for travelling light and sequential ambient animations */}
       <style dangerouslySetInnerHTML={{
         __html: `

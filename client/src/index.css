@@ -138,3 +138,15 @@ main {
     opacity: 0.45;
   }
 }
+
+/* Static viewport lock for background WebGL canvas to prevent mobile address bar resize jumping */
+.canvas-container-lock {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
