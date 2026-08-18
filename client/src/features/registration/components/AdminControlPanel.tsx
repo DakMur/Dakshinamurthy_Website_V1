@@ -122,12 +122,24 @@ export default function AdminControlPanel({
     if (activeTab === "timeline") fetchTimeline();
   }, [activeTab]);
 
-  // Full-page isolation + browser back-button logout
   useEffect(() => {
-    if (!currentUser) return;
-
-    // Lock body scroll while admin panel is open
+    const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
+    
     document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+
+    // Disable Lenis smooth scrolling engine if active
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.stop === 'function') {
+      lenis.stop();
+    }
+
+    // Disable snap-scroll on root container if present
+    const rootScrollContainer = document.querySelector('.snap-y, .continuous-scroll-container');
+    if (rootScrollContainer) {
+      rootScrollContainer.classList.add('overflow-hidden');
+    }
 
     // Push an isolated history entry so browser Back can be intercepted
     window.history.pushState({ view: 'admin' }, '', '#admin');
@@ -141,14 +153,21 @@ export default function AdminControlPanel({
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
-      // Restore body scroll when panel unmounts
-      document.body.style.overflow = '';
+      // Restore body scroll and touchAction when panel unmounts
+      document.body.style.overflow = originalOverflow;
+      document.body.style.touchAction = originalTouchAction;
+      if (lenis && typeof lenis.start === 'function') {
+        lenis.start();
+      }
+      if (rootScrollContainer) {
+        rootScrollContainer.classList.remove('overflow-hidden');
+      }
       // Clean up the #admin hash if still present
       if (window.location.hash === '#admin') {
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
       }
     };
-  }, [currentUser, onLogout]);
+  }, [onLogout]);
 
   // Sync config props → local state when parent config updates
   useEffect(() => {
@@ -515,11 +534,15 @@ export default function AdminControlPanel({
   // ── LOGIN SCREEN ──────────────────────────────────────────────────────────
   if (!currentUser) {
     return (
-      <div className="max-w-md mx-auto py-24 px-4">
+      <div
+        className="fixed inset-0 z-[100] h-screen w-screen bg-[#07070a] overflow-y-auto overscroll-contain isolate flex items-center justify-center p-4"
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-8 rounded-2xl glass-panel border border-gold-vintage/30 flex flex-col gap-6"
+          className="w-full max-w-md p-8 rounded-2xl glass-panel border border-gold-vintage/30 flex flex-col gap-6"
         >
           <div className="text-center space-y-2">
             <div className="w-12 h-12 rounded-full border border-gold-vintage/30 flex items-center justify-center bg-gold-vintage/5 text-gold-vintage mx-auto">
@@ -583,7 +606,11 @@ export default function AdminControlPanel({
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] min-h-screen w-full bg-[#07070a] overflow-y-auto p-4 sm:p-8">
+    <div
+      className="fixed inset-0 z-[100] h-screen w-screen bg-[#07070a] overflow-y-auto overscroll-contain isolate p-4 sm:p-8"
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
+    >
       <div className="space-y-8 py-4 w-full max-w-7xl mx-auto">
       {/* Admin Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/5 pb-6">

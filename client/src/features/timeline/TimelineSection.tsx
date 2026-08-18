@@ -1,12 +1,13 @@
 import { memo, useEffect, useState } from "react";
 import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
-import Clipboard from 'lucide-react/dist/esm/icons/clipboard';
+import Compass from 'lucide-react/dist/esm/icons/compass';
 import Lightbulb from 'lucide-react/dist/esm/icons/lightbulb';
 import GraduationCap from 'lucide-react/dist/esm/icons/graduation-cap';
 import Trophy from 'lucide-react/dist/esm/icons/trophy';
+import Target from 'lucide-react/dist/esm/icons/target';
+import Award from 'lucide-react/dist/esm/icons/award';
 import { motion } from "motion/react";
-import { TimelineStep } from "../../types/types";
-import { TimelineItem } from "../../types/types";
+import { TimelineStep, TimelineItem } from "../../types/types";
 import { FALLBACK_TIMELINE } from "../../hooks/useDatabase";
 
 interface TimelineSectionProps {
@@ -14,21 +15,7 @@ interface TimelineSectionProps {
   loadTimeline?: () => void;
 }
 
-/** Map a Supabase TimelineItem to the TimelineStep shape expected by the renderer */
-function mapToTimelineStep(item: TimelineItem, idx: number): TimelineStep {
-  return {
-    id: String(item.id),
-    order: item.display_order ?? idx + 1,
-    stage: item.phase_tag || 'Phase',
-    title: item.title,
-    subtitle: item.quote || '',
-    description: item.description || '',
-    quote: item.quote || '',
-    quoteAuthor: item.date_text || undefined,
-    image: '',
-    milestone: item.phase_tag || '',
-  };
-}
+const ICON_POOL = [Sparkles, Compass, Lightbulb, GraduationCap, Trophy, Target, Award];
 
 const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }: TimelineSectionProps) {
   const [activeTimeline, setActiveTimeline] = useState<TimelineStep[]>([]);
@@ -39,14 +26,7 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
   }, [loadTimeline]);
 
   useEffect(() => {
-    // If parent supplies a non-empty timeline prop, use it directly (backward compat)
-    if (timeline && timeline.length > 0) {
-      setActiveTimeline(timeline);
-      setLoading(false);
-      return;
-    }
-
-    // Otherwise self-fetch from the Supabase-backed API (cache-bust to always get fresh data)
+    // Self-fetch from the Supabase-backed API (cache-bust to always get fresh data)
     let cancelled = false;
     async function fetchTimeline() {
       try {
@@ -54,8 +34,10 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (!cancelled) {
-          const items: TimelineItem[] = data.timeline || [];
-          if (items.length > 0) {
+          const rawItems: TimelineItem[] = data.timeline || (Array.isArray(data) ? data : []);
+          if (rawItems.length > 0) {
+            // Sort data strictly by display_order ascending
+            const items = [...rawItems].sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0));
             // Map all DB fields: phase_number, phase_tag, title, quote, description, date_text
             setActiveTimeline(items.map((item, idx) => ({
               id: String(item.id),
@@ -69,14 +51,23 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
               image: '',
               milestone: item.phase_tag || '',
             })));
+          } else if (timeline && timeline.length > 0) {
+            const sorted = [...timeline].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+            setActiveTimeline(sorted);
           } else {
-            // Only fall back to static constants when the API returns empty
             setActiveTimeline(FALLBACK_TIMELINE);
           }
         }
       } catch (err) {
         console.error('TimelineSection fetch error:', err);
-        if (!cancelled) setActiveTimeline(FALLBACK_TIMELINE);
+        if (!cancelled) {
+          if (timeline && timeline.length > 0) {
+            const sorted = [...timeline].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+            setActiveTimeline(sorted);
+          } else {
+            setActiveTimeline(FALLBACK_TIMELINE);
+          }
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -85,24 +76,6 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
     fetchTimeline();
     return () => { cancelled = true; };
   }, [timeline]);
-
-  // Mapping beautiful icon states to different event stages
-  const getStageIcon = (stage: string) => {
-    switch (stage) {
-      case "Theme Announcement":
-        return Sparkles;
-      case "Registrations":
-        return Clipboard;
-      case "Ideathon":
-        return Lightbulb;
-      case "Expert Workshops":
-        return GraduationCap;
-      case "Makeathon Finals":
-        return Trophy;
-      default:
-        return Sparkles;
-    }
-  };
 
   if (loading) {
     return (
@@ -113,47 +86,47 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
   }
 
   return (
-    <div className="relative py-12 max-w-4xl mx-auto">
-      {/* 1. Glowing Vertical Aura line */}
-      <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cosmic-purple via-gold-vintage to-gold-bright transform -translate-x-[1px] opacity-40 shadow-[0_0_8px_rgba(212,175,55,0.2)]" />
+    <div className="relative w-full max-w-5xl mx-auto py-12 px-4">
+      {/* 1. Auto-Extending Vertical connecting line that tracks container bounds */}
+      <div className="absolute left-6 md:left-1/2 top-12 bottom-12 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none" />
 
-      {/* Timeline Steps Loop */}
+      {/* 2. Dynamic Timeline Phase Cards */}
       <div className="space-y-20 md:space-y-28 relative">
         {activeTimeline.map((step, idx) => {
-          const Icon = getStageIcon(step.stage);
+          const NodeIcon = ICON_POOL[idx % ICON_POOL.length];
           const isRight = idx % 2 === 0;
 
           return (
             <motion.div
-              key={step.id}
+              key={step.id || idx}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="flex flex-col md:flex-row items-start md:items-center relative"
             >
-              {/* 2. central blinking light node point */}
-              <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 scale-100 z-10">
+              {/* Dynamic node circle snapping directly onto connecting line */}
+              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10">
                 <motion.div
                   className="w-10 h-10 rounded-full bg-[#050505] border-2 border-gold-vintage flex items-center justify-center text-gold-vintage shadow-xl shadow-gold-vintage/15 relative"
                   whileHover={{ scale: 1.15, borderColor: "#fbbf24" }}
                   style={{ willChange: "transform" }}
                 >
-                  <Icon className="w-5 h-5 animate-pulse" />
+                  <NodeIcon className="w-5 h-5 animate-pulse" />
                   <span className="absolute -inset-2 rounded-full border border-gold-vintage/20 animate-ping opacity-60" />
                 </motion.div>
               </div>
 
-              {/* 3. Story card blocks */}
+              {/* Story card blocks */}
               <div
-                className={`w-full md:w-[45%] pl-20 md:pl-0 ${
+                className={`w-full md:w-[45%] pl-16 md:pl-0 ${
                   isRight ? "md:mr-auto md:text-right md:pr-14" : "md:ml-auto md:pl-14"
                 }`}
               >
                 <div className="space-y-4">
                   <div className="flex flex-col justify-start md:group">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-gold-vintage">
-                      PHASE 0{step.order} • {step.stage.toUpperCase()}
+                      {step.order != null ? `PHASE ${String(step.order).padStart(2, '0')} • ${step.stage.toUpperCase()}` : step.stage.toUpperCase()}
                     </span>
                     <h3 className="font-display font-medium text-lg md:text-xl text-slate-100 tracking-wider mt-1">
                       {step.title}
@@ -166,9 +139,11 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
                   </div>
 
                   {/* Narrative content */}
-                  <p className="text-xs text-slate-400 leading-relaxed font-sans max-w-md">
-                    {step.description}
-                  </p>
+                  {step.description && (
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans max-w-md">
+                      {step.description}
+                    </p>
+                  )}
 
                   {/* Date block inside */}
                   {step.quoteAuthor && (
