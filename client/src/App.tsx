@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import Lenis from "lenis";
 
-import Compass from 'lucide-react/dist/esm/icons/compass';
-import Layers from 'lucide-react/dist/esm/icons/layers';
 import { motion, AnimatePresence } from "motion/react";
 
 // ── Lazy-loaded route-level chunks ─────────────────────────────────────────
@@ -18,6 +16,7 @@ const NoticeBoard = lazy(() => import("./features/notices/NoticeBoard"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
 
 import Navbar from "./components/layout/Navbar";
+import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
 import { WebGLErrorBoundary } from "./components/error/WebGLErrorBoundary";
 import Footer from "./components/layout/Footer";
 import { useDatabase } from "./hooks/useDatabase";
@@ -138,15 +137,23 @@ export default function App() {
     }
 
     // Smooth scroll to element in normal document flow
-    const el = document.getElementById(sectionId);
-    if (el) {
-      const lenis = (window as any).lenis;
-      if (lenis && typeof lenis.scrollTo === "function") {
-        lenis.scrollTo(el, { offset: -24, duration: 1.2 });
-      } else {
-        const targetY = el.getBoundingClientRect().top + window.scrollY - 24;
-        window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
+    const performScroll = () => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        const lenis = (window as any).lenis;
+        if (lenis && typeof lenis.scrollTo === "function") {
+          lenis.scrollTo(el, { offset: -24, duration: 1.2 });
+        } else {
+          const targetY = el.getBoundingClientRect().top + window.scrollY - 24;
+          window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
+        }
       }
+    };
+
+    if (isLanding) {
+      setTimeout(performScroll, 80);
+    } else {
+      performScroll();
     }
 
     scrollLockTimeoutRef.current = window.setTimeout(() => {
@@ -371,7 +378,19 @@ export default function App() {
         <WarpTransition isWarping={isWarping} />
       </Suspense>
 
-      {/* Top Navigation Bar */}
+      {/* 1. Global Fixed Top-Right Hamburger Menu */}
+      <GlobalHamburgerMenu
+        isLanding={isLanding}
+        route={isLanding ? "landing" : activeSection}
+        activeSection={activeSection}
+        onNavigateSection={(id) => scrollToSection(id, true)}
+        onNavigateLanding={navigateToLanding}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        setSelectedDomain={setSelectedDomain}
+      />
+
+      {/* 2. Top Section Pill Navigation Bar */}
       <Navbar
         isLanding={isLanding}
         route={isLanding ? "landing" : activeSection}
@@ -381,8 +400,6 @@ export default function App() {
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
         setSelectedDomain={setSelectedDomain}
-        isMobileMenuOpen={isMobileMenuOpen}
-        setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
       {/* Main Content View */}
@@ -470,26 +487,6 @@ export default function App() {
 
       {/* Footer */}
       <Footer dailyQuote={dailyQuote} isLanding={isLanding} route={isLanding ? "landing" : activeSection} />
-
-      {/* Floating Action Buttons */}
-      {!isLanding && (
-        <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-2">
-          <button
-            onClick={() => scrollToSection("tattva-darshana", true)}
-            className="hidden sm:flex p-3 bg-[#0a0a0a]/80 hover:bg-gold-vintage border border-white/10 hover:border-gold-vintage text-slate-400 hover:text-black rounded-full transition-all cursor-pointer shadow-lg tracking-wider"
-            title="Jump to Portals"
-          >
-            <Compass className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => scrollToSection("innovation-timeline", true)}
-            className="hidden sm:flex p-3 bg-[#0a0a0a]/80 hover:bg-gold-vintage border border-white/10 hover:border-gold-vintage text-slate-400 hover:text-black rounded-full transition-all cursor-pointer shadow-lg"
-            title="Jump to Flow of events"
-          >
-            <Layers className="w-4 h-4" />
-          </button>
-        </div>
-      )}
 
       {/* Modal overlays */}
       <Suspense fallback={null}>

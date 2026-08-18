@@ -1,7 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
 import LogOut from 'lucide-react/dist/esm/icons/log-out';
-import Menu from 'lucide-react/dist/esm/icons/menu';
-import X from 'lucide-react/dist/esm/icons/x';
 import { User, DomainContent } from "../../types/types";
 
 interface NavbarProps {
@@ -14,8 +12,6 @@ interface NavbarProps {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   setSelectedDomain: (domain: DomainContent | null) => void;
-  isMobileMenuOpen: boolean;
-  setIsMobileMenuOpen: (open: boolean) => void;
 }
 
 export default function Navbar({
@@ -28,8 +24,6 @@ export default function Navbar({
   currentUser,
   setCurrentUser,
   setSelectedDomain,
-  isMobileMenuOpen,
-  setIsMobileMenuOpen,
 }: NavbarProps) {
   const currentActive = activeSection || route;
 
@@ -51,7 +45,6 @@ export default function Navbar({
 
   const handleNavClick = (sectionId: string) => {
     setSelectedDomain(null);
-    setIsMobileMenuOpen(false);
     if (onNavigateSection) {
       onNavigateSection(sectionId);
     } else if (setRoute) {
@@ -61,7 +54,6 @@ export default function Navbar({
 
   const handleLogoClick = () => {
     setSelectedDomain(null);
-    setIsMobileMenuOpen(false);
     if (onNavigateLanding) {
       onNavigateLanding();
     } else if (setRoute) {
@@ -75,7 +67,7 @@ export default function Navbar({
     <AnimatePresence>
       {showNavbar && (
         <div className="relative z-30 w-full flex flex-col items-center justify-center pt-3 pb-1 px-4 pointer-events-none">
-          {/* Centered Compact Navigation Pill */}
+          {/* Centered Compact Navigation Pill Bar */}
           <motion.header
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,88 +128,7 @@ export default function Navbar({
                 </button>
               </div>
             )}
-
-            {/* Mobile Hamburger Toggle (Mobile Only) */}
-            <div className="md:hidden flex items-center gap-1.5 shrink-0">
-              {currentUser && (
-                <img
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-5 h-5 rounded-full border border-gold-vintage/40"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                />
-              )}
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-1 rounded-full text-slate-300 hover:text-gold-vintage focus:outline-none transition-colors cursor-pointer"
-                aria-label="Toggle navigation menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="w-4 h-4 text-gold-vintage" />
-                ) : (
-                  <Menu className="w-4 h-4 text-slate-300" />
-                )}
-              </button>
-            </div>
           </motion.header>
-
-          {/* Mobile Navigation Dropdown Card */}
-          <AnimatePresence>
-            {isMobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: -6 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -6 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                className="pointer-events-auto md:hidden w-[calc(100vw-2rem)] max-w-xs mt-2 bg-[#07060b]/98 backdrop-blur-2xl border border-gold-vintage/25 shadow-2xl rounded-2xl p-3 flex flex-col space-y-2 z-40"
-              >
-                <div className="flex flex-col space-y-1">
-                  <span className="text-[8px] font-mono tracking-[0.28em] text-slate-500 uppercase ml-2 mb-0.5">Sectors</span>
-                  {navItems.map((navItem) => (
-                    <button
-                      key={navItem.id}
-                      onClick={() => handleNavClick(navItem.id)}
-                      className={`text-left text-[11px] font-mono tracking-wider uppercase transition-colors py-1.5 px-3 rounded-lg block ${
-                        navItem.active
-                          ? "text-gold-vintage bg-gold-vintage/15 border border-gold-vintage/35 font-medium"
-                          : "text-slate-300 hover:text-gold-vintage hover:bg-white/[0.04]"
-                      }`}
-                    >
-                      {navItem.label}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Profile row inside mobile menu */}
-                {currentUser && (
-                  <div className="border-t border-white/[0.08] pt-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={currentUser.avatar}
-                        alt={currentUser.name}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-5 h-5 rounded-full border border-gold-vintage/40"
-                      />
-                      <span className="text-[10px] text-slate-300 font-sans">{currentUser.name}</span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setCurrentUser(null);
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="flex items-center gap-1 p-1 px-2 rounded hover:bg-white/10 text-slate-400 hover:text-white text-[10px] font-mono cursor-pointer"
-                    >
-                      <LogOut className="w-3 h-3" />
-                      <span>Exit</span>
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       )}
     </AnimatePresence>
