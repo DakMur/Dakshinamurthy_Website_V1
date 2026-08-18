@@ -18,6 +18,11 @@
   --color-cosmic-violet: #a855f7;
 }
 
+:root {
+  color-scheme: dark;
+  background-color: #07070a;
+}
+
 /* Custom visual utilities for luxury glassmorphism and Awwwards-style UI */
 .glass-panel {
   background: rgba(10, 10, 10, 0.65);
@@ -62,19 +67,19 @@
 /* Base resets & scroll behavior */
 html,
 body {
+  background-color: #07070a !important;
+  color: #ffffff;
   margin: 0;
   padding: 0;
   width: 100%;
+  min-height: 100%;
   overflow-x: hidden;
-}
-
-html {
+  /* Prevent mobile elastic rubber-band overscroll white bleed */
   overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
-  background-color: transparent;
-  color: #ffffff;
   font-family: var(--font-sans);
   touch-action: pan-y;
 }

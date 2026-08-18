@@ -418,8 +418,16 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
     controls.minDistance = 2;
 
     const handleResize = () => {
-      sizes.width = window.innerWidth;
-      sizes.height = window.innerHeight;
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+
+      // Avoid vertical jumps during mobile scrolling when address bar toggles
+      if (sizes.width === newWidth && Math.abs(sizes.height - newHeight) < 120) {
+        return;
+      }
+
+      sizes.width = newWidth;
+      sizes.height = newHeight;
 
       camera.aspect = sizes.width / sizes.height;
       camera.updateProjectionMatrix();
@@ -521,7 +529,7 @@ export default function CosmicGalaxy({ isWarping, isExplore = false, route, acti
   }, [isWarping]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden select-none -z-10" style={{ width: '100vw', height: '100vh' }}>
+    <div className="fixed inset-0 w-screen h-[100dvh] z-[-1] pointer-events-none overflow-hidden select-none bg-[#07070a]">
       {/* CSS Keyframes for travelling light and sequential ambient animations */}
       <style dangerouslySetInnerHTML={{
         __html: `

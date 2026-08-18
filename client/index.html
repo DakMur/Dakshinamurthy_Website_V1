@@ -1,60 +1,57 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!--
-====================================================
- Dakshinaasya Darshini Website Metadata
- Temporary Deployment URL:
- https://dakshinamurthy-website-v1-client.vercel.app/
+<head>
+  <meta charset="UTF-8" />
+  <title>Dakshinaasya Darshini | Where Creation Inspires Discovery</title>
+  <meta name="description"
+    content="Dakshinaasya Darshini is a multidisciplinary ecosystem where creation becomes a means of perception, inquiry, and transformation. Through innovation, Indian knowledge systems, culture, research, and collaborative experiences, every challenge becomes an opportunity to understand oneself while creating meaningful impact." />
+  <meta name="keywords"
+    content="Dakshinaasya Darshini, innovation, self discovery, creation, Indian knowledge systems, culture, research, technology, engineering, education, makeathon, hackathon, workshops, leadership, purposeful creation, transformative learning, conscious innovation" />
+  <meta name="author" content="Dakshinaasya Darshini" />
+  <meta name="robots" content="index, follow" />
 
- Replace every occurrence of this URL with the final
- production custom domain before launch.
+  <!-- Force Android Chrome & mobile browser navigation/status bars to solid black -->
+  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000000" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
 
- This includes:
- - Canonical URL
- - Open Graph URL
- - Open Graph Images
- - Twitter Card URLs
- - Structured Data
- - Sitemap
-====================================================
--->
-    <title>Dakshinaasya Darshini | Where Creation Inspires Discovery</title>
-    <meta name="description" content="Dakshinaasya Darshini is a multidisciplinary ecosystem where creation becomes a means of perception, inquiry, and transformation. Through innovation, Indian knowledge systems, culture, research, and collaborative experiences, every challenge becomes an opportunity to understand oneself while creating meaningful impact." />
-    <meta name="keywords" content="Dakshinaasya Darshini, innovation, self discovery, creation, Indian knowledge systems, culture, research, technology, engineering, education, makeathon, hackathon, workshops, leadership, purposeful creation, transformative learning, conscious innovation" />
-    <meta name="author" content="Dakshinaasya Darshini" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#050505" />
-    <!-- Favicon & Touch Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <!-- TODO: Replace the Vercel deployment URL with the final production custom domain before launch. -->
-    <link rel="canonical" href="https://dakshinamurthy-website-v1-client.vercel.app/" />
+  <!-- Ensure viewport fills screen including iOS/Android gesture/nav bar safe areas -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <!-- TODO: Replace the Vercel deployment URL with the final production custom domain before launch. -->
+  <link rel="canonical" href="https://dakshinamurthy-website-v1-client.vercel.app/" />
 
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Dakshinaasya Darshini" />
-    <meta property="og:description" content="An Immersive Journey into Advaita Vedanta" />
-    <meta property="og:image" content="https://dakshinamurthy-website-v1-client.vercel.app/og-image-v2.webp" />
-    <meta property="og:url" content="https://dakshinamurthy-website-v1-client.vercel.app/" />
-    <meta property="og:site_name" content="Dakshinaasya Darshini" />
-    <meta property="og:locale" content="en_IN" />
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Dakshinaasya Darshini" />
+  <meta property="og:description" content="An Immersive Journey into Advaita Vedanta" />
+  <meta property="og:image" content="https://dakshinamurthy-website-v1-client.vercel.app/og-image-v2.webp" />
+  <meta property="og:url" content="https://dakshinamurthy-website-v1-client.vercel.app/" />
+  <meta property="og:site_name" content="Dakshinaasya Darshini" />
+  <meta property="og:locale" content="en_IN" />
 
-    <!-- Resource hints: pre-warm connections to external image/video CDNs -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Preload LCP hero image -->
-    <link rel="preload" as="image" href="/ArticleImages/dakshinamurthy-a2.webp" type="image/webp" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- Resource hints: pre-warm connections to external image/video CDNs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <!-- Preload LCP hero image -->
+  <link rel="preload" as="image" href="/ArticleImages/dakshinamurthy-a2.webp" type="image/webp" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

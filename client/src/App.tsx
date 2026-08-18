@@ -349,10 +349,10 @@ export default function App() {
     <div className="relative min-h-screen text-white selection:bg-gold-vintage selection:text-black font-sans">
 
       {/* Fixed Background Gradient Layer */}
-      <div className="fixed inset-0 z-[-20] bg-black bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black pointer-events-none transform-gpu" />
+      <div className="fixed inset-0 z-[-20] bg-[#07070a] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-[#07070a] pointer-events-none transform-gpu" />
 
       {/* Persistent WebGL Background Container */}
-      <div className="fixed inset-0 -z-10 pointer-events-none">
+      <div className="fixed inset-0 w-screen h-[100dvh] z-[-1] pointer-events-none overflow-hidden bg-[#07070a]">
         <Suspense fallback={null}>
           <WebGLErrorBoundary>
             <CosmicGalaxy
