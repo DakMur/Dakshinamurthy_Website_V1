@@ -17,10 +17,10 @@ interface TimelineSectionProps {
 
 const ICON_POOL = [Sparkles, Compass, Lightbulb, GraduationCap, Trophy, Target, Award];
 
-const TimelineCard = ({ step, alignRightOnDesktop }: { step: TimelineStep; alignRightOnDesktop: boolean }) => (
+const DesktopCard = ({ step, alignRight }: { step: TimelineStep; alignRight: boolean }) => (
   <div className="w-full bg-[#07070a]/80 border border-gold-vintage/20 rounded-xl p-4 sm:p-6 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
     <div className="space-y-4">
-      <div className={`flex flex-col ${alignRightOnDesktop ? 'sm:items-end' : 'sm:items-start'}`}>
+      <div className={`flex flex-col ${alignRight ? 'sm:items-end' : 'sm:items-start'}`}>
         <span className="font-mono text-[10px] uppercase tracking-widest text-gold-vintage">
           {step.order != null ? `PHASE ${String(step.order).padStart(2, '0')} • ${step.stage.toUpperCase()}` : step.stage.toUpperCase()}
         </span>
@@ -36,7 +36,7 @@ const TimelineCard = ({ step, alignRightOnDesktop }: { step: TimelineStep; align
 
       {/* Narrative content */}
       {step.description && (
-        <p className={`text-xs text-slate-400 leading-relaxed font-sans max-w-md ${alignRightOnDesktop ? 'sm:ml-auto' : ''}`}>
+        <p className={`text-xs text-slate-400 leading-relaxed font-sans max-w-md ${alignRight ? 'sm:ml-auto' : ''}`}>
           {step.description}
         </p>
       )}
@@ -44,7 +44,7 @@ const TimelineCard = ({ step, alignRightOnDesktop }: { step: TimelineStep; align
       {/* Date block inside */}
       {step.quoteAuthor && (
         <div className={`p-3 sm:p-4 rounded-xl border border-white/5 bg-white/[0.01] flex flex-col ${
-          alignRightOnDesktop ? "sm:items-end animate-fade-in" : "items-start animate-fade-in"
+          alignRight ? "sm:items-end animate-fade-in" : "items-start animate-fade-in"
         }`}>
           <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase">
             DATE
@@ -128,56 +128,72 @@ const TimelineSection = memo(function TimelineSection({ timeline, loadTimeline }
 
   return (
     <div className="relative w-full max-w-5xl mx-auto py-12 px-4">
-      {/* 1. Continuous Vertical Background Line aligned to mobile icon center (left-[36px]) and desktop center (sm:left-1/2) */}
-      <div className="absolute left-[36px] sm:left-1/2 top-8 bottom-8 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none z-0" />
+      {/* Global Golden Connecting Line */}
+      <div className="absolute left-[36px] sm:left-1/2 top-6 bottom-6 -translate-x-1/2 w-[2px] bg-gradient-to-b from-gold-vintage/20 via-gold-vintage/60 to-gold-vintage/20 pointer-events-none z-0" />
 
-      {/* 2. Unified Responsive Timeline Items */}
-      <div className="relative z-10">
-        {activeTimeline.map((step, idx) => {
-          const NodeIcon = ICON_POOL[idx % ICON_POOL.length];
+      <div className="relative w-full max-w-5xl mx-auto space-y-8 sm:space-y-12 z-10">
+        {activeTimeline.map((item, index) => {
+          const NodeIcon = ICON_POOL[index % ICON_POOL.length];
 
           return (
             <motion.div
-              key={step.id || idx}
-              initial={{ opacity: 0, y: 40 }}
+              key={item.id || index}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative flex flex-row items-start sm:grid sm:grid-cols-[1fr_48px_1fr] gap-3 sm:gap-8 z-10 my-6 sm:my-10"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative w-full"
             >
-              {/* 1. MOBILE ICON NODE (Visible on mobile only, locked to card top) */}
-              <div className="flex sm:hidden flex-shrink-0 w-10 justify-center pt-1 z-10">
-                <div className="w-9 h-9 rounded-full border-2 border-gold-vintage bg-[#07070a] flex items-center justify-center shadow-[0_0_12px_rgba(212,175,55,0.25)]">
-                  <NodeIcon className="w-4 h-4 text-gold-vintage" />
+              {/* ---------------------------------------------------- */}
+              {/* 1. MOBILE VIEW ONLY (< sm)                           */}
+              {/* ---------------------------------------------------- */}
+              <div className="flex sm:hidden items-start gap-4 w-full text-left">
+                {/* Icon Node (Anchored to top left) */}
+                <div className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full border-2 border-gold-vintage bg-[#07070a] flex items-center justify-center shadow-[0_0_12px_rgba(212,175,55,0.25)] mt-1">
+                  <NodeIcon className="w-5 h-5 text-gold-vintage" />
+                </div>
+
+                {/* Timeline Content Card */}
+                <div className="flex-1 min-w-0 bg-[#07070a]/80 border border-gold-vintage/20 rounded-xl p-4 shadow-lg">
+                  <div className="text-xs font-semibold tracking-wider text-gold-vintage uppercase mb-1">
+                    {item.order != null ? `PHASE ${String(item.order).padStart(2, '0')}` : 'PHASE'} • {item.stage}
+                  </div>
+                  <div className="text-base font-serif text-white mb-2">
+                    {item.title}
+                  </div>
+                  {item.subtitle && (
+                    <p className="text-xs font-serif italic text-slate-400 mb-2">
+                      &ldquo;{item.subtitle}&rdquo;
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-300 mb-3 leading-relaxed">
+                    {item.description}
+                  </p>
+                  {item.quoteAuthor && (
+                    <div className="text-xs text-gold-vintage/80 font-mono border-t border-gold-vintage/10 pt-2">
+                      {item.quoteAuthor}
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* 2. DESKTOP LEFT SLOT (Even indices get Left Card; Odd indices get empty space) */}
-              <div className="hidden sm:block text-right">
-                {idx % 2 === 0 && <TimelineCard step={step} alignRightOnDesktop={true} />}
-              </div>
+              {/* ---------------------------------------------------- */}
+              {/* 2. DESKTOP VIEW ONLY (>= sm)                         */}
+              {/* ---------------------------------------------------- */}
+              <div className="hidden sm:grid sm:grid-cols-[1fr_48px_1fr] sm:gap-8 items-start w-full">
+                {/* Left Column */}
+                <div className="text-right">
+                  {index % 2 === 0 && <DesktopCard step={item} alignRight={true} />}
+                </div>
 
-              {/* 3. DESKTOP CENTER ICON NODE (Visible on desktop only) */}
-              <div className="hidden sm:flex items-center justify-center w-12 h-12 rounded-full border-2 border-gold-vintage bg-[#07070a] z-10 self-start mt-2 mx-auto shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                <motion.div
-                  className="w-full h-full flex items-center justify-center text-gold-vintage relative"
-                  whileHover={{ scale: 1.15, borderColor: "#fbbf24" }}
-                  style={{ willChange: "transform" }}
-                >
+                {/* Center Icon */}
+                <div className="relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 border-gold-vintage bg-[#07070a] mx-auto mt-2 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                   <NodeIcon className="w-6 h-6 text-gold-vintage" />
-                  <span className="absolute -inset-2 rounded-full border border-gold-vintage/20 animate-ping opacity-60 pointer-events-none" />
-                </motion.div>
-              </div>
-
-              {/* 4. CARD SLOT (Mobile: Always visible / Desktop: Odd indices get Right Card) */}
-              <div className="flex-1 min-w-0">
-                {/* Mobile View: Render card always */}
-                <div className="block sm:hidden">
-                  <TimelineCard step={step} alignRightOnDesktop={false} />
                 </div>
-                {/* Desktop View: Render card on odd index */}
-                <div className="hidden sm:block text-left">
-                  {idx % 2 !== 0 && <TimelineCard step={step} alignRightOnDesktop={false} />}
+
+                {/* Right Column */}
+                <div className="text-left">
+                  {index % 2 !== 0 && <DesktopCard step={item} alignRight={false} />}
                 </div>
               </div>
             </motion.div>
