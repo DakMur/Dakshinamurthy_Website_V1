@@ -508,15 +508,18 @@ export default function App() {
           <Suspense fallback={<div className="min-h-screen" />}>
 
             {/* SECTION 1: PRATHAMA PRAKASHA / WISDOM LECTURES */}
-            <section id="prathama-prakasha" className="scroll-mt-8 space-y-16 text-center py-4">
-              <div className="space-y-2 max-w-2xl mx-auto">
-                <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-                  Śāstra Ratnākara
+            <section id="prathama-prakasha" className="scroll-mt-8 space-y-12 text-center py-4">
+              <div className="space-y-3 max-w-3xl mx-auto px-2">
+                <span className="font-mono text-[11px] md:text-xs uppercase text-gold-vintage/90 tracking-[0.28em] block">
+                  VEDANTA MAKEATHON
                 </span>
-                <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
-                  Ocean of Sacred Knowledge
+                <h2 className="font-display font-semibold sm:font-bold text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] tracking-[0.16em] sm:tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5D6] via-[#D4AF37] to-[#8C6B1C] uppercase drop-shadow-[0_2px_14px_rgba(212,175,55,0.3)] filter antialiased py-1">
+                  VEDANTA × SCIENCE
                 </h2>
-                <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
+                <p className="text-xs md:text-sm text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-sans mt-2">
+                  Based on the concepts of Dakshinamurthy Ashtakam, the Vedanta Makeathon explores ideas of consciousness, the mind–body relationship, and sense perception through immersive technology experiences.
+                </p>
+                <div className="w-16 h-[1.5px] bg-gold-vintage/40 mx-auto mt-4" />
               </div>
 
               <WisdomLectures
