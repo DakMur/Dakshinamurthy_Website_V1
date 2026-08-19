@@ -27,7 +27,7 @@ interface QuickLink {
 }
 
 const QUICK_LINKS: QuickLink[] = [
-  { label: "Home", href: "/#hero", targetId: "discover" },
+  { label: "Discover", href: "/#hero", targetId: "discover" },
   { label: "Technical Workshop", href: "/#technical-workshop", targetId: "technical-workshop" },
   { label: "Tattva Darśana", href: "/#tattva-darshana", targetId: "tattva-darshana" },
   { label: "Innovation Timeline", href: "/#innovation-timeline", targetId: "timeline" },
@@ -414,7 +414,7 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
                   2. Food, Lodging &amp; Training
                 </h4>
                 <p className="text-slate-300">
-                  All training sessions, lodging, and catering are managed and provided directly by Param Foundation. Event organizers and host institutions assume zero liability or responsibility for these arrangements.
+                  Lodging and catering are managed and provided by the organizer, and training is provided by Param Foundation and the organizer.
                 </p>
               </div>
 
