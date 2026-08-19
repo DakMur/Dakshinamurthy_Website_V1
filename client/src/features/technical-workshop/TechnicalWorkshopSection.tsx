@@ -389,9 +389,6 @@ export default function TechnicalWorkshopSection() {
     <div className="space-y-8 md:space-y-10">
       {/* Section header */}
       <div className="space-y-2 max-w-3xl mx-auto text-center">
-        <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-          Param Foundation
-        </span>
         <h2 className="font-display font-medium text-4xl md:text-[3.5rem] tracking-widest text-[#ffffff] uppercase leading-tight">
           Technical Workshops
         </h2>

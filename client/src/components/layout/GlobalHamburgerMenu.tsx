@@ -32,19 +32,19 @@ export default function GlobalHamburgerMenu({
   const currentActive = isLanding ? "landing" : (activeSection || route);
 
   const isLandingActive = isLanding || currentActive === "landing" || currentActive === "home";
-  const isPrathamaActive = !isLanding && (currentActive === "prathama-prakasha" || currentActive === "prathama" || currentActive === "prathama-prakasa" || currentActive === "storytelling");
+  const isDiscoverActive = !isLanding && (currentActive === "discover" || currentActive === "prathama-prakasha" || currentActive === "prathama" || currentActive === "prathama-prakasa" || currentActive === "storytelling");
   const isWorkshopActive = !isLanding && (currentActive === "technical-workshop" || currentActive === "workshop" || currentActive === "param-workshop");
   const isTattvaActive = !isLanding && (currentActive === "tattva-darshana" || currentActive === "tattva" || currentActive === "tattva-darsana" || currentActive === "domains");
-  const isTimelineActive = !isLanding && (currentActive === "innovation-timeline" || currentActive === "timeline" || currentActive === "chronology-timeline" || currentActive === "flow");
+  const isTimelineActive = !isLanding && (currentActive === "timeline" || currentActive === "innovation-timeline" || currentActive === "chronology-timeline" || currentActive === "flow" || currentActive === "marga-darshana");
   const isNoticeBoardActive = !isLanding && (currentActive === "notice-board" || currentActive === "notices");
   const isRegistrationActive = !isLanding && (currentActive === "registration" || currentActive === "admin" || currentActive === "workspace");
 
   const navItems = [
     { id: "landing", label: "Home / Darśini", active: isLandingActive, isHome: true },
-    { id: "prathama-prakasha", label: "Discover", active: isPrathamaActive },
+    { id: "discover", label: "Discover", active: isDiscoverActive },
     { id: "technical-workshop", label: "Technical Workshop", active: isWorkshopActive },
     { id: "tattva-darshana", label: "Tattva Darśana", active: isTattvaActive },
-    { id: "innovation-timeline", label: "Innovation Timeline", active: isTimelineActive },
+    { id: "timeline", label: "Timeline", active: isTimelineActive },
     { id: "notice-board", label: "Notice Board", active: isNoticeBoardActive },
     { id: "registration", label: "Registration", active: isRegistrationActive }
   ];

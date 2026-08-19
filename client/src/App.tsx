@@ -363,14 +363,14 @@ export default function App() {
   const triggerWarpSpeed = useCallback(() => {
     triggerWarp(() => {
       setIsLanding(false);
-      setActiveSection("prathama-prakasha");
-      activeSectionRef.current = "prathama-prakasha";
-      const targetPath = getSectionPath("prathama-prakasha");
+      setActiveSection("discover");
+      activeSectionRef.current = "discover";
+      const targetPath = getSectionPath("discover");
       if (window.location.pathname !== targetPath) {
-        window.history.pushState({ sectionId: "prathama-prakasha" }, "", targetPath);
+        window.history.pushState({ sectionId: "discover" }, "", targetPath);
       }
       setTimeout(() => {
-        const el = document.getElementById("prathama-prakasha");
+        const el = document.getElementById("discover");
         if (el) {
           const lenis = (window as any).lenis;
           if (lenis && typeof lenis.scrollTo === "function") {
@@ -680,8 +680,8 @@ export default function App() {
         <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-16 flex flex-col space-y-20 md:space-y-28 pt-6">
           <Suspense fallback={<div className="min-h-screen" />}>
 
-            {/* SECTION 1: PRATHAMA PRAKASHA / WISDOM LECTURES */}
-            <section id="prathama-prakasha" className="scroll-mt-8 space-y-12 text-center py-4">
+            {/* SECTION 1: DISCOVER / WISDOM LECTURES */}
+            <section id="discover" className="scroll-mt-8 space-y-12 text-center py-4">
               <div className="space-y-3 max-w-3xl mx-auto px-2">
                 <span className="font-mono text-[11px] md:text-xs uppercase text-gold-vintage/90 tracking-[0.28em] block">
                   VEDANTA MAKEATHON
@@ -718,14 +718,14 @@ export default function App() {
               />
             </section>
 
-            {/* SECTION 4: INNOVATION TIMELINE & CHRONOLOGY */}
-            <section id="innovation-timeline" className="scroll-mt-8 space-y-12 text-center py-4">
+            {/* SECTION 4: TIMELINE & CHRONOLOGY */}
+            <section id="timeline" className="scroll-mt-8 space-y-12 text-center py-4">
               <div className="space-y-2 max-w-2xl mx-auto">
                 <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
                   The Innovation Journey
                 </span>
                 <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-[#ffffff] uppercase">
-                  Mārga Darśana
+                  Timeline
                 </h2>
                 <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed font-sans mt-3">
                   From the first announcement to the final prototype, every phase guides participants through learning, collaboration, and innovation. Explore the journey from the theme announcement to the Makeathon Finals.

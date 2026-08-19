@@ -27,18 +27,18 @@ export default function Navbar({
 }: NavbarProps) {
   const currentActive = activeSection || route;
 
-  const isPrathamaActive = currentActive === "prathama-prakasha" || currentActive === "prathama" || currentActive === "prathama-prakasa" || currentActive === "storytelling";
+  const isDiscoverActive = currentActive === "discover" || currentActive === "prathama-prakasha" || currentActive === "prathama" || currentActive === "prathama-prakasa" || currentActive === "storytelling";
   const isWorkshopActive = currentActive === "technical-workshop" || currentActive === "workshop" || currentActive === "param-workshop";
   const isTattvaActive = currentActive === "tattva-darshana" || currentActive === "tattva" || currentActive === "tattva-darsana" || currentActive === "domains";
-  const isTimelineActive = currentActive === "innovation-timeline" || currentActive === "timeline" || currentActive === "chronology-timeline" || currentActive === "flow";
+  const isTimelineActive = currentActive === "timeline" || currentActive === "innovation-timeline" || currentActive === "chronology-timeline" || currentActive === "flow" || currentActive === "marga-darshana";
   const isNoticeBoardActive = currentActive === "notice-board" || currentActive === "notices";
   const isRegistrationActive = currentActive === "registration" || currentActive === "admin" || currentActive === "workspace";
 
   const navItems = [
-    { id: "prathama-prakasha", label: "Discover", active: isPrathamaActive },
+    { id: "discover", label: "Discover", active: isDiscoverActive },
     { id: "technical-workshop", label: "Technical Workshop", active: isWorkshopActive },
     { id: "tattva-darshana", label: "Tattva Darśana", active: isTattvaActive },
-    { id: "innovation-timeline", label: "Innovation Timeline", active: isTimelineActive },
+    { id: "timeline", label: "Timeline", active: isTimelineActive },
     { id: "notice-board", label: "Notice Board", active: isNoticeBoardActive },
     { id: "registration", label: "Registration", active: isRegistrationActive }
   ];

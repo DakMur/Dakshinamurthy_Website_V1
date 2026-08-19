@@ -9,10 +9,10 @@ export const BASE_DOMAIN = "https://vedanta-makeathon.vercel.app";
 
 export const NAV_SECTIONS: NavSection[] = [
   {
-    id: "prathama-prakasha",
-    path: "/prathama-prakasha",
+    id: "discover",
+    path: "/discover",
     label: "Discover",
-    aliases: ["prathama", "prathama-prakasa", "storytelling", "wisdom", "discover"],
+    aliases: ["prathama-prakasha", "prathama", "prathama-prakasa", "storytelling", "wisdom", "discover"],
   },
   {
     id: "technical-workshop",
@@ -27,10 +27,10 @@ export const NAV_SECTIONS: NavSection[] = [
     aliases: ["tattva", "tattva-darsana", "domains"],
   },
   {
-    id: "innovation-timeline",
-    path: "/innovation-timeline",
-    label: "Innovation Timeline",
-    aliases: ["timeline", "chronology-timeline", "flow", "marga-darshana"],
+    id: "timeline",
+    path: "/timeline",
+    label: "Timeline",
+    aliases: ["innovation-timeline", "chronology-timeline", "flow", "marga-darshana"],
   },
   {
     id: "notice-board",
@@ -80,7 +80,7 @@ export function parsePath(pathname: string): { isLanding: boolean; activeSection
     clean === "/home" ||
     clean === "/landing"
   ) {
-    return { isLanding: true, activeSectionId: "prathama-prakasha" };
+    return { isLanding: true, activeSectionId: "discover" };
   }
 
   // Check exact section paths
@@ -103,7 +103,7 @@ export function parsePath(pathname: string): { isLanding: boolean; activeSection
   }
 
   // Default to landing
-  return { isLanding: true, activeSectionId: "prathama-prakasha" };
+  return { isLanding: true, activeSectionId: "discover" };
 }
 
 export function getSectionPath(sectionId: string): string {
