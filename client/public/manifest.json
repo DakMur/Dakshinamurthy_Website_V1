@@ -1,0 +1,16 @@
+{
+  "short_name": "Vedanta Makeathon",
+  "name": "Vedanta Makeathon",
+  "description": "Based on the concepts of Dakshinamurthy Ashtakam, the Vedanta Makeathon explores ideas of consciousness, the mind–body relationship, and sense perception through immersive technology experiences.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#07070a",
+  "theme_color": "#d97706",
+  "display": "standalone"
+}
