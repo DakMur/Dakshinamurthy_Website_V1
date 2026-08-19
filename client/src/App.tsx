@@ -687,7 +687,9 @@ export default function App() {
                   VEDANTA MAKEATHON
                 </span>
                 <h2 className="font-display font-semibold sm:font-bold text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] tracking-[0.16em] sm:tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5D6] via-[#D4AF37] to-[#8C6B1C] uppercase drop-shadow-[0_2px_14px_rgba(212,175,55,0.3)] filter antialiased py-1">
-                  VEDANTA × SCIENCE
+                  <span className="block sm:inline">VEDANTA</span>{" "}
+                  <span className="block sm:inline">×</span>{" "}
+                  <span className="block sm:inline">SCIENCE</span>
                 </h2>
                 <p className="text-xs md:text-sm text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-sans mt-2">
                   Based on the concepts of Dakshinamurthy Ashtakam, the Vedanta Makeathon explores ideas of consciousness, the mind–body relationship, and sense perception through immersive technology experiences.

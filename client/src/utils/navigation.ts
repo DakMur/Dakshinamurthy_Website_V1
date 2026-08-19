@@ -11,8 +11,8 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     id: "prathama-prakasha",
     path: "/prathama-prakasha",
-    label: "Prathama Prakasa",
-    aliases: ["prathama", "prathama-prakasa", "storytelling", "wisdom"],
+    label: "Discover",
+    aliases: ["prathama", "prathama-prakasa", "storytelling", "wisdom", "discover"],
   },
   {
     id: "technical-workshop",

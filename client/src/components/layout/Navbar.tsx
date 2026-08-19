@@ -35,7 +35,7 @@ export default function Navbar({
   const isRegistrationActive = currentActive === "registration" || currentActive === "admin" || currentActive === "workspace";
 
   const navItems = [
-    { id: "prathama-prakasha", label: "Prathama Prakasa", active: isPrathamaActive },
+    { id: "prathama-prakasha", label: "Discover", active: isPrathamaActive },
     { id: "technical-workshop", label: "Technical Workshop", active: isWorkshopActive },
     { id: "tattva-darshana", label: "Tattva Darśana", active: isTattvaActive },
     { id: "innovation-timeline", label: "Innovation Timeline", active: isTimelineActive },

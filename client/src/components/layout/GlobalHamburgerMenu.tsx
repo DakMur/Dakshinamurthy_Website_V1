@@ -41,7 +41,7 @@ export default function GlobalHamburgerMenu({
 
   const navItems = [
     { id: "landing", label: "Home / Darśini", active: isLandingActive, isHome: true },
-    { id: "prathama-prakasha", label: "Prathama Prakāśa", active: isPrathamaActive },
+    { id: "prathama-prakasha", label: "Discover", active: isPrathamaActive },
     { id: "technical-workshop", label: "Technical Workshop", active: isWorkshopActive },
     { id: "tattva-darshana", label: "Tattva Darśana", active: isTattvaActive },
     { id: "innovation-timeline", label: "Innovation Timeline", active: isTimelineActive },
