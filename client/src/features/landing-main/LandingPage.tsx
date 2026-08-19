@@ -95,37 +95,52 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </div>
         </div>
 
-        {/* Mobile Layout: Responsive 2x2 Grid */}
-        <div className="sm:hidden grid grid-cols-2 gap-3 w-full px-4 pt-2 pb-1">
-          <div className="flex flex-col items-start justify-center">
-            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
-              TECHNICAL COLLABORATOR
+        {/* Mobile Layout: Responsive Single 4-Column Horizontal Row */}
+        <div className="sm:hidden grid grid-cols-4 w-full px-2 pt-1 pb-1 gap-1 items-start">
+          {/* 1. Param */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              TECHNICAL<br />COLLABORATOR
             </span>
-            <img src={paramLogo} className="h-6 object-contain" alt="Param Technical Collaborator" />
+            <div className="h-7 flex items-center justify-center">
+              <img src={paramLogo} className="h-[20px] max-w-full object-contain" alt="Param Technical Collaborator" />
+            </div>
           </div>
-          <div className="flex flex-col items-end justify-center">
-            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
-              JYOTHY INSTITUTE OF TECHNOLOGY
+
+          {/* 2. Jyothy */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              JYOTHY INSTITUTE<br />OF TECHNOLOGY
             </span>
-            <img src={jyothyLogo} className="h-9 object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" />
+            <div className="h-7 flex items-center justify-center">
+              <img src={jyothyLogo} className="h-[25px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" />
+            </div>
           </div>
-          <div className="flex flex-col items-start justify-center">
-            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
-              SRINGERI SHARADA PEETHAM
+
+          {/* 3. Sringeri */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              SRINGERI SHARADA<br />PEETHAM
             </span>
-            <img src={sringeriLogo} className="h-9 object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" />
+            <div className="h-7 flex items-center justify-center">
+              <img src={sringeriLogo} className="h-[24px] max-w-full object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" />
+            </div>
           </div>
-          <div className="flex flex-col items-end justify-center">
-            <span className="text-[8px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-0.5 whitespace-nowrap">
-              SUPPORTED BY
+
+          {/* 4. Vedanta Bharati */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              SUPPORTED<br />BY
             </span>
-            <img src={vedantaBharatiLogo} className="h-10 object-contain" alt="Vedanta Bharati" />
+            <div className="h-7 flex items-center justify-center">
+              <img src={vedantaBharatiLogo} className="h-[22px] max-w-full object-contain" alt="Vedanta Bharati" />
+            </div>
           </div>
         </div>
       </motion.div>
 
       {/* 2. CENTERED HERO CONTENT (Constrained by max-w-7xl) */}
-      <div className="text-center space-y-4 sm:space-y-6 w-full max-w-7xl mx-auto pt-0 pb-12 relative flex flex-col justify-center items-center">
+      <div className="text-center space-y-3 sm:space-y-6 w-full max-w-7xl mx-auto pt-1 sm:pt-0 pb-8 sm:pb-12 relative flex flex-col justify-center items-center px-4 sm:px-6">
         {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
         <div className="hidden sm:flex fixed right-10 bottom-10 pointer-events-none select-none z-20">
           <div className="text-right">
@@ -133,17 +148,19 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </div>
         </div>
 
-      <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="space-y-3 sm:space-y-6 max-w-4xl mx-auto w-full">
         {/* Accent Line decoration */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 0.8, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-4 flex items-center justify-center gap-4 text-xs font-mono"
+          className="mb-2 sm:mb-4 flex items-center justify-center gap-3 sm:gap-4 text-xs font-mono"
         >
-          <div className="h-[1px] w-14 bg-gradient-to-r from-transparent to-gold-vintage"></div>
-          <span className="text-[10px] tracking-[0.55em] uppercase text-gold-vintage">VEDANTA AND SCIENCE</span>
-          <div className="h-[1px] w-14 bg-gradient-to-l from-transparent to-gold-vintage"></div>
+          <div className="h-[1px] w-8 sm:w-14 bg-gradient-to-r from-transparent to-gold-vintage"></div>
+          <span className="text-[9px] sm:text-[10px] tracking-[0.4em] sm:tracking-[0.55em] uppercase text-gold-vintage whitespace-nowrap">
+            VEDANTA AND SCIENCE
+          </span>
+          <div className="h-[1px] w-8 sm:w-14 bg-gradient-to-l from-transparent to-gold-vintage"></div>
         </motion.div>
 
         {/* Main Heading layout */}
@@ -170,7 +187,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               delay: 0.3
             }
           }}
-          className="relative flex items-center justify-center mx-auto w-48 h-48 md:w-64 md:h-64 -mb-10 md:-mb-14 group z-20 pointer-events-none select-none"
+          className="relative flex items-center justify-center mx-auto w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 -mb-8 sm:-mb-10 md:-mb-14 group z-20 pointer-events-none select-none"
         >
           {/* Ambient Glow matching existing cosmic background theme */}
           <div className="absolute inset-0 rounded-full bg-gold-vintage/10 blur-xl w-3/4 h-3/4 mx-auto animate-pulse pointer-events-none"></div>
@@ -197,7 +214,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           initial={{ filter: "blur(12px)", opacity: 0, y: 20 }}
           animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="font-serif font-medium text-4xl md:text-7xl text-white tracking-[0.04em] leading-[1.1] max-w-3xl mx-auto pb-4"
+          className="font-serif font-medium text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white tracking-[0.03em] sm:tracking-[0.04em] leading-[1.15] sm:leading-[1.1] max-w-3xl mx-auto pb-2 sm:pb-4"
         >
           <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-b from-white via-gold-vintage to-gold-bright drop-shadow-2xl antialiased">
             Dakshinaasya Darshini
@@ -209,7 +226,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="text-sm md:text-base font-serif italic text-slate-300 max-w-2xl mx-auto leading-relaxed p-5 md:p-6 rounded-xl bg-black/40 backdrop-blur-md border border-gold-vintage/30 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+          className="text-[13px] sm:text-sm md:text-base font-serif italic text-slate-300 max-w-xl md:max-w-2xl mx-auto leading-relaxed p-4 sm:p-5 md:p-6 rounded-xl bg-black/40 backdrop-blur-md border border-gold-vintage/30 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
         >
           &ldquo;To Him who sees the universe mirroring within Himself like a city reflected in a glass, yet appearing outside as if by a dream; to Him who reveals the absolute Non-Dual Self upon awakening; salutations to that ultimate Guru, Sri Dakshinamurthy.&rdquo;
         </motion.p>
@@ -220,20 +237,20 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="pt-6"
+        className="pt-3 sm:pt-6"
       >
         <button
           onClick={triggerWarpSpeed}
           disabled={isWarping}
-          className="group relative px-12 py-5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-xl border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-3.5 cursor-pointer"
+          className="group relative px-8 sm:px-12 py-3.5 sm:py-5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-xl border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-2.5 sm:gap-3.5 cursor-pointer"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-gold-vintage/10 via-transparent to-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-          <span className="relative text-[10.5px] tracking-[0.45em] font-mono font-medium text-white group-hover:text-gold-vintage uppercase transition-colors">
+          <span className="relative text-[9.5px] sm:text-[10.5px] tracking-[0.4em] sm:tracking-[0.45em] font-mono font-medium text-white group-hover:text-gold-vintage uppercase transition-colors">
             {isWarping ? "Exploring..." : "Explore"}
           </span>
 
-          <ArrowRight className="w-4 h-4 text-gold-vintage transform group-hover:translate-x-2 transition-transform relative" />
+          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold-vintage transform group-hover:translate-x-2 transition-transform relative" />
 
           {/* Neon bottom accent line */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/5 h-[1.5px] bg-gold-vintage shadow-[0_0_12px_#D4AF37] group-hover:w-4/5 transition-all duration-500"></div>
