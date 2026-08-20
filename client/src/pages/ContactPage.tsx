@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Instagram, Youtube, Mail } from "lucide-react";
+import { WebGLErrorBoundary } from "../components/error/WebGLErrorBoundary";
 
 const CosmicGalaxy = lazy(() => import("../features/landing-main/CosmicGalaxy"));
 
@@ -37,7 +38,9 @@ export default function ContactPage() {
       {/* Animated Galaxy/Particle Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <Suspense fallback={null}>
-          <CosmicGalaxy />
+          <WebGLErrorBoundary>
+            <CosmicGalaxy route="contact" />
+          </WebGLErrorBoundary>
         </Suspense>
       </div>
 
