@@ -9,9 +9,17 @@ interface GalaxyProps {
   route?: string;
   activeTab?: string;
   isModalOpen?: boolean;
+  hideTechDecorations?: boolean;
 }
 
-export default function CosmicGalaxy({ isWarping = false, isExplore = false, route, activeTab, isModalOpen = false }: GalaxyProps) {
+export default function CosmicGalaxy({
+  isWarping = false,
+  isExplore = false,
+  route,
+  activeTab,
+  isModalOpen = false,
+  hideTechDecorations = false,
+}: GalaxyProps) {
   const isWarpingRef = useRef(isWarping);
   useEffect(() => {
     isWarpingRef.current = isWarping;
@@ -559,273 +567,277 @@ export default function CosmicGalaxy({ isWarping = false, isExplore = false, rou
         }
       `}} />
 
-      {/* Global SVG Filters and Animated Shimmer Gradients */}
-      <svg className="absolute pointer-events-none opacity-0" aria-hidden="true" width="1" height="1">
-        <defs>
-          {/* Engraved circuitry light bloom filter (Target: Core stdDev 1.6, Outer stdDev 6.5, matrix alpha boosted by ~2.0x-2.5x) */}
-          <filter id="engraved-bloom" x="-60%" y="-60%" width="220%" height="220%">
-            {/* Tight core glow blur */}
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="blur-tight" />
-            {/* Wide soft scattering halo */}
-            <feGaussianBlur in="SourceGraphic" stdDeviation="6.5" result="blur-wide" />
+      {!hideTechDecorations && route !== "contact" && (
+        <>
+          {/* Global SVG Filters and Animated Shimmer Gradients */}
+          <svg className="absolute pointer-events-none opacity-0" aria-hidden="true" width="1" height="1">
+            <defs>
+              {/* Engraved circuitry light bloom filter (Target: Core stdDev 1.6, Outer stdDev 6.5, matrix alpha boosted by ~2.0x-2.5x) */}
+              <filter id="engraved-bloom" x="-60%" y="-60%" width="220%" height="220%">
+                {/* Tight core glow blur */}
+                <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="blur-tight" />
+                {/* Wide soft scattering halo */}
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6.5" result="blur-wide" />
 
-            {/* Map wide blur to antique gold with boosted alpha */}
-            <feColorMatrix type="matrix" in="blur-wide" result="glow-wide" values="
-              0.83 0 0 0 0
-              0 0.69 0 0 0
-              0 0 0.22 0 0
-              0 0 0 1.35 0" />
+                {/* Map wide blur to antique gold with boosted alpha */}
+                <feColorMatrix type="matrix" in="blur-wide" result="glow-wide" values="
+                  0.83 0 0 0 0
+                  0 0.69 0 0 0
+                  0 0 0.22 0 0
+                  0 0 0 1.35 0" />
 
-            {/* Map tight blur to warm gold with boosted alpha */}
-            <feColorMatrix type="matrix" in="blur-tight" result="glow-tight" values="
-              0.90 0 0 0 0
-              0 0.75 0 0 0
-              0 0 0.30 0 0
-              0 0 0 2.40 0" />
+                {/* Map tight blur to warm gold with boosted alpha */}
+                <feColorMatrix type="matrix" in="blur-tight" result="glow-tight" values="
+                  0.90 0 0 0 0
+                  0 0.75 0 0 0
+                  0 0 0.30 0 0
+                  0 0 0 2.40 0" />
 
-            <feMerge>
-              <feMergeNode in="glow-wide" />
-              <feMergeNode in="glow-tight" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
+                <feMerge>
+                  <feMergeNode in="glow-wide" />
+                  <feMergeNode in="glow-tight" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
 
-          {/* Controller Travelling Reflection Gradient */}
-          <linearGradient id="controller-shimmer" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#d4af37">
-              <animate attributeName="offset" values="-1; 2" dur="7s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.8">
-              <animate attributeName="offset" values="-0.5; 2.5" dur="7s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stopColor="#d4af37">
-              <animate attributeName="offset" values="0; 3" dur="7s" repeatCount="indefinite" />
-            </stop>
-          </linearGradient>
+              {/* Controller Travelling Reflection Gradient */}
+              <linearGradient id="controller-shimmer" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#d4af37">
+                  <animate attributeName="offset" values="-1; 2" dur="7s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.8">
+                  <animate attributeName="offset" values="-0.5; 2.5" dur="7s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" stopColor="#d4af37">
+                  <animate attributeName="offset" values="0; 3" dur="7s" repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
 
-          {/* Drone Casing Shimmer Gradient */}
-          <linearGradient id="drone-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#d4af37" />
-            <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.75">
-              <animate attributeName="offset" values="-0.5; 1.5" dur="6.5s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stopColor="#d4af37" />
-          </linearGradient>
+              {/* Drone Casing Shimmer Gradient */}
+              <linearGradient id="drone-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#d4af37" />
+                <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.75">
+                  <animate attributeName="offset" values="-0.5; 1.5" dur="6.5s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" stopColor="#d4af37" />
+              </linearGradient>
 
-          {/* Camera Lens Reflection Shimmer */}
-          <linearGradient id="lens-shimmer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.95">
-              <animate attributeName="offset" values="-0.5; 1.5" dur="7.5s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3" />
-          </linearGradient>
+              {/* Camera Lens Reflection Shimmer */}
+              <linearGradient id="lens-shimmer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
+                <stop offset="50%" stopColor="#ffffff" stopOpacity="0.95">
+                  <animate attributeName="offset" values="-0.5; 1.5" dur="7.5s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3" />
+              </linearGradient>
 
-          {/* GPU Casing Shimmer Gradient */}
-          <linearGradient id="gpu-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#d4af37" />
-            <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.8">
-              <animate attributeName="offset" values="-0.5; 1.5" dur="6s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stopColor="#d4af37" />
-          </linearGradient>
+              {/* GPU Casing Shimmer Gradient */}
+              <linearGradient id="gpu-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#d4af37" />
+                <stop offset="50%" stopColor="#fffbe6" stopOpacity="0.8">
+                  <animate attributeName="offset" values="-0.5; 1.5" dur="6s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" stopColor="#d4af37" />
+              </linearGradient>
 
-          {/* Propeller motion blur filter */}
-          <filter id="propeller-blur" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" />
-          </filter>
-        </defs>
-      </svg>
-      {/* 1. Technology Background Layer (breathing ambient opacity, thin gold outline strokes) - sits behind canvas */}
-      <div
-        className="absolute inset-0 z-0 text-gold-vintage mix-blend-screen select-none pointer-events-none tech-bg-layer"
-        style={{ animation: "tech-ambient-light 16s ease-in-out infinite" }}
-      >
+              {/* Propeller motion blur filter */}
+              <filter id="propeller-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" />
+              </filter>
+            </defs>
+          </svg>
+          {/* 1. Technology Background Layer (breathing ambient opacity, thin gold outline strokes) - sits behind canvas */}
+          <div
+            className="absolute inset-0 z-0 text-gold-vintage mix-blend-screen select-none pointer-events-none tech-bg-layer"
+            style={{ animation: "tech-ambient-light 16s ease-in-out infinite" }}
+          >
 
-        {/* Top Left Cluster - Adjusted to clear Jyothy logo safe zone */}
-        <div
-          className="absolute left-[3vw] top-[18vh] max-md:left-[2vw] max-md:top-[14vh] max-md:scale-[0.55] max-md:origin-top-left"
-          style={{
-            opacity: isExplore ? 0.78 * 0.95 : 0.95,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechController />
-        </div>
-        <div
-          className="absolute left-[15vw] top-[19vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.85 : 0.85,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechBinary className="text-gold-vintage" />
-        </div>
+            {/* Top Left Cluster - Adjusted to clear Jyothy logo safe zone */}
+            <div
+              className="absolute left-[3vw] top-[18vh] max-md:left-[2vw] max-md:top-[14vh] max-md:scale-[0.55] max-md:origin-top-left"
+              style={{
+                opacity: isExplore ? 0.78 * 0.95 : 0.95,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechController />
+            </div>
+            <div
+              className="absolute left-[15vw] top-[19vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.85 : 0.85,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechBinary className="text-gold-vintage" />
+            </div>
 
-        {/* Middle Left Cluster */}
-        <div
-          className="absolute left-[2vw] top-[38vh] max-md:left-[1vw] max-md:top-[32vh] max-md:scale-[0.5] max-md:origin-top-left"
-          style={{
-            opacity: isExplore ? 0.78 * 0.90 : 0.90,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechMicrochip />
-        </div>
+            {/* Middle Left Cluster */}
+            <div
+              className="absolute left-[2vw] top-[38vh] max-md:left-[1vw] max-md:top-[32vh] max-md:scale-[0.5] max-md:origin-top-left"
+              style={{
+                opacity: isExplore ? 0.78 * 0.90 : 0.90,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechMicrochip />
+            </div>
 
-        {/* Left background additions */}
-        <div
-          className="absolute left-[13vw] top-[46vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.35 : 0.35,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechTerminal />
-        </div>
+            {/* Left background additions */}
+            <div
+              className="absolute left-[13vw] top-[46vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.35 : 0.35,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechTerminal />
+            </div>
 
-        {/* Bottom Left Cluster */}
-        <div
-          className="absolute left-[14vw] bottom-[14vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.78 * 0.90 : 0.90,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechPcb />
-        </div>
-        <div
-          className="absolute left-[2vw] bottom-[15vh] max-md:left-[1vw] max-md:bottom-[12vh] max-md:scale-[0.5] max-md:origin-bottom-left"
-          style={{
-            opacity: isExplore ? 0.68 * 0.95 : 0.95,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechRoboticArm />
-        </div>
-        <div
-          className="absolute left-[14vw] bottom-[4vh] text-gold-vintage max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.35 : 0.35,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechWaveform />
-        </div>
-        <div
-          className="absolute left-[2vw] bottom-[3vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.70 : 0.70,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechCode className="text-gold-vintage" />
-        </div>
+            {/* Bottom Left Cluster */}
+            <div
+              className="absolute left-[14vw] bottom-[14vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.78 * 0.90 : 0.90,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechPcb />
+            </div>
+            <div
+              className="absolute left-[2vw] bottom-[15vh] max-md:left-[1vw] max-md:bottom-[12vh] max-md:scale-[0.5] max-md:origin-bottom-left"
+              style={{
+                opacity: isExplore ? 0.68 * 0.95 : 0.95,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechRoboticArm />
+            </div>
+            <div
+              className="absolute left-[14vw] bottom-[4vh] text-gold-vintage max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.35 : 0.35,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechWaveform />
+            </div>
+            <div
+              className="absolute left-[2vw] bottom-[3vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.70 : 0.70,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechCode className="text-gold-vintage" />
+            </div>
 
-        {/* Top Right Cluster - Framing the Vedanta Bharati logo */}
-        <div
-          className="absolute right-[12vw] top-[18vh] max-md:right-[1vw] max-md:top-[14vh] max-md:scale-[0.5] max-md:origin-top-right"
-          style={{
-            opacity: isExplore ? 0.68 * 1.00 : 1.00,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechDrone />
-        </div>
+            {/* Top Right Cluster - Framing the Vedanta Bharati logo */}
+            <div
+              className="absolute right-[12vw] top-[18vh] max-md:right-[1vw] max-md:top-[14vh] max-md:scale-[0.5] max-md:origin-top-right"
+              style={{
+                opacity: isExplore ? 0.68 * 1.00 : 1.00,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechDrone />
+            </div>
 
-        {/* Middle Right Cluster */}
-        <div
-          className="absolute right-[2vw] top-[22vh] max-md:right-[1vw] max-md:top-[30vh] max-md:scale-[0.45] max-md:origin-top-right"
-          style={{
-            opacity: isExplore ? 0.78 * 0.95 : 0.95,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechNeural />
-        </div>
-        <div
-          className="absolute right-[20vw] top-[32vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.78 * 0.90 : 0.90,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechCamera />
-        </div>
+            {/* Middle Right Cluster */}
+            <div
+              className="absolute right-[2vw] top-[22vh] max-md:right-[1vw] max-md:top-[30vh] max-md:scale-[0.45] max-md:origin-top-right"
+              style={{
+                opacity: isExplore ? 0.78 * 0.95 : 0.95,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechNeural />
+            </div>
+            <div
+              className="absolute right-[20vw] top-[32vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.78 * 0.90 : 0.90,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechCamera />
+            </div>
 
-        {/* Right background additions */}
-        <div
-          className="absolute right-[12vw] top-[42vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.35 : 0.35,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechCloudApi />
-        </div>
-        <div
-          className="absolute right-[2vw] top-[48vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.35 : 0.35,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechDatabase />
-        </div>
+            {/* Right background additions */}
+            <div
+              className="absolute right-[12vw] top-[42vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.35 : 0.35,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechCloudApi />
+            </div>
+            <div
+              className="absolute right-[2vw] top-[48vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.35 : 0.35,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechDatabase />
+            </div>
 
-        <div
-          className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.80 : 0.80,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <div style={{ animation: "tech-binary-1 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
-          <div style={{ animation: "tech-binary-3 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0001</div>
-          <div style={{ animation: "tech-binary-5 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
-        </div>
+            <div
+              className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.80 : 0.80,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <div style={{ animation: "tech-binary-1 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
+              <div style={{ animation: "tech-binary-3 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0001</div>
+              <div style={{ animation: "tech-binary-5 6s ease-in-out infinite", filter: "drop-shadow(0 0 2px rgba(212,175,55,0.75))" }}>0101</div>
+            </div>
 
-        {/* Bottom Right Cluster - Moved AI Head slightly up to clear Tat Tvam Asi text */}
-        <div
-          className="absolute right-[20vw] bottom-[16vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.68 * 0.95 : 0.95,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechGpu />
-        </div>
-        <div
-          className="absolute right-[2vw] bottom-[12vh] max-md:right-[1vw] max-md:bottom-[10vh] max-md:scale-[0.5] max-md:origin-bottom-right"
-          style={{
-            opacity: isExplore ? 0.68 * 1.00 : 1.00,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechAiHead />
-        </div>
-        <div
-          className="absolute right-[19vw] bottom-[3vh] max-md:hidden"
-          style={{
-            opacity: isExplore ? 0.55 * 0.80 : 0.80,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechEquation className="text-gold-vintage" />
-        </div>
+            {/* Bottom Right Cluster - Moved AI Head slightly up to clear Tat Tvam Asi text */}
+            <div
+              className="absolute right-[20vw] bottom-[16vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.68 * 0.95 : 0.95,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechGpu />
+            </div>
+            <div
+              className="absolute right-[2vw] bottom-[12vh] max-md:right-[1vw] max-md:bottom-[10vh] max-md:scale-[0.5] max-md:origin-bottom-right"
+              style={{
+                opacity: isExplore ? 0.68 * 1.00 : 1.00,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechAiHead />
+            </div>
+            <div
+              className="absolute right-[19vw] bottom-[3vh] max-md:hidden"
+              style={{
+                opacity: isExplore ? 0.55 * 0.80 : 0.80,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechEquation className="text-gold-vintage" />
+            </div>
 
-        {/* Bottom Center Cluster */}
-        <div
-          className="absolute bottom-[5vh] left-1/2 -translate-x-1/2 max-md:bottom-[3vh] max-md:scale-[0.6]"
-          style={{
-            opacity: isExplore ? 0.78 * 1.00 : 1.00,
-            transition: "opacity 700ms ease-in-out"
-          }}
-        >
-          <TechLotus />
-        </div>
+            {/* Bottom Center Cluster */}
+            <div
+              className="absolute bottom-[5vh] left-1/2 -translate-x-1/2 max-md:bottom-[3vh] max-md:scale-[0.6]"
+              style={{
+                opacity: isExplore ? 0.78 * 1.00 : 1.00,
+                transition: "opacity 700ms ease-in-out"
+              }}
+            >
+              <TechLotus />
+            </div>
 
-      </div>
+          </div>
+        </>
+      )}
 
       {/* 2. Star Layer + Galaxy Canvas (Three.js Canvas, screens over background) */}
       <canvas

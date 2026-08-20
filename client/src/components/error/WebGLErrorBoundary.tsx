@@ -44,7 +44,7 @@ export class WebGLErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError || !isWebGLAvailable()) {
       return this.props.fallback || (
-        <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black pointer-events-none" />
+        <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black to-black pointer-events-none" />
       );
     }
     return this.props.children;

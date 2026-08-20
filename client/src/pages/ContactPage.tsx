@@ -36,10 +36,10 @@ export default function ContactPage() {
   return (
     <div className="bg-transparent min-h-screen w-full text-white relative flex flex-col items-center justify-center px-4 py-12 overflow-hidden">
       {/* Animated Galaxy/Particle Background */}
-      <div className="fixed inset-0 -z-10 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <Suspense fallback={null}>
           <WebGLErrorBoundary>
-            <CosmicGalaxy route="contact" />
+            <CosmicGalaxy route="contact" hideTechDecorations={true} />
           </WebGLErrorBoundary>
         </Suspense>
       </div>
