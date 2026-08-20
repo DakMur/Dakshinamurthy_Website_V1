@@ -17,6 +17,7 @@ const TeamWorkspace = lazy(() => import("./features/workspace/TeamWorkspace"));
 const RegistrationGate = lazy(() => import("./features/registration/components/RegistrationGate"));
 const RegistrationForm = lazy(() => import("./features/registration/components/RegistrationForm"));
 const AdminControlPanel = lazy(() => import("./features/registration/components/AdminControlPanel"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
 
 import Navbar from "./components/layout/Navbar";
 import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
@@ -28,6 +29,19 @@ import { User, DomainContent, Team, RegistrationConfig } from "./types/types";
 import { NAV_SECTIONS, LANDING_PATH, parsePath, getSectionPath } from "./utils/navigation";
 
 export default function App() {
+  // ── Isolated /contact route — render standalone page, skip entire main app ──
+  if (window.location.pathname === "/contact") {
+    return (
+      <Suspense fallback={
+        <div className="min-h-screen w-full bg-[#07070a] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-[#d4af37]/30 border-t-[#d4af37] animate-spin" />
+        </div>
+      }>
+        <ContactPage />
+      </Suspense>
+    );
+  }
+
   // Parse initial route and active section directly from browser URL
   const initialRoute = parsePath(window.location.pathname);
   const [isLanding, setIsLanding] = useState<boolean>(initialRoute.isLanding);
