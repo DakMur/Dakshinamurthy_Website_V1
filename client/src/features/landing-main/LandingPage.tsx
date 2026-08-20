@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
@@ -5,6 +6,8 @@ import jyothyLogo from "../../assets/jyothy_logo.jpg";
 import sringeriLogo from "../../assets/sringeri_logo.jpg";
 import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo (2).png";
 import paramLogo from "../../assets/Param_logo.webp";
+import LandingTechnologyLayer from "./LandingTechnologyLayer";
+import "./LandingPage.css";
 
 interface LandingPageProps {
   isWarping: boolean;
@@ -21,14 +24,27 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
   const logoOpacity = useTransform(scrollY, [0, 200], [1, 0.4]);
   const logoTranslateY = useTransform(scrollY, [0, 200], [0, -12]);
 
+  // Toggle body class to hide the CosmicGalaxy gold decorative line-art
+  // layer ONLY while the landing page is mounted. On unmount (after Explore
+  // transition), the class is removed and the decorations reappear.
+  useEffect(() => {
+    document.body.classList.add('landing-active');
+    return () => {
+      document.body.classList.remove('landing-active');
+    };
+  }, []);
+
   return (
     <motion.div
       key="landing"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full relative flex flex-col items-center min-h-[75vh]"
+      className="landing-page-root w-full relative flex flex-col items-center min-h-[75vh]"
     >
+      {/* 0. REALISTIC TECHNOLOGY ECOSYSTEM LAYER */}
+      <LandingTechnologyLayer />
+
       {/* 1. FULL-WIDTH INSTITUTIONAL LOGO LAYER */}
       <motion.div
         style={{ opacity: logoOpacity, y: logoTranslateY }}
@@ -140,7 +156,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       </motion.div>
 
       {/* 2. CENTERED HERO CONTENT (Constrained by max-w-7xl) */}
-      <div className="text-center space-y-3 sm:space-y-6 w-full max-w-7xl mx-auto pt-1 sm:pt-0 pb-8 sm:pb-12 relative flex flex-col justify-center items-center px-4 sm:px-6">
+      <div className="text-center space-y-4 sm:space-y-6 w-full max-w-7xl mx-auto pt-0 pb-12 relative flex flex-col justify-center items-center">
         {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
         <div className="hidden sm:flex fixed right-10 bottom-10 pointer-events-none select-none z-20">
           <div className="text-right">
@@ -237,7 +253,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="pt-3 sm:pt-6"
+        className="pt-6 relative z-30 pointer-events-auto"
       >
         <button
           onClick={triggerWarpSpeed}
@@ -257,10 +273,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         </button>
       </motion.div>
 
-      {/* Bottom Decorative Footer Status limits (Desktop only) */}
-      <div className="hidden lg:flex fixed bottom-6 left-10 right-10 justify-between items-center z-20 pointer-events-none select-none font-mono">
-        <span className="text-[8px] tracking-[0.4em] uppercase text-white/30">© Sri Shankara Parampara</span>
-      </div>
+
       </div>
     </motion.div>
   );
