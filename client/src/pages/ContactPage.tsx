@@ -1,4 +1,7 @@
+import { lazy, Suspense } from "react";
 import { Instagram, Youtube, Mail } from "lucide-react";
+
+const CosmicGalaxy = lazy(() => import("../features/landing-main/CosmicGalaxy"));
 
 interface LinkItem {
   icon: React.ReactNode;
@@ -12,7 +15,7 @@ const links: LinkItem[] = [
     id: "contact-instagram",
     icon: <Instagram className="text-[#d4af37] w-5 h-5 absolute left-4" />,
     label: "Instagram",
-    href: "https://www.instagram.com/dakshinasyadarshini/?utm_source=ig_web_button_share_sheet",
+    href: "https://www.instagram.com/dakshinaasyadarshini?igsh=MWhtbTZ2c3h5bzJ6Yg==",
   },
   {
     id: "contact-youtube",
@@ -30,19 +33,13 @@ const links: LinkItem[] = [
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen w-full bg-[#07070a] text-white flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Ambient radial gold glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-[#07070a] to-[#07070a] pointer-events-none" />
-
-      {/* Subtle grid overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#d4af37 1px, transparent 1px), linear-gradient(90deg, #d4af37 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+    <div className="min-h-screen w-full text-white flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Animated Galaxy/Particle Background */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <Suspense fallback={null}>
+          <CosmicGalaxy />
+        </Suspense>
+      </div>
 
       {/* Card content */}
       <div className="relative z-10 flex flex-col items-center w-full">
@@ -76,7 +73,7 @@ export default function ContactPage() {
               href={link.href}
               target={link.href.startsWith("mailto") ? undefined : "_blank"}
               rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-              className="group relative flex items-center justify-center w-full p-4 rounded-xl border border-[#d4af37]/30 bg-[#0d0d14] hover:bg-[#d4af37]/10 hover:border-[#d4af37] transition-all duration-300 backdrop-blur-md"
+              className="group relative flex items-center justify-center w-full p-4 rounded-xl border border-[#d4af37]/30 bg-[#0d0d14]/80 hover:bg-[#d4af37]/10 hover:border-[#d4af37] transition-all duration-300 backdrop-blur-md"
             >
               {/* Icon - left-anchored */}
               {link.icon}

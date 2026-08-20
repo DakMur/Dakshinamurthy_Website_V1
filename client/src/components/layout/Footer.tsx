@@ -213,7 +213,7 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
                 </span>
                 <div className="flex flex-wrap items-center gap-2.5">
                   <a
-                    href="https://www.instagram.com/dakshinasyadarshini/?utm_source=ig_web_button_share_sheet"
+                    href="https://www.instagram.com/dakshinaasyadarshini?igsh=MWhtbTZ2c3h5bzJ6Yg=="
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram Page"
