@@ -670,7 +670,7 @@ export default function App() {
       {/* Main Content View */}
       {isLanding ? (
         /* 1. COSMIC LANDING EXPERIENCE */
-        <main className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-12 flex flex-col justify-center min-h-[calc(100vh-80px)] pt-12">
+        <main className="relative z-10 w-full flex flex-col justify-center min-h-[calc(100vh-80px)] pt-12 pb-12">
           <Suspense fallback={<div className="min-h-screen" />}>
             <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
           </Suspense>
