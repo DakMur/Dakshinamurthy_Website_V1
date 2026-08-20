@@ -34,7 +34,7 @@ const links: LinkItem[] = [
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen w-full text-white flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className="bg-transparent min-h-screen w-full text-white relative flex flex-col items-center justify-center px-4 py-12 overflow-hidden">
       {/* Animated Galaxy/Particle Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <Suspense fallback={null}>
@@ -76,7 +76,7 @@ export default function ContactPage() {
               href={link.href}
               target={link.href.startsWith("mailto") ? undefined : "_blank"}
               rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-              className="group relative flex items-center justify-center w-full p-4 rounded-xl border border-[#d4af37]/30 bg-[#0d0d14]/80 hover:bg-[#d4af37]/10 hover:border-[#d4af37] transition-all duration-300 backdrop-blur-md"
+              className="group relative flex items-center justify-center w-full p-4 rounded-xl border border-[#d4af37]/30 bg-[#0d0d14]/60 hover:bg-[#d4af37]/10 hover:border-[#d4af37] transition-all duration-300 backdrop-blur-md"
             >
               {/* Icon - left-anchored */}
               {link.icon}
