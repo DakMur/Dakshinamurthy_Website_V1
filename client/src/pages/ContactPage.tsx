@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Instagram, Youtube, Mail } from "lucide-react";
+import { Globe, Instagram, Youtube, Mail } from "lucide-react";
 import { WebGLErrorBoundary } from "../components/error/WebGLErrorBoundary";
 
 const CosmicGalaxy = lazy(() => import("../features/landing-main/CosmicGalaxy"));
@@ -12,6 +12,12 @@ interface LinkItem {
 }
 
 const links: LinkItem[] = [
+  {
+    id: "contact-website",
+    icon: <Globe className="text-[#d4af37] w-5 h-5 absolute left-4" />,
+    label: "Website",
+    href: "https://vedanta-makeathon.vercel.app/",
+  },
   {
     id: "contact-instagram",
     icon: <Instagram className="text-[#d4af37] w-5 h-5 absolute left-4" />,
