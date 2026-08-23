@@ -31,8 +31,7 @@ export default function RegistrationSection() {
         id="registrations-mastryhub-cta"
         className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gold-vintage hover:bg-gold-bright text-black font-mono font-semibold text-xs tracking-wider uppercase transition-colors duration-200 cursor-pointer shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_32px_rgba(212,175,55,0.45)]"
       >
-        <span>Register Team on MastryHub</span>
-        <span>↗</span>
+        <span>Register Team ↗</span>
       </a>
     </div>
   );
