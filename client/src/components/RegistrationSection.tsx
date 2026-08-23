@@ -3,33 +3,37 @@ import React from "react";
 export default function RegistrationSection() {
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center text-center px-4 py-8">
-      {/* Subheader */}
-      <span className="text-amber-500/80 font-mono text-xs md:text-sm tracking-widest uppercase mb-2 block">
-        PARTICIPATION & ACCESS
-      </span>
+      {/* Category label — matches sibling sections (e.g. Hero accent line) */}
+      <div className="mb-3 flex items-center justify-center gap-3 text-xs font-mono">
+        <div className="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-gold-vintage" />
+        <span className="text-[9px] sm:text-[10px] tracking-[0.4em] sm:tracking-[0.5em] uppercase text-gold-vintage whitespace-nowrap">
+          PARTICIPATION &amp; ACCESS
+        </span>
+        <div className="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-gold-vintage" />
+      </div>
 
-      {/* Heading */}
-      <h2 className="text-2xl md:text-5xl font-serif tracking-wider text-[#d4af37] mb-4 uppercase">
+      {/* Heading — matches RegistrationGate's h3 pattern: font-display tracking-widest */}
+      <h2 className="font-display font-medium text-2xl md:text-5xl tracking-widest uppercase text-gold-vintage mb-4">
         TEAM REGISTRATION
       </h2>
 
-      {/* Subtitle */}
-      <p className="text-neutral-400 text-sm md:text-base max-w-2xl text-center mb-8 leading-relaxed font-sans">
-        Access your team workspace, manage team members, and submit your project documents and demo video for Dakshinamurthy Hackathon.
+      {/* Description — matches RegistrationGate body copy style */}
+      <p className="text-neutral-400 text-sm md:text-base max-w-2xl text-center mb-10 leading-relaxed font-sans">
+        Access your team workspace, manage team members, and submit your project
+        documents and demo video for Dakshinamurthy Hackathon.
       </p>
 
-      {/* Interactive MastryHub External CTA Button */}
-      <div className="flex flex-col items-center justify-center">
-        <a
-          href="https://mastryhub.com/event/vedanta-makeathon"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center px-8 py-4 rounded-xl border border-[#d4af37]/50 bg-[#d4af37]/10 hover:bg-[#d4af37]/20 text-[#d4af37] font-mono text-sm tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:scale-[1.02] active:scale-[0.98] group"
-        >
-          <span>Register Team on MastryHub</span>
-          <span className="ml-2 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
-        </a>
-      </div>
+      {/* Solid gold CTA — matches Login button: bg-gold-vintage text-black font-mono font-semibold */}
+      <a
+        href="https://mastryhub.com/event/vedanta-makeathon"
+        target="_blank"
+        rel="noopener noreferrer"
+        id="registrations-mastryhub-cta"
+        className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gold-vintage hover:bg-gold-bright text-black font-mono font-semibold text-xs tracking-wider uppercase transition-colors duration-200 cursor-pointer shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_32px_rgba(212,175,55,0.45)]"
+      >
+        <span>Register Team on MastryHub</span>
+        <span>↗</span>
+      </a>
     </div>
   );
 }
