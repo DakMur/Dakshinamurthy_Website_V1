@@ -22,6 +22,7 @@ const RegistrationSection = lazy(() => import("./components/RegistrationSection"
 
 import Navbar from "./components/layout/Navbar";
 import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
+import GlobalDisclaimer from "./components/layout/GlobalDisclaimer";
 import { WebGLErrorBoundary } from "./components/error/WebGLErrorBoundary";
 import Footer from "./components/layout/Footer";
 import { useDatabase } from "./hooks/useDatabase";
@@ -670,6 +671,9 @@ export default function App() {
       <Suspense fallback={null}>
         <WarpTransition isWarping={isWarping} />
       </Suspense>
+
+      {/* 0. Global Fixed Top-Left Disclaimer Button & Popup */}
+      <GlobalDisclaimer />
 
       {/* 1. Global Fixed Top-Right Hamburger Menu */}
       <GlobalHamburgerMenu
