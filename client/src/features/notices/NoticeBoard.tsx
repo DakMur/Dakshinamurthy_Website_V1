@@ -62,9 +62,6 @@ export default function NoticeBoard({ setRoute }: NoticeBoardProps) {
     >
       {/* Page Header */}
       <div className="space-y-3 max-w-2xl mx-auto text-center">
-        <span className="font-mono text-xs uppercase text-gold-vintage tracking-widest block">
-          Sūcana Paṭṭa
-        </span>
         <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-white uppercase">
           Notice Board
         </h2>
