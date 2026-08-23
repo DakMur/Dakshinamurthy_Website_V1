@@ -32,7 +32,7 @@ export default function Navbar({
   const isTattvaActive = currentActive === "tattva-darshana" || currentActive === "tattva" || currentActive === "tattva-darsana" || currentActive === "domains";
   const isTimelineActive = currentActive === "timeline" || currentActive === "innovation-timeline" || currentActive === "chronology-timeline" || currentActive === "flow" || currentActive === "marga-darshana";
   const isNoticeBoardActive = currentActive === "notice-board" || currentActive === "notices";
-  const isRegistrationActive = currentActive === "registration" || currentActive === "admin" || currentActive === "workspace";
+  const isRegistrationActive = currentActive === "registration" || currentActive === "registrations" || currentActive === "admin" || currentActive === "workspace";
 
   const navItems = [
     { id: "discover", label: "Discover", active: isDiscoverActive },

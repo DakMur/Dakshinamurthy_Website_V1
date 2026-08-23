@@ -37,7 +37,7 @@ export default function GlobalHamburgerMenu({
   const isTattvaActive = !isLanding && (currentActive === "tattva-darshana" || currentActive === "tattva" || currentActive === "tattva-darsana" || currentActive === "domains");
   const isTimelineActive = !isLanding && (currentActive === "timeline" || currentActive === "innovation-timeline" || currentActive === "chronology-timeline" || currentActive === "flow" || currentActive === "marga-darshana");
   const isNoticeBoardActive = !isLanding && (currentActive === "notice-board" || currentActive === "notices");
-  const isRegistrationActive = !isLanding && (currentActive === "registration" || currentActive === "admin" || currentActive === "workspace");
+  const isRegistrationActive = !isLanding && (currentActive === "registration" || currentActive === "registrations" || currentActive === "admin" || currentActive === "workspace");
 
   const navItems = [
     { id: "landing", label: "Home / Darśini", active: isLandingActive, isHome: true },

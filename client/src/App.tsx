@@ -14,10 +14,11 @@ const TimelineSection = lazy(() => import("./features/timeline/TimelineSection")
 const NoticeBoard = lazy(() => import("./features/notices/NoticeBoard"));
 const DomainExpandedModal = lazy(() => import("./features/dimension-portal/components/DomainExpandedModal"));
 const TeamWorkspace = lazy(() => import("./features/workspace/TeamWorkspace"));
-const RegistrationGate = lazy(() => import("./features/registration/components/RegistrationGate"));
 const RegistrationForm = lazy(() => import("./features/registration/components/RegistrationForm"));
 const AdminControlPanel = lazy(() => import("./features/registration/components/AdminControlPanel"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
+const RegistrationPage = lazy(() => import("./pages/RegistrationPage"));
+const RegistrationSection = lazy(() => import("./components/RegistrationSection"));
 
 import Navbar from "./components/layout/Navbar";
 import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
@@ -30,7 +31,7 @@ import { NAV_SECTIONS, LANDING_PATH, parsePath, getSectionPath } from "./utils/n
 
 export default function App() {
   // ── Isolated /contact route — render standalone page, skip entire main app ──
-  if (window.location.pathname === "/contact") {
+  if (window.location.pathname === "/contact" || window.location.pathname === "/contact/") {
     return (
       <Suspense fallback={
         <div className="min-h-screen w-full bg-[#07070a] flex items-center justify-center">
@@ -38,6 +39,19 @@ export default function App() {
         </div>
       }>
         <ContactPage />
+      </Suspense>
+    );
+  }
+
+  // ── Isolated /registration route — render internal registration redundancy page ──
+  if (window.location.pathname === "/registration" || window.location.pathname === "/registration/") {
+    return (
+      <Suspense fallback={
+        <div className="min-h-screen w-full bg-[#07070a] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-[#d4af37]/30 border-t-[#d4af37] animate-spin" />
+        </div>
+      }>
+        <RegistrationPage />
       </Suspense>
     );
   }
@@ -756,26 +770,8 @@ export default function App() {
             </section>
 
             {/* SECTION 6: REGISTRATION & ACCESS */}
-            <section id="registration" className="scroll-mt-8 space-y-8 text-center py-4">
-              <div className="space-y-3 max-w-3xl mx-auto px-2">
-                <span className="font-mono text-[11px] md:text-xs uppercase text-gold-vintage/90 tracking-[0.28em] block">
-                  PARTICIPATION & ACCESS
-                </span>
-                <h2 className="font-display font-semibold sm:font-bold text-3xl sm:text-4xl md:text-5xl tracking-[0.16em] text-transparent bg-clip-text bg-gradient-to-b from-[#FFF5D6] via-[#D4AF37] to-[#8C6B1C] uppercase drop-shadow-[0_2px_14px_rgba(212,175,55,0.3)] filter antialiased py-1">
-                  Team Registration
-                </h2>
-                <p className="text-xs md:text-sm text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-sans mt-2">
-                  Access your team workspace, manage team members, and submit your project documents and demo video for Dakshinamurthy Hackathon.
-                </p>
-                <div className="w-16 h-[1.5px] bg-gold-vintage/40 mx-auto mt-4" />
-              </div>
-
-              <RegistrationGate
-                config={registrationConfig}
-                onLoginSuccess={handleTeamLogin}
-                onAdminBypass={handleAdminBypass}
-                onRegisterClick={handleOpenRegisterOverlay}
-              />
+            <section id="registration" className="scroll-mt-8 py-4">
+              <RegistrationSection />
             </section>
 
           </Suspense>
