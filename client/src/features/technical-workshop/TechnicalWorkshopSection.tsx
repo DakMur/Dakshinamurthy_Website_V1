@@ -276,108 +276,6 @@ function GallerySection() {
   );
 }
 
-/* ─── Param Foundation Section ──────────────────────────────────────────── */
-
-function ParamFoundationSection() {
-  return (
-    <div className="space-y-8 md:space-y-10 mt-8 md:mt-12">
-      {/* Transition heading — inside a subtle panel */}
-      <div className="max-w-3xl mx-auto glass-panel rounded-2xl p-6 md:p-8 text-center space-y-3">
-        <span className="font-mono text-[11px] tracking-[0.3em] text-gold-vintage/70 uppercase block">
-          Beyond the Workshop
-        </span>
-        <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-white uppercase">
-          Param Foundation
-        </h2>
-        <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-xl mx-auto">
-          Where science, culture, technology and imagination meet.
-        </p>
-        <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-2" />
-      </div>
-
-      {/* About intro — inside a subtle panel */}
-      <div className="max-w-3xl mx-auto glass-panel rounded-xl p-5 md:p-7 text-center space-y-2">
-        <h3 className="font-display text-xl md:text-2xl tracking-wider text-gold-vintage/90 uppercase">
-          Reimagining Learning, Culture & Innovation
-        </h3>
-        <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-          A Bengaluru-based ecosystem connecting science, history, culture, art, technology, and innovation — creating meaningful experiences that inspire curiosity and discovery.
-        </p>
-      </div>
-
-      {/* Foundation sections — concise cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4 md:gap-5 max-w-4xl mx-auto">
-        {/* Science, Experienced */}
-        <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full">
-          <div className="space-y-2.5">
-            <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
-              Science, Experienced
-            </h4>
-            <p className="text-sm text-slate-400 italic font-serif">Science that moves beyond the textbook.</p>
-            <p className="text-sm text-slate-300 leading-relaxed font-sans">
-              Experiential science centres where science becomes something to see, touch, question, and explore through interactive exhibits, immersive galleries, demonstrations, and hands-on exploration.
-            </p>
-          </div>
-          <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Don't just learn science. Experience it.</p>
-        </div>
-
-        {/* A Culture of Making */}
-        <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full">
-          <div className="space-y-2.5">
-            <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
-              A Culture of Making
-            </h4>
-            <p className="text-sm text-slate-400 italic font-serif">Where ideas become things you can build.</p>
-            <p className="text-sm text-slate-300 leading-relaxed font-sans">
-              Param encourages a culture of making where students, creators, and innovators can turn ideas into real, working projects through hands-on experimentation and rapid prototyping. Its makerspaces bring together robotics, AI, AR/VR, IoT, electronics, and emerging technologies, creating an environment to build, test, learn, and improve.
-            </p>
-          </div>
-          <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Build. Test. Learn. Improve.</p>
-        </div>
-
-        {/* Where Disciplines Collide */}
-        <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full">
-          <div className="space-y-2.5">
-            <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
-              Where Disciplines Collide
-            </h4>
-            <p className="text-sm text-slate-400 italic font-serif">Science meets history, art, culture and technology.</p>
-            <p className="text-sm text-slate-300 leading-relaxed font-sans">
-              Bringing different disciplines together through experience centres, workshops, events, research, digital content, and innovation programs to create new ways of experiencing knowledge.
-            </p>
-          </div>
-          <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Different disciplines. One space for discovery.</p>
-        </div>
-
-        {/* ParSEC */}
-        <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full">
-          <div className="space-y-2.5">
-            <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
-              ParSEC
-            </h4>
-            <p className="text-sm text-slate-400 italic font-serif">Where science becomes participation.</p>
-            <p className="text-sm text-slate-300 leading-relaxed font-sans">
-              Interactive science experiences, immersive galleries, live demonstrations, workshops, makerspaces, and hands-on exploration. Visitors are encouraged to participate rather than simply observe.
-            </p>
-          </div>
-          <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Question. Explore. Experiment. Discover.</p>
-        </div>
-      </div>
-
-
-      {/* Final CTA */}
-      <div className="text-center space-y-2 pt-2 pb-4">
-        <h3 className="font-display font-medium text-2xl md:text-3xl tracking-widest text-white uppercase">
-          Come Curious.
-        </h3>
-        <p className="text-sm md:text-base text-slate-400 font-sans">
-          Explore the workshops. Experience Param. Create what comes next.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 /* ─── Main Section Export ────────────────────────────────────────────────── */
 
 export default function TechnicalWorkshopSection() {
@@ -396,71 +294,169 @@ export default function TechnicalWorkshopSection() {
           Where emerging technology becomes something you can experience, experiment with, and build. Learn. Experiment. Build.
         </p>
         <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-4" />
-        <div className="glass-panel rounded-xl p-5 md:p-6 max-w-2xl mx-auto mt-5">
+      </div>
+
+      {/* ── CARD 1: Workshops ── */}
+      <div className="max-w-3xl mx-auto glass-panel rounded-2xl p-6 md:p-8 space-y-6">
+        {/* About the Workshops */}
+        <div className="glass-panel rounded-xl p-5 md:p-6" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
           <h3 className="font-display text-lg md:text-xl tracking-wider text-white uppercase mb-4 text-center">
             About the Workshops
           </h3>
           <ul className="text-left space-y-3 text-sm md:text-[0.94rem] text-slate-300 leading-relaxed font-sans">
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Learn how to code interactive AR/VR graphics with various devices.</span>
+              <span>Learn how to code <strong className="text-white">interactive AR/VR</strong> graphics with various devices.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Explore Generative AI and its applications in generating images, videos, and more.</span>
+              <span>Explore <strong className="text-white">Generative AI</strong> and its applications in generating images, videos, and more.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Discover Brain-Computer Interfaces using EEG/EOG-based embedded control, robotic systems, and emotion control and synthesis.</span>
+              <span>Discover <strong className="text-white">Brain-Computer Interfaces</strong> using EEG/EOG-based embedded control, robotic systems, and emotion control and synthesis.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Explore Robotics and IoT through autonomous feedback control, robotic vision, and AI-powered IoT systems.</span>
+              <span>Explore <strong className="text-white">Robotics and IoT</strong> through autonomous feedback control, robotic vision, and AI-powered IoT systems.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Experience Param Open Blocks — IoT building blocks designed to achieve diverse input-output functionalities, and unlock exciting opportunities at Param's Makerspace.</span>
+              <span>Experience <strong className="text-white">Param Open Blocks</strong> — IoT building blocks designed to achieve diverse input-output functionalities, and unlock exciting opportunities at Param's Makerspace.</span>
             </li>
           </ul>
         </div>
+
+        {/* Param Makerspace */}
+        <div className="text-center space-y-3 glass-panel-gold rounded-xl p-6 md:p-8" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <h4 className="font-display text-xl md:text-2xl tracking-wider text-white uppercase">
+            Param Makerspace
+          </h4>
+          <p className="text-sm md:text-base text-gold-vintage/80 italic font-serif">Building ideas. Supporting innovation.</p>
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+            Before the <strong className="text-white">Makeathon</strong>, Param Makerspace will provide hands-on support to help participants <strong className="text-white">build, prototype, troubleshoot, and develop their projects</strong>.
+          </p>
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+            The Makerspace will provide <strong className="text-white">live support throughout the Makeathon</strong>, giving participants access to guidance, tools, and practical assistance as they turn their ideas into working prototypes.
+          </p>
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+            From experimentation to execution, the Makerspace helps bridge the gap between <strong className="text-white">an idea and a real project</strong>.
+          </p>
+          <div className="w-12 h-[1px] bg-gold-vintage/30 mx-auto my-3" />
+          <p className="font-display text-base md:text-lg text-gold-vintage tracking-wide italic">
+            Build. Experiment. Create.
+          </p>
+        </div>
+
+        {/* More Than a Workshop */}
+        <div className="text-center glass-panel rounded-xl p-5 md:p-6 space-y-2" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <h3 className="font-display text-xl md:text-2xl tracking-wider text-white/90 uppercase">
+            More Than a Workshop
+          </h3>
+          <p className="text-sm md:text-base text-gold-vintage/70 italic font-serif">
+            Don't just learn about technology. Experience it.
+          </p>
+          <p className="text-sm text-slate-400 leading-relaxed font-sans max-w-md mx-auto">
+            Whether the interest is immersive technology, AI, human-machine interaction, robotics, or IoT — the objective remains the same: move from curiosity to experimentation.
+          </p>
+        </div>
       </div>
 
-      {/* Param Makerspace card */}
-      <div className="max-w-3xl mx-auto text-center space-y-3 glass-panel-gold rounded-xl p-6 md:p-8">
-        <h4 className="font-display text-xl md:text-2xl tracking-wider text-white uppercase">
-          Param Makerspace
-        </h4>
-        <p className="text-sm md:text-base text-gold-vintage/80 italic font-serif">Building ideas. Supporting innovation.</p>
-        <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-          Before the <strong className="text-white">Makeathon</strong>, Param Makerspace will provide hands-on support to help participants <strong className="text-white">build, prototype, troubleshoot, and develop their projects</strong>.
-        </p>
-        <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-          The Makerspace will provide <strong className="text-white">live support throughout the Makeathon</strong>, giving participants access to guidance, tools, and practical assistance as they turn their ideas into working prototypes.
-        </p>
-        <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-          From experimentation to execution, the Makerspace helps bridge the gap between <strong className="text-white">an idea and a real project</strong>.
-        </p>
-        <div className="w-12 h-[1px] bg-gold-vintage/30 mx-auto my-3" />
-        <p className="font-display text-base md:text-lg text-gold-vintage tracking-wide italic">
-          Build. Experiment. Create.
-        </p>
-      </div>
+      {/* ── CARD 2: Param Foundation ── */}
+      <div className="max-w-4xl mx-auto glass-panel rounded-2xl p-6 md:p-8 space-y-6 md:space-y-8">
+        {/* Param Foundation intro */}
+        <div className="max-w-3xl mx-auto glass-panel rounded-2xl p-6 md:p-8 text-center space-y-3" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <span className="font-mono text-[11px] tracking-[0.3em] text-gold-vintage/70 uppercase block">
+            Beyond the Workshop
+          </span>
+          <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-white uppercase">
+            Param Foundation
+          </h2>
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-xl mx-auto">
+            Where science, culture, technology and imagination meet.
+          </p>
+          <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-2" />
+        </div>
 
-      {/* Workshop philosophy — compact, inside a subtle panel */}
-      <div className="max-w-2xl mx-auto text-center glass-panel rounded-xl p-5 md:p-6 space-y-2">
-        <h3 className="font-display text-xl md:text-2xl tracking-wider text-white/90 uppercase">
-          More Than a Workshop
-        </h3>
-        <p className="text-sm md:text-base text-gold-vintage/70 italic font-serif">
-          Don't just learn about technology. Experience it.
-        </p>
-        <p className="text-sm text-slate-400 leading-relaxed font-sans max-w-md mx-auto">
-          Whether the interest is immersive technology, AI, human-machine interaction, robotics, or IoT — the objective remains the same: move from curiosity to experimentation.
-        </p>
-      </div>
+        {/* Reimagining Learning, Culture & Innovation */}
+        <div className="max-w-3xl mx-auto glass-panel rounded-xl p-5 md:p-7 text-center space-y-2" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <h3 className="font-display text-xl md:text-2xl tracking-wider text-gold-vintage/90 uppercase">
+            Reimagining Learning, Culture &amp; Innovation
+          </h3>
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+            A Bengaluru-based ecosystem connecting science, history, culture, art, technology, and innovation — creating meaningful experiences that inspire curiosity and discovery.
+          </p>
+        </div>
 
-      {/* Param Foundation (~60%) */}
-      <ParamFoundationSection />
+        {/* Four foundation sub-cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4 md:gap-5">
+          {/* Science, Experienced */}
+          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+            <div className="space-y-2.5">
+              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+                Science, Experienced
+              </h4>
+              <p className="text-sm text-slate-400 italic font-serif">Science that moves beyond the textbook.</p>
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                Experiential science centres where science becomes something to see, touch, question, and explore through interactive exhibits, immersive galleries, demonstrations, and hands-on exploration.
+              </p>
+            </div>
+            <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Don't just learn science. Experience it.</p>
+          </div>
+
+          {/* A Culture of Making */}
+          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+            <div className="space-y-2.5">
+              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+                A Culture of Making
+              </h4>
+              <p className="text-sm text-slate-400 italic font-serif">Where ideas become things you can build.</p>
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                Param encourages a culture of making where students, creators, and innovators can turn ideas into real, working projects through hands-on experimentation and rapid prototyping. Its makerspaces bring together robotics, AI, AR/VR, IoT, electronics, and emerging technologies, creating an environment to build, test, learn, and improve.
+              </p>
+            </div>
+            <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Build. Test. Learn. Improve.</p>
+          </div>
+
+          {/* Where Disciplines Collide */}
+          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+            <div className="space-y-2.5">
+              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+                Where Disciplines Collide
+              </h4>
+              <p className="text-sm text-slate-400 italic font-serif">Science meets history, art, culture and technology.</p>
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                Bringing different disciplines together through experience centres, workshops, events, research, digital content, and innovation programs to create new ways of experiencing knowledge.
+              </p>
+            </div>
+            <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Different disciplines. One space for discovery.</p>
+          </div>
+
+          {/* ParSEC */}
+          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+            <div className="space-y-2.5">
+              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+                ParSEC
+              </h4>
+              <p className="text-sm text-slate-400 italic font-serif">Where science becomes participation.</p>
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                Interactive science experiences, immersive galleries, live demonstrations, workshops, makerspaces, and hands-on exploration. Visitors are encouraged to participate rather than simply observe.
+              </p>
+            </div>
+            <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Question. Explore. Experiment. Discover.</p>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <div className="text-center space-y-2 pt-2 pb-4">
+          <h3 className="font-display font-medium text-2xl md:text-3xl tracking-widest text-white uppercase">
+            Come Curious.
+          </h3>
+          <p className="text-sm md:text-base text-slate-400 font-sans">
+            Explore the workshops. Experience Param. Create what comes next.
+          </p>
+        </div>
+      </div>
 
       {/* Gallery */}
       <GallerySection />
