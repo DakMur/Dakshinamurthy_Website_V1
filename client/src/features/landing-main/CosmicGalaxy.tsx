@@ -565,6 +565,61 @@ export default function CosmicGalaxy({
           0% { stroke-dashoffset: 60; }
           100% { stroke-dashoffset: 0; }
         }
+        @keyframes tech-icon-breathe {
+          0%, 100% { filter: drop-shadow(0 0 1.2px rgba(212,175,55,0.22)) brightness(0.96); }
+          50% { filter: drop-shadow(0 0 2.6px rgba(212,175,55,0.40)) brightness(1.05); }
+        }
+        @keyframes tech-led-blink {
+          0%, 84%, 100% { opacity: 0.18; }
+          88% { opacity: 0.82; }
+          92% { opacity: 0.28; }
+        }
+        @keyframes tech-led-rare {
+          0%, 74%, 100% { opacity: 0.16; }
+          77% { opacity: 0.88; }
+          82% { opacity: 0.2; }
+        }
+        .tech-live {
+          animation: tech-icon-breathe 5.2s ease-in-out infinite;
+        }
+        .tech-controller.tech-live { animation-duration: 5.2s; animation-delay: 0s; }
+        .tech-microchip.tech-live { animation-duration: 4.7s; animation-delay: 1.1s; }
+        .tech-camera.tech-live { animation-duration: 5.6s; animation-delay: 2.2s; }
+        .tech-binary-live { animation: tech-icon-breathe 5.8s ease-in-out infinite; animation-delay: 3.1s; }
+        .tech-cloud-api.tech-live { animation-duration: 6.1s; animation-delay: 4.0s; }
+        .tech-database.tech-live { animation-duration: 5.4s; animation-delay: 4.4s; }
+        .tech-drone.tech-live { animation-duration: 6.4s; animation-delay: 0.6s; }
+        .tech-neural.tech-live { animation-duration: 7.2s; animation-delay: 1.6s; }
+        .tech-pcb.tech-live { animation-duration: 5.9s; animation-delay: 2.8s; }
+        .tech-terminal.tech-live { animation-duration: 6.6s; animation-delay: 3.5s; }
+        .tech-ai-head.tech-live { animation-duration: 6.8s; animation-delay: 2.4s; }
+        .tech-led {
+          fill: #fbbf24;
+          stroke: none;
+          animation: tech-led-blink 5.6s ease-in-out infinite;
+        }
+        .tech-led-b { animation-delay: 0.9s; animation-duration: 6.2s; }
+        .tech-led-c { animation-delay: 1.8s; animation-duration: 4.9s; }
+        .tech-led-d { animation-delay: 2.7s; animation-duration: 6.8s; }
+        .tech-led-rare {
+          fill: #fbbf24;
+          stroke: none;
+          animation: tech-led-rare 12.4s ease-in-out infinite;
+        }
+        @media (max-width: 1024px) {
+          .tech-live, .tech-binary-live { animation-duration: 7.2s; }
+        }
+        @media (max-width: 768px) {
+          .tech-live, .tech-binary-live { animation: none; filter: drop-shadow(0 0 1px rgba(212,175,55,0.22)); }
+          .tech-led, .tech-led-rare { animation: none; opacity: 0.35; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .tech-live, .tech-binary-live {
+            animation: none !important;
+            filter: drop-shadow(0 0 1.4px rgba(212,175,55,0.28));
+          }
+          .tech-led, .tech-led-rare { animation: none !important; opacity: 0.4; }
+        }
       `}} />
 
       {!hideTechDecorations && route !== "contact" && (
@@ -734,7 +789,7 @@ export default function CosmicGalaxy({
 
             {/* Top Right Cluster - Framing the Vedanta Bharati logo */}
             <div
-              className="absolute right-[12vw] top-[18vh] max-md:right-[1vw] max-md:top-[14vh] max-md:scale-[0.5] max-md:origin-top-right"
+              className="absolute right-[7vw] top-[12vh] max-md:right-[1vw] max-md:top-[14vh] max-md:scale-[0.5] max-md:origin-top-right"
               style={{
                 opacity: isExplore ? 0.68 * 1.00 : 1.00,
                 transition: "opacity 700ms ease-in-out"
@@ -745,7 +800,7 @@ export default function CosmicGalaxy({
 
             {/* Middle Right Cluster */}
             <div
-              className="absolute right-[2vw] top-[22vh] max-md:right-[1vw] max-md:top-[30vh] max-md:scale-[0.45] max-md:origin-top-right"
+              className="absolute right-[1vw] top-[27vh] max-md:right-[1vw] max-md:top-[30vh] max-md:scale-[0.45] max-md:origin-top-right"
               style={{
                 opacity: isExplore ? 0.78 * 0.95 : 0.95,
                 transition: "opacity 700ms ease-in-out"
@@ -754,7 +809,7 @@ export default function CosmicGalaxy({
               <TechNeural />
             </div>
             <div
-              className="absolute right-[20vw] top-[32vh] max-md:hidden"
+              className="absolute right-[23vw] top-[36vh] max-md:hidden"
               style={{
                 opacity: isExplore ? 0.78 * 0.90 : 0.90,
                 transition: "opacity 700ms ease-in-out"
@@ -765,7 +820,7 @@ export default function CosmicGalaxy({
 
             {/* Right background additions */}
             <div
-              className="absolute right-[12vw] top-[42vh] max-md:hidden"
+              className="absolute right-[13vw] top-[51vh] max-md:hidden"
               style={{
                 opacity: isExplore ? 0.55 * 0.35 : 0.35,
                 transition: "opacity 700ms ease-in-out"
@@ -774,7 +829,7 @@ export default function CosmicGalaxy({
               <TechCloudApi />
             </div>
             <div
-              className="absolute right-[2vw] top-[48vh] max-md:hidden"
+              className="absolute right-[2vw] top-[57vh] max-md:hidden"
               style={{
                 opacity: isExplore ? 0.55 * 0.35 : 0.35,
                 transition: "opacity 700ms ease-in-out"
@@ -784,7 +839,7 @@ export default function CosmicGalaxy({
             </div>
 
             <div
-              className="absolute right-[17vw] top-[44vh] font-mono text-[11px] leading-relaxed text-gold-vintage max-md:hidden"
+              className="absolute right-[21vw] top-[47vh] font-mono text-[11px] leading-relaxed text-gold-vintage max-md:hidden tech-binary-live"
               style={{
                 opacity: isExplore ? 0.55 * 0.80 : 0.80,
                 transition: "opacity 700ms ease-in-out"
@@ -852,7 +907,7 @@ export default function CosmicGalaxy({
 // Static memoized technology background sub-components
 const TechController = memo(() => (
   <svg
-    className="tech-controller w-32 h-22 transition-opacity duration-1000"
+    className="tech-controller tech-live w-32 h-22 transition-opacity duration-1000"
     viewBox="0 0 200 140"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -898,6 +953,10 @@ const TechController = memo(() => (
       {/* Square Button */}
       <circle cx="-10" cy="0" r="3.5" stroke="#fbbf24" strokeWidth="0.8" />
       <rect x="-11.5" y="-1.5" width="3" height="3" stroke="#d4af37" strokeWidth="0.5" />
+      <circle className="tech-led" cx="0" cy="-10" r="1.1" />
+      <circle className="tech-led tech-led-b" cx="10" cy="0" r="1.1" />
+      <circle className="tech-led tech-led-c" cx="0" cy="10" r="1.1" />
+      <circle className="tech-led tech-led-d" cx="-10" cy="0" r="1.1" />
     </g>
 
     {/* Touchpad (Center) */}
@@ -928,7 +987,7 @@ TechController.displayName = "TechController";
 
 const TechMicrochip = memo(() => (
   <svg
-    className="tech-microchip w-28 h-28 transition-opacity duration-1000"
+    className="tech-microchip tech-live w-28 h-28 transition-opacity duration-1000"
     viewBox="0 0 100 100"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -948,6 +1007,7 @@ const TechMicrochip = memo(() => (
     <rect x="40" y="40" width="20" height="20" stroke="#fbbf24" strokeWidth="0.9" />
     {/* Tiny circuit details inside die */}
     <path d="M43 43 h14 v14 h-14 z M47 43 v14 M53 43 v14 M43 47 h14 M43 53 h14" stroke="#d4af37" strokeWidth="0.3" opacity="0.8" />
+    <circle className="tech-led-rare" cx="50" cy="50" r="1.6" />
 
     {/* Leadframe Wire Bonds (Die to Package pins) */}
     <path d="M40 42 L26 35 M40 50 L26 50 M40 58 L26 65 M60 42 L74 35 M60 50 L74 50 M60 58 L74 65 M42 40 L35 26 M50 40 L50 26 M58 40 L65 26 M42 60 L35 74 M50 60 L50 74 M58 60 L65 74" stroke="#d4af37" strokeWidth="0.4" opacity="0.7" />
@@ -966,7 +1026,7 @@ TechMicrochip.displayName = "TechMicrochip";
 
 const TechPcb = memo(() => (
   <svg
-    className="tech-pcb w-44 h-32 transition-opacity duration-1000"
+    className="tech-pcb tech-live w-44 h-32 transition-opacity duration-1000"
     viewBox="0 0 160 120"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -1104,7 +1164,7 @@ TechRoboticArm.displayName = "TechRoboticArm";
 
 const TechDrone = memo(() => (
   <svg
-    className="tech-drone w-48 h-36 transition-opacity duration-1000"
+    className="tech-drone tech-live w-48 h-36 transition-opacity duration-1000"
     viewBox="0 0 180 120"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -1235,7 +1295,7 @@ TechDrone.displayName = "TechDrone";
 
 const TechNeural = memo(() => (
   <svg
-    className="tech-neural w-48 h-40 transition-opacity duration-1000"
+    className="tech-neural tech-live w-48 h-40 transition-opacity duration-1000"
     viewBox="0 0 180 150"
     stroke="#d4af37"
     strokeWidth="0.6"
@@ -1329,7 +1389,7 @@ TechNeural.displayName = "TechNeural";
 
 const TechCamera = memo(() => (
   <svg
-    className="tech-camera w-24 h-18 transition-opacity duration-1000"
+    className="tech-camera tech-live w-24 h-18 transition-opacity duration-1000"
     viewBox="0 0 100 80"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -1371,7 +1431,7 @@ const TechCamera = memo(() => (
 
     {/* Autofocus Assist LED - drifted pulse */}
     <circle cx="74" cy="30" r="2.5" stroke="#fbbf24" strokeWidth="0.6" />
-    <circle cx="74" cy="30" r="1.0" fill="#fbbf24" filter="url(#engraved-bloom)" stroke="none" style={{ animation: "tech-node-1 5.3s ease-in-out infinite" }} />
+    <circle cx="74" cy="30" r="1.0" className="tech-led tech-led-c" filter="url(#engraved-bloom)" />
   </svg>
 ));
 TechCamera.displayName = "TechCamera";
@@ -1437,7 +1497,7 @@ TechGpu.displayName = "TechGpu";
 
 const TechAiHead = memo(() => (
   <svg
-    className="tech-ai-head w-40 h-56 transition-opacity duration-1000"
+    className="tech-ai-head tech-live w-40 h-56 transition-opacity duration-1000"
     viewBox="0 0 160 220"
     stroke="#d4af37"
     strokeWidth="0.85"
@@ -1564,7 +1624,7 @@ const TechLotus = memo(() => (
 TechLotus.displayName = "TechLotus";
 
 const TechBinary = memo(({ className }: { className?: string }) => (
-  <div className={`font-mono text-[10px] leading-relaxed select-none tracking-widest px-3 py-1 border-l border-r border-gold-vintage/30 ${className}`}>
+  <div className={`tech-binary-live font-mono text-[10px] leading-relaxed select-none tracking-widest px-3 py-1 border-l border-r border-gold-vintage/30 ${className}`}>
     {/* Small horizontal ticks on left and right */}
     <div className="absolute left-0 top-0 bottom-0 w-1 border-t border-b border-gold-vintage/40"></div>
     <div className="absolute right-0 top-0 bottom-0 w-1 border-t border-b border-gold-vintage/40"></div>
@@ -1625,7 +1685,7 @@ TechCode.displayName = "TechCode";
 
 const TechTerminal = memo(() => (
   <svg
-    className="tech-terminal w-32 h-24 transition-opacity duration-1000"
+    className="tech-terminal tech-live w-32 h-24 transition-opacity duration-1000"
     viewBox="0 0 120 90"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -1660,7 +1720,7 @@ TechTerminal.displayName = "TechTerminal";
 
 const TechCloudApi = memo(() => (
   <svg
-    className="tech-cloud-api w-28 h-24 transition-opacity duration-1000"
+    className="tech-cloud-api tech-live w-28 h-24 transition-opacity duration-1000"
     viewBox="0 0 100 80"
     stroke="#d4af37"
     strokeWidth="0.8"
@@ -1682,16 +1742,16 @@ const TechCloudApi = memo(() => (
 
     {/* Circuit lines */}
     <path d="M42 40 H20 V65 M58 40 H80 V65 M50 32 V12 M50 48 V65" stroke="#d4af37" strokeWidth="0.6" opacity="0.7" />
-    <circle cx="20" cy="65" r="1.5" fill="#fbbf24" stroke="none" />
-    <circle cx="80" cy="65" r="1.5" fill="#fbbf24" stroke="none" />
-    <circle cx="50" cy="12" r="1.5" fill="#fbbf24" stroke="none" />
+    <circle className="tech-led" cx="20" cy="65" r="1.5" />
+    <circle className="tech-led tech-led-b" cx="80" cy="65" r="1.5" />
+    <circle className="tech-led-rare" cx="50" cy="12" r="1.5" />
   </svg>
 ));
 TechCloudApi.displayName = "TechCloudApi";
 
 const TechDatabase = memo(() => (
   <svg
-    className="tech-database w-20 h-28 transition-opacity duration-1000"
+    className="tech-database tech-live w-20 h-28 transition-opacity duration-1000"
     viewBox="0 0 80 110"
     stroke="#d4af37"
     strokeWidth="0.85"
@@ -1732,7 +1792,7 @@ TechDatabase.displayName = "TechDatabase";
 
 const TechWaveform = memo(() => (
   <svg
-    className="tech-waveform w-32 h-20 transition-opacity duration-1000"
+    className="tech-waveform tech-live w-32 h-20 transition-opacity duration-1000"
     viewBox="0 0 120 70"
     stroke="#d4af37"
     strokeWidth="0.85"

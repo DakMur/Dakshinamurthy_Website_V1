@@ -102,23 +102,22 @@ body.landing-active .tech-bg-layer {
 .ltl-interactive {
   pointer-events: auto !important;
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ltl-interactive .ltl-img {
-  transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ltl-interactive .ltl-shadow {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 
 .ltl-interactive .ltl-floor-reflection {
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease;
 }
 
 .ltl-interactive .ltl-screen-glow {
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease;
 }
 
 /* ── Base hardware image (Unified cinematic color grade) ───
@@ -206,33 +205,16 @@ body.landing-active .tech-bg-layer {
 }
 
 .ltl-interactive:hover .ltl-shadow {
-  transform: scale(0.95) translateY(2px);
   filter: blur(5px);
   opacity: 0.85;
 }
 
 .ltl-interactive:hover .ltl-floor-reflection {
   opacity: 1.15;
-  transform: scale(1.04);
 }
 
 .ltl-interactive:hover .ltl-screen-glow {
   opacity: 0.65;
-  transform: scale(1.02);
-}
-
-.ltl-interactive-drone:hover {
-  transform: translateY(-4px);
-}
-
-.ltl-interactive-arm-left:hover,
-.ltl-interactive-arm-right:hover,
-.ltl-interactive-scope:hover,
-.ltl-interactive-ecg:hover,
-.ltl-interactive-laptop:hover,
-.ltl-interactive-visdet:hover,
-.ltl-interactive-biomedical:hover {
-  transform: translateY(-3px);
 }
 
 /* ── Precision Status Beacons (Micro-indicators) ─────────── */
@@ -1035,7 +1017,6 @@ body.landing-active .tech-bg-layer {
 .ltl-interactive-arm-right:hover .ltl-floor-reflection,
 .ltl-interactive-laptop:hover .ltl-floor-reflection {
   opacity: 1;
-  transform: scale(1.05);
 }
 
 /* Checkpoint nodes — idle nearly invisible, peak when contour passes */
@@ -1258,12 +1239,6 @@ body.landing-active .tech-bg-layer {
   .ltl-scan,
   .ltl-checkpoints {
     display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .ltl-interactive:hover {
-    transform: none;
   }
 }
 
