@@ -297,79 +297,83 @@ export default function TechnicalWorkshopSection() {
       </div>
 
       {/* ── CARD 1: Workshops ── */}
-      <div className="max-w-3xl mx-auto glass-panel rounded-2xl p-6 md:p-8 space-y-6">
+      <div className="max-w-6xl mx-auto rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
         {/* About the Workshops */}
-        <div className="glass-panel rounded-xl p-5 md:p-6" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
-          <h3 className="font-display text-lg md:text-xl tracking-wider text-white uppercase mb-4 text-center">
+        <div className="pb-6">
+          <h3 className="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase mb-4 text-center">
             About the Workshops
           </h3>
-          <ul className="text-left space-y-3 text-sm md:text-[0.94rem] text-slate-300 leading-relaxed font-sans">
+          <ul className="text-left space-y-4 text-base md:text-lg text-slate-300 leading-relaxed font-sans">
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Learn how to code <strong className="text-white">interactive AR/VR</strong> graphics with various devices.</span>
+              <span>Learn how to code <strong className="text-white font-semibold">interactive AR/VR graphics</strong> with various devices.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Explore <strong className="text-white">Generative AI</strong> and its applications in generating images, videos, and more.</span>
+              <span>Explore <strong className="text-white font-semibold">Generative AI and its applications</strong> in generating images, videos, and more.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Discover <strong className="text-white">Brain-Computer Interfaces</strong> using EEG/EOG-based embedded control, robotic systems, and emotion control and synthesis.</span>
+              <span>Discover <strong className="text-white font-semibold">Brain-Computer Interfaces</strong> using EEG/EOG-based embedded control, robotic systems, and emotion control and synthesis.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Explore <strong className="text-white">Robotics and IoT</strong> through autonomous feedback control, robotic vision, and AI-powered IoT systems.</span>
+              <span>Explore <strong className="text-white font-semibold">Robotics and IoT</strong> through autonomous feedback control, robotic vision, and AI-powered IoT systems.</span>
             </li>
             <li className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold-vintage/50 flex-shrink-0" />
-              <span>Experience <strong className="text-white">Param Open Blocks</strong> — IoT building blocks designed to achieve diverse input-output functionalities, and unlock exciting opportunities at Param's Makerspace.</span>
+              <span>Experience <strong className="text-white font-semibold">Param Open Blocks</strong> — IoT building blocks designed to achieve diverse input-output functionalities, and unlock exciting opportunities at Param's Makerspace.</span>
             </li>
           </ul>
         </div>
 
+        <div className="w-full h-[1px] bg-white/[0.07]" />
+
         {/* Param Makerspace */}
-        <div className="text-center space-y-3 glass-panel-gold rounded-xl p-6 md:p-8" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
-          <h4 className="font-display text-xl md:text-2xl tracking-wider text-white uppercase">
+        <div className="text-center space-y-3 py-6">
+          <h4 className="font-display font-bold text-xl md:text-2xl tracking-wider text-white uppercase">
             Param Makerspace
           </h4>
-          <p className="text-sm md:text-base text-gold-vintage/80 italic font-serif">Building ideas. Supporting innovation.</p>
-          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+          <p className="text-base md:text-lg text-gold-vintage/80 italic font-serif">Building ideas. Supporting innovation.</p>
+          <p className="text-base md:text-lg text-slate-300 leading-relaxed font-sans">
             Before the <strong className="text-white">Makeathon</strong>, Param Makerspace will provide hands-on support to help participants <strong className="text-white">build, prototype, troubleshoot, and develop their projects</strong>.
           </p>
-          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+          <p className="text-base md:text-lg text-slate-300 leading-relaxed font-sans">
             The Makerspace will provide <strong className="text-white">live support throughout the Makeathon</strong>, giving participants access to guidance, tools, and practical assistance as they turn their ideas into working prototypes.
           </p>
-          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
+          <p className="text-base md:text-lg text-slate-300 leading-relaxed font-sans">
             From experimentation to execution, the Makerspace helps bridge the gap between <strong className="text-white">an idea and a real project</strong>.
           </p>
           <div className="w-12 h-[1px] bg-gold-vintage/30 mx-auto my-3" />
-          <p className="font-display text-base md:text-lg text-gold-vintage tracking-wide italic">
+          <p className="font-display text-lg md:text-xl text-gold-vintage tracking-wide italic">
             Build. Experiment. Create.
           </p>
         </div>
 
+        <div className="w-full h-[1px] bg-white/[0.07]" />
+
         {/* More Than a Workshop */}
-        <div className="text-center glass-panel rounded-xl p-5 md:p-6 space-y-2" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
-          <h3 className="font-display text-xl md:text-2xl tracking-wider text-white/90 uppercase">
+        <div className="text-center pt-6 space-y-2">
+          <h3 className="font-display font-bold text-xl md:text-2xl tracking-wider text-white/90 uppercase">
             More Than a Workshop
           </h3>
-          <p className="text-sm md:text-base text-gold-vintage/70 italic font-serif">
+          <p className="text-base md:text-lg text-gold-vintage/70 italic font-serif">
             Don't just learn about technology. Experience it.
           </p>
-          <p className="text-sm text-slate-400 leading-relaxed font-sans max-w-md mx-auto">
-            Whether the interest is immersive technology, AI, human-machine interaction, robotics, or IoT — the objective remains the same: move from curiosity to experimentation.
+          <p className="text-base md:text-lg text-slate-400 leading-relaxed font-sans max-w-xl mx-auto">
+            Whether the interest is immersive technology, <strong className="text-white font-semibold">AI</strong>, <strong className="text-white font-semibold">human-machine interaction</strong>, <strong className="text-white font-semibold">robotics</strong>, or <strong className="text-white font-semibold">IoT</strong> — the objective remains the same: move from <strong className="text-white font-semibold">curiosity to experimentation</strong>.
           </p>
         </div>
       </div>
 
       {/* ── CARD 2: Param Foundation ── */}
-      <div className="max-w-4xl mx-auto glass-panel rounded-2xl p-6 md:p-8 space-y-6 md:space-y-8">
+      <div className="max-w-6xl mx-auto rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
         {/* Param Foundation intro */}
-        <div className="max-w-3xl mx-auto glass-panel rounded-2xl p-6 md:p-8 text-center space-y-3" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+        <div className="text-center space-y-3 pb-6">
           <span className="font-mono text-[11px] tracking-[0.3em] text-gold-vintage/70 uppercase block">
             Beyond the Workshop
           </span>
-          <h2 className="font-display font-medium text-3xl md:text-5xl tracking-widest text-white uppercase">
+          <h2 className="font-display font-bold text-3xl md:text-5xl tracking-widest text-white uppercase">
             Param Foundation
           </h2>
           <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-xl mx-auto">
@@ -378,22 +382,31 @@ export default function TechnicalWorkshopSection() {
           <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto mt-2" />
         </div>
 
+        <div className="w-full h-[1px] bg-white/[0.07]" />
+
         {/* Reimagining Learning, Culture & Innovation */}
-        <div className="max-w-3xl mx-auto glass-panel rounded-xl p-5 md:p-7 text-center space-y-2" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+        <div className="text-center space-y-2 py-6">
           <h3 className="font-display text-xl md:text-2xl tracking-wider text-gold-vintage/90 uppercase">
             Reimagining Learning, Culture &amp; Innovation
           </h3>
-          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans">
-            A Bengaluru-based ecosystem connecting science, history, culture, art, technology, and innovation — creating meaningful experiences that inspire curiosity and discovery.
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-2xl mx-auto">
+            A <strong className="text-white font-semibold">Bengaluru-based ecosystem</strong> connecting science, history, culture, art, technology, and innovation — <strong className="text-white font-semibold">creating meaningful experiences</strong> that inspire <strong className="text-white font-semibold">curiosity and discovery</strong>.
           </p>
         </div>
 
-        {/* Four foundation sub-cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4 md:gap-5">
+        <div className="w-full h-[1px] bg-white/[0.07]" />
+
+        {/* Four foundation sub-cards — dark bg, 3D hover tilt */}
+        <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4 md:gap-5 pt-6">
           {/* Science, Experienced */}
-          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <motion.div
+            style={{ perspective: 800 }}
+            whileHover={{ rotateX: 4, rotateY: -4, scale: 1.02 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="bg-[#0d0d0f] rounded-xl p-5 md:p-6 flex flex-col justify-between h-full cursor-default"
+          >
             <div className="space-y-2.5">
-              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+              <h4 className="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase">
                 Science, Experienced
               </h4>
               <p className="text-sm text-slate-400 italic font-serif">Science that moves beyond the textbook.</p>
@@ -402,12 +415,17 @@ export default function TechnicalWorkshopSection() {
               </p>
             </div>
             <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Don't just learn science. Experience it.</p>
-          </div>
+          </motion.div>
 
           {/* A Culture of Making */}
-          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <motion.div
+            style={{ perspective: 800 }}
+            whileHover={{ rotateX: 4, rotateY: 4, scale: 1.02 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="bg-[#0d0d0f] rounded-xl p-5 md:p-6 flex flex-col justify-between h-full cursor-default"
+          >
             <div className="space-y-2.5">
-              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+              <h4 className="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase">
                 A Culture of Making
               </h4>
               <p className="text-sm text-slate-400 italic font-serif">Where ideas become things you can build.</p>
@@ -416,12 +434,17 @@ export default function TechnicalWorkshopSection() {
               </p>
             </div>
             <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Build. Test. Learn. Improve.</p>
-          </div>
+          </motion.div>
 
           {/* Where Disciplines Collide */}
-          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <motion.div
+            style={{ perspective: 800 }}
+            whileHover={{ rotateX: -4, rotateY: -4, scale: 1.02 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="bg-[#0d0d0f] rounded-xl p-5 md:p-6 flex flex-col justify-between h-full cursor-default"
+          >
             <div className="space-y-2.5">
-              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+              <h4 className="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase">
                 Where Disciplines Collide
               </h4>
               <p className="text-sm text-slate-400 italic font-serif">Science meets history, art, culture and technology.</p>
@@ -430,12 +453,17 @@ export default function TechnicalWorkshopSection() {
               </p>
             </div>
             <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Different disciplines. One space for discovery.</p>
-          </div>
+          </motion.div>
 
           {/* ParSEC */}
-          <div className="glass-panel rounded-xl p-5 md:p-6 flex flex-col justify-between h-full" style={{ background: 'rgba(8, 18, 45, 0.75)' }}>
+          <motion.div
+            style={{ perspective: 800 }}
+            whileHover={{ rotateX: -4, rotateY: 4, scale: 1.02 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="bg-[#0d0d0f] rounded-xl p-5 md:p-6 flex flex-col justify-between h-full cursor-default"
+          >
             <div className="space-y-2.5">
-              <h4 className="font-display text-lg md:text-xl tracking-wider text-white uppercase">
+              <h4 className="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase">
                 ParSEC
               </h4>
               <p className="text-sm text-slate-400 italic font-serif">Where science becomes participation.</p>
@@ -444,11 +472,11 @@ export default function TechnicalWorkshopSection() {
               </p>
             </div>
             <p className="text-sm text-gold-vintage/70 italic font-display mt-4">Question. Explore. Experiment. Discover.</p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Final CTA */}
-        <div className="text-center space-y-2 pt-2 pb-4">
+        <div className="text-center space-y-2 pt-8 pb-2">
           <h3 className="font-display font-medium text-2xl md:text-3xl tracking-widest text-white uppercase">
             Come Curious.
           </h3>
