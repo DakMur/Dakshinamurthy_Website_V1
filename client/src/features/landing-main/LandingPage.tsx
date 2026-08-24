@@ -229,7 +229,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           initial={{ filter: "blur(12px)", opacity: 0, y: 15 }}
           animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="flex flex-col items-center justify-center max-w-4xl mx-auto -mt-2.5 sm:-mt-3.5 md:-mt-4.5"
+          className="flex flex-col items-center justify-center max-w-4xl mx-auto -mt-6 sm:-mt-8 md:-mt-11"
         >
           {/* Main Title */}
           <h1 className="font-serif font-normal sm:font-medium text-[clamp(34px,4.2vw,60px)] text-white tracking-[0.03em] leading-[1.06] text-center">
