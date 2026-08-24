@@ -6,6 +6,7 @@ import jyothyLogo from "../../assets/jyothy_logo.jpg";
 import sringeriLogo from "../../assets/sringeri_logo.jpg";
 import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo (2).png";
 import paramLogo from "../../assets/Param_logo.webp";
+import techClubLogo from "../../assets/tclogo.png";
 import LandingTechnologyLayer from "./LandingTechnologyLayer";
 import "./LandingPage.css";
 
@@ -50,106 +51,130 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         style={{ opacity: logoOpacity, y: logoTranslateY }}
         className="w-full relative select-none z-10 pointer-events-auto shrink-0 pt-2 sm:pt-3 md:pt-4"
       >
-        {/* Desktop / Tablet Layout: Responsive 4-Column Grid bounded by container */}
-        <div className="hidden sm:grid grid-cols-4 w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 items-start">
-          {/* Param — Far Left */}
+        {/* Desktop / Tablet Layout: 5-Column Grid — single-line labels, full width */}
+        <div className="hidden sm:grid grid-cols-5 w-full pl-14 sm:pl-16 md:pl-20 pr-12 sm:pr-14 md:pr-16 gap-x-1 sm:gap-x-2 md:gap-x-3 items-start">
+          {/* Param */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               TECHNICAL COLLABORATOR
             </span>
-            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+            <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={paramLogo}
-                className="h-6 sm:h-8 md:h-10 max-w-full object-contain"
+                className="h-9 sm:h-11 md:h-14 max-w-full object-contain"
                 alt="Param Technical Collaborator"
               />
             </div>
           </div>
 
-          {/* Jyothy — Inner Left */}
+          {/* Jyothy */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               JYOTHY INSTITUTE OF TECHNOLOGY
             </span>
-            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+            <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={jyothyLogo}
-                className="h-10 sm:h-12 md:h-14 max-w-full object-contain"
+                className="h-14 sm:h-16 md:h-20 max-w-full object-contain"
                 style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
                 alt="Jyothy Institute of Technology"
               />
             </div>
           </div>
 
-          {/* Sringeri — Inner Right */}
+          {/* Sringeri */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               SRINGERI SHARADA PEETHAM
             </span>
-            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+            <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={sringeriLogo}
-                className="h-9 sm:h-11 md:h-13 max-w-full object-contain"
+                className="h-12 sm:h-14 md:h-16 max-w-full object-contain"
                 style={{ clipPath: "circle(50% at 50% 50%)" }}
                 alt="Sringeri"
               />
             </div>
           </div>
 
-          {/* Vedanta Bharati — Far Right */}
+          {/* Tech Club */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] text-gold-vintage uppercase mb-1 whitespace-nowrap">
+            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+              TECH CLUB
+            </span>
+            <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
+              <img
+                src={techClubLogo}
+                className="h-12 sm:h-14 md:h-16 max-w-full object-contain"
+                alt="Tech Club"
+              />
+            </div>
+          </div>
+
+          {/* Vedanta Bharati */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               SUPPORTED BY
             </span>
-            <div className="h-10 sm:h-12 md:h-14 flex items-center justify-center">
+            <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={vedantaBharatiLogo}
-                className="h-7 sm:h-9 md:h-11 max-w-full object-contain"
+                className="h-10 sm:h-12 md:h-14 max-w-full object-contain"
                 alt="Vedanta Bharati"
               />
             </div>
           </div>
         </div>
 
-        {/* Mobile Layout: Responsive Single 4-Column Horizontal Row */}
-        <div className="sm:hidden grid grid-cols-4 w-full px-2 pt-1 pb-1 gap-1 items-start">
+        {/* Mobile Layout: Responsive Single 5-Column Horizontal Row */}
+        <div className="sm:hidden grid grid-cols-5 w-full px-1 pt-1 pb-1 gap-0.5 items-start">
           {/* 1. Param */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
               TECHNICAL<br />COLLABORATOR
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={paramLogo} className="h-[20px] max-w-full object-contain" alt="Param Technical Collaborator" />
+              <img src={paramLogo} className="h-[18px] max-w-full object-contain" alt="Param Technical Collaborator" />
             </div>
           </div>
 
           {/* 2. Jyothy */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
-              JYOTHY INSTITUTE<br />OF TECHNOLOGY
+            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              JYOTHY<br />INSTITUTE
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={jyothyLogo} className="h-[25px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" />
+              <img src={jyothyLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" />
             </div>
           </div>
 
           {/* 3. Sringeri */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
-              SRINGERI SHARADA<br />PEETHAM
+            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              SRINGERI<br />PEETHAM
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={sringeriLogo} className="h-[24px] max-w-full object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" />
+              <img src={sringeriLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" />
             </div>
           </div>
 
-          {/* 4. Vedanta Bharati */}
+          {/* 4. Tech Club — NEW */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[6px] font-mono tracking-[0.06em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+              TECH<br />CLUB
+            </span>
+            <div className="h-7 flex items-center justify-center">
+              <img src={techClubLogo} className="h-[22px] max-w-full object-contain" alt="Tech Club" />
+            </div>
+          </div>
+
+          {/* 5. Vedanta Bharati */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
               SUPPORTED<br />BY
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={vedantaBharatiLogo} className="h-[22px] max-w-full object-contain" alt="Vedanta Bharati" />
+              <img src={vedantaBharatiLogo} className="h-[20px] max-w-full object-contain" alt="Vedanta Bharati" />
             </div>
           </div>
         </div>
