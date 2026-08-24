@@ -61,7 +61,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={paramLogo}
-                className="h-9 sm:h-11 md:h-14 max-w-full object-contain"
+                className="h-7 sm:h-9 md:h-11 max-w-full object-contain"
                 alt="Param Technical Collaborator"
               />
             </div>
@@ -75,7 +75,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={jyothyLogo}
-                className="h-14 sm:h-16 md:h-20 max-w-full object-contain"
+                className="h-16 sm:h-20 md:h-24 max-w-full object-contain"
                 style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
                 alt="Jyothy Institute of Technology"
               />
@@ -90,7 +90,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={sringeriLogo}
-                className="h-12 sm:h-14 md:h-16 max-w-full object-contain"
+                className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
                 style={{ clipPath: "circle(50% at 50% 50%)" }}
                 alt="Sringeri"
               />
@@ -105,7 +105,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={techClubLogo}
-                className="h-12 sm:h-14 md:h-16 max-w-full object-contain"
+                className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
                 alt="Tech Club"
               />
             </div>
@@ -119,7 +119,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={vedantaBharatiLogo}
-                className="h-10 sm:h-12 md:h-14 max-w-full object-contain"
+                className="h-8 sm:h-10 md:h-12 max-w-full object-contain"
                 alt="Vedanta Bharati"
               />
             </div>
@@ -287,22 +287,12 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </div>
         </motion.div>
 
-        {/* Subtitle description with rectangular glassmorphism border */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-xs sm:text-[13.5px] md:text-[14.5px] font-serif italic text-slate-300 max-w-[620px] mx-auto leading-relaxed px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-black/40 backdrop-blur-md border border-gold-vintage/30 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
-        >
-          &ldquo;To Him who sees the universe mirroring within Himself like a city reflected in a glass, yet appearing outside as if by a dream; to Him who reveals the absolute Non-Dual Self upon awakening; salutations to that ultimate Guru, Sri Dakshinamurthy.&rdquo;
-        </motion.p>
-
-        {/* Unique Tactile Cosmic Button */}
+        {/* Unique Tactile Cosmic Button — Positioned naturally below Vedanta Makeathon */}
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="pt-2 sm:pt-3 relative z-30 pointer-events-auto"
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="pt-3 sm:pt-4 relative z-30 pointer-events-auto"
         >
           <button
             onClick={triggerWarpSpeed}
