@@ -49,7 +49,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       {/* 1. FULL-WIDTH INSTITUTIONAL LOGO LAYER */}
       <motion.div
         style={{ opacity: logoOpacity, y: logoTranslateY }}
-        className="w-full relative select-none z-10 pointer-events-auto shrink-0 pt-2 sm:pt-3 md:pt-4"
+        className="w-full relative select-none z-10 pointer-events-auto shrink-0 pt-14 sm:pt-3 md:pt-4"
       >
         {/* Desktop / Tablet Layout: 5-Column Grid — single-line labels, full width */}
         <div className="hidden sm:grid grid-cols-5 w-full pl-14 sm:pl-16 md:pl-20 pr-12 sm:pr-14 md:pr-16 gap-x-1 sm:gap-x-2 md:gap-x-3 items-start">
@@ -181,7 +181,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       </motion.div>
 
       {/* 2. CENTERED HERO CONTENT (Constrained by max-w-5xl) */}
-      <div className="relative z-20 flex flex-col items-center justify-start text-center w-full max-w-5xl mx-auto px-4 pt-1 sm:pt-2 md:pt-2.5 space-y-2 sm:space-y-3">
+      <div className="relative z-20 flex flex-col items-center justify-start text-center w-full max-w-5xl mx-auto px-4 pt-10 sm:pt-2 md:pt-2.5 space-y-1.5 sm:space-y-3 pb-4 sm:pb-0">
         {/* Floating Right-Bottom Text (Desktop/Tablet only) */}
         <div className="hidden sm:flex fixed right-8 bottom-8 pointer-events-none select-none z-20">
           <div className="text-right">
@@ -287,12 +287,22 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </div>
         </motion.div>
 
-        {/* Unique Tactile Cosmic Button — Positioned naturally below Vedanta Makeathon */}
+        {/* Mobile-Only Quote Glass Card to complete the mobile composition */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="block sm:hidden text-[11.5px] font-serif italic text-slate-300 w-[calc(100vw-32px)] max-w-sm mx-auto leading-relaxed px-4 py-2.5 rounded-xl bg-black/40 backdrop-blur-md border border-gold-vintage/30 shadow-[0_0_15px_rgba(0,0,0,0.5)] my-1"
+        >
+          &ldquo;To Him who sees the universe mirroring within Himself like a city reflected in a glass, yet appearing outside as if by a dream; to Him who reveals the absolute Non-Dual Self upon awakening; salutations to that ultimate Guru, Sri Dakshinamurthy.&rdquo;
+        </motion.p>
+
+        {/* Unique Tactile Cosmic Button — Positioned naturally below Vedanta Makeathon / Quote */}
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="pt-3 sm:pt-4 relative z-30 pointer-events-auto"
+          className="pt-1.5 sm:pt-4 relative z-30 pointer-events-auto"
         >
           <button
             onClick={triggerWarpSpeed}
