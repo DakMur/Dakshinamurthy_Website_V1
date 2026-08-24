@@ -22,6 +22,9 @@ body.landing-active .tech-bg-layer {
 .landing-page-root {
   background: transparent;
   width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
   position: relative;
 }
 
