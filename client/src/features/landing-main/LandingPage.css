@@ -101,6 +101,16 @@ body.landing-active .tech-bg-layer {
   z-index: -3;
 }
 
+.ltl-drone-wrap::before,
+.ltl-left-arm-wrap::before,
+.ltl-right-arm-wrap::before,
+.ltl-biomedical-wrap::before,
+.ltl-scope-wrap::before,
+.ltl-visdet-wrap::before,
+.ltl-laptop-wrap::before {
+  display: none;
+}
+
 /* ── Interactive exhibit wrapper ─────────────────────────── */
 .ltl-interactive {
   pointer-events: auto !important;
@@ -159,46 +169,90 @@ body.landing-active .tech-bg-layer {
 }
 
 /* ── Depth-Specific Refinements ───────────────────────────── */
-/* Foreground: Crisp, defined contrast, rich metallic presence */
+
+
+/*
+ * Airborne drone — same visual principles as Shankaracharya:
+ * warm aura, radial edge dissolve, slight color grade, moderate opacity.
+ * Asset stays drone.webp; position/size stay on .ltl-drone-wrap.
+ */
+.ltl-drone-aura {
+  position: absolute;
+  inset: 0;
+  width: 75%;
+  height: 75%;
+  margin: auto;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.16);
+  filter: blur(24px);
+  animation: ltl-drone-aura-breathe 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes ltl-drone-aura-breathe {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.ltl-drone-ether {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  overflow: visible;
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 48%,
+    rgba(0, 0, 0, 1) 22%,
+    rgba(0, 0, 0, 0.88) 52%,
+    rgba(0, 0, 0, 0) 82%
+  );
+  mask-image: radial-gradient(
+    ellipse at 50% 48%,
+    rgba(0, 0, 0, 1) 22%,
+    rgba(0, 0, 0, 0.88) 52%,
+    rgba(0, 0, 0, 0) 82%
+  );
+}
+
+.ltl-drone-wrap .ltl-img,
+.ltl-left-arm-wrap .ltl-img,
+.ltl-right-arm-wrap .ltl-img,
+.ltl-biomedical-wrap .ltl-img,
+.ltl-scope-wrap .ltl-img,
+.ltl-visdet-wrap .ltl-img,
+.ltl-laptop-wrap .ltl-img {
+  position: relative;
+  z-index: 1;
+  will-change: auto;
+  object-fit: contain;
+  opacity: 0.68;
+  mix-blend-mode: lighten;
+  filter: grayscale(0.02) sepia(0.06) brightness(1.18) contrast(1.16);
+}
+
 .ltl-left-arm-wrap .ltl-img,
 .ltl-right-arm-wrap .ltl-img,
 .ltl-scope-wrap .ltl-img,
-.ltl-ecg-wrap .ltl-img,
 .ltl-laptop-wrap .ltl-img {
-  filter:
-    brightness(0.93) contrast(1.06) saturate(0.91) sepia(0.04) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.90)) drop-shadow(1px -1px 2.5px rgba(212, 175, 55, 0.24)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.08)) drop-shadow(-3px 5px 14px rgba(120, 40, 180, 0.09));
+  opacity: 0.54;
 }
 
-.ltl-right-arm-wrap .ltl-img {
-  filter:
-    brightness(0.93) contrast(1.06) saturate(0.91) sepia(0.04) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.90)) drop-shadow(-1px -1px 2.5px rgba(212, 175, 55, 0.24)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.08)) drop-shadow(3px 5px 14px rgba(120, 40, 180, 0.09));
+.ltl-drone-wrap .ltl-img {
+  opacity: 0.48;
 }
 
-.ltl-laptop-wrap .ltl-img {
-  filter:
-    brightness(0.93) contrast(1.06) saturate(0.91) sepia(0.04) drop-shadow(0 12px 20px rgba(0, 0, 0, 0.90)) drop-shadow(0 -1px 2.5px rgba(212, 175, 55, 0.22)) drop-shadow(0 0 8px rgba(212, 175, 55, 0.06)) drop-shadow(0 4px 12px rgba(120, 40, 180, 0.07));
-}
-
-/* Midground: Slightly softer atmospheric contrast */
 .ltl-visdet-wrap .ltl-img {
-  filter:
-    brightness(0.89) contrast(1.03) saturate(0.88) sepia(0.04) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.85)) drop-shadow(1px -1px 2px rgba(212, 175, 55, 0.20)) drop-shadow(0 0 8px rgba(212, 175, 55, 0.06)) drop-shadow(-2px 4px 12px rgba(120, 40, 180, 0.08));
+  opacity: 0.40;
 }
 
 .ltl-biomedical-wrap .ltl-img {
-  filter:
-    brightness(0.89) contrast(1.03) saturate(0.88) sepia(0.04) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.85)) drop-shadow(-1px -1px 2px rgba(212, 175, 55, 0.20)) drop-shadow(0 0 8px rgba(212, 175, 55, 0.06)) drop-shadow(2px 4px 12px rgba(120, 40, 180, 0.08));
-}
-
-/* Air / Background: Soft atmospheric distance */
-.ltl-drone-wrap .ltl-img {
-  filter:
-    brightness(0.88) contrast(1.02) saturate(0.86) sepia(0.03) drop-shadow(0 14px 20px rgba(0, 0, 0, 0.82)) drop-shadow(1px -1px 2px rgba(212, 175, 55, 0.18)) drop-shadow(0 0 8px rgba(212, 175, 55, 0.06)) drop-shadow(-2px 4px 10px rgba(120, 40, 180, 0.07));
-}
-
-.ltl-cam-wrap .ltl-img {
-  filter:
-    brightness(0.87) contrast(1.02) saturate(0.86) sepia(0.03) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.80)) drop-shadow(-1px -1px 2px rgba(212, 175, 55, 0.18)) drop-shadow(2px 3px 8px rgba(120, 40, 180, 0.06));
+  opacity: 0.70;
 }
 
 /* ── Hover Interactive Activation ────────────────────────── */
@@ -268,11 +322,6 @@ body.landing-active .tech-bg-layer {
 .ltl-beacon-scope {
   top: 18%;
   right: 16%;
-}
-
-.ltl-beacon-ecg {
-  top: 14%;
-  right: 18%;
 }
 
 .ltl-beacon-laptop {
@@ -404,13 +453,6 @@ body.landing-active .tech-bg-layer {
   bottom: -10px;
 }
 
-.ltl-refl-ecg {
-  left: 6%;
-  right: 6%;
-  height: 16px;
-  bottom: -8px;
-}
-
 /* ── Screen glows (Local only, restrained & atmospheric) ───
    Authentic phosphor/OLED light spills onto local chassis & ambient air. */
 .ltl-screen-glow {
@@ -439,10 +481,6 @@ body.landing-active .tech-bg-layer {
   }
 }
 
-.ltl-glow-cyan {
-  background: radial-gradient(circle at 50% 45%, rgba(56, 189, 248, 0.14) 0%, rgba(14, 165, 233, 0.03) 50%, transparent 80%);
-}
-
 .ltl-glow-green {
   background: radial-gradient(circle at 50% 45%, rgba(34, 197, 94, 0.13) 0%, rgba(22, 163, 74, 0.03) 50%, transparent 80%);
 }
@@ -456,60 +494,25 @@ body.landing-active .tech-bg-layer {
 }
 
 /* ── Perspective & Subtle Dynamic Motion ─────────────────── */
-.ltl-drone {
-  animation: ltl-drone-hover 7s ease-in-out infinite;
+.ltl-drone-wrap,
+.ltl-left-arm-wrap,
+.ltl-right-arm-wrap,
+.ltl-biomedical-wrap,
+.ltl-scope-wrap,
+.ltl-visdet-wrap,
+.ltl-laptop-wrap {
+  animation: ltl-drone-portrait-float 5s ease-in-out infinite;
 }
 
-@keyframes ltl-drone-hover {
-
+@keyframes ltl-drone-portrait-float {
   0%,
   100% {
-    transform: translateY(0px) rotate(-1.5deg);
+    transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-7px) rotate(0.8deg);
+    transform: translateY(-6px);
   }
-}
-
-.ltl-left-arm {
-  transform: perspective(900px) rotateY(4deg) rotateZ(1deg);
-  transform-origin: bottom left;
-}
-
-.ltl-visdet {
-  transform: perspective(700px) rotateY(3deg);
-  transform-origin: bottom center;
-}
-
-.ltl-scope {
-  transform: perspective(700px) rotateY(3deg);
-  transform-origin: bottom center;
-}
-
-.ltl-ecg {
-  transform: perspective(700px) rotateY(4deg);
-  transform-origin: bottom center;
-}
-
-.ltl-laptop {
-  transform: perspective(700px) rotateX(2deg);
-  transform-origin: bottom center;
-}
-
-.ltl-cam {
-  transform: perspective(500px) rotateY(-3deg);
-  transform-origin: bottom center;
-}
-
-.ltl-biomedical {
-  transform: perspective(700px) rotateY(-3deg);
-  transform-origin: bottom center;
-}
-
-.ltl-right-arm {
-  transform: perspective(900px) rotateY(-4deg) rotateZ(-1deg);
-  transform-origin: bottom right;
 }
 
 /* =============================================================
@@ -530,7 +533,7 @@ body.landing-active .tech-bg-layer {
 /* ── 2. LEFT-MIDDLE: Vision Detector ──────────────────────────
    Left-middle monitor framing the title from the side.         */
 .ltl-visdet-wrap {
-  top: clamp(270px, 33vh, 350px);
+  top: calc(clamp(292px, 35.5vh, 372px) + 15px);
   left: clamp(35px, 4.2vw, 85px);
   width: clamp(160px, 14vw, 220px);
   max-width: 235px;
@@ -552,49 +555,28 @@ body.landing-active .tech-bg-layer {
    Grounded on the floor to the right of the left robotic arm.  */
 .ltl-scope-wrap {
   bottom: clamp(4px, 0.6vh, 12px);
-  left: clamp(175px, 15vw, 245px);
+  left: clamp(264px, 23vw, 354px);
   width: clamp(150px, 13vw, 205px);
   max-width: 215px;
   z-index: 20;
 }
 
-/* ── 5. LOWER-LEFT-CENTER: ECG Monitor ────────────────────────
-   Moved slightly to the right towards Explore, clearly separated
-   from left robotic arm and oscilloscope with clean silhouette. */
-.ltl-ecg-wrap {
-  bottom: clamp(25px, 3.5vh, 60px);
-  left: clamp(290px, 24.5vw, 385px);
-  width: clamp(120px, 10vw, 160px);
-  max-width: 165px;
-  z-index: 16;
-}
-
-/* ── 6. LOWER-CENTER-RIGHT: AI Laptop ─────────────────────────
+/* ── 5. LOWER-CENTER-RIGHT: AI Laptop ─────────────────────────
    Moved cleanly away from directly underneath the Explore button.
    The area directly beneath the Explore button is 100% CLEAR EMPTY SPACE.
    The laptop rests grounded in its own lower-center-right workstation zone. */
 .ltl-laptop-wrap {
-  bottom: clamp(-20px, -2.2vh, -8px);
-  left: calc(50% + clamp(75px, 6.5vw, 125px));
+  bottom: calc(clamp(-20px, -2.2vh, -8px) + 10px);
+  left: calc(50% + clamp(97px, 8.2vw, 147px) + 80px);
   width: clamp(170px, 15vw, 235px);
   max-width: 245px;
   z-index: 15;
 }
 
-/* ── 7. RIGHT-MIDDLE: Vision Camera ───────────────────────────
-   Sensor camera in the right-mid area below biomedical display.*/
-.ltl-cam-wrap {
-  top: clamp(335px, 39vh, 415px);
-  right: clamp(65px, 7vw, 125px);
-  width: clamp(90px, 7.8vw, 125px);
-  max-width: 135px;
-  z-index: 17;
-}
-
 /* ── 8. UPPER-RIGHT: Biomedical Display ───────────────────────
    Biomedical screen in upper-right below Vedanta Bharati logo. */
 .ltl-biomedical-wrap {
-  top: clamp(140px, 18vh, 195px);
+  top: calc(clamp(140px, 18vh, 195px) + 20px);
   right: clamp(60px, 6.5vw, 120px);
   width: clamp(165px, 14.5vw, 230px);
   max-width: 245px;
@@ -628,9 +610,7 @@ body.landing-active .tech-bg-layer {
   .ltl-visdet-wrap,
   .ltl-biomedical-wrap,
   .ltl-scope-wrap,
-  .ltl-ecg-wrap,
-  .ltl-laptop-wrap,
-  .ltl-cam-wrap {
+  .ltl-laptop-wrap {
     transform: scale(0.88);
     transform-origin: center center;
   }
@@ -642,15 +622,11 @@ body.landing-active .tech-bg-layer {
   }
 
   .ltl-biomedical-wrap {
-    top: clamp(130px, 16.5vh, 170px);
-  }
-
-  .ltl-cam-wrap {
-    top: clamp(300px, 36vh, 370px);
+    top: calc(clamp(130px, 16.5vh, 170px) + 20px);
   }
 
   .ltl-visdet-wrap {
-    top: clamp(245px, 30vh, 315px);
+    top: calc(clamp(267px, 32.5vh, 337px) + 15px);
   }
 }
 
@@ -666,9 +642,7 @@ body.landing-active .tech-bg-layer {
   .ltl-visdet-wrap,
   .ltl-biomedical-wrap,
   .ltl-scope-wrap,
-  .ltl-ecg-wrap,
-  .ltl-laptop-wrap,
-  .ltl-cam-wrap {
+  .ltl-laptop-wrap {
     transform: scale(0.76);
     transform-origin: center center;
   }
@@ -680,15 +654,11 @@ body.landing-active .tech-bg-layer {
   }
 
   .ltl-biomedical-wrap {
-    top: clamp(115px, 14.5vh, 145px);
-  }
-
-  .ltl-cam-wrap {
-    top: clamp(260px, 32vh, 310px);
+    top: calc(clamp(115px, 14.5vh, 145px) + 20px);
   }
 
   .ltl-visdet-wrap {
-    top: clamp(215px, 27vh, 265px);
+    top: calc(clamp(237px, 29.5vh, 287px) + 15px);
   }
 }
 
@@ -704,9 +674,7 @@ body.landing-active .tech-bg-layer {
   .ltl-visdet-wrap,
   .ltl-biomedical-wrap,
   .ltl-scope-wrap,
-  .ltl-ecg-wrap,
-  .ltl-laptop-wrap,
-  .ltl-cam-wrap {
+  .ltl-laptop-wrap {
     transform: scale(0.62);
     transform-origin: center center;
   }
@@ -718,15 +686,11 @@ body.landing-active .tech-bg-layer {
   }
 
   .ltl-biomedical-wrap {
-    top: 100px;
-  }
-
-  .ltl-cam-wrap {
-    top: 225px;
+    top: 120px;
   }
 
   .ltl-visdet-wrap {
-    top: 190px;
+    top: 227px;
   }
 }
 
@@ -744,20 +708,12 @@ body.landing-active .tech-bg-layer {
     right: clamp(45px, 5vw, 90px);
   }
 
-  .ltl-cam-wrap {
-    right: clamp(45px, 5vw, 90px);
-  }
-
   .ltl-scope-wrap {
-    left: clamp(155px, 13.5vw, 215px);
-  }
-
-  .ltl-ecg-wrap {
-    left: clamp(260px, 22vw, 340px);
+    left: clamp(239px, 21vw, 319px);
   }
 
   .ltl-laptop-wrap {
-    left: calc(50% + clamp(55px, 5vw, 95px));
+    left: calc(50% + clamp(77px, 6.7vw, 117px) + 80px);
   }
 }
 
@@ -773,9 +729,7 @@ body.landing-active .tech-bg-layer {
   .ltl-visdet-wrap,
   .ltl-biomedical-wrap,
   .ltl-scope-wrap,
-  .ltl-ecg-wrap,
-  .ltl-laptop-wrap,
-  .ltl-cam-wrap {
+  .ltl-laptop-wrap {
     transform: scale(0.80);
     transform-origin: center center;
   }
@@ -788,11 +742,6 @@ body.landing-active .tech-bg-layer {
 
 /* Tablet 768–1024px — hide secondary peripheral sensors to protect clarity */
 @media (max-width: 1024px) {
-
-  .ltl-cam-wrap,
-  .ltl-ecg-wrap {
-    display: none;
-  }
 
   .ltl-left-arm-wrap,
   .ltl-right-arm-wrap {
@@ -810,7 +759,7 @@ body.landing-active .tech-bg-layer {
   .ltl-laptop-wrap {
     transform: scale(0.70);
     transform-origin: bottom center;
-    left: calc(50% + clamp(40px, 4vw, 75px));
+    left: calc(50% + clamp(62px, 5.8vw, 97px) + 80px);
   }
 
   .ltl-drone-wrap {
@@ -820,9 +769,13 @@ body.landing-active .tech-bg-layer {
     top: 120px;
   }
 
+  .ltl-drone-aura {
+    background: rgba(212, 175, 55, 0.06);
+  }
+
   .ltl-biomedical-wrap {
     right: 20px;
-    top: 120px;
+    top: 140px;
   }
 }
 
@@ -1280,7 +1233,14 @@ body.landing-active .tech-bg-layer {
   .ltl-status-beacon,
   .ltl-floor-reflection,
   .ltl-screen-glow,
-  .ltl-drone {
+  .ltl-drone-wrap,
+  .ltl-left-arm-wrap,
+  .ltl-right-arm-wrap,
+  .ltl-biomedical-wrap,
+  .ltl-scope-wrap,
+  .ltl-visdet-wrap,
+  .ltl-laptop-wrap,
+  .ltl-drone-aura {
     animation: none !important;
   }
 }
