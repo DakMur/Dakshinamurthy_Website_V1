@@ -226,16 +226,23 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </div>
         </motion.div>
 
-        <motion.h2
+        <motion.div
           initial={{ filter: "blur(12px)", opacity: 0, y: 20 }}
           animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="font-serif font-medium text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white tracking-[0.03em] sm:tracking-[0.04em] leading-[1.15] sm:leading-[1.1] max-w-3xl mx-auto pb-2 sm:pb-4"
+          className="flex flex-col items-center justify-center max-w-4xl mx-auto pb-1 sm:pb-2"
         >
-          <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-b from-white via-gold-vintage to-gold-bright drop-shadow-2xl antialiased">
-            Dakshinaasya Darshini
-          </span>
-        </motion.h2>
+          <h2 className="font-serif font-medium sm:font-semibold text-[clamp(32px,4.5vw,60px)] text-white tracking-[0.03em] sm:tracking-[0.04em] leading-[1.12] sm:leading-[1.08] text-center">
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] via-[#E5C98A] to-[#C79C2E] drop-shadow-[0_2px_18px_rgba(212,175,55,0.30)] antialiased">
+              Dakshinaasya Darshini
+            </span>
+          </h2>
+          <div className="mt-2 sm:mt-2.5 md:mt-3 font-serif font-medium sm:font-semibold text-[clamp(20px,3vw,40px)] tracking-[0.04em] sm:tracking-[0.06em] leading-[1.2] uppercase text-center">
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-b from-[#FFFFFF] via-[#EFE8D8] to-[#D4B566] drop-shadow-[0_2px_12px_rgba(212,175,55,0.20)] antialiased">
+              VEDANTA MAKEATHON
+            </span>
+          </div>
+        </motion.div>
 
         {/* Subtitle description with rectangular glassmorphism border */}
         <motion.p
