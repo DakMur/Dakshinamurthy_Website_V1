@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Globe, Instagram, Youtube, Mail } from "lucide-react";
+import { Globe, Instagram, Youtube, Mail, BookOpen } from "lucide-react";
 import { WebGLErrorBoundary } from "../components/error/WebGLErrorBoundary";
 
 const CosmicGalaxy = lazy(() => import("../features/landing-main/CosmicGalaxy"));
@@ -35,6 +35,12 @@ const links: LinkItem[] = [
     icon: <Mail className="text-[#d4af37] w-5 h-5 absolute left-4" />,
     label: "Email",
     href: "mailto:dakshinaasyadarshini.jit@gmail.com",
+  },
+  {
+    id: "contact-brochure",
+    icon: <BookOpen className="text-[#d4af37] w-5 h-5 absolute left-4" />,
+    label: "Brochure",
+    href: "https://heyzine.com/flip-book/3846397c63.html",
   },
 ];
 
@@ -98,31 +104,6 @@ export default function ContactPage() {
           ))}
         </div>
 
-        {/* Brochure CTA */}
-        <div className="mt-6">
-          <a
-            id="contact-brochure"
-            href="https://heyzine.com/flip-book/3846397c63.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 hover:text-amber-200 font-mono text-xs md:text-sm tracking-wider uppercase transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.15)] hover:shadow-[0_0_25px_rgba(212,175,55,0.3)] backdrop-blur-md"
-          >
-            <svg
-              className="w-4 h-4 text-amber-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-            <span>Brochure</span>
-          </a>
-        </div>
 
         {/* Back navigation footer */}
         <a
