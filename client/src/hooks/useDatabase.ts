@@ -369,7 +369,7 @@ export const FALLBACK_QUOTES: Quote[] = [
 /**
  * Custom hook encapsulating all database state fetching from the Express API with resilient static fallbacks.
  */
-export function useDatabase() {
+export function useDatabase(enabled = true) {
   const [domains, setDomains] = useState<DomainContent[]>(FALLBACK_DOMAINS);
   const [articles, setArticles] = useState<Article[]>(FALLBACK_ARTICLES);
   const [timeline, setTimeline] = useState<TimelineStep[]>(FALLBACK_TIMELINE);
@@ -457,8 +457,9 @@ export function useDatabase() {
   }, []);
 
   useEffect(() => {
+    if (!enabled) return;
     loadDatabase();
-  }, [loadDatabase]);
+  }, [loadDatabase, enabled]);
 
   return {
     domains,

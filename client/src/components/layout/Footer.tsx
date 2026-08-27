@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
-import {
-  MapPin,
-  Mail,
-  ExternalLink,
-  ArrowUp,
-  Instagram,
-  Youtube,
-  Compass,
-  Layers,
-  X,
-  ShieldCheck,
-  FileText,
-} from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import MapPin from "lucide-react/dist/esm/icons/map-pin";
+import Mail from "lucide-react/dist/esm/icons/mail";
+import ExternalLink from "lucide-react/dist/esm/icons/external-link";
+import ArrowUp from "lucide-react/dist/esm/icons/arrow-up";
+import Instagram from "lucide-react/dist/esm/icons/instagram";
+import Youtube from "lucide-react/dist/esm/icons/youtube";
+import Compass from "lucide-react/dist/esm/icons/compass";
+import Layers from "lucide-react/dist/esm/icons/layers";
+import X from "lucide-react/dist/esm/icons/x";
+import ShieldCheck from "lucide-react/dist/esm/icons/shield-check";
+import FileText from "lucide-react/dist/esm/icons/file-text";
 import { Quote } from "../../types/types";
 
 interface FooterProps {
@@ -34,6 +32,49 @@ const QUICK_LINKS: QuickLink[] = [
   { label: "Notice Board", href: "/#notice-board", targetId: "notice-board" },
   { label: "Register", href: "/#registration", targetId: "registration" },
 ];
+
+function VenueMapEmbed() {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [loadMap, setLoadMap] = useState(false);
+
+  useEffect(() => {
+    const el = hostRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "240px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={hostRef}
+      className="rounded-lg border border-gold-vintage/20 w-full overflow-hidden bg-[#0c0c14]"
+      style={{ height: 180 }}
+    >
+      {loadMap ? (
+        <iframe
+          title="Jyothy Institute of Technology Location"
+          src="https://maps.google.com/maps?q=Jyothy+Institute+of+Technology,+Tataguni,+Bengaluru&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+          width="100%"
+          height="180"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full h-full"
+        />
+      ) : null}
+    </div>
+  );
+}
 
 export default function Footer({ route, isLanding = false }: FooterProps) {
   const [activeModal, setActiveModal] = useState<"privacy" | "terms" | null>(null);
@@ -115,18 +156,7 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
                 </p>
               </div>
 
-              {/* Embedded Google Map iframe with explicit pin marker */}
-              <iframe
-                  title="Jyothy Institute of Technology Location"
-                  src="https://maps.google.com/maps?q=Jyothy+Institute+of+Technology,+Tataguni,+Bengaluru&t=&z=15&ie=UTF8&iwloc=B&output=embed"
-                  width="100%"
-                  height="180"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="rounded-lg border border-gold-vintage/20 w-full"
-                />
+              <VenueMapEmbed />
 
               <a
                 href="https://maps.google.com/?q=Jyothy+Institute+of+Technology+Tataguni+Bengaluru"

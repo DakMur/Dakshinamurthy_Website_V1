@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react"
 import Lenis from "lenis";
 
 import { motion, AnimatePresence } from "motion/react";
+import LandingPage from "./features/landing-main/LandingPage";
 
 // ── Lazy-loaded route-level chunks ─────────────────────────────────────────
 const CosmicGalaxy = lazy(() => import("./features/landing-main/CosmicGalaxy"));
-const LandingPage = lazy(() => import("./features/landing-main/LandingPage"));
 const WarpTransition = lazy(() => import("./features/loading-main/WarpTransition"));
 const WisdomLectures = lazy(() => import("./features/wisdom-lectures"));
 const TechnicalWorkshopSection = lazy(() => import("./features/technical-workshop/TechnicalWorkshopSection"));
@@ -24,11 +24,15 @@ import Navbar from "./components/layout/Navbar";
 import GlobalHamburgerMenu from "./components/layout/GlobalHamburgerMenu";
 import GlobalDisclaimer from "./components/layout/GlobalDisclaimer";
 import { WebGLErrorBoundary } from "./components/error/WebGLErrorBoundary";
-import Footer from "./components/layout/Footer";
+
+const Footer = lazy(() => import("./components/layout/Footer"));
 import { useDatabase } from "./hooks/useDatabase";
 import { useWarpEffect } from "./hooks/useWarpEffect";
 import { User, DomainContent, Team, RegistrationConfig } from "./types/types";
 import { NAV_SECTIONS, LANDING_PATH, parsePath, getSectionPath } from "./utils/navigation";
+
+/** Session-level analytics dedupe (survives StrictMode remounts). */
+const trackedPages = new Set<string>();
 
 export default function App() {
   // ── Isolated /contact route — render standalone page, skip entire main app ──
@@ -62,10 +66,15 @@ export default function App() {
   const [isLanding, setIsLanding] = useState<boolean>(initialRoute.isLanding);
   const [activeSection, setActiveSection] = useState<string>(initialRoute.activeSectionId);
 
-  // Smooth scrolling engine
+  // Smooth scrolling engine — skip while the intro hero is showing (no page scroll).
   const [lenis, setLenis] = useState<Lenis | null>(null);
+  const lenisCreatedRef = useRef(false);
 
   useEffect(() => {
+    if (isLanding && !lenisCreatedRef.current) return;
+    if (lenisCreatedRef.current) return;
+    lenisCreatedRef.current = true;
+
     const lenisInstance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -73,7 +82,6 @@ export default function App() {
     });
 
     setLenis(lenisInstance);
-    // Expose lenis globally for modals to pause it
     (window as any).lenis = lenisInstance;
 
     function raf(time: number) {
@@ -85,8 +93,9 @@ export default function App() {
       lenisInstance.destroy();
       delete (window as any).lenis;
       setLenis(null);
+      lenisCreatedRef.current = false;
     };
-  }, []);
+  }, [isLanding]);
 
   // Warp transition triggers
   const { isWarping, triggerWarp } = useWarpEffect(false);
@@ -137,19 +146,49 @@ export default function App() {
   const scrollLockTimeoutRef = useRef<number | null>(null);
   const activeSectionRef = useRef(activeSection);
   const lastTrackedSectionRef = useRef<string | null>(null);
+  const [galaxyReady, setGalaxyReady] = useState(false);
 
   useEffect(() => {
     activeSectionRef.current = activeSection;
   }, [activeSection]);
 
+  useEffect(() => {
+    const enable = () => setGalaxyReady(true);
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(enable, { timeout: 280 });
+      return () => window.cancelIdleCallback(id);
+    }
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(enable);
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, []);
+
+  useEffect(() => {
+    const prefetch = () => {
+      void import("./features/loading-main/WarpTransition");
+    };
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(prefetch, { timeout: 1200 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(prefetch, 800);
+    return () => window.clearTimeout(t);
+  }, []);
+
   // Database state from custom hook
   const {
     domains, articles, timeline, quotes, comments, analytics, dailyQuote,
     setArticles, setAnalytics, loadDatabase, loadDomains, loadArticles, loadTimeline
-  } = useDatabase();
+  } = useDatabase(!isLanding || overlayView !== null);
 
-  // Fetch registration configuration
+  // Fetch registration configuration only after leaving the intro hero
   useEffect(() => {
+    if (isLanding && overlayView === null) return;
     const fetchConfig = async () => {
       try {
         const res = await fetch('/api/v1/registration/config');
@@ -164,7 +203,7 @@ export default function App() {
       }
     };
     fetchConfig();
-  }, []);
+  }, [isLanding, overlayView]);
 
   // Pause / Resume smooth scroll and lock body scroll whenever overlay is open
   useEffect(() => {
@@ -192,31 +231,42 @@ export default function App() {
     setIsMobileMenuOpen(false);
   }, [activeSection, isLanding]);
 
-  // Record page views in Express server analytics tables without duplicate continuous fires
+  // Record page views without blocking first paint or duplicating StrictMode fires
   useEffect(() => {
     const pageToTrack = isLanding ? "home" : activeSection;
-    if (lastTrackedSectionRef.current === pageToTrack) return;
-    lastTrackedSectionRef.current = pageToTrack;
+    if (trackedPages.has(pageToTrack)) return;
 
-    fetch("/api/v1/analytics/track", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ page: pageToTrack })
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.success && analytics.pageViews) {
-          setAnalytics((prev) => ({
-            ...prev,
-            pageViews: {
-              ...prev.pageViews,
-              [pageToTrack]: data.count
-            }
-          }));
-        }
+    const send = () => {
+      if (trackedPages.has(pageToTrack)) return;
+      trackedPages.add(pageToTrack);
+
+      fetch("/api/v1/analytics/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page: pageToTrack })
       })
-      .catch((err) => console.error("Error incrementing analytics metrics:", err));
-  }, [isLanding, activeSection, analytics.pageViews, setAnalytics]);
+        .then((r) => r.json())
+        .then((data) => {
+          if (overlayView === "admin" && data.success && analytics.pageViews) {
+            setAnalytics((prev) => ({
+              ...prev,
+              pageViews: {
+                ...prev.pageViews,
+                [pageToTrack]: data.count
+              }
+            }));
+          }
+        })
+        .catch((err) => console.error("Error incrementing analytics metrics:", err));
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(send, { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(send, 1);
+    return () => window.clearTimeout(t);
+  }, [isLanding, activeSection, overlayView, analytics.pageViews, setAnalytics]);
 
   // Open full-viewport isolated overlay with clean root path and history entry
   const openOverlay = useCallback((view: 'workspace' | 'register' | 'admin') => {
@@ -652,19 +702,21 @@ export default function App() {
       {/* Fixed Subtle Ambient Gradient Layer behind canvas */}
       <div className="fixed inset-0 z-[-1] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-950/20 via-black/40 to-transparent pointer-events-none transform-gpu" />
 
-      {/* Persistent WebGL Background Container */}
+      {/* Persistent WebGL Background Container — starts after first paint */}
       <div className="fixed inset-0 w-screen h-screen z-0 pointer-events-none overflow-hidden">
-        <Suspense fallback={null}>
-          <WebGLErrorBoundary>
-            <CosmicGalaxy
-              activeTab={activeSection}
-              route={isLanding ? "landing" : activeSection}
-              isWarping={isWarping}
-              isExplore={!isLanding}
-              isModalOpen={selectedDomain !== null || isMobileMenuOpen || overlayView !== null}
-            />
-          </WebGLErrorBoundary>
-        </Suspense>
+        {galaxyReady && (
+          <Suspense fallback={null}>
+            <WebGLErrorBoundary>
+              <CosmicGalaxy
+                activeTab={activeSection}
+                route={isLanding ? "landing" : activeSection}
+                isWarping={isWarping}
+                isExplore={!isLanding}
+                isModalOpen={selectedDomain !== null || isMobileMenuOpen || overlayView !== null}
+              />
+            </WebGLErrorBoundary>
+          </Suspense>
+        )}
       </div>
 
       {/* ॐ Om Transition Overlay */}
@@ -703,9 +755,7 @@ export default function App() {
       {isLanding ? (
         /* 1. COSMIC LANDING EXPERIENCE */
         <main className="relative z-10 w-full h-[100svh] min-h-[100svh] overflow-hidden flex flex-col items-center justify-start">
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
-          </Suspense>
+          <LandingPage isWarping={isWarping} triggerWarpSpeed={triggerWarpSpeed} />
         </main>
       ) : (
         /* 2. CONTINUOUS SHOWCASE LANDING PAGE WITH INLINE REGISTRATION */
@@ -783,7 +833,11 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <Footer dailyQuote={dailyQuote} isLanding={isLanding} route={isLanding ? "landing" : activeSection} />
+      {!isLanding && (
+        <Suspense fallback={null}>
+          <Footer dailyQuote={dailyQuote} isLanding={isLanding} route={isLanding ? "landing" : activeSection} />
+        </Suspense>
+      )}
 
       {/* Modal domain overlay */}
       <Suspense fallback={null}>

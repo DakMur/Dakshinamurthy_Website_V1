@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
 import jyothyLogo from "../../assets/jyothy_logo.jpg";
@@ -21,10 +21,6 @@ interface LandingPageProps {
  * positioned directly above the central hero content.
  */
 export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPageProps) {
-  const { scrollY } = useScroll();
-  const logoOpacity = useTransform(scrollY, [0, 200], [1, 0.4]);
-  const logoTranslateY = useTransform(scrollY, [0, 200], [0, -12]);
-
   // Toggle body class to hide the CosmicGalaxy gold decorative line-art
   // layer ONLY while the landing page is mounted. On unmount (after Explore
   // transition), the class is removed and the decorations reappear.
@@ -47,8 +43,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       <LandingTechnologyLayer />
 
       {/* 1. FULL-WIDTH INSTITUTIONAL LOGO LAYER */}
-      <motion.div
-        style={{ opacity: logoOpacity, y: logoTranslateY }}
+      <div
         className="w-full relative select-none z-10 pointer-events-auto shrink-0 pt-14 sm:pt-3 md:pt-4"
       >
         {/* Desktop / Tablet Layout: 5-Column Grid — single-line labels, full width */}
@@ -63,6 +58,10 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
                 src={paramLogo}
                 className="h-7 sm:h-9 md:h-11 max-w-full object-contain"
                 alt="Param Technical Collaborator"
+                width={938}
+                height={222}
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
           </div>
@@ -78,6 +77,10 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
                 className="h-16 sm:h-20 md:h-24 max-w-full object-contain"
                 style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
                 alt="Jyothy Institute of Technology"
+                width={474}
+                height={474}
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
           </div>
@@ -93,6 +96,10 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
                 className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
                 style={{ clipPath: "circle(50% at 50% 50%)" }}
                 alt="Sringeri"
+                width={400}
+                height={400}
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
           </div>
@@ -107,6 +114,10 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
                 src={techClubLogo}
                 className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
                 alt="Tech Club"
+                width={640}
+                height={445}
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
           </div>
@@ -121,6 +132,10 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
                 src={vedantaBharatiLogo}
                 className="h-8 sm:h-10 md:h-12 max-w-full object-contain"
                 alt="Vedanta Bharati"
+                width={350}
+                height={134}
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
           </div>
@@ -134,7 +149,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               TECHNICAL<br />COLLABORATOR
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={paramLogo} className="h-[18px] max-w-full object-contain" alt="Param Technical Collaborator" />
+              <img src={paramLogo} className="h-[18px] max-w-full object-contain" alt="Param Technical Collaborator" width={938} height={222} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
@@ -144,7 +159,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               JYOTHY<br />INSTITUTE
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={jyothyLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" />
+              <img src={jyothyLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={474} height={474} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
@@ -154,7 +169,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               SRINGERI<br />PEETHAM
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={sringeriLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" />
+              <img src={sringeriLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" width={400} height={400} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
@@ -164,7 +179,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               TECH<br />CLUB
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={techClubLogo} className="h-[22px] max-w-full object-contain" alt="Tech Club" />
+              <img src={techClubLogo} className="h-[22px] max-w-full object-contain" alt="Tech Club" width={640} height={445} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
@@ -174,11 +189,11 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               SUPPORTED<br />BY
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={vedantaBharatiLogo} className="h-[20px] max-w-full object-contain" alt="Vedanta Bharati" />
+              <img src={vedantaBharatiLogo} className="h-[20px] max-w-full object-contain" alt="Vedanta Bharati" width={350} height={134} decoding="async" fetchPriority="low" />
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* 2. CENTERED HERO CONTENT (Constrained by max-w-5xl) */}
       <div className="relative z-20 flex flex-col items-center justify-start text-center w-full max-w-5xl mx-auto px-4 pt-10 sm:pt-2 md:pt-2.5 space-y-1.5 sm:space-y-3 pb-4 sm:pb-0">
@@ -242,6 +257,8 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <img
               src={shankaracharyaImg}
               alt="Sree Adi Shankaracharya"
+              width={194}
+              height={259}
               fetchPriority="high"
               decoding="async"
               className="w-full h-full object-cover object-[center_38%] scale-[1.12] filter grayscale-[5%] sepia-[10%] brightness-[92%] contrast-[105%] transition-all duration-700"
@@ -251,8 +268,8 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
 
         {/* Main Title Stack — Connected upward closer to figure */}
         <motion.div
-          initial={{ filter: "blur(12px)", opacity: 0, y: 15 }}
-          animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
           className="flex flex-col items-center justify-center max-w-4xl mx-auto -mt-6 sm:-mt-8 md:-mt-11"
         >
@@ -307,7 +324,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           <button
             onClick={triggerWarpSpeed}
             disabled={isWarping}
-            className="group relative px-7 sm:px-10 py-2 sm:py-2.5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-xl border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-2.5 sm:gap-3 cursor-pointer"
+            className="group relative px-7 sm:px-10 py-2 sm:py-2.5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-md border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-2.5 sm:gap-3 cursor-pointer"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-gold-vintage/10 via-transparent to-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 

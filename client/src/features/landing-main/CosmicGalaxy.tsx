@@ -1,6 +1,5 @@
 import { useEffect, useRef, memo } from "react";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { motion } from "motion/react";
 
 interface GalaxyProps {
@@ -31,12 +30,24 @@ export default function CosmicGalaxy({
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    let cancelled = false;
+    let innerCleanup: (() => void) | undefined;
+    let idleId: number | undefined;
+    let rafId = 0;
+
+    const startWebGL = () => {
+    if (cancelled || !canvasRef.current) return;
+
+    const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+    const hardwareLimit = typeof navigator.hardwareConcurrency === "number" ? navigator.hardwareConcurrency : 8;
+    const isLowPower = isMobile || hardwareLimit <= 4;
+
     // 1. Base Setup
     const scene = new THREE.Scene();
 
     const parameters = {
-      count: 140000,
-      size: 0.035,
+      count: isLowPower ? 56000 : 140000,
+      size: isLowPower ? 0.04 : 0.035,
       radius: 11,
       branches: 3,
       spin: 0.9,
@@ -167,7 +178,7 @@ export default function CosmicGalaxy({
     let starsMaterial: THREE.ShaderMaterial | null = null;
 
     const generateAmbientStars = () => {
-      const count = 1000;
+      const count = isLowPower ? 520 : 1000;
       const radius = 40;
 
       starsGeometry = new THREE.BufferGeometry();
@@ -233,7 +244,7 @@ export default function CosmicGalaxy({
     let dustMaterial: THREE.ShaderMaterial | null = null;
 
     const generateCosmicDust = () => {
-      const count = 300;
+      const count = isLowPower ? 180 : 300;
       dustGeometry = new THREE.BufferGeometry();
       const positions = new Float32Array(count * 3);
       const directions = new Float32Array(count * 3);
@@ -390,22 +401,18 @@ export default function CosmicGalaxy({
 
     const camera = new THREE.PerspectiveCamera(60, sizes.width / sizes.height, 0.1, 100);
     camera.position.set(0, 4.0, 9.5);
+    camera.lookAt(0, 0, 0);
     scene.add(camera);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
-      antialias: true,
+      antialias: !isMobile,
       alpha: true,
-      powerPreference: "high-performance",
+      powerPreference: isMobile ? "default" : "high-performance",
     });
     renderer.setSize(sizes.width, sizes.height, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    const controls = new OrbitControls(camera, canvasRef.current);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.maxDistance = 25;
-    controls.minDistance = 2;
+    const maxPixelRatio = isMobile ? 1.25 : 1.5;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
 
     let lastWidth = window.innerWidth;
 
@@ -426,11 +433,12 @@ export default function CosmicGalaxy({
 
       camera.aspect = sizes.width / sizes.height;
       camera.updateProjectionMatrix();
+      camera.lookAt(0, 0, 0);
 
       renderer.setSize(sizes.width, sizes.height, false);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     // 7. Continuous Animation Loop
     const clock = new THREE.Timer();
@@ -472,19 +480,17 @@ export default function CosmicGalaxy({
         cosmicDust.rotation.y -= safeDelta * currentSpeed * 0.2;
       }
 
-      controls.update();
       renderer.render(scene, camera);
     };
 
     tick();
 
     // Cleanup System
-    return () => {
+    innerCleanup = () => {
       window.removeEventListener("resize", handleResize);
       if (animationId !== null) {
         window.cancelAnimationFrame(animationId);
       }
-      controls.dispose();
       galaxyGeometry?.dispose();
       galaxyMaterial?.dispose();
       starsGeometry?.dispose();
@@ -495,6 +501,23 @@ export default function CosmicGalaxy({
       sparklesMaterial?.dispose();
       particleTexture?.dispose();
       renderer.dispose();
+    };
+    };
+
+    rafId = requestAnimationFrame(() => {
+      if (cancelled) return;
+      if (typeof window.requestIdleCallback === "function") {
+        idleId = window.requestIdleCallback(startWebGL, { timeout: 400 });
+      } else {
+        startWebGL();
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      innerCleanup?.();
     };
   }, []);
 

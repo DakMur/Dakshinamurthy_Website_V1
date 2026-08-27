@@ -1,11 +1,11 @@
 import { memo } from "react";
 import biomedicalDisplay from "../../assets/landing/Technology/biomedical-display.webp";
-import drone from "../../assets/landing/Technology/drone.webp";
-import laptop from "../../assets/landing/Technology/laptop.webp";
-import oscilloscope from "../../assets/landing/Technology/oscilloscope.webp";
+import drone from "../../assets/landing/Technology/drone-display.webp";
+import laptop from "../../assets/landing/Technology/laptop-display.webp";
+import oscilloscope from "../../assets/landing/Technology/oscilloscope-display.webp";
 import roboticLeftArm from "../../assets/landing/Technology/robotic-left-arm.webp";
 import roboticRightArm from "../../assets/landing/Technology/robotic-right-arm.webp";
-import visionDetector from "../../assets/landing/Technology/vision-detector.webp";
+import visionDetector from "../../assets/landing/Technology/vision-detector-display.webp";
 
 /**
  * Technology ecosystem layer — remaining assets share the drone /
@@ -24,7 +24,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-drone-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={drone} className="ltl-img ltl-drone" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={drone} className="ltl-img ltl-drone" alt="" width={640} height={360} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 
@@ -32,7 +32,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-visdet-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={visionDetector} className="ltl-img ltl-visdet" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={visionDetector} className="ltl-img ltl-visdet" alt="" width={640} height={426} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 
@@ -40,7 +40,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-left-arm-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={roboticRightArm} className="ltl-img ltl-left-arm" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={roboticRightArm} className="ltl-img ltl-left-arm" alt="" width={1175} height={1338} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 
@@ -48,7 +48,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-scope-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={oscilloscope} className="ltl-img ltl-scope" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={oscilloscope} className="ltl-img ltl-scope" alt="" width={640} height={426} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 
@@ -56,7 +56,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-laptop-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={laptop} className="ltl-img ltl-laptop" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={laptop} className="ltl-img ltl-laptop" alt="" width={640} height={426} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 
@@ -64,7 +64,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-biomedical-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={biomedicalDisplay} className="ltl-img ltl-biomedical" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={biomedicalDisplay} className="ltl-img ltl-biomedical" alt="" width={1520} height={1035} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 
@@ -72,7 +72,7 @@ const LandingTechnologyLayer = memo(function LandingTechnologyLayer() {
       <div className="ltl-item ltl-right-arm-wrap" aria-hidden="true">
         <div className="ltl-drone-aura" />
         <div className="ltl-drone-ether">
-          <img src={roboticLeftArm} className="ltl-img ltl-right-arm" alt="" draggable={false} loading="eager" decoding="async" />
+          <img src={roboticLeftArm} className="ltl-img ltl-right-arm" alt="" width={1175} height={1338} draggable={false} fetchPriority="low" decoding="async" />
         </div>
       </div>
 

@@ -16,12 +16,25 @@ export default defineConfig(() => {
       target: 'esnext',
       minify: 'esbuild',
       cssMinify: true,
+      modulePreload: {
+        resolveDependencies: (_filename, deps, { hostType }) => {
+          if (hostType !== 'html') return deps;
+          return deps.filter((dep) => {
+            const d = dep.replace(/\\/g, '/');
+            return !/vendor-three|CosmicGalaxy|WarpTransition|Footer-|ContactPage|RegistrationPage|RegistrationForm|RegistrationSection|PortalPage|WisdomLectures|TechnicalWorkshop|TimelineSection|NoticeBoard|TeamWorkspace|AdminControl|DomainExpanded|vendor-lenis/.test(d);
+          });
+        },
+      },
       rollupOptions: {
         output: {
-          manualChunks: {
-            'vendor-react': ['react', 'react-dom'],
-            'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
-            'vendor-animation': ['motion', 'gsap'],
+          manualChunks(id) {
+            if (id.includes('node_modules/three')) return 'vendor-three';
+            if (id.includes('node_modules/motion')) return 'vendor-animation';
+            if (id.includes('node_modules/lenis')) return 'vendor-lenis';
+            if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+              return 'vendor-react';
+            }
+            return undefined;
           },
         },
       },
