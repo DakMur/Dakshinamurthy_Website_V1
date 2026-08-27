@@ -1,0 +1,11 @@
+---
+description: Surgical landing-page edits only
+globs: client/src/features/landing-main/**
+alwaysApply: false
+---
+
+# Landing
+
+- Default: position, opacity, and asset swaps only. Do not restyle the hero, galaxy, logos, quote, or Explore unless asked.
+- Tech gadgets: `LandingTechnologyLayer.tsx` + `.ltl-*` in `LandingPage.css`.
+- Keep gadget sizes/z-index/animation unless the user changes those explicitly.

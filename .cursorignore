@@ -1,0 +1,46 @@
+﻿# Dependencies and build output
+node_modules/
+**/node_modules/
+dist/
+build/
+.vite/
+coverage/
+
+# Lockfile is large and rarely needed for coding tasks
+package-lock.json
+
+# Secrets and local data
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*-key.json
+*-credentials.json
+*service-account*.json
+server/data/database.json
+
+# Logs and OS
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Binary / media — use import paths; do not index file bytes
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.ico
+*.mp4
+*.webm
+*.glb
+*.gltf
+*.woff
+*.woff2
+
+# Scratch / other agents
+.gemini/
+temp_three_inspect/
+client/src/assets/test.html

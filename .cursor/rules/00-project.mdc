@@ -1,0 +1,21 @@
+---
+description: Monorepo map and hard constraints for Vedanta Makeathon
+alwaysApply: true
+---
+
+# Dakshinamurthy Website
+
+Workspaces: `client/` (Vite, React 19, Tailwind) and `server/` (Express, Supabase). Root `npm run dev` runs both.
+
+**Git:** develop on `prep`. Never push `main`. Commit/push only when asked. Human setup is in `README.md` — do not restate it.
+
+**Map (read these first, not the whole tree):**
+- App shell / routes: `client/src/App.tsx`, `client/src/utils/navigation.ts`
+- Landing: `client/src/features/landing-main/`
+- Dimension portals: `client/src/features/dimension-portal/`
+- Registration: `client/src/features/registration/`
+- API: `server/src/routes/index.ts` → matching controllers
+
+**Do:** touch only the requested feature; match existing patterns.
+
+**Don't:** redesign landing hero/galaxy/nav unless asked; invent favicons or `.env` secrets; edit `node_modules`/`dist`; dump binary assets into context.

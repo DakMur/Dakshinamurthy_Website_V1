@@ -1,0 +1,11 @@
+---
+description: Isolated dimension-portal page files
+globs: client/src/features/dimension-portal/**
+alwaysApply: false
+---
+
+# Dimension portal
+
+Domain copy/layout lives in `info-cards/PageOne.tsx` … `PageTwelve.tsx`. Edit only the assigned page file.
+
+Do not change `PortalPage.tsx`, `DomainExpandedModal.tsx`, or shared portal components unless asked.

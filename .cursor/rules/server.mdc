@@ -1,0 +1,11 @@
+---
+description: Express API and shared Supabase constraints
+globs: server/**
+alwaysApply: false
+---
+
+# Server
+
+- Routes: `server/src/routes/index.ts`. Controllers in `server/src/controllers/`.
+- Shared Supabase; never commit `.env`. Copy `server/.env.example`.
+- Local R2 placeholder `PLACEHOLDER_UNTIL_CARD_VERIFIED` is intentional — do not "fix" it unless asked.

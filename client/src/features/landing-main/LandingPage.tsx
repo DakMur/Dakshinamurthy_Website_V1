@@ -302,12 +302,12 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="pt-1.5 sm:pt-4 relative z-30 pointer-events-auto"
+          className="pt-1.5 sm:pt-4 relative z-30 pointer-events-auto flex flex-col items-center gap-[52px] mt-3"
         >
           <button
             onClick={triggerWarpSpeed}
             disabled={isWarping}
-            className="group relative px-7 sm:px-10 py-2.5 sm:py-3.5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-xl border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-2.5 sm:gap-3 cursor-pointer"
+            className="group relative px-7 sm:px-10 py-2 sm:py-2.5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-xl border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-2.5 sm:gap-3 cursor-pointer"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-gold-vintage/10 via-transparent to-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
@@ -320,6 +320,19 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             {/* Neon bottom accent line */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/5 h-[1.5px] bg-gold-vintage shadow-[0_0_12px_#D4AF37] group-hover:w-4/5 transition-all duration-500"></div>
           </button>
+
+          {/* Solid Gold REGISTER NOW CTA */}
+          <a
+            className="inline-flex items-center justify-center gap-2 px-8 py-2.5 md:py-3 rounded-full bg-[#d4af37] hover:bg-amber-300 text-neutral-950 font-bold text-xs md:text-sm tracking-widest uppercase transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.55)] hover:shadow-[0_0_20px_6px_rgba(212,175,55,0.75),0_0_55px_18px_rgba(212,175,55,0.35)] hover:scale-105 active:scale-95 cursor-pointer"
+            href="https://mastryhub.com/event/vedanta-makeathon"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>REGISTER NOW</span>
+            <svg className="w-4 h-4 stroke-neutral-950" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
         </motion.div>
       </div>
     </motion.div>

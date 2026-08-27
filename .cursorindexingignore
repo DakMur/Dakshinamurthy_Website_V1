@@ -1,0 +1,26 @@
+# Keep indexing ignore in sync with .cursorignore
+node_modules/
+**/node_modules/
+dist/
+build/
+.vite/
+coverage/
+package-lock.json
+.env
+.env.*
+*.log
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.ico
+*.mp4
+*.webm
+*.glb
+*.gltf
+*.woff
+*.woff2
+.gemini/
+temp_three_inspect/
+client/src/assets/test.html
