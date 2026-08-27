@@ -34,7 +34,7 @@ const links: LinkItem[] = [
     id: "contact-email",
     icon: <Mail className="text-[#d4af37] w-5 h-5 absolute left-4" />,
     label: "Email",
-    href: "mailto:dakshinaasyadarshini.jit@gmail.com",
+    href: "mailto:Dakshinaasyadarshini@jyothyit.ac.in",
   },
   {
     id: "contact-brochure",
