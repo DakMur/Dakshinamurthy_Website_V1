@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { motion } from "motion/react";
 import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import shankaracharyaImg from "../../assets/shankaracharya.webp";
-import jyothyLogo from "../../assets/jyothy_logo.jpg";
-import sringeriLogo from "../../assets/sringeri_logo.jpg";
+import jyothyLogo from "../../assets/jyothy_logo.webp";
+import sringeriLogo from "../../assets/sringeri_logo.webp";
 import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo (2).png";
 import paramLogo from "../../assets/Param_logo.webp";
 import techClubLogo from "../../assets/tclogo.png";
@@ -77,8 +77,8 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
                 className="h-16 sm:h-20 md:h-24 max-w-full object-contain"
                 style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
                 alt="Jyothy Institute of Technology"
-                width={474}
-                height={474}
+                width={1080}
+                height={1080}
                 decoding="async"
                 fetchPriority="low"
               />
@@ -94,7 +94,6 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               <img
                 src={sringeriLogo}
                 className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
-                style={{ clipPath: "circle(50% at 50% 50%)" }}
                 alt="Sringeri"
                 width={400}
                 height={400}
@@ -159,7 +158,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               JYOTHY<br />INSTITUTE
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={jyothyLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={474} height={474} decoding="async" fetchPriority="low" />
+              <img src={jyothyLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={1080} height={1080} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
@@ -169,7 +168,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               SRINGERI<br />PEETHAM
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={sringeriLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "circle(50% at 50% 50%)" }} alt="Sringeri" width={400} height={400} decoding="async" fetchPriority="low" />
+              <img src={sringeriLogo} className="h-[22px] max-w-full object-contain" alt="Sringeri" width={400} height={400} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
