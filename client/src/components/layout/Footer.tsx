@@ -215,11 +215,11 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
                   Official Inquiries
                 </span>
                 <a
-                  href="mailto:Dakshinaasyadarshini@jyothyit.ac.in"
+                  href="mailto:dakshinaasyadarshini@jyothyit.ac.in"
                   className="inline-flex items-center gap-2 text-xs font-mono text-gold-vintage hover:text-gold-vintage break-all transition-colors p-2 rounded-md bg-gold-vintage/5 border border-gold-vintage/20 hover:border-gold-vintage/40"
                 >
                   <Mail className="w-3.5 h-3.5 shrink-0 text-gold-vintage" />
-                  <span>Dakshinaasyadarshini@jyothyit.ac.in</span>
+                  <span>dakshinaasyadarshini@jyothyit.ac.in</span>
                 </a>
               </div>
 
