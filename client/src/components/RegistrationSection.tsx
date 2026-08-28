@@ -19,8 +19,7 @@ export default function RegistrationSection() {
 
       {/* Description — matches RegistrationGate body copy style */}
       <p className="text-neutral-400 text-sm md:text-base max-w-2xl text-center mb-10 leading-relaxed font-sans">
-        Access your team workspace, manage team members, and submit your project
-        documents and demo video for Dakshinamurthy Hackathon.
+        Build your team, shape your idea, and submit your project for the Vedanta Makeathon.
       </p>
 
       {/* Solid gold CTA — matches Login button: bg-gold-vintage text-black font-mono font-semibold */}
