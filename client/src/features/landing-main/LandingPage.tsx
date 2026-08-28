@@ -74,7 +74,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
                 src={jyothyLogo}
-                className="h-16 sm:h-20 md:h-24 max-w-full object-contain"
+                className="h-[74px] sm:h-[92px] md:h-[110px] max-w-full object-contain"
                 style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }}
                 alt="Jyothy Institute of Technology"
                 width={1080}
@@ -158,7 +158,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               JYOTHY<br />INSTITUTE
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={jyothyLogo} className="h-[22px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={1080} height={1080} decoding="async" fetchPriority="low" />
+              <img src={jyothyLogo} className="h-[25px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={1080} height={1080} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
@@ -323,18 +323,13 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           <button
             onClick={triggerWarpSpeed}
             disabled={isWarping}
-            className="group relative px-7 sm:px-10 py-2 sm:py-2.5 bg-white/[0.03] hover:bg-gold-vintage/10 backdrop-blur-md border border-gold-vintage/35 rounded-full overflow-hidden transition-all duration-500 hover:border-gold-vintage hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center gap-2.5 sm:gap-3 cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-2 w-[204px] md:w-[226px] py-2.5 md:py-3 bg-neutral-950/70 hover:bg-neutral-950/85 backdrop-blur-md border border-[#d4af37]/45 hover:border-[#d4af37]/80 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_4px_16px_rgba(0,0,0,0.6)] hover:-translate-y-[2px] transition-all duration-200 ease-out cursor-pointer select-none"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-gold-vintage/10 via-transparent to-gold-vintage/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-
-            <span className="relative text-[9px] sm:text-[10px] tracking-[0.35em] sm:tracking-[0.4em] font-mono font-medium text-white group-hover:text-gold-vintage uppercase transition-colors">
+            <span className="relative text-xs md:text-sm font-bold tracking-widest text-[#F5E6C8] group-hover:text-amber-300 uppercase transition-colors duration-200">
               {isWarping ? "Exploring..." : "Explore"}
             </span>
 
-            <ArrowRight className="w-3.5 h-3.5 text-gold-vintage transform group-hover:translate-x-1.5 transition-transform relative" />
-
-            {/* Neon bottom accent line */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/5 h-[1.5px] bg-gold-vintage shadow-[0_0_12px_#D4AF37] group-hover:w-4/5 transition-all duration-500"></div>
+            <ArrowRight className="w-4 h-4 text-[#d4af37] group-hover:text-amber-300 transform group-hover:translate-x-[3px] transition-all duration-200 ease-out relative" />
           </button>
 
           {/* Solid Gold REGISTER NOW CTA */}
