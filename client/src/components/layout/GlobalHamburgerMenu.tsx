@@ -33,6 +33,7 @@ export default function GlobalHamburgerMenu({
 
   const isLandingActive = isLanding || currentActive === "landing" || currentActive === "home";
   const isDiscoverActive = !isLanding && (currentActive === "discover" || currentActive === "prathama-prakasha" || currentActive === "prathama" || currentActive === "prathama-prakasa" || currentActive === "storytelling");
+  const isThemesActive = !isLanding && (currentActive === "themes" || currentActive === "theme" || currentActive === "makeathon-themes");
   const isWorkshopActive = !isLanding && (currentActive === "technical-workshop" || currentActive === "workshop" || currentActive === "param-workshop");
   const isTattvaActive = !isLanding && (currentActive === "tattva-darshana" || currentActive === "tattva" || currentActive === "tattva-darsana" || currentActive === "domains");
   const isTimelineActive = !isLanding && (currentActive === "timeline" || currentActive === "innovation-timeline" || currentActive === "chronology-timeline" || currentActive === "flow" || currentActive === "marga-darshana");
@@ -42,6 +43,7 @@ export default function GlobalHamburgerMenu({
   const navItems = [
     { id: "landing", label: "Home / Darśini", active: isLandingActive, isHome: true },
     { id: "discover", label: "Discover", active: isDiscoverActive },
+    { id: "themes", label: "Themes", active: isThemesActive },
     { id: "technical-workshop", label: "Technical Workshop", active: isWorkshopActive },
     { id: "tattva-darshana", label: "Tattva Darśana", active: isTattvaActive },
     { id: "timeline", label: "Timeline", active: isTimelineActive },

@@ -15,6 +15,12 @@ export const NAV_SECTIONS: NavSection[] = [
     aliases: ["prathama-prakasha", "prathama", "prathama-prakasa", "storytelling", "wisdom", "discover"],
   },
   {
+    id: "themes",
+    path: "/themes",
+    label: "Themes",
+    aliases: ["theme", "makeathon-themes", "themes"],
+  },
+  {
     id: "technical-workshop",
     path: "/technical-workshop",
     label: "Technical Workshop",
