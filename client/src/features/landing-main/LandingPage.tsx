@@ -15,6 +15,50 @@ interface LandingPageProps {
   triggerWarpSpeed: () => void;
 }
 
+function HoistLetters({
+  text,
+  letterClassName,
+  nowrap = false,
+}: {
+  text: string;
+  letterClassName: string;
+  nowrap?: boolean;
+}) {
+  const words = text.split(" ");
+  let letterCursor = 0;
+
+  return (
+    <span
+      className={`hero-hoist${nowrap ? " hero-hoist-nowrap" : ""}`}
+      aria-label={text}
+    >
+      {words.map((word, wordIndex) => (
+        <span key={`${word}-${wordIndex}`} className="hero-hoist-word">
+          {Array.from(word).map((ch, letterIndex) => {
+            const i = letterCursor;
+            letterCursor += 1;
+            return (
+              <span
+                key={`${ch}-${letterIndex}`}
+                className={`hero-hoist-letter ${letterClassName}`}
+                style={{ ["--i" as string]: i }}
+                aria-hidden="true"
+              >
+                {ch}
+              </span>
+            );
+          })}
+          {wordIndex < words.length - 1 ? (
+            <span className="hero-hoist-space" aria-hidden="true">
+              {"\u00A0"}
+            </span>
+          ) : null}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 /**
  * Landing page component architecture matching Target Reference (Image 2).
  * Shallow top logo layer integrated inside single hero container,
@@ -274,9 +318,10 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
         >
           {/* Main Title */}
           <h1 className="font-serif font-normal sm:font-medium text-[clamp(34px,4.2vw,60px)] text-white tracking-[0.03em] leading-[1.06] text-center">
-            <span className="italic text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF8] via-[#E5C98A] to-[#C79C2E] drop-shadow-[0_2px_18px_rgba(212,175,55,0.30)] antialiased">
-              Dakshinaasya Darshini
-            </span>
+            <HoistLetters
+              text="Dakshinaasya Darshini"
+              letterClassName="hero-hoist-title italic antialiased"
+            />
           </h1>
 
           {/* National Level with Quote-Card Glass Material Tightly Fitted */}
@@ -285,10 +330,12 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             <div className="h-[1.5px] w-7 sm:w-12 bg-gradient-to-r from-transparent via-[#F7CA45] to-[#FFF5D0] rounded-full drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]"></div>
 
             {/* Tightly Fitted Glass Frame using Quote-Card Material */}
-            <div className="px-3.5 py-1 sm:px-4 sm:py-1 rounded-lg bg-black/40 backdrop-blur-md border border-gold-vintage/30 shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center">
-              <span className="font-serif font-bold text-[12px] sm:text-[13.5px] md:text-[14.5px] tracking-[0.26em] sm:tracking-[0.32em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-[#FFFDF2] via-[#FEE58A] to-[#D4AF37] whitespace-nowrap antialiased">
-                NATIONAL LEVEL
-              </span>
+            <div className="hero-hoist-badge-wrap px-3.5 py-1 sm:px-4 sm:py-1 rounded-lg bg-black/40 backdrop-blur-md border border-gold-vintage/30 flex items-center justify-center">
+              <HoistLetters
+                text="NATIONAL LEVEL"
+                nowrap
+                letterClassName="hero-hoist-badge font-serif font-bold text-[12px] sm:text-[13.5px] md:text-[14.5px] tracking-[0.26em] sm:tracking-[0.32em] uppercase antialiased"
+              />
             </div>
 
             {/* Right Gold Accent Line */}
@@ -297,9 +344,11 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
 
           {/* Vedanta Makeathon Secondary Title */}
           <div className="mt-1.5 sm:mt-2 font-serif font-medium sm:font-semibold text-[clamp(20px,2.8vw,40px)] tracking-[0.05em] leading-[1.12] uppercase text-center">
-            <span className="italic text-transparent bg-clip-text bg-gradient-to-b from-[#FFFFFF] via-[#EFE8D8] to-[#D4B566] drop-shadow-[0_2px_14px_rgba(212,175,55,0.20)] antialiased">
-              VEDANTA MAKEATHON
-            </span>
+            <HoistLetters
+              text="VEDANTA MAKEATHON"
+              nowrap
+              letterClassName="hero-hoist-makeathon italic antialiased"
+            />
           </div>
         </motion.div>
 
@@ -318,18 +367,23 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="pt-1.5 sm:pt-4 relative z-30 pointer-events-auto flex flex-col items-center gap-[52px] mt-3"
+          className="pt-1.5 sm:pt-4 relative z-30 pointer-events-auto flex flex-col items-center mt-3"
         >
+          <div className="inline-flex flex-col items-stretch gap-[52px]">
           <button
+            type="button"
             onClick={triggerWarpSpeed}
             disabled={isWarping}
-            className="group relative inline-flex items-center justify-center gap-2 w-[204px] md:w-[226px] py-2.5 md:py-3 bg-neutral-950/70 hover:bg-neutral-950/85 backdrop-blur-md border border-[#d4af37]/45 hover:border-[#d4af37]/80 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_4px_16px_rgba(0,0,0,0.6)] hover:-translate-y-[2px] transition-all duration-200 ease-out cursor-pointer select-none"
+            className="explore-cta group relative w-full px-8 py-2.5 md:py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer disabled:cursor-wait"
           >
-            <span className="relative text-xs md:text-sm font-bold tracking-widest text-[#F5E6C8] group-hover:text-amber-300 uppercase transition-colors duration-200">
+            <span className="explore-cta-sheen" aria-hidden="true" />
+            <span className="explore-cta-bottom" aria-hidden="true" />
+
+            <span className="explore-cta-label relative text-xs md:text-sm tracking-widest font-mono font-medium uppercase">
               {isWarping ? "Exploring..." : "Explore"}
             </span>
 
-            <ArrowRight className="w-4 h-4 text-[#d4af37] group-hover:text-amber-300 transform group-hover:translate-x-[3px] transition-all duration-200 ease-out relative" />
+            <ArrowRight className="explore-cta-arrow w-4 h-4 relative" />
           </button>
 
           {/* Solid Gold REGISTER NOW CTA */}
@@ -344,6 +398,7 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </a>
+          </div>
         </motion.div>
       </div>
     </motion.div>

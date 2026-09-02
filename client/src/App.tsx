@@ -8,6 +8,7 @@ import LandingPage from "./features/landing-main/LandingPage";
 const CosmicGalaxy = lazy(() => import("./features/landing-main/CosmicGalaxy"));
 const WarpTransition = lazy(() => import("./features/loading-main/WarpTransition"));
 const WisdomLectures = lazy(() => import("./features/wisdom-lectures"));
+const ThemesSection = lazy(() => import("./features/themes/ThemesSection"));
 const TechnicalWorkshopSection = lazy(() => import("./features/technical-workshop/TechnicalWorkshopSection"));
 const PortalPage = lazy(() => import("./features/dimension-portal/PortalPage"));
 const TimelineSection = lazy(() => import("./features/timeline/TimelineSection"));
@@ -786,7 +787,12 @@ export default function App() {
               />
             </section>
 
-            {/* SECTION 2: TECHNICAL WORKSHOP / PARAM FOUNDATION */}
+            {/* SECTION 2: MAKEATHON THEMES */}
+            <section id="themes" className="scroll-mt-8 py-4">
+              <ThemesSection />
+            </section>
+
+            {/* SECTION 3: TECHNICAL WORKSHOP / PARAM FOUNDATION */}
             <section id="technical-workshop" className="scroll-mt-8 py-4">
               <TechnicalWorkshopSection />
             </section>

@@ -11,6 +11,7 @@ import X from "lucide-react/dist/esm/icons/x";
 import ShieldCheck from "lucide-react/dist/esm/icons/shield-check";
 import FileText from "lucide-react/dist/esm/icons/file-text";
 import { Quote } from "../../types/types";
+import { getSectionPath } from "../../utils/navigation";
 
 interface FooterProps {
   dailyQuote?: Quote | null;
@@ -26,6 +27,7 @@ interface QuickLink {
 
 const QUICK_LINKS: QuickLink[] = [
   { label: "Discover", href: "/#hero", targetId: "discover" },
+  { label: "Themes", href: "/themes", targetId: "themes" },
   { label: "Technical Workshop", href: "/#technical-workshop", targetId: "technical-workshop" },
   { label: "Tattva Darśana", href: "/#tattva-darshana", targetId: "tattva-darshana" },
   { label: "Innovation Timeline", href: "/#innovation-timeline", targetId: "timeline" },
@@ -119,9 +121,9 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
 
     if (targetEl) {
       targetEl.scrollIntoView({ behavior: "smooth" });
-      window.history.pushState(null, "", link.href);
+      window.history.pushState({ sectionId: link.targetId }, "", getSectionPath(link.targetId));
     } else {
-      window.location.hash = link.href.replace("/", "");
+      window.location.assign(getSectionPath(link.targetId));
     }
   };
 
