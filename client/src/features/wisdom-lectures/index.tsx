@@ -4,12 +4,9 @@ import MessageSquare from 'lucide-react/dist/esm/icons/message-square';
 import Clock from 'lucide-react/dist/esm/icons/clock';
 import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left';
 import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
-import FileText from 'lucide-react/dist/esm/icons/file-text';
 import { motion, AnimatePresence } from "motion/react";
 import { Article, Comment } from "../../types/types";
 import { FALLBACK_ARTICLES } from "../../hooks/useDatabase";
-
-const DRIVE_THEMES_PDF_URL = "https://drive.google.com/file/d/1SgJnWgoZxUY3RvzcZsU-uS1UrfyvDeUe/preview";
 
 interface StorytellingSectionProps {
   articles: Article[];
@@ -25,50 +22,6 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
     (a) => a.id !== "whats-next" && a.tag !== "UPCOMING EVENT" && a.domainSlug !== "upcoming-events"
   );
 
-  const hasWhySection = safeArticles.some(
-    (article) =>
-      article.id === "a4" ||
-      article.id === "why-are-we-doing-this" ||
-      (article.title && article.title.toLowerCase().includes("why are we doing this"))
-  );
-
-  const renderThemesCard = () => (
-    <motion.div
-      key="themes-section-card"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="max-w-4xl mx-auto w-full"
-    >
-      <div className="rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 space-y-4 text-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:border-gold-vintage/25 transition-all flex flex-col">
-        {/* Compact Heading / Tag */}
-        <div className="flex items-center justify-center gap-2 text-xs font-mono text-gold-vintage uppercase tracking-widest">
-          <FileText className="w-3.5 h-3.5 text-gold-vintage" />
-          <span>MAKEATHON THEMES</span>
-        </div>
-
-        {/* Title */}
-        <h3 className="font-display font-medium text-2xl md:text-3.5xl text-slate-100 tracking-wider leading-snug uppercase">
-          THEMES
-        </h3>
-
-        <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto" />
-
-        {/* Direct Embedded Google Drive PDF Viewer */}
-        <div className="w-full h-[500px] sm:h-[600px] md:h-[680px] rounded-xl overflow-hidden border border-white/10 bg-[#0e0e12] mt-2">
-          <iframe
-            src={DRIVE_THEMES_PDF_URL}
-            title="Vedanta Makeathon Themes"
-            loading="lazy"
-            allowFullScreen
-            className="w-full h-full border-0"
-          />
-        </div>
-      </div>
-    </motion.div>
-  );
-
   return (
     <div className="space-y-20 md:space-y-24 pt-6 pb-2">
       {safeArticles.map((article, idx) => {
@@ -78,8 +31,8 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
         const isWhySection = article.id === "a4" || article.id === "why-are-we-doing-this" || (article.title && article.title.toLowerCase().includes("why are we doing this"));
         if (isWhySection) {
           return (
-            <div key={article.id} className="space-y-20 md:space-y-24">
               <motion.div
+                key={article.id}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -124,9 +77,6 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
                   </div>
                 </div>
               </motion.div>
-
-              {renderThemesCard()}
-            </div>
           );
         }
 
@@ -247,9 +197,6 @@ export default function WisdomLectures({ articles, onLike, onExploreDomain }: St
           </motion.div>
         );
       })}
-
-      {/* Fallback if safeArticles did not contain why-are-we-doing-this */}
-      {!hasWhySection && renderThemesCard()}
 
       {/* Structured Reading Modal Layer */}
       <AnimatePresence>
