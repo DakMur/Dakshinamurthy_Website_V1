@@ -1,5 +1,7 @@
 import React from "react";
 
+const REFERENCE_VIDEO_PREVIEW_URL = "https://drive.google.com/file/d/1L-zkeCJ_RDe9UbOXdOXh_cHGXm7nit5W/preview";
+
 export default function RegistrationSection() {
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center text-center px-4 py-8">
@@ -32,6 +34,27 @@ export default function RegistrationSection() {
       >
         <span>Register Team ↗</span>
       </a>
+
+      {/* Reference Video Guide */}
+      <div className="w-full max-w-[min(90vw,720px)] sm:max-w-[min(70vw,720px)] flex flex-col items-center mt-10 sm:mt-12">
+        <div className="mb-3 flex items-center justify-center gap-3 text-xs font-mono">
+          <div className="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-gold-vintage/60" />
+          <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold-vintage/90 font-mono font-medium">
+            REGISTRATION GUIDE
+          </span>
+          <div className="h-[1px] w-6 sm:w-10 bg-gradient-to-l from-transparent to-gold-vintage/60" />
+        </div>
+
+        <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 hover:border-gold-vintage/25 bg-black/40 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-colors">
+          <iframe
+            src={REFERENCE_VIDEO_PREVIEW_URL}
+            title="Vedanta Makeathon Registration Reference Video"
+            loading="lazy"
+            allowFullScreen
+            className="w-full h-full border-0"
+          />
+        </div>
+      </div>
     </div>
   );
 }
