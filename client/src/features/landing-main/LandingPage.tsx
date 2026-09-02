@@ -7,6 +7,7 @@ import sringeriLogo from "../../assets/sringeri_logo.webp";
 import vedantaBharatiLogo from "../../assets/vedanta_bharati_logo (2).png";
 import paramLogo from "../../assets/Param_logo.webp";
 import techClubLogo from "../../assets/tclogo.png";
+import mastryhubLogo from "../../assets/mastryhub_logo.png";
 import LandingTechnologyLayer from "./LandingTechnologyLayer";
 import "./LandingPage.css";
 
@@ -90,11 +91,11 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
       <div
         className="w-full relative select-none z-10 pointer-events-auto shrink-0 pt-14 sm:pt-3 md:pt-4"
       >
-        {/* Desktop / Tablet Layout: 5-Column Grid — single-line labels, full width */}
-        <div className="hidden sm:grid grid-cols-5 w-full pl-14 sm:pl-16 md:pl-20 pr-12 sm:pr-14 md:pr-16 gap-x-1 sm:gap-x-2 md:gap-x-3 items-start">
-          {/* Param */}
+        {/* Desktop / Tablet Layout: 6-Column Grid — single-line labels, full width */}
+        <div className="hidden sm:grid grid-cols-6 w-full pl-14 sm:pl-16 md:pl-20 pr-12 sm:pr-14 md:pr-16 gap-x-1 sm:gap-x-2 md:gap-x-3 items-start">
+          {/* 1. Param */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+            <span className="text-[8.5px] sm:text-[10px] md:text-[11.5px] font-mono font-medium tracking-[0.05em] sm:tracking-[0.1em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               TECHNICAL COLLABORATOR
             </span>
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
@@ -110,9 +111,27 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             </div>
           </div>
 
-          {/* Jyothy */}
+          {/* 2. Tech Club */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+            <span className="text-[8.5px] sm:text-[10px] md:text-[11.5px] font-mono font-medium tracking-[0.05em] sm:tracking-[0.1em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+              TECH CLUB
+            </span>
+            <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
+              <img
+                src={techClubLogo}
+                className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
+                alt="Tech Club"
+                width={640}
+                height={445}
+                decoding="async"
+                fetchPriority="low"
+              />
+            </div>
+          </div>
+
+          {/* 3. Jyothy */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[8.5px] sm:text-[10px] md:text-[11.5px] font-mono font-medium tracking-[0.05em] sm:tracking-[0.1em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               JYOTHY INSTITUTE OF TECHNOLOGY
             </span>
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
@@ -129,9 +148,9 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             </div>
           </div>
 
-          {/* Sringeri */}
+          {/* 4. Sringeri */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+            <span className="text-[8.5px] sm:text-[10px] md:text-[11.5px] font-mono font-medium tracking-[0.05em] sm:tracking-[0.1em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               SRINGERI SHARADA PEETHAM
             </span>
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
@@ -147,27 +166,27 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
             </div>
           </div>
 
-          {/* Tech Club */}
+          {/* 5. MastryHub */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
-              TECH CLUB
+            <span className="text-[8.5px] sm:text-[10px] md:text-[11.5px] font-mono font-medium tracking-[0.05em] sm:tracking-[0.1em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+              POWERED BY
             </span>
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
               <img
-                src={techClubLogo}
-                className="h-14 sm:h-17 md:h-20 max-w-full object-contain"
-                alt="Tech Club"
-                width={640}
-                height={445}
+                src={mastryhubLogo}
+                className="h-7 sm:h-9 md:h-11 max-w-full object-contain"
+                alt="MastryHub"
+                width={780}
+                height={194}
                 decoding="async"
                 fetchPriority="low"
               />
             </div>
           </div>
 
-          {/* Vedanta Bharati */}
+          {/* 6. Vedanta Bharati */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[9.5px] sm:text-[11px] md:text-[12.5px] font-mono font-medium tracking-[0.08em] sm:tracking-[0.12em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
+            <span className="text-[8.5px] sm:text-[10px] md:text-[11.5px] font-mono font-medium tracking-[0.05em] sm:tracking-[0.1em] text-gold-vintage uppercase mb-1.5 whitespace-nowrap">
               SUPPORTED BY
             </span>
             <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center">
@@ -184,55 +203,65 @@ export default function LandingPage({ isWarping, triggerWarpSpeed }: LandingPage
           </div>
         </div>
 
-        {/* Mobile Layout: Responsive Single 5-Column Horizontal Row */}
-        <div className="sm:hidden grid grid-cols-5 w-full px-1 pt-1 pb-1 gap-0.5 items-start">
+        {/* Mobile Layout: Responsive Single 6-Column Horizontal Row */}
+        <div className="sm:hidden grid grid-cols-6 w-full px-1 pt-1 pb-1 gap-0.5 items-start">
           {/* 1. Param */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+            <span className="text-[4.5px] font-mono tracking-[0.02em] text-gold-vintage uppercase mb-1 leading-[1.1] block">
               TECHNICAL<br />COLLABORATOR
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={paramLogo} className="h-[18px] max-w-full object-contain" alt="Param Technical Collaborator" width={938} height={222} decoding="async" fetchPriority="low" />
+              <img src={paramLogo} className="h-[16px] max-w-full object-contain" alt="Param Technical Collaborator" width={938} height={222} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
-          {/* 2. Jyothy */}
+          {/* 2. Tech Club */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
-              JYOTHY<br />INSTITUTE
-            </span>
-            <div className="h-7 flex items-center justify-center">
-              <img src={jyothyLogo} className="h-[25px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={1080} height={1080} decoding="async" fetchPriority="low" />
-            </div>
-          </div>
-
-          {/* 3. Sringeri */}
-          <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
-              SRINGERI<br />PEETHAM
-            </span>
-            <div className="h-7 flex items-center justify-center">
-              <img src={sringeriLogo} className="h-[22px] max-w-full object-contain" alt="Sringeri" width={400} height={400} decoding="async" fetchPriority="low" />
-            </div>
-          </div>
-
-          {/* 4. Tech Club — NEW */}
-          <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+            <span className="text-[4.5px] font-mono tracking-[0.02em] text-gold-vintage uppercase mb-1 leading-[1.1] block">
               TECH<br />CLUB
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={techClubLogo} className="h-[22px] max-w-full object-contain" alt="Tech Club" width={640} height={445} decoding="async" fetchPriority="low" />
+              <img src={techClubLogo} className="h-[20px] max-w-full object-contain" alt="Tech Club" width={640} height={445} decoding="async" fetchPriority="low" />
             </div>
           </div>
 
-          {/* 5. Vedanta Bharati */}
+          {/* 3. Jyothy */}
           <div className="flex flex-col items-center justify-start text-center">
-            <span className="text-[5.5px] font-mono tracking-[0.04em] text-gold-vintage uppercase mb-1 leading-[1.15] block">
+            <span className="text-[4.5px] font-mono tracking-[0.02em] text-gold-vintage uppercase mb-1 leading-[1.1] block">
+              JYOTHY<br />INSTITUTE
+            </span>
+            <div className="h-7 flex items-center justify-center">
+              <img src={jyothyLogo} className="h-[23px] max-w-full object-contain" style={{ clipPath: "ellipse(50% 38% at 50% 50%)" }} alt="Jyothy Institute of Technology" width={1080} height={1080} decoding="async" fetchPriority="low" />
+            </div>
+          </div>
+
+          {/* 4. Sringeri */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[4.5px] font-mono tracking-[0.02em] text-gold-vintage uppercase mb-1 leading-[1.1] block">
+              SRINGERI<br />PEETHAM
+            </span>
+            <div className="h-7 flex items-center justify-center">
+              <img src={sringeriLogo} className="h-[20px] max-w-full object-contain" alt="Sringeri" width={400} height={400} decoding="async" fetchPriority="low" />
+            </div>
+          </div>
+
+          {/* 5. MastryHub */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[4.5px] font-mono tracking-[0.02em] text-gold-vintage uppercase mb-1 leading-[1.1] block">
+              POWERED<br />BY
+            </span>
+            <div className="h-7 flex items-center justify-center">
+              <img src={mastryhubLogo} className="h-[16px] max-w-full object-contain" alt="MastryHub" width={780} height={194} decoding="async" fetchPriority="low" />
+            </div>
+          </div>
+
+          {/* 6. Vedanta Bharati */}
+          <div className="flex flex-col items-center justify-start text-center">
+            <span className="text-[4.5px] font-mono tracking-[0.02em] text-gold-vintage uppercase mb-1 leading-[1.1] block">
               SUPPORTED<br />BY
             </span>
             <div className="h-7 flex items-center justify-center">
-              <img src={vedantaBharatiLogo} className="h-[20px] max-w-full object-contain" alt="Vedanta Bharati" width={350} height={134} decoding="async" fetchPriority="low" />
+              <img src={vedantaBharatiLogo} className="h-[18px] max-w-full object-contain" alt="Vedanta Bharati" width={350} height={134} decoding="async" fetchPriority="low" />
             </div>
           </div>
         </div>
