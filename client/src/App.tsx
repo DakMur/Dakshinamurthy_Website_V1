@@ -383,6 +383,9 @@ export default function App() {
     if (scrollLockTimeoutRef.current) {
       clearTimeout(scrollLockTimeoutRef.current);
     }
+    scrollLockTimeoutRef.current = window.setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+    }, 2200);
 
     setActiveSection(sectionId);
     activeSectionRef.current = sectionId;
@@ -400,26 +403,67 @@ export default function App() {
 
     // Robust scroll runner: polls until element exists in DOM (handles Suspense / lazy components)
     let attempts = 0;
-    const maxAttempts = wasLanding ? 50 : 20;
-    const pollInterval = 40;
+    const maxAttempts = wasLanding ? 60 : 25;
+    const pollInterval = 35;
+
+    const scrollToEl = (el: HTMLElement, immediate = false) => {
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.resize === "function") {
+        lenis.resize();
+      }
+
+      if (lenis && typeof lenis.scrollTo === "function") {
+        lenis.scrollTo(el, {
+          offset: -24,
+          duration: immediate ? 0 : (wasLanding ? 0.9 : 1.1),
+          immediate,
+          force: true,
+        });
+      }
+
+      // Explicit mobile phone scroll handling (ensures touch devices scroll reliably)
+      const targetY = Math.max(0, el.getBoundingClientRect().top + window.scrollY - 24);
+      window.scrollTo({
+        top: targetY,
+        behavior: immediate ? "auto" : "smooth",
+      });
+
+      try {
+        el.scrollIntoView({
+          behavior: immediate ? "auto" : "smooth",
+          block: "start",
+        });
+      } catch {}
+    };
 
     const performScroll = () => {
       const el = document.getElementById(sectionId);
       if (el) {
-        const lenis = (window as any).lenis;
-        if (lenis && typeof lenis.scrollTo === "function") {
-          lenis.scrollTo(el, { offset: -24, duration: wasLanding ? 1.0 : 1.2 });
-        } else {
-          const targetY = el.getBoundingClientRect().top + window.scrollY - 24;
-          window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
-        }
+        scrollToEl(el);
 
-        if (scrollLockTimeoutRef.current) {
-          clearTimeout(scrollLockTimeoutRef.current);
+        if (wasLanding && sectionId !== "discover") {
+          // Verify on mobile after layout stabilization / lazy chunk load
+          setTimeout(() => {
+            const currentEl = document.getElementById(sectionId);
+            if (currentEl) {
+              const rect = currentEl.getBoundingClientRect();
+              // If still stuck near the top on mobile, force-align directly to element
+              if (rect.top > 250 || window.scrollY < 100) {
+                scrollToEl(currentEl, true);
+              }
+            }
+          }, 300);
+
+          setTimeout(() => {
+            const currentEl = document.getElementById(sectionId);
+            if (currentEl) {
+              const rect = currentEl.getBoundingClientRect();
+              if (rect.top > 250 || window.scrollY < 100) {
+                scrollToEl(currentEl, true);
+              }
+            }
+          }, 600);
         }
-        scrollLockTimeoutRef.current = window.setTimeout(() => {
-          isProgrammaticScrollRef.current = false;
-        }, 1500);
       } else if (attempts < maxAttempts) {
         attempts++;
         setTimeout(performScroll, pollInterval);

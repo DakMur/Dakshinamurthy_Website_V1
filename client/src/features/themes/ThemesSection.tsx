@@ -1,3 +1,4 @@
+import { useState } from "react";
 import FileText from "lucide-react/dist/esm/icons/file-text";
 import Presentation from "lucide-react/dist/esm/icons/presentation";
 import ExternalLink from "lucide-react/dist/esm/icons/external-link";
@@ -8,12 +9,15 @@ const DRIVE_THEMES_PDF_URL =
 const DRIVE_THEMES_PDF_DIRECT_URL =
   "https://drive.google.com/file/d/1SgJnWgoZxUY3RvzcZsU-uS1UrfyvDeUe/view?usp=sharing";
 
-const DRIVE_PPT_PREVIEW_URL =
-  "https://drive.google.com/file/d/1XLG0K0ECIQujtGya68QJmC721kauy6Ll/preview";
+// Google Slides dedicated embed endpoint — significantly faster than generic Drive preview
+const GOOGLE_SLIDES_EMBED_URL =
+  "https://docs.google.com/presentation/d/1XLG0K0ECIQujtGya68QJmC721kauy6Ll/embed?start=false&loop=false&delayms=3000";
 const DRIVE_PPT_DIRECT_URL =
   "https://docs.google.com/presentation/d/1XLG0K0ECIQujtGya68QJmC721kauy6Ll/edit?usp=drive_link&ouid=114820680613807477074&rtpof=true&sd=true";
 
 export default function ThemesSection() {
+  const [isPptLoaded, setIsPptLoaded] = useState(false);
+
   return (
     <div className="max-w-4xl mx-auto w-full space-y-12">
       {/* 1. MAKEATHON THEMES PDF */}
@@ -59,7 +63,7 @@ export default function ThemesSection() {
         </div>
       </motion.div>
 
-      {/* 2. MAKEATHON PPT TEMPLET */}
+      {/* 2. MAKEATHON PPT TEMPLATE */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -73,17 +77,26 @@ export default function ThemesSection() {
           </div>
 
           <h3 className="font-display font-medium text-2xl md:text-3.5xl text-slate-100 tracking-wider leading-snug uppercase">
-            PPT TEMPLET
+            PPT TEMPLATE
           </h3>
 
           <div className="w-16 h-[1.5px] bg-gold-vintage/50 mx-auto" />
 
-          <div className="w-full h-[500px] sm:h-[600px] md:h-[680px] rounded-xl overflow-hidden border border-white/10 bg-[#0e0e12] mt-2">
+          <div className="w-full h-[500px] sm:h-[600px] md:h-[680px] rounded-xl overflow-hidden border border-white/10 bg-[#0e0e12] mt-2 relative">
+            {!isPptLoaded && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#0e0e12] gap-3">
+                <div className="w-8 h-8 rounded-full border-2 border-gold-vintage/20 border-t-gold-vintage animate-spin" />
+                <span className="font-mono text-xs uppercase tracking-widest text-gold-vintage/80">
+                  Loading PPT Template...
+                </span>
+              </div>
+            )}
             <iframe
-              src={DRIVE_PPT_PREVIEW_URL}
-              title="Vedanta Makeathon PPT Templet"
-              loading="lazy"
+              src={GOOGLE_SLIDES_EMBED_URL}
+              title="Vedanta Makeathon PPT Template"
+              loading="eager"
               allowFullScreen
+              onLoad={() => setIsPptLoaded(true)}
               className="w-full h-full border-0"
             />
           </div>
@@ -96,7 +109,7 @@ export default function ThemesSection() {
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold-vintage/10 hover:bg-gold-vintage/20 text-gold-vintage border border-gold-vintage/30 hover:border-gold-vintage/60 transition-all text-xs font-mono uppercase tracking-wider shadow-sm hover:shadow-[0_0_20px_rgba(212,175,55,0.2)] cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              <span>Open PPT Templet</span>
+              <span>Open PPT Template</span>
             </a>
           </div>
         </div>
