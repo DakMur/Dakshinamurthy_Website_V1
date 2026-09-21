@@ -1,6 +1,9 @@
 import React from "react";
+import ExternalLink from "lucide-react/dist/esm/icons/external-link";
+import Video from "lucide-react/dist/esm/icons/video";
 
 const REFERENCE_VIDEO_PREVIEW_URL = "https://drive.google.com/file/d/1L-zkeCJ_RDe9UbOXdOXh_cHGXm7nit5W/preview";
+const REFERENCE_VIDEO_DIRECT_URL = "https://drive.google.com/file/d/1L-zkeCJ_RDe9UbOXdOXh_cHGXm7nit5W/view?usp=sharing";
 
 export default function RegistrationSection() {
   return (
@@ -36,16 +39,17 @@ export default function RegistrationSection() {
       </a>
 
       {/* Reference Video Guide */}
-      <div className="w-full max-w-[min(90vw,720px)] sm:max-w-[min(70vw,720px)] flex flex-col items-center mt-10 sm:mt-12">
-        <div className="mb-3 flex items-center justify-center gap-3 text-xs font-mono">
+      <div className="w-full max-w-3xl flex flex-col items-center mt-10 sm:mt-12 px-0 sm:px-2">
+        <div className="mb-3 flex items-center justify-center gap-2 text-xs font-mono">
           <div className="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-gold-vintage/60" />
+          <Video className="w-3.5 h-3.5 text-gold-vintage" />
           <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold-vintage/90 font-mono font-medium">
             REGISTRATION GUIDE
           </span>
           <div className="h-[1px] w-6 sm:w-10 bg-gradient-to-l from-transparent to-gold-vintage/60" />
         </div>
 
-        <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 hover:border-gold-vintage/25 bg-black/40 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-colors">
+        <div className="w-full h-[260px] xs:h-[300px] sm:h-[380px] md:h-[440px] rounded-2xl overflow-hidden border border-white/10 hover:border-gold-vintage/25 bg-black/40 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-all">
           <iframe
             src={REFERENCE_VIDEO_PREVIEW_URL}
             title="Vedanta Makeathon Registration Reference Video"
@@ -53,6 +57,18 @@ export default function RegistrationSection() {
             allowFullScreen
             className="w-full h-full border-0"
           />
+        </div>
+
+        <div className="pt-3 flex justify-center">
+          <a
+            href={REFERENCE_VIDEO_DIRECT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold-vintage/10 hover:bg-gold-vintage/20 text-gold-vintage border border-gold-vintage/30 hover:border-gold-vintage/60 transition-all text-xs font-mono uppercase tracking-wider shadow-sm hover:shadow-[0_0_20px_rgba(212,175,55,0.2)] cursor-pointer"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Open Guide Video</span>
+          </a>
         </div>
       </div>
     </div>

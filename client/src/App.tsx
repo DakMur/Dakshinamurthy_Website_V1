@@ -360,6 +360,7 @@ export default function App() {
       }
     }
 
+    const wasLanding = isLanding;
     if (isLanding) {
       setIsLanding(false);
     }
@@ -397,29 +398,41 @@ export default function App() {
       }
     }
 
-    // Smooth scroll to element in normal document flow
+    // Robust scroll runner: polls until element exists in DOM (handles Suspense / lazy components)
+    let attempts = 0;
+    const maxAttempts = wasLanding ? 50 : 20;
+    const pollInterval = 40;
+
     const performScroll = () => {
       const el = document.getElementById(sectionId);
       if (el) {
         const lenis = (window as any).lenis;
         if (lenis && typeof lenis.scrollTo === "function") {
-          lenis.scrollTo(el, { offset: -24, duration: 1.2 });
+          lenis.scrollTo(el, { offset: -24, duration: wasLanding ? 1.0 : 1.2 });
         } else {
           const targetY = el.getBoundingClientRect().top + window.scrollY - 24;
           window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
         }
+
+        if (scrollLockTimeoutRef.current) {
+          clearTimeout(scrollLockTimeoutRef.current);
+        }
+        scrollLockTimeoutRef.current = window.setTimeout(() => {
+          isProgrammaticScrollRef.current = false;
+        }, 1500);
+      } else if (attempts < maxAttempts) {
+        attempts++;
+        setTimeout(performScroll, pollInterval);
+      } else {
+        isProgrammaticScrollRef.current = false;
       }
     };
 
-    if (isLanding) {
-      setTimeout(performScroll, 80);
+    if (wasLanding) {
+      setTimeout(performScroll, 50);
     } else {
       performScroll();
     }
-
-    scrollLockTimeoutRef.current = window.setTimeout(() => {
-      isProgrammaticScrollRef.current = false;
-    }, 1200);
   }, [isLanding, currentTeam, overlayView, openOverlay]);
 
   // Return to landing page
@@ -526,7 +539,8 @@ export default function App() {
         activeSectionRef.current = targetSection;
 
         // Position viewport at section without creating additional history entries
-        setTimeout(() => {
+        let popAttempts = 0;
+        const tryPopScroll = () => {
           const el = document.getElementById(targetSection);
           if (el) {
             isProgrammaticScrollRef.current = true;
@@ -539,9 +553,13 @@ export default function App() {
             }
             setTimeout(() => {
               isProgrammaticScrollRef.current = false;
-            }, 1100);
+            }, 1200);
+          } else if (popAttempts < 30) {
+            popAttempts++;
+            setTimeout(tryPopScroll, 50);
           }
-        }, 50);
+        };
+        tryPopScroll();
       }
     };
 
@@ -579,8 +597,10 @@ export default function App() {
     }
 
     if (!initialRoute.isLanding && initialRoute.activeSectionId) {
-      const timer = setTimeout(() => {
-        const el = document.getElementById(initialRoute.activeSectionId);
+      const targetId = initialRoute.activeSectionId;
+      let initAttempts = 0;
+      const tryInitScroll = () => {
+        const el = document.getElementById(targetId);
         if (el) {
           const lenis = (window as any).lenis;
           if (lenis && typeof lenis.scrollTo === "function") {
@@ -589,9 +609,12 @@ export default function App() {
             const targetY = el.getBoundingClientRect().top + window.scrollY - 24;
             window.scrollTo({ top: Math.max(0, targetY), behavior: "auto" });
           }
+        } else if (initAttempts < 40) {
+          initAttempts++;
+          setTimeout(tryInitScroll, 50);
         }
-      }, 150);
-      return () => clearTimeout(timer);
+      };
+      tryInitScroll();
     }
   }, []);
 
