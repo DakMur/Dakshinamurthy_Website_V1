@@ -9,9 +9,9 @@ const DRIVE_THEMES_PDF_URL =
 const DRIVE_THEMES_PDF_DIRECT_URL =
   "https://drive.google.com/file/d/1SgJnWgoZxUY3RvzcZsU-uS1UrfyvDeUe/view?usp=sharing";
 
-// Google Slides dedicated embed endpoint — significantly faster than generic Drive preview
-const GOOGLE_SLIDES_EMBED_URL =
-  "https://docs.google.com/presentation/d/1XLG0K0ECIQujtGya68QJmC721kauy6Ll/embed?start=false&loop=false&delayms=3000";
+// Google Drive preview endpoint provides a continuous vertical scrolling document layout (identical to the Themes PDF)
+const DRIVE_PPT_SCROLLING_URL =
+  "https://drive.google.com/file/d/1XLG0K0ECIQujtGya68QJmC721kauy6Ll/preview";
 const DRIVE_PPT_DIRECT_URL =
   "https://docs.google.com/presentation/d/1XLG0K0ECIQujtGya68QJmC721kauy6Ll/edit?usp=drive_link&ouid=114820680613807477074&rtpof=true&sd=true";
 
@@ -92,9 +92,9 @@ export default function ThemesSection() {
               </div>
             )}
             <iframe
-              src={GOOGLE_SLIDES_EMBED_URL}
+              src={DRIVE_PPT_SCROLLING_URL}
               title="Vedanta Makeathon PPT Template"
-              loading="eager"
+              loading="lazy"
               allowFullScreen
               onLoad={() => setIsPptLoaded(true)}
               className="w-full h-full border-0"

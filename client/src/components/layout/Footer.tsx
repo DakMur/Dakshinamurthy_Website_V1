@@ -78,6 +78,19 @@ function VenueMapEmbed() {
   );
 }
 
+function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.77.463 3.498 1.343 5.026L2 22l5.109-1.339a10.005 10.005 0 004.922 1.282h.004c5.532 0 10.027-4.495 10.027-10.031 0-2.678-1.043-5.198-2.936-7.091A10.005 10.005 0 0012.031 2zm0 18.356c-1.503 0-2.975-.404-4.258-1.169l-.305-.181-3.164.83.844-3.084-.199-.317a8.318 8.318 0 01-1.275-4.398c0-4.606 3.747-8.353 8.357-8.353 2.232 0 4.33.869 5.908 2.448a8.307 8.307 0 012.444 5.908c0 4.606-3.748 8.356-8.357 8.356zm4.582-6.257c-.251-.126-1.488-.734-1.718-.818-.231-.084-.399-.126-.566.126-.168.251-.65 1-.796 1.168-.147.168-.293.189-.545.063-.251-.126-1.061-.391-2.022-1.248-.748-.667-1.253-1.492-1.4-1.743-.147-.251-.016-.387.11-.512.113-.113.251-.293.377-.44.126-.147.168-.251.251-.419.084-.168.042-.314-.021-.44-.063-.126-.566-1.364-.775-1.868-.204-.492-.41-.425-.566-.433-.146-.008-.314-.01-.482-.01-.168 0-.44.063-.67.314-.231.251-.88 1.026-.88 2.293 0 1.267.923 2.493 1.052 2.668.129.175 1.815 2.771 4.397 3.886.614.266 1.094.425 1.468.544.617.196 1.179.168 1.623.102.495-.074 1.488-.608 1.698-1.197.209-.589.209-1.094.147-1.197-.063-.105-.231-.168-.482-.294z" />
+    </svg>
+  );
+}
+
 export default function Footer({ route, isLanding = false }: FooterProps) {
   const [activeModal, setActiveModal] = useState<"privacy" | "terms" | null>(null);
 
@@ -140,8 +153,8 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-14 pb-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
             
-            {/* COLUMN 1: Event Venue Map (lg:col-span-5) */}
-            <div className="lg:col-span-5 flex flex-col space-y-4">
+            {/* COLUMN 1: Event Venue Map (lg:col-span-4) */}
+            <div className="lg:col-span-4 flex flex-col space-y-4">
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-gold-vintage" />
                 <h3 className="text-gold-vintage font-mono text-sm tracking-wider uppercase font-semibold">
@@ -202,8 +215,8 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
               </ul>
             </div>
 
-            {/* COLUMN 3: Contact & Social Media (lg:col-span-4) */}
-            <div className="lg:col-span-4 flex flex-col space-y-4">
+            {/* COLUMN 3: Contact & Social Media + WhatsApp QR (lg:col-span-5) */}
+            <div className="lg:col-span-5 flex flex-col space-y-4">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gold-vintage" />
                 <h3 className="text-gold-vintage font-mono text-sm tracking-wider uppercase font-semibold">
@@ -239,7 +252,7 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
               </div>
 
               {/* Social Media Links */}
-              <div className="space-y-2 pt-2">
+              <div className="space-y-2 pt-1">
                 <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 block">
                   Connect With Us
                 </span>
@@ -267,6 +280,83 @@ export default function Footer({ route, isLanding = false }: FooterProps) {
                     <span>YouTube</span>
                     <ExternalLink className="w-2.5 h-2.5 opacity-60" />
                   </a>
+
+                  <a
+                    href="https://chat.whatsapp.com/CQl9gndiTJeCzKRgkTanlP"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="WhatsApp Community"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-900/80 border border-neutral-800 hover:border-[#25D366]/50 hover:bg-neutral-800 text-slate-300 hover:text-[#25D366] text-xs font-mono transition-all group"
+                  >
+                    <WhatsAppIcon className="w-4 h-4 text-[#25D366] group-hover:scale-110 transition-transform" />
+                    <span>WhatsApp</span>
+                    <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                  </a>
+                </div>
+              </div>
+
+              {/* WhatsApp Community QR Code Card */}
+              <div className="pt-2">
+                <div className="p-3.5 sm:p-4 rounded-xl border border-gold-vintage/25 bg-[#0c0c16]/90 backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-gold-vintage/45 transition-all">
+                  {/* Subtle decorative ambient glow */}
+                  <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#25D366]/10 rounded-full blur-xl pointer-events-none" />
+
+                  {/* Header Row */}
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-[#25D366]/15 flex items-center justify-center border border-[#25D366]/40">
+                        <WhatsAppIcon className="w-3 h-3 text-[#25D366]" />
+                      </div>
+                      <span className="text-[11px] font-mono tracking-wider uppercase text-[#25D366] font-semibold">
+                        WhatsApp Community
+                      </span>
+                    </div>
+                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#25D366]/10 border border-[#25D366]/30 text-[9px] text-[#25D366] font-mono">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                      Official
+                    </span>
+                  </div>
+
+                  {/* Group Name */}
+                  <p className="text-xs text-slate-200 font-medium tracking-wide mb-2.5">
+                    Vedanta Makeathon Participants - 2026
+                  </p>
+
+                  {/* QR Image + Instruction & CTA */}
+                  <div className="flex items-center gap-3">
+                    {/* QR Code */}
+                    <a
+                      href="https://chat.whatsapp.com/CQl9gndiTJeCzKRgkTanlP"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 bg-white rounded-lg shrink-0 shadow-[0_0_12px_rgba(212,175,55,0.2)] hover:scale-105 transition-transform cursor-pointer block"
+                      title="Scan or click to open WhatsApp group"
+                    >
+                      <img
+                        src="/whatsapp_qr_code.png"
+                        alt="WhatsApp Group QR Code"
+                        className="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded"
+                        loading="lazy"
+                      />
+                    </a>
+
+                    {/* Instruction & Action button */}
+                    <div className="flex flex-col justify-between flex-1 min-w-0 gap-2">
+                      <p className="text-[11px] text-slate-400 font-sans leading-snug">
+                        Scan QR with phone camera or tap below to join.
+                      </p>
+                      <a
+                        href="https://chat.whatsapp.com/CQl9gndiTJeCzKRgkTanlP"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-neutral-950 font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(37,211,102,0.25)] hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] active:scale-[0.98]"
+                      >
+                        <WhatsAppIcon className="w-3.5 h-3.5 text-neutral-950 shrink-0" />
+                        <span>Join Group</span>
+                        <ExternalLink className="w-3 h-3 shrink-0 text-neutral-950" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
